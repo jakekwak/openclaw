@@ -1,304 +1,307 @@
 ---
-summary: "CLI reference for `openclaw hooks` (agent hooks)"
+summary: "`openclaw hooks`에 대한 CLI 참조 (에이전트 훅)"
 read_when:
-  - You want to manage agent hooks
-  - You want to install or update hooks
+  - 에이전트 훅을 관리하고 싶을 때
+  - 훅을 설치하거나 업데이트하고 싶을 때
 title: "hooks"
 ---
 
 # `openclaw hooks`
 
-Manage agent hooks (event-driven automations for commands like `/new`, `/reset`, and gateway startup).
+에이전트 훅을 관리합니다 (`/new`, `/reset`, 게이트웨이 시작과 같은 명령어에 대한 이벤트 기반 자동화).
 
-Related:
+관련 문서:
 
-- Hooks: [Hooks](/hooks)
-- Plugin hooks: [Plugins](/plugin#plugin-hooks)
+- Hooks: [Hooks](/automation/hooks)
+- Plugin hooks: [Plugins](/tools/plugin#plugin-hooks)
 
-## List All Hooks
+## 모든 훅 나열하기
 
 ```bash
 openclaw hooks list
 ```
 
-List all discovered hooks from workspace, managed, and bundled directories.
+워크스페이스, 관리되고 있는 디렉터리, 번들된 디렉터리에서 발견된 모든 훅을 나열합니다.
 
-**Options:**
+**옵션:**
 
-- `--eligible`: Show only eligible hooks (requirements met)
-- `--json`: Output as JSON
-- `-v, --verbose`: Show detailed information including missing requirements
+- `--eligible`: 사용 가능한 훅만 표시 (요구 사항 충족)
+- `--json`: JSON 형식으로 출력
+- `-v, --verbose`: 누락된 요구 사항을 포함한 상세한 정보 표시
 
-**Example output:**
+**예제 출력:**
 
 ```
 Hooks (4/4 ready)
 
 Ready:
   🚀 boot-md ✓ - Run BOOT.md on gateway startup
-  📝 command-logger ✓ - Log all command events to a centralized audit file
-  💾 session-memory ✓ - Save session context to memory when /new command is issued
-  😈 soul-evil ✓ - Swap injected SOUL content during a purge window or by random chance
+  📎 bootstrap-extra-files ✓ - 에이전트 부트스트랩 중 추가 워크스페이스 부트스트랩 파일 주입
+  📝 command-logger ✓ - 모든 명령 이벤트를 중앙 집중식 감사 파일에 기록
+  💾 session-memory ✓ - /new 명령이 발급될 때 세션 컨텍스트를 메모리에 저장
 ```
 
-**Example (verbose):**
+**예제 (verbose):**
 
 ```bash
 openclaw hooks list --verbose
 ```
 
-Shows missing requirements for ineligible hooks.
+사용할 수 없는 훅에 대한 누락된 요구 사항을 보여줍니다.
 
-**Example (JSON):**
+**예제 (JSON):**
 
 ```bash
 openclaw hooks list --json
 ```
 
-Returns structured JSON for programmatic use.
+프로그래밍적으로 사용할 수 있는 구조화된 JSON을 반환합니다.
 
-## Get Hook Information
+## 훅 정보 가져오기
 
 ```bash
 openclaw hooks info <name>
 ```
 
-Show detailed information about a specific hook.
+특정 훅에 대한 자세한 정보를 보여줍니다.
 
-**Arguments:**
+**인수:**
 
-- `<name>`: Hook name (e.g., `session-memory`)
+- `<name>`: 훅 이름 (예: `session-memory`)
 
-**Options:**
+**옵션:**
 
-- `--json`: Output as JSON
+- `--json`: JSON 형식으로 출력
 
-**Example:**
+**예제:**
 
 ```bash
 openclaw hooks info session-memory
 ```
 
-**Output:**
+**출력:**
 
 ```
 💾 session-memory ✓ Ready
 
-Save session context to memory when /new command is issued
+/new 명령이 발급되면 세션 컨텍스트를 메모리에 저장합니다.
 
-Details:
-  Source: openclaw-bundled
-  Path: /path/to/openclaw/hooks/bundled/session-memory/HOOK.md
-  Handler: /path/to/openclaw/hooks/bundled/session-memory/handler.ts
-  Homepage: https://docs.openclaw.ai/hooks#session-memory
-  Events: command:new
+세부사항:
+  출처: openclaw-bundled
+  경로: /path/to/openclaw/hooks/bundled/session-memory/HOOK.md
+  핸들러: /path/to/openclaw/hooks/bundled/session-memory/handler.ts
+  홈페이지: https://docs.openclaw.ai/automation/hooks#session-memory
+  이벤트: command:new
 
-Requirements:
-  Config: ✓ workspace.dir
+요구 사항:
+  구성: ✓ workspace.dir
 ```
 
-## Check Hooks Eligibility
+## 훅 자격 상태 확인하기
 
 ```bash
 openclaw hooks check
 ```
 
-Show summary of hook eligibility status (how many are ready vs. not ready).
+훅 자격 상태의 요약을 표시합니다 (준비된 훅 수 대 준비되지 않은 훅 수).
 
-**Options:**
+**옵션:**
 
-- `--json`: Output as JSON
+- `--json`: JSON 형식으로 출력
 
-**Example output:**
+**예제 출력:**
 
 ```
-Hooks Status
+훅 상태
 
-Total hooks: 4
-Ready: 4
-Not ready: 0
+총 훅: 4
+준비됨: 4
+준비되지 않음: 0
 ```
 
-## Enable a Hook
+## 훅 활성화하기
 
 ```bash
 openclaw hooks enable <name>
 ```
 
-Enable a specific hook by adding it to your config (`~/.openclaw/config.json`).
+구성 파일(`~/.openclaw/config.json`)에 추가하여 특정 훅을 활성화합니다.
 
-**Note:** Hooks managed by plugins show `plugin:<id>` in `openclaw hooks list` and
-can’t be enabled/disabled here. Enable/disable the plugin instead.
+**참고:** 플러그인이 관리하는 훅은 `openclaw hooks list`에 `plugin:<id>`로 표시되며
+여기서 활성화/비활성화할 수 없습니다. 대신 플러그인을 활성화/비활성화하십시오.
 
-**Arguments:**
+**인수:**
 
-- `<name>`: Hook name (e.g., `session-memory`)
+- `<name>`: 훅 이름 (예: `session-memory`)
 
-**Example:**
+**예제:**
 
 ```bash
 openclaw hooks enable session-memory
 ```
 
-**Output:**
+**출력:**
 
 ```
-✓ Enabled hook: 💾 session-memory
+✓ 활성화된 훅: 💾 session-memory
 ```
 
-**What it does:**
+**작동 방식:**
 
-- Checks if hook exists and is eligible
-- Updates `hooks.internal.entries.<name>.enabled = true` in your config
-- Saves config to disk
+- 훅이 존재하고 사용 가능한지 확인
+- 구성 파일의 `hooks.internal.entries.<name>.enabled = true`를 업데이트
+- 구성을 디스크에 저장
 
-**After enabling:**
+**활성화 후:**
 
-- Restart the gateway so hooks reload (menu bar app restart on macOS, or restart your gateway process in dev).
+- 훅이 다시 로드되도록 게이트웨이를 재시작하십시오 (macOS에서는 메뉴 바 앱을 재시작하거나 개발 환경에서는 게이트웨이 프로세스를 재시작).
 
-## Disable a Hook
+## 훅 비활성화하기
 
 ```bash
 openclaw hooks disable <name>
 ```
 
-Disable a specific hook by updating your config.
+구성을 업데이트하여 특정 훅을 비활성화합니다.
 
-**Arguments:**
+**인수:**
 
-- `<name>`: Hook name (e.g., `command-logger`)
+- `<name>`: 훅 이름 (예: `command-logger`)
 
-**Example:**
+**예제:**
 
 ```bash
 openclaw hooks disable command-logger
 ```
 
-**Output:**
+**출력:**
 
 ```
-⏸ Disabled hook: 📝 command-logger
+⏸ 비활성화된 훅: 📝 command-logger
 ```
 
-**After disabling:**
+**비활성화 후:**
 
-- Restart the gateway so hooks reload
+- 훅이 다시 로드되도록 게이트웨이를 재시작하십시오
 
-## Install Hooks
+## 훅 설치하기
 
 ```bash
 openclaw hooks install <path-or-spec>
 ```
 
-Install a hook pack from a local folder/archive or npm.
+로컬 폴더/아카이브 또는 npm에서 훅 팩을 설치합니다.
 
-**What it does:**
+npm 사양은 **레지스트리 전용**입니다 (패키지 이름 + 선택적 버전/태그). Git/URL/파일
+사양은 거부됩니다. 의존성 설치는 안전성을 위해 `--ignore-scripts`로 실행됩니다.
 
-- Copies the hook pack into `~/.openclaw/hooks/<id>`
-- Enables the installed hooks in `hooks.internal.entries.*`
-- Records the install under `hooks.internal.installs`
+**작동 방식:**
 
-**Options:**
+- 훅 팩을 `~/.openclaw/hooks/<id>`에 복사
+- 설치된 훅을 `hooks.internal.entries.*`에서 활성화
+- 설치 기록을 `hooks.internal.installs`에 기록
 
-- `-l, --link`: Link a local directory instead of copying (adds it to `hooks.internal.load.extraDirs`)
+**옵션:**
 
-**Supported archives:** `.zip`, `.tgz`, `.tar.gz`, `.tar`
+- `-l, --link`: 복사하는 대신 로컬 디렉토리를 연결 (`hooks.internal.load.extraDirs`에 추가)
 
-**Examples:**
+**지원되는 아카이브:** `.zip`, `.tgz`, `.tar.gz`, `.tar`
+
+**예제:**
 
 ```bash
-# Local directory
+# 로컬 디렉토리
 openclaw hooks install ./my-hook-pack
 
-# Local archive
+# 로컬 아카이브
 openclaw hooks install ./my-hook-pack.zip
 
-# NPM package
+# NPM 패키지
 openclaw hooks install @openclaw/my-hook-pack
 
-# Link a local directory without copying
+# 복사 없이 로컬 디렉토리 연결
 openclaw hooks install -l ./my-hook-pack
 ```
 
-## Update Hooks
+## 훅 업데이트하기
 
 ```bash
 openclaw hooks update <id>
 openclaw hooks update --all
 ```
 
-Update installed hook packs (npm installs only).
+설치된 훅 팩을 업데이트합니다 (npm 설치만 해당).
 
-**Options:**
+**옵션:**
 
-- `--all`: Update all tracked hook packs
-- `--dry-run`: Show what would change without writing
+- `--all`: 추적된 모든 훅 팩 업데이트
+- `--dry-run`: 쓰기 없이 변경 사항 표시
 
-## Bundled Hooks
+## 번들된 훅
 
 ### session-memory
 
-Saves session context to memory when you issue `/new`.
+/new 명령을 발급할 때 세션 컨텍스트를 메모리에 저장합니다.
 
-**Enable:**
+**활성화:**
 
 ```bash
 openclaw hooks enable session-memory
 ```
 
-**Output:** `~/.openclaw/workspace/memory/YYYY-MM-DD-slug.md`
+**출력:** `~/.openclaw/workspace/memory/YYYY-MM-DD-slug.md`
 
-**See:** [session-memory documentation](/hooks#session-memory)
+**참조:** [session-memory 문서](/automation/hooks#session-memory)
+
+### bootstrap-extra-files
+
+에이전트 부트스트랩 중 추가 부트스트랩 파일을 주입합니다 (예: 모노레포 로컬 `AGENTS.md` / `TOOLS.md`).
+
+**활성화:**
+
+```bash
+openclaw hooks enable bootstrap-extra-files
+```
+
+**참조:** [bootstrap-extra-files 문서](/automation/hooks#bootstrap-extra-files)
 
 ### command-logger
 
-Logs all command events to a centralized audit file.
+모든 명령 이벤트를 중앙 집중식 감사 파일에 기록합니다.
 
-**Enable:**
+**활성화:**
 
 ```bash
 openclaw hooks enable command-logger
 ```
 
-**Output:** `~/.openclaw/logs/commands.log`
+**출력:** `~/.openclaw/logs/commands.log`
 
-**View logs:**
+**로그 보기:**
 
 ```bash
-# Recent commands
+# 최근 명령
 tail -n 20 ~/.openclaw/logs/commands.log
 
-# Pretty-print
+# 보기 좋게 인쇄
 cat ~/.openclaw/logs/commands.log | jq .
 
-# Filter by action
+# 작업별 필터
 grep '"action":"new"' ~/.openclaw/logs/commands.log | jq .
 ```
 
-**See:** [command-logger documentation](/hooks#command-logger)
-
-### soul-evil
-
-Swaps injected `SOUL.md` content with `SOUL_EVIL.md` during a purge window or by random chance.
-
-**Enable:**
-
-```bash
-openclaw hooks enable soul-evil
-```
-
-**See:** [SOUL Evil Hook](/hooks/soul-evil)
+**참조:** [command-logger 문서](/automation/hooks#command-logger)
 
 ### boot-md
 
-Runs `BOOT.md` when the gateway starts (after channels start).
+게이트웨이가 시작될 때 `BOOT.md`를 실행합니다 (채널 시작 후).
 
-**Events**: `gateway:startup`
+**이벤트**: `gateway:startup`
 
-**Enable**:
+**활성화**:
 
 ```bash
 openclaw hooks enable boot-md
 ```
 
-**See:** [boot-md documentation](/hooks#boot-md)
+**참조:** [boot-md 문서](/automation/hooks#boot-md)

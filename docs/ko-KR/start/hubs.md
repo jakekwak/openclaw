@@ -1,39 +1,46 @@
 ---
-summary: "Hubs that link to every OpenClaw doc"
+summary: "모든 OpenClaw 문서로 연결되는 허브"
 read_when:
-  - You want a complete map of the documentation
-title: "Docs Hubs"
+  - 문서의 전체 지도를 원합니다
+title: "문서 허브"
 ---
 
-# Docs hubs
+# 문서 허브
 
-Use these hubs to discover every page, including deep dives and reference docs that don’t appear in the left nav.
+<Note>
+OpenClaw를 처음 사용한다면 [시작하기](/start/getting-started)로 시작하세요.
+</Note>
 
-## Start here
+이 허브를 사용하여 왼쪽 탐색에 나타나지 않는 심층 분석 및 참조 문서를 포함한 모든 페이지를 발견할 수 있습니다.
+
+## 여기서 시작하세요
 
 - [Index](/)
 - [Getting Started](/start/getting-started)
+- [Quick start](/start/quickstart)
 - [Onboarding](/start/onboarding)
 - [Wizard](/start/wizard)
 - [Setup](/start/setup)
 - [Dashboard (local Gateway)](http://127.0.0.1:18789/)
 - [Help](/help)
+- [Docs directory](/start/docs-directory)
 - [Configuration](/gateway/configuration)
 - [Configuration examples](/gateway/configuration-examples)
 - [OpenClaw assistant](/start/openclaw)
 - [Showcase](/start/showcase)
 - [Lore](/start/lore)
 
-## Installation + updates
+## 설치 + 업데이트
 
 - [Docker](/install/docker)
 - [Nix](/install/nix)
 - [Updating / rollback](/install/updating)
 - [Bun workflow (experimental)](/install/bun)
 
-## Core concepts
+## 핵심 개념
 
 - [Architecture](/concepts/architecture)
+- [Features](/concepts/features)
 - [Network hub](/network)
 - [Agent runtime](/concepts/agent)
 - [Agent workspace](/concepts/agent-workspace)
@@ -54,13 +61,13 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Presence](/concepts/presence)
 - [Discovery + transports](/gateway/discovery)
 - [Bonjour](/gateway/bonjour)
-- [Channel routing](/concepts/channel-routing)
-- [Groups](/concepts/groups)
-- [Group messages](/concepts/group-messages)
+- [Channel routing](/channels/channel-routing)
+- [Groups](/channels/groups)
+- [Group messages](/channels/group-messages)
 - [Model failover](/concepts/model-failover)
 - [OAuth](/concepts/oauth)
 
-## Providers + ingress
+## 프로바이더 + 인그레스
 
 - [Chat channels hub](/channels)
 - [Model providers hub](/providers/models)
@@ -78,9 +85,10 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Webhooks](/automation/webhook)
 - [Gmail Pub/Sub](/automation/gmail-pubsub)
 
-## Gateway + operations
+## 게이트웨이 + 운영
 
 - [Gateway runbook](/gateway)
+- [Network model](/gateway/network-model)
 - [Gateway pairing](/gateway/pairing)
 - [Gateway lock](/gateway/gateway-lock)
 - [Background process](/gateway/background-process)
@@ -97,7 +105,7 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Security](/gateway/security)
 - [Troubleshooting](/gateway/troubleshooting)
 
-## Tools + automation
+## 도구 + 자동화
 
 - [Tools surface](/tools)
 - [OpenProse](/prose)
@@ -110,12 +118,12 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Models](/concepts/models)
 - [Sub-agents](/tools/subagents)
 - [Agent send CLI](/tools/agent-send)
-- [Terminal UI](/tui)
+- [Terminal UI](/web/tui)
 - [Browser control](/tools/browser)
 - [Browser (Linux troubleshooting)](/tools/browser-linux-troubleshooting)
 - [Polls](/automation/poll)
 
-## Nodes, media, voice
+## 노드, 미디어, 음성
 
 - [Nodes overview](/nodes)
 - [Camera](/nodes/camera)
@@ -125,7 +133,7 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Voice wake](/nodes/voicewake)
 - [Talk mode](/nodes/talk)
 
-## Platforms
+## 플랫폼
 
 - [Platforms overview](/platforms)
 - [macOS](/platforms/macos)
@@ -135,7 +143,7 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Linux](/platforms/linux)
 - [Web surfaces](/web)
 
-## macOS companion app (advanced)
+## macOS 동반 앱 (고급)
 
 - [macOS dev setup](/platforms/mac/dev-setup)
 - [macOS menu bar](/platforms/mac/menu-bar)
@@ -156,7 +164,7 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [macOS skills](/platforms/mac/skills)
 - [macOS Peekaboo](/platforms/mac/peekaboo)
 
-## Workspace + templates
+## 작업 공간 + 템플릿
 
 - [Skills](/tools/skills)
 - [ClawHub](/tools/clawhub)
@@ -170,7 +178,7 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Templates: TOOLS](/reference/templates/TOOLS)
 - [Templates: USER](/reference/templates/USER)
 
-## Experiments (exploratory)
+## 실험 (탐색적)
 
 - [Onboarding config protocol](/experiments/onboarding-config-protocol)
 - [Cron hardening notes](/experiments/plans/cron-add-hardening)
@@ -178,7 +186,11 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Research: memory](/experiments/research/memory)
 - [Model config exploration](/experiments/proposals/model-config)
 
-## Testing + release
+## 프로젝트
+
+- [Credits](/reference/credits)
+
+## 테스트 + 출시
 
 - [Testing](/reference/test)
 - [Release checklist](/reference/RELEASING)

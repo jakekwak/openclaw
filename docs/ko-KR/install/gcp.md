@@ -1,9 +1,10 @@
+```markdown
 ---
-summary: "Run OpenClaw Gateway 24/7 on a GCP Compute Engine VM (Docker) with durable state"
+summary: "OpenClaw 게이트웨이를 GCP Compute Engine VM (Docker)에서 24/7 실행(내구성 상태 함께)"
 read_when:
-  - You want OpenClaw running 24/7 on GCP
-  - You want a production-grade, always-on Gateway on your own VM
-  - You want full control over persistence, binaries, and restart behavior
+  - OpenClaw를 GCP에서 24/7 실행하고 싶습니다
+  - 자체 VM에서 프로덕션급의 항상 켜져있는 게이트웨이를 원합니다
+  - 지속성, 바이너리, 재시작 동작에 대한 전체 제어를 원합니다
 title: "GCP"
 ---
 
@@ -69,7 +70,7 @@ For the generic Docker flow, see [Docker](/install/docker).
 
 **Option A: gcloud CLI** (recommended for automation)
 
-Install from https://cloud.google.com/sdk/docs/install
+Install from [https://cloud.google.com/sdk/docs/install](https://cloud.google.com/sdk/docs/install)
 
 Initialize and authenticate:
 
@@ -80,7 +81,7 @@ gcloud auth login
 
 **Option B: Cloud Console**
 
-All steps can be done via the web UI at https://console.cloud.google.com
+All steps can be done via the web UI at [https://console.cloud.google.com](https://console.cloud.google.com)
 
 ---
 
@@ -93,7 +94,7 @@ gcloud projects create my-openclaw-project --name="OpenClaw Gateway"
 gcloud config set project my-openclaw-project
 ```
 
-Enable billing at https://console.cloud.google.com/billing (required for Compute Engine).
+Enable billing at [https://console.cloud.google.com/billing](https://console.cloud.google.com/billing) (required for Compute Engine).
 
 Enable the Compute Engine API:
 
@@ -266,10 +267,6 @@ services:
       # Recommended: keep the Gateway loopback-only on the VM; access via SSH tunnel.
       # To expose it publicly, remove the `127.0.0.1:` prefix and firewall accordingly.
       - "127.0.0.1:${OPENCLAW_GATEWAY_PORT}:18789"
-
-      # Optional: only if you run iOS/Android nodes against this VM and need Canvas host.
-      # If you expose this publicly, read /gateway/security and firewall accordingly.
-      # - "18793:18793"
     command:
       [
         "node",
@@ -484,6 +481,7 @@ For automation or CI/CD pipelines, create a dedicated service account with minim
    ```
 
 2. Grant Compute Instance Admin role (or narrower custom role):
+
    ```bash
    gcloud projects add-iam-policy-binding my-openclaw-project \
      --member="serviceAccount:openclaw-deploy@my-openclaw-project.iam.gserviceaccount.com" \
@@ -492,7 +490,7 @@ For automation or CI/CD pipelines, create a dedicated service account with minim
 
 Avoid using the Owner role for automation. Use the principle of least privilege.
 
-See https://cloud.google.com/iam/docs/understanding-roles for IAM role details.
+See [https://cloud.google.com/iam/docs/understanding-roles](https://cloud.google.com/iam/docs/understanding-roles) for IAM role details.
 
 ---
 
@@ -501,3 +499,5 @@ See https://cloud.google.com/iam/docs/understanding-roles for IAM role details.
 - Set up messaging channels: [Channels](/channels)
 - Pair local devices as nodes: [Nodes](/nodes)
 - Configure the Gateway: [Gateway configuration](/gateway/configuration)
+
+```

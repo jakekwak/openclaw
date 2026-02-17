@@ -1,62 +1,67 @@
 ---
-summary: "Model providers (LLMs) supported by OpenClaw"
+summary: "OpenClaw에서 지원하는 모델 프로바이더 (LLMs)"
 read_when:
-  - You want to choose a model provider
-  - You need a quick overview of supported LLM backends
-title: "Model Providers"
+  - 모델 프로바이더를 선택하고 싶을 때
+  - 지원되는 LLM 백엔드의 빠른 개요가 필요할 때
+title: "모델 프로바이더"
 ---
 
 # Model Providers
 
-OpenClaw can use many LLM providers. Pick a provider, authenticate, then set the
-default model as `provider/model`.
+OpenClaw는 많은 LLM 프로바이더를 사용할 수 있습니다. 프로바이더를 선택하고 인증한 뒤, 기본 모델을 `provider/model`로 설정하세요.
 
-Looking for chat channel docs (WhatsApp/Telegram/Discord/Slack/Mattermost (plugin)/etc.)? See [Channels](/channels).
+채팅 채널 문서 (WhatsApp/Telegram/Discord/Slack/Mattermost (플러그인)/기타)를 찾나요? [채널](/channels)을 참조하세요.
 
 ## Highlight: Venice (Venice AI)
 
-Venice is our recommended Venice AI setup for privacy-first inference with an option to use Opus for hard tasks.
+Venice는 개인 정보 우선 추론을 위한 권장 Venice AI 설정이며, 어려운 작업에는 Opus를 사용할 수 있는 옵션이 있습니다.
 
-- Default: `venice/llama-3.3-70b`
-- Best overall: `venice/claude-opus-45` (Opus remains the strongest)
+- 기본: `venice/llama-3.3-70b`
+- 전반적으로 최고: `venice/claude-opus-45` (Opus가 여전히 가장 강력함)
 
-See [Venice AI](/providers/venice).
+[Venice AI](/providers/venice)를 참조하세요.
 
-## Quick start
+## 빠른 시작
 
-1. Authenticate with the provider (usually via `openclaw onboard`).
-2. Set the default model:
+1. 프로바이더에 인증하십시오 (보통 `openclaw onboard`를 통해).
+2. 기본 모델을 설정하세요:
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "anthropic/claude-opus-4-5" } } },
+  agents: { defaults: { model: { primary: "anthropic/claude-opus-4-6" } } },
 }
 ```
 
-## Provider docs
+## 프로바이더 문서
 
 - [OpenAI (API + Codex)](/providers/openai)
 - [Anthropic (API + Claude Code CLI)](/providers/anthropic)
 - [Qwen (OAuth)](/providers/qwen)
 - [OpenRouter](/providers/openrouter)
-- [Vercel AI Gateway](/providers/vercel-ai-gateway)
+- [LiteLLM (통합 게이트웨이)](/providers/litellm)
+- [Vercel AI 게이트웨이](/providers/vercel-ai-gateway)
+- [Together AI](/providers/together)
+- [Cloudflare AI 게이트웨이](/providers/cloudflare-ai-gateway)
 - [Moonshot AI (Kimi + Kimi Coding)](/providers/moonshot)
 - [OpenCode Zen](/providers/opencode)
-- [Amazon Bedrock](/bedrock)
+- [Amazon Bedrock](/providers/bedrock)
 - [Z.AI](/providers/zai)
 - [Xiaomi](/providers/xiaomi)
-- [GLM models](/providers/glm)
+- [GLM 모델](/providers/glm)
 - [MiniMax](/providers/minimax)
-- [Venice (Venice AI, privacy-focused)](/providers/venice)
-- [Ollama (local models)](/providers/ollama)
+- [Venice (Venice AI, 프라이버시 중심)](/providers/venice)
+- [Hugging Face (Inference)](/providers/huggingface)
+- [Ollama (로컬 모델)](/providers/ollama)
+- [vLLM (로컬 모델)](/providers/vllm)
+- [Qianfan](/providers/qianfan)
+- [NVIDIA](/providers/nvidia)
 
-## Transcription providers
+## 전사 프로바이더
 
-- [Deepgram (audio transcription)](/providers/deepgram)
+- [Deepgram (음성 전사)](/providers/deepgram)
 
-## Community tools
+## 커뮤니티 도구
 
-- [Claude Max API Proxy](/providers/claude-max-api-proxy) - Use Claude Max/Pro subscription as an OpenAI-compatible API endpoint
+- [Claude Max API 프록시](/providers/claude-max-api-proxy) - OpenAI 호환 API 엔드포인트로 Claude Max/Pro 구독을 사용하세요
 
-For the full provider catalog (xAI, Groq, Mistral, etc.) and advanced configuration,
-see [Model providers](/concepts/model-providers).
+전체 프로바이더 카탈로그(xAI, Groq, Mistral 등) 및 고급 설정은 [모델 프로바이더](/concepts/model-providers)를 참조하세요.

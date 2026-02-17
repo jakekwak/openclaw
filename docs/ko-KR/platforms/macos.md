@@ -1,69 +1,63 @@
 ---
-summary: "OpenClaw macOS companion app (menu bar + gateway broker)"
+summary: "OpenClaw macOS 동반 앱 (메뉴 막대 + 게이트웨이 브로커)"
 read_when:
-  - Implementing macOS app features
-  - Changing gateway lifecycle or node bridging on macOS
+  - macOS 앱 기능 구현
+  - 게이트웨이 수명 주기 또는 macOS에서 노드 브리징 변경
 title: "macOS App"
 ---
 
-# OpenClaw macOS Companion (menu bar + gateway broker)
+# OpenClaw macOS Companion (메뉴 막대 + 게이트웨이 브로커)
 
-The macOS app is the **menu‑bar companion** for OpenClaw. It owns permissions,
-manages/attaches to the Gateway locally (launchd or manual), and exposes macOS
-capabilities to the agent as a node.
+macOS 앱은 OpenClaw의 **메뉴 막대 동반 앱**입니다. 권한을 소유하고, 로컬에서 게이트웨이를 관리/연결(launchd 또는 수동)하며, 에이전트에게 노드로서 macOS 기능을 노출합니다.
 
-## What it does
+## 기능
 
-- Shows native notifications and status in the menu bar.
-- Owns TCC prompts (Notifications, Accessibility, Screen Recording, Microphone,
-  Speech Recognition, Automation/AppleScript).
-- Runs or connects to the Gateway (local or remote).
-- Exposes macOS‑only tools (Canvas, Camera, Screen Recording, `system.run`).
-- Starts the local node host service in **remote** mode (launchd), and stops it in **local** mode.
-- Optionally hosts **PeekabooBridge** for UI automation.
-- Installs the global CLI (`openclaw`) via npm/pnpm on request (bun not recommended for the Gateway runtime).
+- 메뉴 막대에 네이티브 알림과 상태를 표시합니다.
+- TCC 프롬프트(알림, 접근성, 화면 녹화, 마이크, 음성 인식, 자동화/AppleScript)를 소유합니다.
+- 게이트웨이를 로컬 또는 원격으로 실행하거나 연결합니다.
+- macOS 전용 도구(Canvas, Camera, Screen Recording, `system.run`을 노출합니다).
+- **원격** 모드에서 로컬 노드 호스트 서비스를 시작하고, **로컬** 모드에서 중지합니다.
+- UI 자동화를 위해 **PeekabooBridge**를 선택적으로 호스팅합니다.
+- 요청 시 npm/pnpm을 통해 전역 CLI(`openclaw`)를 설치합니다(Gateway 런타임에는 bun 권장되지 않음).
 
-## Local vs remote mode
+## 로컬 vs 원격 모드
 
-- **Local** (default): the app attaches to a running local Gateway if present;
-  otherwise it enables the launchd service via `openclaw gateway install`.
-- **Remote**: the app connects to a Gateway over SSH/Tailscale and never starts
-  a local process.
-  The app starts the local **node host service** so the remote Gateway can reach this Mac.
-  The app does not spawn the Gateway as a child process.
+- **로컬**(기본값): 실행 중인 로컬 게이트웨이에 앱이 연결되고, 그렇지 않은 경우 `openclaw gateway install`을 통해 launchd 서비스를 활성화합니다.
+- **원격**: 앱이 SSH/Tailscale을 통해 게이트웨이에 연결되며, 로컬 프로세스를 시작하지 않습니다.
+  앱이 로컬 **노드 호스트 서비스**를 시작하여 원격 게이트웨이가 이 Mac에 도달할 수 있습니다.
+  앱은 게이트웨이를 자식 프로세스로 스폰하지 않습니다.
 
-## Launchd control
+## Launchd 제어
 
-The app manages a per‑user LaunchAgent labeled `bot.molt.gateway`
-(or `bot.molt.<profile>` when using `--profile`/`OPENCLAW_PROFILE`; legacy `com.openclaw.*` still unloads).
+앱은 `bot.molt.gateway` 라벨의 사용자 별 LaunchAgent를 관리합니다(`--profile`/`OPENCLAW_PROFILE` 사용 시 `bot.molt.<profile>`; 이전 `com.openclaw.*`는 여전히 언로드됨).
 
 ```bash
 launchctl kickstart -k gui/$UID/bot.molt.gateway
 launchctl bootout gui/$UID/bot.molt.gateway
 ```
 
-Replace the label with `bot.molt.<profile>` when running a named profile.
+명명된 프로필을 실행할 때 라벨을 `bot.molt.<profile>`로 교체하십시오.
 
-If the LaunchAgent isn’t installed, enable it from the app or run
-`openclaw gateway install`.
+LaunchAgent가 설치되어 있지 않으면, 앱에서 활성화하거나
+`openclaw gateway install`을 실행합니다.
 
-## Node capabilities (mac)
+## 노드 기능 (mac)
 
-The macOS app presents itself as a node. Common commands:
+macOS 앱은 노드로 자신을 나타냅니다. 일반적인 명령어:
 
 - Canvas: `canvas.present`, `canvas.navigate`, `canvas.eval`, `canvas.snapshot`, `canvas.a2ui.*`
 - Camera: `camera.snap`, `camera.clip`
 - Screen: `screen.record`
 - System: `system.run`, `system.notify`
 
-The node reports a `permissions` map so agents can decide what’s allowed.
+노드는 `permissions` 맵을 보고하여 에이전트가 허용할 수 있는 항목을 결정할 수 있습니다.
 
-Node service + app IPC:
+노드 서비스 + 앱 IPC:
 
-- When the headless node host service is running (remote mode), it connects to the Gateway WS as a node.
-- `system.run` executes in the macOS app (UI/TCC context) over a local Unix socket; prompts + output stay in-app.
+- 헤드리스 노드 호스트 서비스가 실행 중일 때(원격 모드), 게이트웨이 WS에 노드로 연결됩니다.
+- 로컬 Unix 소켓을 통해 macOS 앱(UI/TCC 컨텍스트)에서 `system.run`이 실행됩니다; 프롬프트 + 출력은 앱 내에 유지됩니다.
 
-Diagram (SCI):
+도표 (SCI):
 
 ```
 Gateway -> Node Service (WS)
@@ -72,16 +66,16 @@ Gateway -> Node Service (WS)
              Mac App (UI + TCC + system.run)
 ```
 
-## Exec approvals (system.run)
+## 실행 승인 (system.run)
 
-`system.run` is controlled by **Exec approvals** in the macOS app (Settings → Exec approvals).
-Security + ask + allowlist are stored locally on the Mac in:
+`system.run`은 macOS 앱에서 **실행 승인**으로 제어됩니다(설정 → 실행 승인).
+보안 + 요청 + 허용 목록은 Mac의 로컬에 저장됩니다:
 
 ```
 ~/.openclaw/exec-approvals.json
 ```
 
-Example:
+예:
 
 ```json
 {
@@ -100,55 +94,55 @@ Example:
 }
 ```
 
-Notes:
+노트:
 
-- `allowlist` entries are glob patterns for resolved binary paths.
-- Choosing “Always Allow” in the prompt adds that command to the allowlist.
-- `system.run` environment overrides are filtered (drops `PATH`, `DYLD_*`, `LD_*`, `NODE_OPTIONS`, `PYTHON*`, `PERL*`, `RUBYOPT`) and then merged with the app’s environment.
+- `allowlist` 항목들은 해석된 바이너리 경로의 glob 패턴입니다.
+- 프롬프트의 "항상 허용"을 선택하면 해당 명령어가 허용 목록에 추가됩니다.
+- `system.run` 환경 오버라이드는 필터링되고 (`PATH`, `DYLD_*`, `LD_*`, `NODE_OPTIONS`, `PYTHON*`, `PERL*`, `RUBYOPT`를 드롭) 앱의 환경과 병합됩니다.
 
-## Deep links
+## 심층 링크
 
-The app registers the `openclaw://` URL scheme for local actions.
+앱은 로컬 작업을 위한 `openclaw://` URL 스키마를 등록합니다.
 
 ### `openclaw://agent`
 
-Triggers a Gateway `agent` request.
+게이트웨이 `agent` 요청을 트리거합니다.
 
 ```bash
 open 'openclaw://agent?message=Hello%20from%20deep%20link'
 ```
 
-Query parameters:
+쿼리 매개변수:
 
-- `message` (required)
-- `sessionKey` (optional)
-- `thinking` (optional)
-- `deliver` / `to` / `channel` (optional)
-- `timeoutSeconds` (optional)
-- `key` (optional unattended mode key)
+- `message` (필수)
+- `sessionKey` (선택 사항)
+- `thinking` (선택 사항)
+- `deliver` / `to` / `channel` (선택 사항)
+- `timeoutSeconds` (선택 사항)
+- `key` (선택적 비감독 모드 키)
 
-Safety:
+안전성:
 
-- Without `key`, the app prompts for confirmation.
-- With a valid `key`, the run is unattended (intended for personal automations).
+- `key`가 없으면 앱은 확인을 요청합니다.
+- `key`가 없으면 앱은 확인 프롬프트를 위해 짧은 메시지 제한을 강제하고 `deliver` / `to` / `channel`을 무시합니다.
+- 유효한 `key`가 있으면 실행은 비감독 모드입니다(개인 자동화를 위해 의도됨).
 
-## Onboarding flow (typical)
+## 온보딩 흐름 (일반적인)
 
-1. Install and launch **OpenClaw.app**.
-2. Complete the permissions checklist (TCC prompts).
-3. Ensure **Local** mode is active and the Gateway is running.
-4. Install the CLI if you want terminal access.
+1. **OpenClaw.app**을 설치하고 실행합니다.
+2. 권한 체크리스트(TCC 프롬프트)를 완료합니다.
+3. **로컬** 모드가 활성화되고 게이트웨이가 실행 중인지 확인합니다.
+4. 터미널 접근을 원하시면 CLI를 설치합니다.
 
-## Build & dev workflow (native)
+## 빌드 & 개발 워크플로우 (네이티브)
 
 - `cd apps/macos && swift build`
-- `swift run OpenClaw` (or Xcode)
-- Package app: `scripts/package-mac-app.sh`
+- `swift run OpenClaw` (또는 Xcode)
+- 앱 패키지: `scripts/package-mac-app.sh`
 
-## Debug gateway connectivity (macOS CLI)
+## 게이트웨이 연결 디버그 (macOS CLI)
 
-Use the debug CLI to exercise the same Gateway WebSocket handshake and discovery
-logic that the macOS app uses, without launching the app.
+디버그 CLI를 사용하여 앱을 실행하지 않고도 macOS 앱이 사용하는 동일한 게이트웨이 WebSocket 핸드셰이크 및 검색 로직을 실행합니다.
 
 ```bash
 cd apps/macos
@@ -156,48 +150,40 @@ swift run openclaw-mac connect --json
 swift run openclaw-mac discover --timeout 3000 --json
 ```
 
-Connect options:
+연결 옵션:
 
-- `--url <ws://host:port>`: override config
-- `--mode <local|remote>`: resolve from config (default: config or local)
-- `--probe`: force a fresh health probe
-- `--timeout <ms>`: request timeout (default: `15000`)
-- `--json`: structured output for diffing
+- `--url <ws://host:port>`: 구성 무시
+- `--mode <local|remote>`: 구성을 통해 확인 (기본값: 구성 또는 로컬)
+- `--probe`: 새 건강 상태 프로브 강제
+- `--timeout <ms>`: 요청 시간 초과 (기본값: `15000`)
+- `--json`: 차등 출력을 위한 구조적 출력
 
-Discovery options:
+검색 옵션:
 
-- `--include-local`: include gateways that would be filtered as “local”
-- `--timeout <ms>`: overall discovery window (default: `2000`)
-- `--json`: structured output for diffing
+- `--include-local`: "로컬"로 필터링될 게이트웨이를 포함
+- `--timeout <ms>`: 전체 검색 창 (기본값: `2000`)
+- `--json`: 차등 출력을 위한 구조적 출력
 
-Tip: compare against `openclaw gateway discover --json` to see whether the
-macOS app’s discovery pipeline (NWBrowser + tailnet DNS‑SD fallback) differs from
-the Node CLI’s `dns-sd` based discovery.
+팁: Node CLI의 `dns-sd` 기반 검색과 macOS 앱의 검색 파이프라인(NWBrowser + tailnet DNS‑SD 폴백)이 다른지 확인하려면 `openclaw gateway discover --json`과 비교하십시오.
 
-## Remote connection plumbing (SSH tunnels)
+## 원격 연결 배관 (SSH 터널)
 
-When the macOS app runs in **Remote** mode, it opens an SSH tunnel so local UI
-components can talk to a remote Gateway as if it were on localhost.
+macOS 앱이 **원격** 모드로 실행될 때 로컬 UI 컴포넌트가 원격 게이트웨이와 로컬호스트와 같이 통신할 수 있도록 SSH 터널을 엽니다.
 
-### Control tunnel (Gateway WebSocket port)
+### 제어 터널 (게이트웨이 WebSocket 포트)
 
-- **Purpose:** health checks, status, Web Chat, config, and other control-plane calls.
-- **Local port:** the Gateway port (default `18789`), always stable.
-- **Remote port:** the same Gateway port on the remote host.
-- **Behavior:** no random local port; the app reuses an existing healthy tunnel
-  or restarts it if needed.
-- **SSH shape:** `ssh -N -L <local>:127.0.0.1:<remote>` with BatchMode +
-  ExitOnForwardFailure + keepalive options.
-- **IP reporting:** the SSH tunnel uses loopback, so the gateway will see the node
-  IP as `127.0.0.1`. Use **Direct (ws/wss)** transport if you want the real client
-  IP to appear (see [macOS remote access](/platforms/mac/remote)).
+- **목적:** 상태 확인, 상태, 웹 채팅, 구성 및 기타 제어 평면 호출
+- **로컬 포트:** 게이트웨이 포트 (기본값 `18789`), 항상 안정적
+- **원격 포트:** 원격 호스트의 동일한 게이트웨이 포트
+- **동작:** 임의의 로컬 포트 없음; 앱은 기존의 건강한 터널을 재사용하거나 필요 시 재시작합니다.
+- **SSH 형식:** `ssh -N -L <local>:127.0.0.1:<remote>` BatchMode + ExitOnForwardFailure + keepalive 옵션 포함
+- **IP 보고:** SSH 터널은 루프백을 사용하므로 게이트웨이는 노드 IP를 `127.0.0.1`로 봅니다. 실제 클라이언트 IP가 표시되기를 원한다면 **Direct (ws/wss)** 전송을 사용하십시오 ([macOS 원격 접속](/platforms/mac/remote) 참조).
 
-For setup steps, see [macOS remote access](/platforms/mac/remote). For protocol
-details, see [Gateway protocol](/gateway/protocol).
+설정 단계는 [macOS 원격 접속](/platforms/mac/remote)을 참조하십시오. 프로토콜 세부 사항은 [게이트웨이 프로토콜](/gateway/protocol)을 참조하십시오.
 
-## Related docs
+## 관련 문서
 
-- [Gateway runbook](/gateway)
-- [Gateway (macOS)](/platforms/mac/bundled-gateway)
-- [macOS permissions](/platforms/mac/permissions)
+- [게이트웨이 런북](/gateway)
+- [게이트웨이 (macOS)](/platforms/mac/bundled-gateway)
+- [macOS 권한](/platforms/mac/permissions)
 - [Canvas](/platforms/mac/canvas)

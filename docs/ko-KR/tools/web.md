@@ -9,48 +9,46 @@ title: "Web Tools"
 
 # Web tools
 
-OpenClaw ships two lightweight web tools:
+OpenClaw는 두 가지 경량 웹 도구를 제공합니다:
 
-- `web_search` — Search the web via Brave Search API (default) or Perplexity Sonar (direct or via OpenRouter).
-- `web_fetch` — HTTP fetch + readable extraction (HTML → markdown/text).
+- `web_search` — Brave Search API(기본) 또는 Perplexity Sonar(직접 또는 OpenRouter를 통해)를 통해 웹 검색.
+- `web_fetch` — HTTP 가져오기 + 읽을 수 있는 추출 (HTML → markdown/텍스트).
 
-These are **not** browser automation. For JS-heavy sites or logins, use the
-[Browser tool](/tools/browser).
+이들은 **브라우저 자동화가 아닙니다**. JS가 많은 사이트나 로그인이 필요한 경우 [브라우저 도구](/tools/browser)를 사용하세요.
 
-## How it works
+## 작동 방식
 
-- `web_search` calls your configured provider and returns results.
-  - **Brave** (default): returns structured results (title, URL, snippet).
-  - **Perplexity**: returns AI-synthesized answers with citations from real-time web search.
-- Results are cached by query for 15 minutes (configurable).
-- `web_fetch` does a plain HTTP GET and extracts readable content
-  (HTML → markdown/text). It does **not** execute JavaScript.
-- `web_fetch` is enabled by default (unless explicitly disabled).
+- `web_search`는 구성된 프로바이더를 호출하여 결과를 반환합니다.
+  - **Brave** (기본): 구조화된 결과(제목, URL, 요약) 반환.
+  - **Perplexity**: 실시간 웹 검색에서 인용과 함께 AI 합성 답변 반환.
+- 결과는 쿼리별로 15분간 캐시됩니다(구성 가능).
+- `web_fetch`는 단순한 HTTP GET을 수행하여 읽을 수 있는 콘텐츠를 추출합니다 (HTML → markdown/텍스트). JavaScript를 실행하지 않습니다.
+- `web_fetch`는 기본적으로 활성화되어 있습니다(명시적으로 비활성화하지 않는 한).
 
-## Choosing a search provider
+## 검색 프로바이더 선택
 
 | Provider            | Pros                                         | Cons                                     | API Key                                      |
 | ------------------- | -------------------------------------------- | ---------------------------------------- | -------------------------------------------- |
-| **Brave** (default) | Fast, structured results, free tier          | Traditional search results               | `BRAVE_API_KEY`                              |
-| **Perplexity**      | AI-synthesized answers, citations, real-time | Requires Perplexity or OpenRouter access | `OPENROUTER_API_KEY` or `PERPLEXITY_API_KEY` |
+| **Brave** (default) | 빠른 속도, 구조화된 결과, 무료 단계 제공       | 전통적인 검색 결과                       | `BRAVE_API_KEY`                              |
+| **Perplexity**      | AI 합성 답변, 인용, 실시간                    | Perplexity 또는 OpenRouter 접근 필요      | `OPENROUTER_API_KEY` 또는 `PERPLEXITY_API_KEY`|
 
-See [Brave Search setup](/brave-search) and [Perplexity Sonar](/perplexity) for provider-specific details.
+[Brave Search 설정](/brave-search) 및 [Perplexity Sonar](/perplexity)을 통해 프로바이더별 세부정보를 확인하세요.
 
-Set the provider in config:
+구성에서 프로바이더를 설정하세요:
 
 ```json5
 {
   tools: {
     web: {
       search: {
-        provider: "brave", // or "perplexity"
+        provider: "brave", // 또는 "perplexity"
       },
     },
   },
 }
 ```
 
-Example: switch to Perplexity Sonar (direct API):
+예시: Perplexity Sonar(직접 API)로 전환:
 
 ```json5
 {
@@ -69,37 +67,31 @@ Example: switch to Perplexity Sonar (direct API):
 }
 ```
 
-## Getting a Brave API key
+## Brave API 키 가져오기
 
-1. Create a Brave Search API account at https://brave.com/search/api/
-2. In the dashboard, choose the **Data for Search** plan (not “Data for AI”) and generate an API key.
-3. Run `openclaw configure --section web` to store the key in config (recommended), or set `BRAVE_API_KEY` in your environment.
+1. [https://brave.com/search/api/](https://brave.com/search/api/)에서 Brave Search API 계정을 만드세요.
+2. 대시보드에서 **Data for Search** 플랜을 선택하고(“Data for AI”가 아님) API 키를 생성하세요.
+3. 구성에 키를 저장하려면 `openclaw configure --section web`을 실행하거나 환경 변수에 `BRAVE_API_KEY`를 설정하세요.
 
-Brave provides a free tier plus paid plans; check the Brave API portal for the
-current limits and pricing.
+Brave는 무료 단계와 유료 플랜을 제공합니다. Brave API 포털에서 현재 제한과 가격을 확인하세요.
 
-### Where to set the key (recommended)
+### 추천 키 설정 위치
 
-**Recommended:** run `openclaw configure --section web`. It stores the key in
-`~/.openclaw/openclaw.json` under `tools.web.search.apiKey`.
+**추천:** `openclaw configure --section web`을 실행합니다. 이는 `tools.web.search.apiKey` 아래 `~/.openclaw/openclaw.json`에 키를 저장합니다.
 
-**Environment alternative:** set `BRAVE_API_KEY` in the Gateway process
-environment. For a gateway install, put it in `~/.openclaw/.env` (or your
-service environment). See [Env vars](/help/faq#how-does-openclaw-load-environment-variables).
+**환경 대안:** 게이트웨이 프로세스 환경에 `BRAVE_API_KEY`를 설정하세요. 게이트웨이 설치의 경우 `~/.openclaw/.env`(또는 서비스 환경)에 입력합니다. [환경 변수](/help/faq#how-does-openclaw-load-environment-variables)를 참조하세요.
 
-## Using Perplexity (direct or via OpenRouter)
+## Perplexity 사용(직접 또는 OpenRouter를 통해)
 
-Perplexity Sonar models have built-in web search capabilities and return AI-synthesized
-answers with citations. You can use them via OpenRouter (no credit card required - supports
-crypto/prepaid).
+Perplexity Sonar 모델은 내장 웹 검색 기능을 가지고 있으며, 인용과 함께 AI 합성 답변을 반환합니다. OpenRouter를 통해 사용할 수 있습니다(신용카드 필요 없음 - 암호화/선불 지원).
 
-### Getting an OpenRouter API key
+### OpenRouter API 키 얻기
 
-1. Create an account at https://openrouter.ai/
-2. Add credits (supports crypto, prepaid, or credit card)
-3. Generate an API key in your account settings
+1. [https://openrouter.ai/](https://openrouter.ai/)에서 계정을 만드세요.
+2. 암호화, 선불 또는 신용카드를 사용하여 크레딧을 추가하세요.
+3. 계정 설정에서 API 키를 생성하세요.
 
-### Setting up Perplexity search
+### Perplexity 검색 설정
 
 ```json5
 {
@@ -109,11 +101,11 @@ crypto/prepaid).
         enabled: true,
         provider: "perplexity",
         perplexity: {
-          // API key (optional if OPENROUTER_API_KEY or PERPLEXITY_API_KEY is set)
+          // API 키(OPENROUTER_API_KEY 또는 PERPLEXITY_API_KEY가 설정된 경우 생략 가능)
           apiKey: "sk-or-v1-...",
-          // Base URL (key-aware default if omitted)
+          // 기본 URL(키 인식 기본값, 생략시)
           baseUrl: "https://openrouter.ai/api/v1",
-          // Model (defaults to perplexity/sonar-pro)
+          // 모델(기본값 perplexity/sonar-pro)
           model: "perplexity/sonar-pro",
         },
       },
@@ -122,35 +114,34 @@ crypto/prepaid).
 }
 ```
 
-**Environment alternative:** set `OPENROUTER_API_KEY` or `PERPLEXITY_API_KEY` in the Gateway
-environment. For a gateway install, put it in `~/.openclaw/.env`.
+**환경 대안:** 게이트웨이 환경에 `OPENROUTER_API_KEY` 또는 `PERPLEXITY_API_KEY`를 설정하세요. 게이트웨이 설치의 경우 `~/.openclaw/.env`에 입력합니다.
 
-If no base URL is set, OpenClaw chooses a default based on the API key source:
+기본 URL이 설정되지 않은 경우, OpenClaw는 API 키 출처에 따라 기본값을 선택합니다:
 
-- `PERPLEXITY_API_KEY` or `pplx-...` → `https://api.perplexity.ai`
-- `OPENROUTER_API_KEY` or `sk-or-...` → `https://openrouter.ai/api/v1`
-- Unknown key formats → OpenRouter (safe fallback)
+- `PERPLEXITY_API_KEY` 또는 `pplx-...` → `https://api.perplexity.ai`
+- `OPENROUTER_API_KEY` 또는 `sk-or-...` → `https://openrouter.ai/api/v1`
+- 알 수 없는 키 형식 → OpenRouter (안전한 주석)
 
-### Available Perplexity models
+### 사용 가능한 Perplexity 모델
 
 | Model                            | Description                          | Best for          |
 | -------------------------------- | ------------------------------------ | ----------------- |
-| `perplexity/sonar`               | Fast Q&A with web search             | Quick lookups     |
-| `perplexity/sonar-pro` (default) | Multi-step reasoning with web search | Complex questions |
-| `perplexity/sonar-reasoning-pro` | Chain-of-thought analysis            | Deep research     |
+| `perplexity/sonar`               | 웹 검색과 함께 빠른 Q&A               | 빠른 조회         |
+| `perplexity/sonar-pro` (default) | 웹 검색과 함께 다단계 추론           | 복잡한 질문       |
+| `perplexity/sonar-reasoning-pro` | 사고의 연결 분석                      | 심도 있는 연구    |
 
 ## web_search
 
-Search the web using your configured provider.
+설정된 프로바이더를 사용하여 웹을 검색합니다.
 
-### Requirements
+### 요구 사항
 
-- `tools.web.search.enabled` must not be `false` (default: enabled)
-- API key for your chosen provider:
-  - **Brave**: `BRAVE_API_KEY` or `tools.web.search.apiKey`
-  - **Perplexity**: `OPENROUTER_API_KEY`, `PERPLEXITY_API_KEY`, or `tools.web.search.perplexity.apiKey`
+- `tools.web.search.enabled`가 `false`가 아니어야 합니다(기본값: 활성화됨).
+- 선택한 프로바이더에 대한 API 키:
+  - **Brave**: `BRAVE_API_KEY` 또는 `tools.web.search.apiKey`
+  - **Perplexity**: `OPENROUTER_API_KEY`, `PERPLEXITY_API_KEY`, 또는 `tools.web.search.perplexity.apiKey`
 
-### Config
+### 구성
 
 ```json5
 {
@@ -158,7 +149,7 @@ Search the web using your configured provider.
     web: {
       search: {
         enabled: true,
-        apiKey: "BRAVE_API_KEY_HERE", // optional if BRAVE_API_KEY is set
+        apiKey: "BRAVE_API_KEY_HERE", // BRAVE_API_KEY가 설정된 경우 옵션
         maxResults: 5,
         timeoutSeconds: 30,
         cacheTtlMinutes: 15,
@@ -168,19 +159,21 @@ Search the web using your configured provider.
 }
 ```
 
-### Tool parameters
+### 도구 매개변수
 
-- `query` (required)
-- `count` (1–10; default from config)
-- `country` (optional): 2-letter country code for region-specific results (e.g., "DE", "US", "ALL"). If omitted, Brave chooses its default region.
-- `search_lang` (optional): ISO language code for search results (e.g., "de", "en", "fr")
-- `ui_lang` (optional): ISO language code for UI elements
-- `freshness` (optional, Brave only): filter by discovery time (`pd`, `pw`, `pm`, `py`, or `YYYY-MM-DDtoYYYY-MM-DD`)
+- `query` (필수)
+- `count` (1–10; 구성의 기본값)
+- `country` (선택 사항): 지역별 결과를 위한 2-글자 국가 코드 (예: "DE", "US", "ALL"). 생략한 경우 Brave는 기본 지역을 선택합니다.
+- `search_lang` (선택 사항): 검색 결과의 ISO 언어 코드 (예: "de", "en", "fr")
+- `ui_lang` (선택 사항): UI 요소의 ISO 언어 코드
+- `freshness` (선택사항): 발견 시간으로 필터링
+  - Brave: `pd`, `pw`, `pm`, `py`, 또는 `YYYY-MM-DDtoYYYY-MM-DD`
+  - Perplexity: `pd`, `pw`, `pm`, `py`
 
-**Examples:**
+**예시:**
 
 ```javascript
-// German-specific search
+// 독일어 특정 검색
 await web_search({
   query: "TV online schauen",
   count: 10,
@@ -188,7 +181,7 @@ await web_search({
   search_lang: "de",
 });
 
-// French search with French UI
+// 프랑스어 검색과 프랑스어 UI
 await web_search({
   query: "actualités",
   country: "FR",
@@ -196,7 +189,7 @@ await web_search({
   ui_lang: "fr",
 });
 
-// Recent results (past week)
+// 최근 결과(지난 주)
 await web_search({
   query: "TMBG interview",
   freshness: "pw",
@@ -205,14 +198,14 @@ await web_search({
 
 ## web_fetch
 
-Fetch a URL and extract readable content.
+URL을 가져와 읽을 수 있는 콘텐츠를 추출합니다.
 
-### Requirements
+### web_fetch 요구 사항
 
-- `tools.web.fetch.enabled` must not be `false` (default: enabled)
-- Optional Firecrawl fallback: set `tools.web.fetch.firecrawl.apiKey` or `FIRECRAWL_API_KEY`.
+- `tools.web.fetch.enabled`가 `false`가 아니어야 합니다(기본값: 활성화됨).
+- 선택적 Firecrawl 대체 항목: `tools.web.fetch.firecrawl.apiKey` 또는 `FIRECRAWL_API_KEY`를 설정하세요.
 
-### Config
+### web_fetch 구성
 
 ```json5
 {
@@ -222,6 +215,7 @@ Fetch a URL and extract readable content.
         enabled: true,
         maxChars: 50000,
         maxCharsCap: 50000,
+        maxResponseBytes: 2000000,
         timeoutSeconds: 30,
         cacheTtlMinutes: 15,
         maxRedirects: 3,
@@ -229,7 +223,7 @@ Fetch a URL and extract readable content.
         readability: true,
         firecrawl: {
           enabled: true,
-          apiKey: "FIRECRAWL_API_KEY_HERE", // optional if FIRECRAWL_API_KEY is set
+          apiKey: "FIRECRAWL_API_KEY_HERE", // FIRECRAWL_API_KEY가 설정된 경우 옵션
           baseUrl: "https://api.firecrawl.dev",
           onlyMainContent: true,
           maxAgeMs: 86400000, // ms (1 day)
@@ -241,21 +235,22 @@ Fetch a URL and extract readable content.
 }
 ```
 
-### Tool parameters
+### web_fetch 도구 매개변수
 
-- `url` (required, http/https only)
+- `url` (필수, http/https만)
 - `extractMode` (`markdown` | `text`)
-- `maxChars` (truncate long pages)
+- `maxChars` (긴 페이지 잘라내기)
 
-Notes:
+참고:
 
-- `web_fetch` uses Readability (main-content extraction) first, then Firecrawl (if configured). If both fail, the tool returns an error.
-- Firecrawl requests use bot-circumvention mode and cache results by default.
-- `web_fetch` sends a Chrome-like User-Agent and `Accept-Language` by default; override `userAgent` if needed.
-- `web_fetch` blocks private/internal hostnames and re-checks redirects (limit with `maxRedirects`).
-- `maxChars` is clamped to `tools.web.fetch.maxCharsCap`.
-- `web_fetch` is best-effort extraction; some sites will need the browser tool.
-- See [Firecrawl](/tools/firecrawl) for key setup and service details.
-- Responses are cached (default 15 minutes) to reduce repeated fetches.
-- If you use tool profiles/allowlists, add `web_search`/`web_fetch` or `group:web`.
-- If the Brave key is missing, `web_search` returns a short setup hint with a docs link.
+- `web_fetch`는 먼저 Readability(주요 콘텐츠 추출)를 사용하고, 후속으로 Firecrawl(구성된 경우)을 사용합니다. 둘 다 실패하면 도구는 오류를 반환합니다.
+- Firecrawl 요청은 봇 회피 모드를 사용하고 결과를 기본적으로 캐시합니다.
+- `web_fetch`는 Chrome과 유사한 User-Agent와 `Accept-Language`를 기본적으로 보내며, 필요 시 `userAgent`를 재정의할 수 있습니다.
+- `web_fetch`는 개인/내부 호스트 이름을 차단하고 리디렉션을 재확인합니다(`maxRedirects`로 제한).
+- `maxChars`는 `tools.web.fetch.maxCharsCap`에 고정됩니다.
+- `web_fetch`는 다운받은 응답 본문 크기를 `tools.web.fetch.maxResponseBytes`으로 제한한 후 구문 분석합니다; 과도한 응답은 잘리고 경고를 포함합니다.
+- `web_fetch`는 최선의 시도로 추출하며, 일부 사이트는 브라우저 도구가 필요할 수 있습니다.
+- [Firecrawl](/tools/firecrawl)에서 키 설정 및 서비스 세부 사항을 확인하세요.
+- 응답은 반복적인 요청 감소를 위해 캐시됩니다(기본 15분).
+- 도구 프로필/허용 목록을 사용하는 경우 `web_search`/`web_fetch` 또는 `group:web`을 추가하세요.
+- Brave 키가 없으면, `web_search`는 간단한 설정 힌트를 적은 설명서 링크와 함께 반환합니다.

@@ -1,62 +1,62 @@
 ---
 summary: "Strict config validation + doctor-only migrations"
 read_when:
-  - Designing or implementing config validation behavior
-  - Working on config migrations or doctor workflows
-  - Handling plugin config schemas or plugin load gating
-title: "Strict Config Validation"
+  - 구성 유효성 검사 동작을 설계하거나 구현할 때
+  - 구성 마이그레이션 또는 doctor 워크플로우 작업 시
+  - 플러그인 구성 스키마 또는 플러그인 로드 게이트 처리 시
+title: "엄격한 구성 유효성 검사"
 ---
 
-# Strict config validation (doctor-only migrations)
+# 엄격한 구성 유효성 검사 (doctor-only 마이그레이션)
 
-## Goals
+## 목표
 
-- **Reject unknown config keys everywhere** (root + nested).
-- **Reject plugin config without a schema**; don’t load that plugin.
-- **Remove legacy auto-migration on load**; migrations run via doctor only.
-- **Auto-run doctor (dry-run) on startup**; if invalid, block non-diagnostic commands.
+- **모든 위치의 알 수 없는 구성 키 거부** (루트 및 중첩)합니다. 단, 루트 `$schema` 메타데이터는 예외입니다.
+- **스키마가 없는 플러그인 구성을 거부**하고 해당 플러그인을 로드하지 않습니다.
+- **로드 시 레거시 자동 마이그레이션 제거**; 마이그레이션은 doctor를 통해서만 실행됩니다.
+- **시작 시 doctor를 자동 실행 (시험 실행)**; 유효하지 않을 경우 비진단 명령어를 차단합니다.
 
-## Non-goals
+## 비목표
 
-- Backward compatibility on load (legacy keys do not auto-migrate).
-- Silent drops of unrecognized keys.
+- 로드 시의 하위 호환성 (레거시 키가 자동 마이그레이션되지 않음).
+- 인식되지 않은 키의 묵인 드롭.
 
-## Strict validation rules
+## 엄격한 검증 규칙
 
-- Config must match the schema exactly at every level.
-- Unknown keys are validation errors (no passthrough at root or nested).
-- `plugins.entries.<id>.config` must be validated by the plugin’s schema.
-  - If a plugin lacks a schema, **reject plugin load** and surface a clear error.
-- Unknown `channels.<id>` keys are errors unless a plugin manifest declares the channel id.
-- Plugin manifests (`openclaw.plugin.json`) are required for all plugins.
+- 구성은 모든 수준에서 스키마와 정확히 일치해야 합니다.
+- 알 수 없는 키는 검증 오류입니다 (루트 또는 중첩에서의 패스스루 없음), 단 루트의 `$schema`가 문자열일 경우 예외입니다.
+- `plugins.entries.<id>.config`는 플러그인의 스키마에 의해 검증되어야 합니다.
+  - 플러그인에 스키마가 없을 경우, **플러그인 로드를 거부**하고 명확한 오류를 표시합니다.
+- 플러그인 매니페스트에 채널 id가 선언되지 않은 경우 알 수 없는 `channels.<id>` 키는 오류로 간주됩니다.
+- 모든 플러그인에 대해 플러그인 매니페스트 (`openclaw.plugin.json`)가 필요합니다.
 
-## Plugin schema enforcement
+## 플러그인 스키마 강제 적용
 
-- Each plugin provides a strict JSON Schema for its config (inline in the manifest).
-- Plugin load flow:
-  1. Resolve plugin manifest + schema (`openclaw.plugin.json`).
-  2. Validate config against the schema.
-  3. If missing schema or invalid config: block plugin load, record error.
-- Error message includes:
-  - Plugin id
-  - Reason (missing schema / invalid config)
-  - Path(s) that failed validation
-- Disabled plugins keep their config, but Doctor + logs surface a warning.
+- 각 플러그인은 자신의 구성에 대해 엄격한 JSON 스키마를 제공합니다 (매니페스트에 인라인).
+- 플러그인 로드 흐름:
+  1. 플러그인 매니페스트 + 스키마 해결 (`openclaw.plugin.json`).
+  2. 스키마에 대한 구성 검증.
+  3. 스키마가 없거나 구성 유효하지 않은 경우: 플러그인 로드를 차단하고 오류 기록.
+- 오류 메시지에는 다음이 포함됩니다:
+  - 플러그인 ID
+  - 이유 (스키마 누락 / 유효하지 않은 구성)
+  - 검증 실패 경로
+- 비활성 플러그인은 구성 유지하나, Doctor + 로그에는 경고가 표시됩니다.
 
-## Doctor flow
+## Doctor 흐름
 
-- Doctor runs **every time** config is loaded (dry-run by default).
-- If config invalid:
-  - Print a summary + actionable errors.
-  - Instruct: `openclaw doctor --fix`.
+- Doctor는 **구성이 로드될 때마다** 실행됩니다 (기본적으로 시험 실행).
+- 구성이 유효하지 않은 경우:
+  - 요약 및 실행 가능한 오류 출력.
+  - 안내: `openclaw doctor --fix`.
 - `openclaw doctor --fix`:
-  - Applies migrations.
-  - Removes unknown keys.
-  - Writes updated config.
+  - 마이그레이션 적용.
+  - 알 수 없는 키 제거.
+  - 업데이트된 구성 작성.
 
-## Command gating (when config is invalid)
+## 명령어 게이트 (구성이 유효하지 않을 때)
 
-Allowed (diagnostic-only):
+허용됨 (진단 전용):
 
 - `openclaw doctor`
 - `openclaw logs`
@@ -65,29 +65,29 @@ Allowed (diagnostic-only):
 - `openclaw status`
 - `openclaw gateway status`
 
-Everything else must hard-fail with: “Config invalid. Run `openclaw doctor --fix`.”
+기타 모든 항목은 다음 메시지와 함께 강제 실패해야 합니다: “Configuration invalid. Run `openclaw doctor --fix`.”
 
-## Error UX format
+## 오류 UX 형식
 
-- Single summary header.
-- Grouped sections:
-  - Unknown keys (full paths)
-  - Legacy keys / migrations needed
-  - Plugin load failures (plugin id + reason + path)
+- 단일 요약 헤더.
+- 그룹화된 섹션:
+  - 알 수 없는 키 (전체 경로)
+  - 레거시 키 / 필요한 마이그레이션
+  - 플러그인 로드 실패 (플러그인 id + 이유 + 경로)
 
-## Implementation touchpoints
+## 구현 접점
 
-- `src/config/zod-schema.ts`: remove root passthrough; strict objects everywhere.
-- `src/config/zod-schema.providers.ts`: ensure strict channel schemas.
-- `src/config/validation.ts`: fail on unknown keys; do not apply legacy migrations.
-- `src/config/io.ts`: remove legacy auto-migrations; always run doctor dry-run.
-- `src/config/legacy*.ts`: move usage to doctor only.
-- `src/plugins/*`: add schema registry + gating.
-- CLI command gating in `src/cli`.
+- `src/config/zod-schema.ts`: 루트 패스스루 제거; 모든 곳에서 엄격한 객체 사용.
+- `src/config/zod-schema.providers.ts`: 엄격한 채널 스키마 보장.
+- `src/config/validation.ts`: 알 수 없는 키에서 실패; 레거시 마이그레이션 적용하지 않음.
+- `src/config/io.ts`: 레거시 자동 마이그레이션 제거; 항상 doctor 시험 실행.
+- `src/config/legacy*.ts`: 사용을 doctor 전용으로 전환.
+- `src/plugins/*`: 스키마 레지스트리 + 게이트 추가.
+- CLI 명령어 게이트는 `src/cli`에.
 
-## Tests
+## 테스트
 
-- Unknown key rejection (root + nested).
-- Plugin missing schema → plugin load blocked with clear error.
-- Invalid config → gateway startup blocked except diagnostic commands.
-- Doctor dry-run auto; `doctor --fix` writes corrected config.
+- 알 수 없는 키 거부 (루트 + 중첩).
+- 플러그인 스키마 누락 → 명확한 오류와 함께 플러그인 로드 차단.
+- 유효하지 않은 구성 → 진단 명령어를 제외하고 게이트웨이 시작 차단.
+- Doctor 시험 실행 자동화; `doctor --fix`로 수정된 구성 작성.

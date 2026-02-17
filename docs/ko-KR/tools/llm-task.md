@@ -8,11 +8,9 @@ title: "LLM Task"
 
 # LLM Task
 
-`llm-task` is an **optional plugin tool** that runs a JSON-only LLM task and
-returns structured output (optionally validated against JSON Schema).
+`llm-task`는 JSON-only LLM 작업을 실행하고 구조화된 출력을 반환하는 **옵션 플러그인 도구**입니다 (선택적으로 JSON 스키마에 대해 유효성을 검사할 수 있음).
 
-This is ideal for workflow engines like Lobster: you can add a single LLM step
-without writing custom OpenClaw code for each workflow.
+이는 Lobster 같은 워크플로 엔진에 이상적입니다. 각 워크플로에 대해 맞춤형 OpenClaw 코드를 작성하지 않고도 단일 LLM 단계를 추가할 수 있습니다.
 
 ## Enable the plugin
 
@@ -55,7 +53,7 @@ without writing custom OpenClaw code for each workflow.
           "defaultProvider": "openai-codex",
           "defaultModel": "gpt-5.2",
           "defaultAuthProfileId": "main",
-          "allowedModels": ["openai-codex/gpt-5.2"],
+          "allowedModels": ["openai-codex/gpt-5.3-codex"],
           "maxTokens": 800,
           "timeoutMs": 30000
         }
@@ -65,8 +63,7 @@ without writing custom OpenClaw code for each workflow.
 }
 ```
 
-`allowedModels` is an allowlist of `provider/model` strings. If set, any request
-outside the list is rejected.
+`allowedModels`는 `provider/model` 문자열의 허용 목록입니다. 설정된 경우, 목록 외의 요청은 거부됩니다.
 
 ## Tool parameters
 
@@ -82,8 +79,7 @@ outside the list is rejected.
 
 ## Output
 
-Returns `details.json` containing the parsed JSON (and validates against
-`schema` when provided).
+파싱된 JSON을 포함하는 `details.json`을 반환하며, 제공된 경우 `schema`에 대해 유효성을 검사합니다.
 
 ## Example: Lobster workflow step
 
@@ -108,8 +104,7 @@ openclaw.invoke --tool llm-task --action json --args-json '{
 
 ## Safety notes
 
-- The tool is **JSON-only** and instructs the model to output only JSON (no
-  code fences, no commentary).
-- No tools are exposed to the model for this run.
-- Treat output as untrusted unless you validate with `schema`.
-- Put approvals before any side-effecting step (send, post, exec).
+- 이 도구는 **JSON-only**이며 모델에게 JSON만 출력하도록 지시합니다 (코드 펜스 없음, 주석 없음).
+- 이 실행에서 모델에 노출되는 도구는 없습니다.
+- `schema`로 유효성을 검사하지 않는 한 출력 결과를 신뢰하지 마십시오.
+- 부작용이 있는 단계(발송, 게시, 실행) 전에 승인을 설정하십시오.

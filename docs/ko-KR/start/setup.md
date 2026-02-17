@@ -1,12 +1,16 @@
 ---
-summary: "Setup guide: keep your OpenClaw setup tailored while staying up-to-date"
+summary: "OpenClaw의 고급 설정 및 개발 워크플로우"
 read_when:
-  - Setting up a new machine
-  - You want “latest + greatest” without breaking your personal setup
+  - 새 기기 설정
+  - 개인 설정을 해치지 않으면서 '최신+최고'를 원할 때
 title: "Setup"
 ---
 
 # Setup
+
+<Note>
+처음 설정 중이라면 [시작하기](/start/getting-started)부터 시작하십시오. 마법사에 대한 자세한 내용은 [온보딩 마법사](/start/wizard)를 참조하세요.
+</Note>
 
 Last updated: 2026-01-01
 
@@ -42,6 +46,14 @@ openclaw setup
 ```
 
 If you don’t have a global install yet, run it via `pnpm openclaw setup`.
+
+## Run the Gateway from this repo
+
+After `pnpm build`, you can run the packaged CLI directly:
+
+```bash
+node openclaw.mjs gateway --port 18789 --verbose
+```
 
 ## Stable workflow (macOS app first)
 

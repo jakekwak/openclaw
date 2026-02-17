@@ -1,89 +1,90 @@
 ---
-summary: "SSH tunnel setup for OpenClaw.app connecting to a remote gateway"
-read_when: "Connecting the macOS app to a remote gateway over SSH"
-title: "Remote Gateway Setup"
+summary: "OpenClaw.app 을 원격 게이트웨이에 연결하기 위한 SSH 터널 설정"
+read_when: "SSH 를 통해 macOS 앱을 원격 게이트웨이에 연결할 때"
+title: "원격 게이트웨이 설정"
 ---
 
-# Running OpenClaw.app with a Remote Gateway
+# 원격 게이트웨이와 함께 OpenClaw.app 실행하기
 
-OpenClaw.app uses SSH tunneling to connect to a remote gateway. This guide shows you how to set it up.
+OpenClaw.app 은 SSH 터널링을 사용하여 원격 게이트웨이에 연결합니다. 이 가이드에서는 설정 방법을 보여줍니다.
 
-## Overview
+## 개요
 
+```mermaid
+flowchart TB
+    subgraph Client["클라이언트 머신"]
+        direction TB
+        A["OpenClaw.app"]
+        B["ws://127.0.0.1:18789\n(로컬 포트)"]
+        T["SSH 터널"]
+
+        A --> B
+        B --> T
+    end
+    subgraph Remote["원격 머신"]
+        direction TB
+        C["게이트웨이 WebSocket"]
+        D["ws://127.0.0.1:18789"]
+
+        C --> D
+    end
+    T --> C
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        Client Machine                          │
-│                                                              │
-│  OpenClaw.app ──► ws://127.0.0.1:18789 (local port)           │
-│                     │                                        │
-│                     ▼                                        │
-│  SSH Tunnel ────────────────────────────────────────────────│
-│                     │                                        │
-└─────────────────────┼──────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────────┐
-│                         Remote Machine                        │
-│                                                              │
-│  Gateway WebSocket ──► ws://127.0.0.1:18789 ──►              │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
 
-## Quick Setup
+## 빠른 설정
 
-### Step 1: Add SSH Config
+### 1단계: SSH 구성 추가
 
-Edit `~/.ssh/config` and add:
+`~/.ssh/config` 파일을 편집하고 다음 내용을 추가합니다:
 
 ```ssh
 Host remote-gateway
-    HostName <REMOTE_IP>          # e.g., 172.27.187.184
-    User <REMOTE_USER>            # e.g., jefferson
+    HostName <REMOTE_IP>          # 예: 172.27.187.184
+    User <REMOTE_USER>            # 예: jefferson
     LocalForward 18789 127.0.0.1:18789
     IdentityFile ~/.ssh/id_rsa
 ```
 
-Replace `<REMOTE_IP>` and `<REMOTE_USER>` with your values.
+`<REMOTE_IP>`와 `<REMOTE_USER>`는 자신의 값으로 대체하세요.
 
-### Step 2: Copy SSH Key
+### 2단계: SSH 키 복사
 
-Copy your public key to the remote machine (enter password once):
+공개 키를 원격 머신으로 복사하세요 (암호 한 번 입력):
 
 ```bash
 ssh-copy-id -i ~/.ssh/id_rsa <REMOTE_USER>@<REMOTE_IP>
 ```
 
-### Step 3: Set Gateway Token
+### 3단계: 게이트웨이 토큰 설정
 
 ```bash
 launchctl setenv OPENCLAW_GATEWAY_TOKEN "<your-token>"
 ```
 
-### Step 4: Start SSH Tunnel
+### 4단계: SSH 터널 시작
 
 ```bash
 ssh -N remote-gateway &
 ```
 
-### Step 5: Restart OpenClaw.app
+### 5단계: OpenClaw.app 재시작
 
 ```bash
-# Quit OpenClaw.app (⌘Q), then reopen:
+# OpenClaw.app 종료하기 (⌘Q), 그런 다음 다시 열기:
 open /path/to/OpenClaw.app
 ```
 
-The app will now connect to the remote gateway through the SSH tunnel.
+이제 앱은 SSH 터널을 통해 원격 게이트웨이에 연결됩니다.
 
 ---
 
-## Auto-Start Tunnel on Login
+## 로그인 시 터널 자동 시작
 
-To have the SSH tunnel start automatically when you log in, create a Launch Agent.
+로그인 할 때 SSH 터널이 자동으로 시작되도록 하려면, Launch 에이전트를 생성하세요.
 
-### Create the PLIST file
+### PLIST 파일 생성
 
-Save this as `~/Library/LaunchAgents/bot.molt.ssh-tunnel.plist`:
+아래 내용을 `~/Library/LaunchAgents/bot.molt.ssh-tunnel.plist` 로 저장하세요:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -106,38 +107,38 @@ Save this as `~/Library/LaunchAgents/bot.molt.ssh-tunnel.plist`:
 </plist>
 ```
 
-### Load the Launch Agent
+### Launch 에이전트 로드하기
 
 ```bash
 launchctl bootstrap gui/$UID ~/Library/LaunchAgents/bot.molt.ssh-tunnel.plist
 ```
 
-The tunnel will now:
+이제 터널은:
 
-- Start automatically when you log in
-- Restart if it crashes
-- Keep running in the background
+- 로그인 시 자동으로 시작됩니다
+- 크래시 시 다시 시작됩니다
+- 백그라운드에서 계속 실행됩니다
 
-Legacy note: remove any leftover `com.openclaw.ssh-tunnel` LaunchAgent if present.
+레거시 주의 사항: 남아 있는 `com.openclaw.ssh-tunnel` LaunchAgent 가 있다면 제거하세요.
 
 ---
 
-## Troubleshooting
+## 문제 해결
 
-**Check if tunnel is running:**
+**터널이 실행 중인지 확인:**
 
 ```bash
 ps aux | grep "ssh -N remote-gateway" | grep -v grep
 lsof -i :18789
 ```
 
-**Restart the tunnel:**
+**터널 다시 시작:**
 
 ```bash
 launchctl kickstart -k gui/$UID/bot.molt.ssh-tunnel
 ```
 
-**Stop the tunnel:**
+**터널 중지:**
 
 ```bash
 launchctl bootout gui/$UID/bot.molt.ssh-tunnel
@@ -145,13 +146,13 @@ launchctl bootout gui/$UID/bot.molt.ssh-tunnel
 
 ---
 
-## How It Works
+## 작동 방식
 
-| Component                            | What It Does                                                 |
-| ------------------------------------ | ------------------------------------------------------------ |
-| `LocalForward 18789 127.0.0.1:18789` | Forwards local port 18789 to remote port 18789               |
-| `ssh -N`                             | SSH without executing remote commands (just port forwarding) |
-| `KeepAlive`                          | Automatically restarts tunnel if it crashes                  |
-| `RunAtLoad`                          | Starts tunnel when the agent loads                           |
+| 구성 요소                             | 역할                                                       |
+| ----------------------------------- | ---------------------------------------------------------- |
+| `LocalForward 18789 127.0.0.1:18789` | 로컬 포트 18789 를 원격 포트 18789 로 전달                    |
+| `ssh -N`                             | 원격 명령을 실행하지 않고 SSH 를 통한 포트 포워딩만 수행       |
+| `KeepAlive`                          | 터널이 크래시하면 자동으로 다시 시작                        |
+| `RunAtLoad`                          | 에이전트가 로드될 때 터널 시작                              |
 
-OpenClaw.app connects to `ws://127.0.0.1:18789` on your client machine. The SSH tunnel forwards that connection to port 18789 on the remote machine where the Gateway is running.
+OpenClaw.app 은 클라이언트 머신의 `ws://127.0.0.1:18789` 에 연결합니다. SSH 터널은 그 연결을 Gateway 가 실행 중인 원격 머신의 포트 18789 로 전달합니다.

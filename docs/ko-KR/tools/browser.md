@@ -1,37 +1,35 @@
 ---
-summary: "Integrated browser control service + action commands"
+summary: "통합 브라우저 제어 서비스 + 동작 명령"
 read_when:
-  - Adding agent-controlled browser automation
-  - Debugging why openclaw is interfering with your own Chrome
-  - Implementing browser settings + lifecycle in the macOS app
-title: "Browser (OpenClaw-managed)"
+  - 에이전트 제어 브라우저 자동화 추가
+  - OpenClaw가 자신의 Chrome과 간섭하는 이유 디버깅
+  - macOS 앱에서 브라우저 설정 + 라이프사이클 구현
+title: "브라우저 (OpenClaw 관리)"
 ---
 
-# Browser (openclaw-managed)
+# 브라우저 (openclaw-managed)
 
-OpenClaw can run a **dedicated Chrome/Brave/Edge/Chromium profile** that the agent controls.
-It is isolated from your personal browser and is managed through a small local
-control service inside the Gateway (loopback only).
+OpenClaw는 에이전트가 제어하는 **전용 Chrome/Brave/Edge/Chromium 프로파일**을 실행할 수 있습니다.
+개인 브라우저와 격리되어 있으며 Gateway 내부의 작은 로컬
+제어 서비스를 통해 관리됩니다 (로컬 루프백 전용).
 
-Beginner view:
+초보자 안내:
 
-- Think of it as a **separate, agent-only browser**.
-- The `openclaw` profile does **not** touch your personal browser profile.
-- The agent can **open tabs, read pages, click, and type** in a safe lane.
-- The default `chrome` profile uses the **system default Chromium browser** via the
-  extension relay; switch to `openclaw` for the isolated managed browser.
+- 이를 **별도 에이전트 전용 브라우저**로 생각하십시오.
+- `openclaw` 프로파일은 개인 브라우저 프로파일에 **전혀** 영향을 미치지 않습니다.
+- 에이전트는 안전한 범위 내에서 **탭 열기, 페이지 읽기, 클릭 및 입력**을 수행할 수 있습니다.
+- 기본 `chrome` 프로파일은 **시스템 기본 Chromium 브라우저**를 확장 릴레이를 통해 사용합니다. 격리된 관리 브라우저를 사용하려면 `openclaw`로 전환하십시오.
 
-## What you get
+## 얻을 수 있는 것
 
-- A separate browser profile named **openclaw** (orange accent by default).
-- Deterministic tab control (list/open/focus/close).
-- Agent actions (click/type/drag/select), snapshots, screenshots, PDFs.
-- Optional multi-profile support (`openclaw`, `work`, `remote`, ...).
+- **openclaw**라는 별도의 브라우저 프로파일 (기본적으로 주황색 강조)을 제공합니다.
+- 결정론적 탭 제어 (목록/열기/집중/닫기).
+- 에이전트 동작 (클릭/입력/드래그/선택), 스냅샷, 스크린샷, PDF.
+- 선택적 다중 프로파일 지원 (`openclaw`, `work`, `remote`, ...).
 
-This browser is **not** your daily driver. It is a safe, isolated surface for
-agent automation and verification.
+이 브라우저는 **일상적으로 사용하는 브라우저가 아닙니다**. 이는 에이전트 자동화 및 검증을 위한 안전하고 격리된 표면입니다.
 
-## Quick start
+## 빠른 시작
 
 ```bash
 openclaw browser --browser-profile openclaw status
@@ -40,28 +38,28 @@ openclaw browser --browser-profile openclaw open https://example.com
 openclaw browser --browser-profile openclaw snapshot
 ```
 
-If you get “Browser disabled”, enable it in config (see below) and restart the
-Gateway.
+"브라우저 사용 중지됨"이라는 메시지가 나타나면 아래 설정에서 활성화하고
+게이트웨이를 다시 시작하십시오.
 
-## Profiles: `openclaw` vs `chrome`
+## 프로파일: `openclaw` vs `chrome`
 
-- `openclaw`: managed, isolated browser (no extension required).
-- `chrome`: extension relay to your **system browser** (requires the OpenClaw
-  extension to be attached to a tab).
+- `openclaw`: 관리되고 격리된 브라우저 (확장 필요 없음).
+- `chrome`: **시스템 브라우저**에 대한 확장 릴레이 (탭에 연결된 OpenClaw
+  확장이 필요함).
 
-Set `browser.defaultProfile: "openclaw"` if you want managed mode by default.
+기본 모드로 관리 모드를 원하면 `browser.defaultProfile: "openclaw"`를 설정하십시오.
 
-## Configuration
+## 구성
 
-Browser settings live in `~/.openclaw/openclaw.json`.
+브라우저 설정은 `~/.openclaw/openclaw.json`에 저장됩니다.
 
 ```json5
 {
   browser: {
     enabled: true, // default: true
-    // cdpUrl: "http://127.0.0.1:18792", // legacy single-profile override
-    remoteCdpTimeoutMs: 1500, // remote CDP HTTP timeout (ms)
-    remoteCdpHandshakeTimeoutMs: 3000, // remote CDP WebSocket handshake timeout (ms)
+    // cdpUrl: "http://127.0.0.1:18792", // 유산 단일 프로파일 오버라이드
+    remoteCdpTimeoutMs: 1500, // 원격 CDP HTTP 시간 초과 (ms)
+    remoteCdpHandshakeTimeoutMs: 3000, // 원격 CDP 웹소켓 핸드셰이크 시간 초과 (ms)
     defaultProfile: "chrome",
     color: "#FF4500",
     headless: false,
@@ -77,28 +75,27 @@ Browser settings live in `~/.openclaw/openclaw.json`.
 }
 ```
 
-Notes:
+노트:
 
-- The browser control service binds to loopback on a port derived from `gateway.port`
-  (default: `18791`, which is gateway + 2). The relay uses the next port (`18792`).
-- If you override the Gateway port (`gateway.port` or `OPENCLAW_GATEWAY_PORT`),
-  the derived browser ports shift to stay in the same “family”.
-- `cdpUrl` defaults to the relay port when unset.
-- `remoteCdpTimeoutMs` applies to remote (non-loopback) CDP reachability checks.
-- `remoteCdpHandshakeTimeoutMs` applies to remote CDP WebSocket reachability checks.
-- `attachOnly: true` means “never launch a local browser; only attach if it is already running.”
-- `color` + per-profile `color` tint the browser UI so you can see which profile is active.
-- Default profile is `chrome` (extension relay). Use `defaultProfile: "openclaw"` for the managed browser.
-- Auto-detect order: system default browser if Chromium-based; otherwise Chrome → Brave → Edge → Chromium → Chrome Canary.
-- Local `openclaw` profiles auto-assign `cdpPort`/`cdpUrl` — set those only for remote CDP.
+- 브라우저 제어 서비스는 `gateway.port`에서 유도된 포트에서 로컬 루프백에 바인딩됩니다
+  (기본값: `18791`, 이는 게이트웨이 + 2입니다). 릴레이는 다음 포트를 사용합니다 (`18792`).
+- 게이트웨이 포트 (`gateway.port` 또는 `OPENCLAW_GATEWAY_PORT`)을 재정의하면,
+  파생된 브라우저 포트가 동일한 "가족" 내에 있도록 이동합니다.
+- `cdpUrl`은 설정되지 않은 경우 릴레이 포트를 기본값으로 사용합니다.
+- `remoteCdpTimeoutMs`는 원격 (비 로컬 루프백) CDP 도달 가능성 확인에 적용됩니다.
+- `remoteCdpHandshakeTimeoutMs`는 원격 CDP 웹소켓 도달 가능성 확인에 적용됩니다.
+- `attachOnly: true`는 "로컬 브라우저를 실행하지 않고 현재 실행 중인 경우에만 연결합니다."를 의미합니다.
+- `color` + 프로파일별 `color`로 브라우저 UI를 착색하여 활성화된 프로파일을 확인할 수 있습니다.
+- 기본 프로파일은 `chrome` (확장 릴레이). 관리 브라우저에 `defaultProfile: "openclaw"`를 사용하십시오.
+- 자동 감지 순서: Chromium 기반 브라우저가 시스템 기본값인 경우; 그렇지 않으면 Chrome → Brave → Edge → Chromium → Chrome Canary.
+- 로컬 `openclaw` 프로파일은 `cdpPort`/`cdpUrl`을 자동 할당합니다 — 이것들은 원격 CDP에만 설정하십시오.
 
-## Use Brave (or another Chromium-based browser)
+## Brave (또는 다른 Chromium 기반 브라우저) 사용
 
-If your **system default** browser is Chromium-based (Chrome/Brave/Edge/etc),
-OpenClaw uses it automatically. Set `browser.executablePath` to override
-auto-detection:
+시스템 기본 브라우저가 Chromium 기반 (Chrome/Brave/Edge 등)인 경우,
+OpenClaw는 이를 자동으로 사용합니다. 자동 감지를 재정의하려면 `browser.executablePath`를 설정하십시오:
 
-CLI example:
+CLI 예제:
 
 ```bash
 openclaw config set browser.executablePath "/usr/bin/google-chrome"
@@ -127,43 +124,43 @@ openclaw config set browser.executablePath "/usr/bin/google-chrome"
 }
 ```
 
-## Local vs remote control
+## 로컬 대 원격 제어
 
-- **Local control (default):** the Gateway starts the loopback control service and can launch a local browser.
-- **Remote control (node host):** run a node host on the machine that has the browser; the Gateway proxies browser actions to it.
-- **Remote CDP:** set `browser.profiles.<name>.cdpUrl` (or `browser.cdpUrl`) to
-  attach to a remote Chromium-based browser. In this case, OpenClaw will not launch a local browser.
+- **로컬 제어 (기본값):** 게이트웨이는 로컬 루프백 제어 서비스를 시작하고 로컬 브라우저를 실행할 수 있습니다.
+- **원격 제어 (노드 호스트):** 브라우저가 있는 기계에서 노드 호스트를 실행하십시오; 게이트웨이는 브라우저 동작을 그쪽으로 프록시합니다.
+- **원격 CDP:** `browser.profiles.<name>.cdpUrl` (또는 `browser.cdpUrl`)을 설정하여
+  원격 Chromium 기반 브라우저에 연결하십시오. 이 경우, OpenClaw는 로컬 브라우저를 실행하지 않습니다.
 
-Remote CDP URLs can include auth:
+원격 CDP URL은 인증을 포함할 수 있습니다:
 
-- Query tokens (e.g., `https://provider.example?token=<token>`)
-- HTTP Basic auth (e.g., `https://user:pass@provider.example`)
+- 쿼리 토큰 (예: `https://provider.example?token=<token>`)
+- HTTP 기본 인증 (예: `https://user:pass@provider.example`)
 
-OpenClaw preserves the auth when calling `/json/*` endpoints and when connecting
-to the CDP WebSocket. Prefer environment variables or secrets managers for
-tokens instead of committing them to config files.
+OpenClaw는 `/json/*` 엔드포인트와 CDP WebSocket 연결 시 인증 정보를 보존합니다.
+토큰을 환경 변수나 비밀 관리자에 저장하는 것이 설정 파일에 직접 저장하는 것보다 좋습니다.
 
-## Node browser proxy (zero-config default)
+## 노드 브라우저 프록시 (제로 설정 기본값)
 
-If you run a **node host** on the machine that has your browser, OpenClaw can
-auto-route browser tool calls to that node without any extra browser config.
-This is the default path for remote gateways.
+브라우저가 있는 기계에서 **노드 호스트**를 실행하면, OpenClaw는
+추가적인 브라우저 설정 없이 그 노드로 브라우저 도구 호출을 자동으로 라우팅할 수 있습니다.
+이것이 원격 게이트웨이의 기본 경로입니다.
 
-Notes:
+노트:
 
-- The node host exposes its local browser control server via a **proxy command**.
-- Profiles come from the node’s own `browser.profiles` config (same as local).
-- Disable if you don’t want it:
-  - On the node: `nodeHost.browserProxy.enabled=false`
-  - On the gateway: `gateway.nodes.browser.mode="off"`
+- 노드 호스트는 로컬 브라우저 제어 서버를 **프록시 명령**을 통해 노출합니다.
+- 프로파일은 노드 자체 `browser.profiles` 설정에서 가져옵니다 (로컬과 동일).
+- 사용하고 싶지 않다면 비활성화하십시오:
+  - 노드에서: `nodeHost.browserProxy.enabled=false`
+  - 게이트웨이에서: `gateway.nodes.browser.mode="off"`
 
-## Browserless (hosted remote CDP)
+## Browserless (호스팅된 원격 CDP)
 
-[Browserless](https://browserless.io) is a hosted Chromium service that exposes
-CDP endpoints over HTTPS. You can point a OpenClaw browser profile at a
-Browserless region endpoint and authenticate with your API key.
+[Browserless](https://browserless.io)는 HTTPS를 통해
+CDP 엔드포인트를 노출하는 호스팅된 Chromium 서비스입니다.
+OpenClaw 브라우저 프로파일을 Browserless 지역 엔드포인트에 지정하고
+API 키로 인증할 수 있습니다.
 
-Example:
+예제:
 
 ```json5
 {
@@ -182,82 +179,83 @@ Example:
 }
 ```
 
-Notes:
+노트:
 
-- Replace `<BROWSERLESS_API_KEY>` with your real Browserless token.
-- Choose the region endpoint that matches your Browserless account (see their docs).
+- `<BROWSERLESS_API_KEY>`를 실제 Browserless 토큰으로 교체하십시오.
+- Browserless 계정과 일치하는 지역 엔드포인트를 선택하십시오 (문서를 참조하십시오).
 
-## Security
+## 보안
 
-Key ideas:
+핵심 아이디어:
 
-- Browser control is loopback-only; access flows through the Gateway’s auth or node pairing.
-- Keep the Gateway and any node hosts on a private network (Tailscale); avoid public exposure.
-- Treat remote CDP URLs/tokens as secrets; prefer env vars or a secrets manager.
+- 브라우저 제어는 로컬 루프백 전용입니다; 접근은 게이트웨이의 인증 또는 노드 페어링을 통해 이루어집니다.
+- 브라우저 제어가 활성화되고 인증이 구성되지 않은 경우, OpenClaw는 시작 시 `gateway.auth.token`을 자동 생성하고 설정에 저장합니다.
+- 게이트웨이 및 노드 호스트를 사설 네트워크 (Tailscale)에서 유지하십시오; 공개 노출을 피하십시오.
+- 원격 CDP URL/토큰을 비밀로 취급하십시오; 환경 변수나 비밀 관리자를 사용하는 것이 좋습니다.
 
-Remote CDP tips:
+원격 CDP 팁:
 
-- Prefer HTTPS endpoints and short-lived tokens where possible.
-- Avoid embedding long-lived tokens directly in config files.
+- 가능한 경우 HTTPS 엔드포인트와 단기 토큰을 선호하십시오.
+- 장기 토큰을 설정 파일에 직접 포함하는 것을 피하십시오.
 
-## Profiles (multi-browser)
+## 프로파일 (다중 브라우저)
 
-OpenClaw supports multiple named profiles (routing configs). Profiles can be:
+OpenClaw는 여러 이름 있는 프로파일 (라우팅 설정)을 지원합니다. 프로파일은 다음과 같습니다:
 
-- **openclaw-managed**: a dedicated Chromium-based browser instance with its own user data directory + CDP port
-- **remote**: an explicit CDP URL (Chromium-based browser running elsewhere)
-- **extension relay**: your existing Chrome tab(s) via the local relay + Chrome extension
+- **openclaw-managed**: 자체 사용자 데이터 디렉토리와 CDP 포트를 가진 전용 Chromium 기반 브라우저 인스턴스
+- **remote**: 명시적인 CDP URL (다른 곳에서 실행 중인 Chromium 기반 브라우저)
+- **extension relay**: 로컬 릴레이 + Chrome 확장을 통한 기존 Chrome 탭
 
-Defaults:
+기본값:
 
-- The `openclaw` profile is auto-created if missing.
-- The `chrome` profile is built-in for the Chrome extension relay (points at `http://127.0.0.1:18792` by default).
-- Local CDP ports allocate from **18800–18899** by default.
-- Deleting a profile moves its local data directory to Trash.
+- `openclaw` 프로파일은 누락된 경우 자동 생성됩니다.
+- `chrome` 프로파일은 Chrome 확장 릴레이에 내장되어 있습니다 (기본적으로 `http://127.0.0.1:18792`로 포인트).
+- 로컬 CDP 포트는 기본적으로 **18800–18899**에서 할당됩니다.
+- 프로파일 삭제 시 로컬 데이터 디렉토리는 휴지통으로 이동합니다.
 
-All control endpoints accept `?profile=<name>`; the CLI uses `--browser-profile`.
+모든 제어 엔드포인트는 `?profile=<name>`를 허용합니다; CLI는 `--browser-profile`을 사용합니다.
 
-## Chrome extension relay (use your existing Chrome)
+## Chrome 확장 릴레이 (기존 Chrome 사용)
 
-OpenClaw can also drive **your existing Chrome tabs** (no separate “openclaw” Chrome instance) via a local CDP relay + a Chrome extension.
+OpenClaw는 로컬 CDP 릴레이 + Chrome 확장을 통해 **기존 Chrome 탭**을 제어할 수도 있습니다 (별도의 "openclaw" Chrome 인스턴스 아님).
 
-Full guide: [Chrome extension](/tools/chrome-extension)
+전체 가이드: [Chrome 확장](/tools/chrome-extension)
 
-Flow:
+흐름:
 
-- The Gateway runs locally (same machine) or a node host runs on the browser machine.
-- A local **relay server** listens at a loopback `cdpUrl` (default: `http://127.0.0.1:18792`).
-- You click the **OpenClaw Browser Relay** extension icon on a tab to attach (it does not auto-attach).
-- The agent controls that tab via the normal `browser` tool, by selecting the right profile.
+- 게이트웨이는 로컬 (동일 기계)에서 실행되거나 브라우저 기계에서 노드 호스트가 실행됩니다.
+- 로컬 **릴레이 서버**가 로컬 루프백 `cdpUrl` (기본값: `http://127.0.0.1:18792`)에서 수신합니다.
+- 탭을 제어하려면 **OpenClaw Browser Relay** 확장 아이콘을 클릭합니다 (자동 첨부되지 않음).
+- 에이전트는 `browser` 도구를 통해 올바른 프로파일을 선택하여 해당 탭을 제어합니다.
 
-If the Gateway runs elsewhere, run a node host on the browser machine so the Gateway can proxy browser actions.
+게이트웨이가 다른 곳에서 실행되면, 게이트웨이가 브라우저 동작을 좀 더 자유롭게 프록시할 수 있도록 브라우저 기계에서 노드 호스트를 실행하십시오.
 
-### Sandboxed sessions
+### 샌드박스 세션
 
-If the agent session is sandboxed, the `browser` tool may default to `target="sandbox"` (sandbox browser).
-Chrome extension relay takeover requires host browser control, so either:
+에이전트 세션이 샌드박스 격리된 경우, `browser` 도구가 `target="sandbox"` (샌드박스 브라우저)로 기본 설정될 수 있습니다.
+Chrome 확장 릴레이 인수는 호스트 브라우저 제어가 필요하므로, 다음 중 하나를 수행하십시오:
 
-- run the session unsandboxed, or
-- set `agents.defaults.sandbox.browser.allowHostControl: true` and use `target="host"` when calling the tool.
+- 샌드박스되지 않은 상태로 세션 실행, 또는
+- `agents.defaults.sandbox.browser.allowHostControl: true`로 설정하고 도구 호출 시 `target="host"`를 사용하십시오.
 
-### Setup
+### 설정
 
-1. Load the extension (dev/unpacked):
+1. 확장 로드 (개발/비압축):
 
 ```bash
 openclaw browser extension install
 ```
 
-- Chrome → `chrome://extensions` → enable “Developer mode”
-- “Load unpacked” → select the directory printed by `openclaw browser extension path`
-- Pin the extension, then click it on the tab you want to control (badge shows `ON`).
+- Chrome → `chrome://extensions` → "개발자 모드" 활성화
+- "비압축 로드" → `openclaw browser extension path`에서 출력된 디렉토리를 선택
+- 확장을 고정하고 제어할 탭에서 클릭하십시오 (배지가 `ON`으로 표시됨).
 
-2. Use it:
+2. 사용:
 
 - CLI: `openclaw browser --browser-profile chrome tabs`
-- Agent tool: `browser` with `profile="chrome"`
+- 에이전트 도구: `browser` with `profile="chrome"`
 
-Optional: if you want a different name or relay port, create your own profile:
+선택 사항: 다른 이름이나 릴레이 포트를 원하면 고유한 프로파일을 생성하십시오:
 
 ```bash
 openclaw browser create-profile \
@@ -267,20 +265,20 @@ openclaw browser create-profile \
   --color "#00AA00"
 ```
 
-Notes:
+노트:
 
-- This mode relies on Playwright-on-CDP for most operations (screenshots/snapshots/actions).
-- Detach by clicking the extension icon again.
+- 이 모드는 대부분의 작업에 대해 Playwright-on-CDP에 의존합니다 (스크린샷/스냅샷/동작).
+- 확장 아이콘을 다시 클릭하여 분리하십시오.
 
-## Isolation guarantees
+## 격리 보장
 
-- **Dedicated user data dir**: never touches your personal browser profile.
-- **Dedicated ports**: avoids `9222` to prevent collisions with dev workflows.
-- **Deterministic tab control**: target tabs by `targetId`, not “last tab”.
+- **전용 사용자 데이터 디렉토리**: 개인 브라우저 프로파일을 절대 터치하지 않음.
+- **전용 포트**: 개발 워크플로와의 충돌을 방지하기 위해 `9222`를 사용하지 않음.
+- **결정론적 탭 제어**: "마지막 탭"이 아닌 `targetId`로 탭을 대상으로 합니다.
 
-## Browser selection
+## 브라우저 선택
 
-When launching locally, OpenClaw picks the first available:
+로컬에서 실행할 때, OpenClaw는 사용할 수 있는 첫 번째 것을 선택합니다:
 
 1. Chrome
 2. Brave
@@ -288,77 +286,78 @@ When launching locally, OpenClaw picks the first available:
 4. Chromium
 5. Chrome Canary
 
-You can override with `browser.executablePath`.
+`browser.executablePath`로 재정의할 수 있습니다.
 
-Platforms:
+플랫폼:
 
-- macOS: checks `/Applications` and `~/Applications`.
-- Linux: looks for `google-chrome`, `brave`, `microsoft-edge`, `chromium`, etc.
-- Windows: checks common install locations.
+- macOS: `/Applications` 및 `~/Applications` 확인.
+- Linux: `google-chrome`, `brave`, `microsoft-edge`, `chromium` 등을 탐색.
+- Windows: 일반 설치 위치 확인.
 
-## Control API (optional)
+## 제어 API (선택 사항)
 
-For local integrations only, the Gateway exposes a small loopback HTTP API:
+로컬 통합 전용으로, 게이트웨이는 작은 로컬 루프백 HTTP API를 노출합니다:
 
-- Status/start/stop: `GET /`, `POST /start`, `POST /stop`
-- Tabs: `GET /tabs`, `POST /tabs/open`, `POST /tabs/focus`, `DELETE /tabs/:targetId`
-- Snapshot/screenshot: `GET /snapshot`, `POST /screenshot`
-- Actions: `POST /navigate`, `POST /act`
-- Hooks: `POST /hooks/file-chooser`, `POST /hooks/dialog`
-- Downloads: `POST /download`, `POST /wait/download`
-- Debugging: `GET /console`, `POST /pdf`
-- Debugging: `GET /errors`, `GET /requests`, `POST /trace/start`, `POST /trace/stop`, `POST /highlight`
-- Network: `POST /response/body`
-- State: `GET /cookies`, `POST /cookies/set`, `POST /cookies/clear`
-- State: `GET /storage/:kind`, `POST /storage/:kind/set`, `POST /storage/:kind/clear`
-- Settings: `POST /set/offline`, `POST /set/headers`, `POST /set/credentials`, `POST /set/geolocation`, `POST /set/media`, `POST /set/timezone`, `POST /set/locale`, `POST /set/device`
+- 상태/시작/중지: `GET /`, `POST /start`, `POST /stop`
+- 탭: `GET /tabs`, `POST /tabs/open`, `POST /tabs/focus`, `DELETE /tabs/:targetId`
+- 스냅샷/스크린샷: `GET /snapshot`, `POST /screenshot`
+- 동작: `POST /navigate`, `POST /act`
+- 후크: `POST /hooks/file-chooser`, `POST /hooks/dialog`
+- 다운로드: `POST /download`, `POST /wait/download`
+- 디버깅: `GET /console`, `POST /pdf`
+- 디버깅: `GET /errors`, `GET /requests`, `POST /trace/start`, `POST /trace/stop`, `POST /highlight`
+- 네트워크: `POST /response/body`
+- 상태: `GET /cookies`, `POST /cookies/set`, `POST /cookies/clear`
+- 상태: `GET /storage/:kind`, `POST /storage/:kind/set`, `POST /storage/:kind/clear`
+- 설정: `POST /set/offline`, `POST /set/headers`, `POST /set/credentials`, `POST /set/geolocation`, `POST /set/media`, `POST /set/timezone`, `POST /set/locale`, `POST /set/device`
 
-All endpoints accept `?profile=<name>`.
+모든 엔드포인트는 `?profile=<name>`을 허용합니다.
 
-### Playwright requirement
+게이트웨이 인증이 구성된 경우, 브라우저 HTTP 경로도 인증이 필요합니다:
 
-Some features (navigate/act/AI snapshot/role snapshot, element screenshots, PDF) require
-Playwright. If Playwright isn’t installed, those endpoints return a clear 501
-error. ARIA snapshots and basic screenshots still work for openclaw-managed Chrome.
-For the Chrome extension relay driver, ARIA snapshots and screenshots require Playwright.
+- `Authorization: Bearer <gateway token>`
+- `x-openclaw-password: <gateway password>` 또는 HTTP 기본 인증을 해당 비밀번호로 설정
 
-If you see `Playwright is not available in this gateway build`, install the full
-Playwright package (not `playwright-core`) and restart the gateway, or reinstall
-OpenClaw with browser support.
+### Playwright 필수 사항
 
-#### Docker Playwright install
+일부 기능 (네비게이트/동작/AI 스냅샷/역할 스냅샷, 요소 스크린샷, PDF)은
+Playwright가 필요합니다. Playwright가 설치되지 않은 경우, 해당 엔드포인트는 명확한 501
+오류를 반환합니다. ARIA 스냅샷과 기본 스크린샷은 openclaw-managed Chrome에서도 작동합니다.
+Chrome 확장 릴레이 드라이버의 경우, ARIA 스냅샷과 스크린샷에는 Playwright가 필요합니다.
 
-If your Gateway runs in Docker, avoid `npx playwright` (npm override conflicts).
-Use the bundled CLI instead:
+`Playwright is not available in this gateway build`라는 메시지가 나타나면,
+전체 Playwright 패키지를 설치하고 게이트웨이를 다시 시작하거나
+브라우저 지원으로 OpenClaw를 다시 설치하십시오.
+
+#### Docker Playwright 설치
+
+게이트웨이가 Docker에서 실행되는 경우, `npx playwright` (npm 오버라이드 충돌을 피하십시오) 대신 번들된 CLI를 사용하십시오:
 
 ```bash
 docker compose run --rm openclaw-cli \
   node /app/node_modules/playwright-core/cli.js install chromium
 ```
 
-To persist browser downloads, set `PLAYWRIGHT_BROWSERS_PATH` (for example,
-`/home/node/.cache/ms-playwright`) and make sure `/home/node` is persisted via
-`OPENCLAW_HOME_VOLUME` or a bind mount. See [Docker](/install/docker).
+브라우저 다운로드를 영구 저장하려면, `PLAYWRIGHT_BROWSERS_PATH`를 설정하고 (예: `/home/node/.cache/ms-playwright`) `/home/node`가 `OPENCLAW_HOME_VOLUME` 또는 바인드 마운트를 통해 영구 저장되는지 확인하십시오. [Docker](/install/docker)를 참조하십시오.
 
-## How it works (internal)
+## 작동 방식 (내부)
 
-High-level flow:
+상위 수준의 흐름:
 
-- A small **control server** accepts HTTP requests.
-- It connects to Chromium-based browsers (Chrome/Brave/Edge/Chromium) via **CDP**.
-- For advanced actions (click/type/snapshot/PDF), it uses **Playwright** on top
-  of CDP.
-- When Playwright is missing, only non-Playwright operations are available.
+- 작은 **제어 서버**가 HTTP 요청을 수락합니다.
+- Chromium 기반 브라우저 (Chrome/Brave/Edge/Chromium)와 **CDP**를 통해 연결합니다.
+- 고급 동작 (클릭/입력/스냅샷/PDF)을 위해서는 **Playwright**를 CDP 위에서 사용합니다.
+- Playwright가 없을 때는 Playwright가 아닌 작업만 가능합니다.
 
-This design keeps the agent on a stable, deterministic interface while letting
-you swap local/remote browsers and profiles.
+이 디자인은 에이전트를 안정적이고 결정론적인 인터페이스로 유지하면서
+로컬/원격 브라우저 및 프로파일을 교환할 수 있게 합니다.
 
-## CLI quick reference
+## CLI 빠른 참조
 
-All commands accept `--browser-profile <name>` to target a specific profile.
-All commands also accept `--json` for machine-readable output (stable payloads).
+모든 명령은 특정 프로파일을 대상으로 `--browser-profile <name>`을 수락합니다.
+모든 명령은 또한 기계 읽기 가능한 출력을 위해 `--json`을 수락합니다 (안정적인 페이로드).
 
-Basics:
+기본 사항:
 
 - `openclaw browser status`
 - `openclaw browser start`
@@ -372,7 +371,7 @@ Basics:
 - `openclaw browser focus abcd1234`
 - `openclaw browser close abcd1234`
 
-Inspection:
+검사:
 
 - `openclaw browser screenshot`
 - `openclaw browser screenshot --full-page`
@@ -391,7 +390,7 @@ Inspection:
 - `openclaw browser pdf`
 - `openclaw browser responsebody "**/api" --max-chars 5000`
 
-Actions:
+동작:
 
 - `openclaw browser navigate https://example.com`
 - `openclaw browser resize 1280 720`
@@ -403,9 +402,9 @@ Actions:
 - `openclaw browser scrollintoview e12`
 - `openclaw browser drag 10 11`
 - `openclaw browser select 9 OptionA OptionB`
-- `openclaw browser download e12 /tmp/report.pdf`
-- `openclaw browser waitfordownload /tmp/report.pdf`
-- `openclaw browser upload /tmp/file.pdf`
+- `openclaw browser download e12 report.pdf`
+- `openclaw browser waitfordownload report.pdf`
+- `openclaw browser upload /tmp/openclaw/uploads/file.pdf`
 - `openclaw browser fill --fields '[{"ref":"1","type":"text","value":"Ada"}]'`
 - `openclaw browser dialog --accept`
 - `openclaw browser wait --text "Done"`
@@ -415,7 +414,7 @@ Actions:
 - `openclaw browser trace start`
 - `openclaw browser trace stop`
 
-State:
+상태:
 
 - `openclaw browser cookies`
 - `openclaw browser cookies set session abc123 --url "https://example.com"`
@@ -434,57 +433,61 @@ State:
 - `openclaw browser set locale en-US`
 - `openclaw browser set device "iPhone 14"`
 
-Notes:
+노트:
 
-- `upload` and `dialog` are **arming** calls; run them before the click/press
-  that triggers the chooser/dialog.
-- `upload` can also set file inputs directly via `--input-ref` or `--element`.
+- `upload` 및 `dialog`는 **무장** 호출입니다; 선택기/대화상자를 트리거할 클릭/버튼 전에 실행하십시오.
+- 다운로드 및 추적 출력 경로는 OpenClaw 임시 루트로 제한됩니다:
+  - 추적: `/tmp/openclaw` (대체: `${os.tmpdir()}/openclaw`)
+  - 다운로드: `/tmp/openclaw/downloads` (대체: `${os.tmpdir()}/openclaw/downloads`)
+- 업로드 경로는 OpenClaw 임시 업로드 루트로 제한됩니다:
+  - 업로드: `/tmp/openclaw/uploads` (대체: `${os.tmpdir()}/openclaw/uploads`)
+- `upload`는 `--input-ref` 또는 `--element`를 통해 파일 입력을 직접 설정할 수도 있습니다.
 - `snapshot`:
-  - `--format ai` (default when Playwright is installed): returns an AI snapshot with numeric refs (`aria-ref="<n>"`).
-  - `--format aria`: returns the accessibility tree (no refs; inspection only).
-  - `--efficient` (or `--mode efficient`): compact role snapshot preset (interactive + compact + depth + lower maxChars).
-  - Config default (tool/CLI only): set `browser.snapshotDefaults.mode: "efficient"` to use efficient snapshots when the caller does not pass a mode (see [Gateway configuration](/gateway/configuration#browser-openclaw-managed-browser)).
-  - Role snapshot options (`--interactive`, `--compact`, `--depth`, `--selector`) force a role-based snapshot with refs like `ref=e12`.
-  - `--frame "<iframe selector>"` scopes role snapshots to an iframe (pairs with role refs like `e12`).
-  - `--interactive` outputs a flat, easy-to-pick list of interactive elements (best for driving actions).
-  - `--labels` adds a viewport-only screenshot with overlayed ref labels (prints `MEDIA:<path>`).
-- `click`/`type`/etc require a `ref` from `snapshot` (either numeric `12` or role ref `e12`).
-  CSS selectors are intentionally not supported for actions.
+  - `--format ai` (Playwright가 설치되었을 때 기본값): 숫자 참조를 포함한 AI 스냅샷을 반환합니다 (`aria-ref="<n>"`).
+  - `--format aria`: 접근성 트리 (참조 없음; 검사 전용)를 반환합니다.
+  - `--efficient` (또는 `--mode efficient`): compact role snapshot preset (interactive + compact + depth + lower maxChars).
+  - 설정 기본값 (도구/CLI 전용): `browser.snapshotDefaults.mode: "efficient"`을 설정하여 호출자가 모드를 전달하지 않을 때 효율적인 스냅샷을 사용할 수 있습니다 (참조 [Gateway 설정](/gateway/configuration#browser-openclaw-managed-browser)).
+  - 역할 스냅샷 옵션 (`--interactive`, `--compact`, `--depth`, `--selector`)은 `ref=e12` 같은 참조를 가진 역할 기반 스냅샷을 강제 실행합니다.
+  - `--frame "<iframe selector>"`는 역할 스냅샷을 iframe으로 범위 지정합니다 (역할 참조 `e12`와 함께 사용).
+  - `--interactive`는 평평하고 **상호작용 가능한 요소의** 쉽게 선택할 수 있는 목록을 출력합니다 (동작에 가장 적합).
+  - `--labels`는 참조 레이블과 함께 오버레이된 뷰포트 전용 스크린샷을 추가합니다 (출력 `MEDIA:<path>`).
+- `click`/`type`/기타는 `snapshot`에서 참조가 필요합니다 (숫자 `12` 또는 역할 참조 `e12` 둘 중 하나).
+  CSS 선택자는 의도적으로 동작에 대해 지원되지 않습니다.
 
-## Snapshots and refs
+## 스냅샷과 참조
 
-OpenClaw supports two “snapshot” styles:
+OpenClaw는 두 가지 "스냅샷" 스타일을 지원합니다:
 
-- **AI snapshot (numeric refs)**: `openclaw browser snapshot` (default; `--format ai`)
-  - Output: a text snapshot that includes numeric refs.
-  - Actions: `openclaw browser click 12`, `openclaw browser type 23 "hello"`.
-  - Internally, the ref is resolved via Playwright’s `aria-ref`.
+- **AI 스냅샷 (숫자 참조)**: `openclaw browser snapshot` (기본값; `--format ai`)
+  - 출력: 숫자 참조가 포함된 텍스트 스냅샷.
+  - 동작: `openclaw browser click 12`, `openclaw browser type 23 "hello"`.
+  - 내부적으로, 참조는 Playwright의 `aria-ref`를 통해 해결됩니다.
 
-- **Role snapshot (role refs like `e12`)**: `openclaw browser snapshot --interactive` (or `--compact`, `--depth`, `--selector`, `--frame`)
-  - Output: a role-based list/tree with `[ref=e12]` (and optional `[nth=1]`).
-  - Actions: `openclaw browser click e12`, `openclaw browser highlight e12`.
-  - Internally, the ref is resolved via `getByRole(...)` (plus `nth()` for duplicates).
-  - Add `--labels` to include a viewport screenshot with overlayed `e12` labels.
+- **역할 스냅샷 (역할 참조 `e12` 등)**: `openclaw browser snapshot --interactive` (또는 `--compact`, `--depth`, `--selector`, `--frame`)
+  - 출력: `[ref=e12]` (그리고 선택적 `[nth=1]`)를 포함한 역할 기반 목록/트리.
+  - 동작: `openclaw browser click e12`, `openclaw browser highlight e12`.
+  - 내부적으로, 참조는 `getByRole(...)` (중복의 경우 `nth()` 추가)로 해결됩니다.
+  - `--labels`를 추가하여 오버레이된 `e12` 레이블이 포함된 뷰포트 스크린샷을 포함합니다.
 
-Ref behavior:
+참조 동작:
 
-- Refs are **not stable across navigations**; if something fails, re-run `snapshot` and use a fresh ref.
-- If the role snapshot was taken with `--frame`, role refs are scoped to that iframe until the next role snapshot.
+- 참조는 **탐색 간에 안정적이지 않습니다**; 무언가 실패하면 `snapshot`을 다시 실행하고 새 참조를 사용하세요.
+- 역할 스냅샷이 `--frame`으로 실행된 경우, 역할 참조는 다음 역할 스냅샷까지 해당 iframe으로 범위가 지정됩니다.
 
-## Wait power-ups
+## 대기 파워업
 
-You can wait on more than just time/text:
+시간/텍스트 외에도 대기할 수 있습니다:
 
-- Wait for URL (globs supported by Playwright):
+- URL 대기 (Playwright에서 지원하는 globs):
   - `openclaw browser wait --url "**/dash"`
-- Wait for load state:
+- 로드 상태 대기:
   - `openclaw browser wait --load networkidle`
-- Wait for a JS predicate:
+- JS 조건 대기:
   - `openclaw browser wait --fn "window.ready===true"`
-- Wait for a selector to become visible:
+- 선택자가 표시되기까지 대기:
   - `openclaw browser wait "#main"`
 
-These can be combined:
+이것들은 조합될 수 있습니다:
 
 ```bash
 openclaw browser wait "#main" \
@@ -494,26 +497,26 @@ openclaw browser wait "#main" \
   --timeout-ms 15000
 ```
 
-## Debug workflows
+## 디버그 워크플로우
 
-When an action fails (e.g. “not visible”, “strict mode violation”, “covered”):
+동작이 실패할 때 (예: "보이지 않음", "엄격 모드 위반", "덮여 있음"):
 
 1. `openclaw browser snapshot --interactive`
-2. Use `click <ref>` / `type <ref>` (prefer role refs in interactive mode)
-3. If it still fails: `openclaw browser highlight <ref>` to see what Playwright is targeting
-4. If the page behaves oddly:
+2. `click <ref>` / `type <ref>` 사용 (인터랙티브 모드에서 역할 참조를 선호)
+3. 여전히 실패하면: `openclaw browser highlight <ref>`를 사용하여 Playwright가 어디를 타겟으로 하는지 확인
+4. 페이지가 이상하게 작동하면:
    - `openclaw browser errors --clear`
    - `openclaw browser requests --filter api --clear`
-5. For deep debugging: record a trace:
+5. 깊은 디버깅을 위해: 추적 기록:
    - `openclaw browser trace start`
-   - reproduce the issue
-   - `openclaw browser trace stop` (prints `TRACE:<path>`)
+   - 문제를 재현
+   - `openclaw browser trace stop` (출력 `TRACE:<path>`)
 
-## JSON output
+## JSON 출력
 
-`--json` is for scripting and structured tooling.
+`--json`은 스크립팅 및 구조화된 도구 작성에 사용됩니다.
 
-Examples:
+예시:
 
 ```bash
 openclaw browser status --json
@@ -522,55 +525,54 @@ openclaw browser requests --filter api --json
 openclaw browser cookies --json
 ```
 
-Role snapshots in JSON include `refs` plus a small `stats` block (lines/chars/refs/interactive) so tools can reason about payload size and density.
+JSON에서의 역할 스냅샷은 `refs` 및 작은 `stats` 블록 (lines/chars/refs/interactive)을 포함하며, 도구가 페이로드 크기와 밀도를 판단할 수 있도록 합니다.
 
-## State and environment knobs
+## 상태 및 환경 조절
 
-These are useful for “make the site behave like X” workflows:
+이것들은 "사이트를 X처럼 동작하도록 만들기" 워크플로우에 유용합니다:
 
-- Cookies: `cookies`, `cookies set`, `cookies clear`
-- Storage: `storage local|session get|set|clear`
-- Offline: `set offline on|off`
-- Headers: `set headers --json '{"X-Debug":"1"}'` (or `--clear`)
-- HTTP basic auth: `set credentials user pass` (or `--clear`)
-- Geolocation: `set geo <lat> <lon> --origin "https://example.com"` (or `--clear`)
-- Media: `set media dark|light|no-preference|none`
-- Timezone / locale: `set timezone ...`, `set locale ...`
-- Device / viewport:
-  - `set device "iPhone 14"` (Playwright device presets)
+- 쿠키: `cookies`, `cookies set`, `cookies clear`
+- 저장소: `storage local|session get|set|clear`
+- 오프라인: `set offline on|off`
+- 헤더: `set headers --json '{"X-Debug":"1"}'` (또는 `--clear`)
+- HTTP 기본 인증: `set credentials user pass` (또는 `--clear`)
+- 지리 위치 설정: `set geo <lat> <lon> --origin "https://example.com"` (또는 `--clear`)
+- 미디어: `set media dark|light|no-preference|none`
+- 시간대 / 로케일: `set timezone ...`, `set locale ...`
+- 디바이스 / 뷰포트:
+  - `set device "iPhone 14"` (Playwright 기기 프리셋)
   - `set viewport 1280 720`
 
-## Security & privacy
+## 보안 및 개인정보 보호
 
-- The openclaw browser profile may contain logged-in sessions; treat it as sensitive.
-- `browser act kind=evaluate` / `openclaw browser evaluate` and `wait --fn`
-  execute arbitrary JavaScript in the page context. Prompt injection can steer
-  this. Disable it with `browser.evaluateEnabled=false` if you do not need it.
-- For logins and anti-bot notes (X/Twitter, etc.), see [Browser login + X/Twitter posting](/tools/browser-login).
-- Keep the Gateway/node host private (loopback or tailnet-only).
-- Remote CDP endpoints are powerful; tunnel and protect them.
+- openclaw 브라우저 프로파일은 로그인 세션을 포함할 수 있으므로 민감하게 취급해야 합니다.
+- `browser act kind=evaluate` / `openclaw browser evaluate`와 `wait --fn`
+  페이지 컨텍스트에서 임의의 JavaScript를 실행합니다. 프롬프트 인젝션이 이를 조작할 수 있습니다. 필요하지 않은 경우 `browser.evaluateEnabled=false`로 비활성화하십시오.
+- 로그인 및 봇 방지 메모 (X/Twitter 등)에 대해서는 [브라우저 로그인 + X/Twitter 게시물](/tools/browser-login)을 참조하십시오.
+- 게이트웨이/노드 호스트는 사설 (로컬 루프백 또는 tailnet 전용)로 유지하십시오.
+- 원격 CDP 엔드포인트는 강력합니다; 터널링 및 보호하세요.
 
-## Troubleshooting
+## 문제 해결
 
-For Linux-specific issues (especially snap Chromium), see
-[Browser troubleshooting](/tools/browser-linux-troubleshooting).
+Linux 전용 문제 (특히 스냅 Chromium) 관련하여,
+[브라우저 문제 해결](/tools/browser-linux-troubleshooting)을 참조하십시오.
 
-## Agent tools + how control works
+## 에이전트 도구 및 제어 방법
 
-The agent gets **one tool** for browser automation:
+에이전트는 브라우저 자동화에 대해 **하나의 도구**를 얻습니다:
 
-- `browser` — status/start/stop/tabs/open/focus/close/snapshot/screenshot/navigate/act
+- `browser` — 상태/시작/중지/탭/열기/집중/닫기/스냅샷/스크린샷/네비게이트/동작
 
-How it maps:
+매핑 방법:
 
-- `browser snapshot` returns a stable UI tree (AI or ARIA).
-- `browser act` uses the snapshot `ref` IDs to click/type/drag/select.
-- `browser screenshot` captures pixels (full page or element).
-- `browser` accepts:
-  - `profile` to choose a named browser profile (openclaw, chrome, or remote CDP).
-  - `target` (`sandbox` | `host` | `node`) to select where the browser lives.
-  - In sandboxed sessions, `target: "host"` requires `agents.defaults.sandbox.browser.allowHostControl=true`.
-  - If `target` is omitted: sandboxed sessions default to `sandbox`, non-sandbox sessions default to `host`.
-  - If a browser-capable node is connected, the tool may auto-route to it unless you pin `target="host"` or `target="node"`.
+- `browser snapshot`은 안정적인 UI 트리 (AI 또는 ARIA)를 반환합니다.
+- `browser act`는 스냅샷 `ref` ID를 사용하여 클릭/입력/드래그/선택을 수행합니다.
+- `browser screenshot`은 픽셀을 캡처합니다 (전체 페이지 또는 요소).
+- `browser`는 다음을 수락합니다:
+  - `profile`을 사용하여 이름 있는 브라우저 프로파일 (openclaw, chrome, 또는 원격 CDP)을 선택합니다.
+  - `target` (`sandbox` | `host` | `node`)를 사용하여 브라우저가 있는 위치를 선택합니다.
+  - 샌드박스 세션에서는 `target: "host"`가 `agents.defaults.sandbox.browser.allowHostControl=true`를 필요로 합니다.
+  - `target`이 생략된 경우: 샌드박스 세션은 `sandbox`를 기본값으로, 비-샌드박스 세션은 `host`를 기본값으로 사용합니다.
+  - 브라우저 지원 노드가 연결되면, 도구는 `target="host"` 또는 `target="node"`를 고정하지 않으면 자동으로 라우팅될 수 있습니다.
 
-This keeps the agent deterministic and avoids brittle selectors.
+이는 에이전트를 결정론적으로 유지하며 취약한 선택기를 피합니다.

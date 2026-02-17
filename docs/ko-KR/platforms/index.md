@@ -1,19 +1,18 @@
 ---
-summary: "Platform support overview (Gateway + companion apps)"
+summary: "플랫폼 지원 개요 (게이트웨이 + 동반 앱)"
 read_when:
-  - Looking for OS support or install paths
-  - Deciding where to run the Gateway
-title: "Platforms"
+  - OS 지원이나 설치 경로를 찾고 있을 때
+  - 게이트웨이를 어디에서 실행할지 결정할 때
+title: "플랫폼"
 ---
 
 # Platforms
 
-OpenClaw core is written in TypeScript. **Node is the recommended runtime**.
-Bun is not recommended for the Gateway (WhatsApp/Telegram bugs).
+OpenClaw 핵심은 TypeScript로 작성되었습니다. **Node는 권장 실행 환경입니다**.
+게이트웨이에서는 Bun 이 권장되지 않습니다 (WhatsApp/Telegram 버그).
 
-Companion apps exist for macOS (menu bar app) and mobile nodes (iOS/Android). Windows and
-Linux companion apps are planned, but the Gateway is fully supported today.
-Native companion apps for Windows are also planned; the Gateway is recommended via WSL2.
+동반 앱은 macOS (메뉴 바 앱)와 모바일 노드 (iOS/Android)용으로 존재합니다. Windows 및 Linux 동반 앱도 계획 중이지만, 게이트웨이는 오늘날에 완전 지원됩니다.
+Windows용 기본 동반 앱도 계획 중이며, 게이트웨이는 WSL2를 통해 권장됩니다.
 
 ## Choose your OS
 
@@ -26,10 +25,10 @@ Native companion apps for Windows are also planned; the Gateway is recommended v
 ## VPS & hosting
 
 - VPS hub: [VPS hosting](/vps)
-- Fly.io: [Fly.io](/platforms/fly)
-- Hetzner (Docker): [Hetzner](/platforms/hetzner)
-- GCP (Compute Engine): [GCP](/platforms/gcp)
-- exe.dev (VM + HTTPS proxy): [exe.dev](/platforms/exe-dev)
+- Fly.io: [Fly.io](/install/fly)
+- Hetzner (Docker): [Hetzner](/install/hetzner)
+- GCP (Compute Engine): [GCP](/install/gcp)
+- exe.dev (VM + HTTPS proxy): [exe.dev](/install/exe-dev)
 
 ## Common links
 
@@ -49,5 +48,5 @@ Use one of these (all supported):
 
 The service target depends on OS:
 
-- macOS: LaunchAgent (`bot.molt.gateway` or `bot.molt.<profile>`; legacy `com.openclaw.*`)
+- macOS: LaunchAgent (`bot.molt.gateway` 또는 `bot.molt.<profile>`; 기존 `com.openclaw.*`)
 - Linux/WSL2: systemd user service (`openclaw-gateway[-<profile>].service`)

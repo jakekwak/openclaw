@@ -1,60 +1,59 @@
 ---
-summary: "Use Anthropic Claude via API keys or setup-token in OpenClaw"
+summary: "OpenClaw에서 API 키 또는 설정 토큰을 통해 Anthropic Claude 사용"
 read_when:
-  - You want to use Anthropic models in OpenClaw
-  - You want setup-token instead of API keys
+  - OpenClaw에서 Anthropic 모델을 사용하고 싶습니다
+  - API 키 대신 설정 토큰을 원합니다
 title: "Anthropic"
 ---
 
 # Anthropic (Claude)
 
-Anthropic builds the **Claude** model family and provides access via an API.
-In OpenClaw you can authenticate with an API key or a **setup-token**.
+Anthropic은 **Claude** 모델 계열을 개발하고 API를 통해 접근을 제공합니다. OpenClaw에서는 API 키 또는 **설정 토큰**으로 인증할 수 있습니다.
 
 ## Option A: Anthropic API key
 
-**Best for:** standard API access and usage-based billing.
-Create your API key in the Anthropic Console.
+**적합한 사용 사례:** 표준 API 액세스 및 사용량 기반 청구.
+Anthropic 콘솔에서 API 키를 생성하세요.
 
-### CLI setup
+### CLI 설정
 
 ```bash
 openclaw onboard
-# choose: Anthropic API key
+# 선택: Anthropic API key
 
-# or non-interactive
+# 또는 비대화식
 openclaw onboard --anthropic-api-key "$ANTHROPIC_API_KEY"
 ```
 
-### Config snippet
+### 설정 스니펫
 
 ```json5
 {
   env: { ANTHROPIC_API_KEY: "sk-ant-..." },
-  agents: { defaults: { model: { primary: "anthropic/claude-opus-4-5" } } },
+  agents: { defaults: { model: { primary: "anthropic/claude-opus-4-6" } } },
 }
 ```
 
-## Prompt caching (Anthropic API)
+## 프롬프트 캐싱 (Anthropic API)
 
-OpenClaw supports Anthropic's prompt caching feature. This is **API-only**; subscription auth does not honor cache settings.
+OpenClaw는 Anthropic의 프롬프트 캐싱 기능을 지원합니다. 이는 **API 전용**입니다. 구독 인증은 캐시 설정을 인정하지 않습니다.
 
-### Configuration
+### 구성
 
-Use the `cacheRetention` parameter in your model config:
+모델 설정에서 `cacheRetention` 매개변수를 사용하세요:
 
-| Value   | Cache Duration | Description                         |
-| ------- | -------------- | ----------------------------------- |
-| `none`  | No caching     | Disable prompt caching              |
-| `short` | 5 minutes      | Default for API Key auth            |
-| `long`  | 1 hour         | Extended cache (requires beta flag) |
+| 값      | 캐시 기간    | 설명                               |
+| ------- | ------------ | ----------------------------------- |
+| `none`  | 캐싱 없음    | 프롬프트 캐싱 비활성화              |
+| `short` | 5분          | API 키 인증의 기본값                |
+| `long`  | 1시간        | 확장된 캐시 (베타 플래그 필요)      |
 
 ```json5
 {
   agents: {
     defaults: {
       models: {
-        "anthropic/claude-opus-4-5": {
+        "anthropic/claude-opus-4-6": {
           params: { cacheRetention: "long" },
         },
       },
@@ -63,90 +62,86 @@ Use the `cacheRetention` parameter in your model config:
 }
 ```
 
-### Defaults
+### 기본값
 
-When using Anthropic API Key authentication, OpenClaw automatically applies `cacheRetention: "short"` (5-minute cache) for all Anthropic models. You can override this by explicitly setting `cacheRetention` in your config.
+Anthropic API 키 인증을 사용할 때, OpenClaw는 모든 Anthropic 모델에 대해 자동으로 `cacheRetention: "short"`(5분 캐시)를 적용합니다. 설정에서 명시적으로 `cacheRetention`을 설정하여 이를 재정의할 수 있습니다.
 
-### Legacy parameter
+### 레거시 매개변수
 
-The older `cacheControlTtl` parameter is still supported for backwards compatibility:
+이전의 `cacheControlTtl` 매개변수는 하위 호환성을 위해 여전히 지원됩니다:
 
-- `"5m"` maps to `short`
-- `"1h"` maps to `long`
+- `"5m"`은 `short`와 매핑됩니다
+- `"1h"`은 `long`과 매핑됩니다
 
-We recommend migrating to the new `cacheRetention` parameter.
+새로운 `cacheRetention` 매개변수로의 마이그레이션을 권장합니다.
 
-OpenClaw includes the `extended-cache-ttl-2025-04-11` beta flag for Anthropic API
-requests; keep it if you override provider headers (see [/gateway/configuration](/gateway/configuration)).
+OpenClaw에는 Anthropic API 요청을 위한 `extended-cache-ttl-2025-04-11` 베타 플래그가 포함되어 있습니다. 제공자 헤더를 재정의할 경우 이를 유지하세요(자세한 내용은 [/gateway/configuration](/gateway/configuration) 참조).
 
-## Option B: Claude setup-token
+## Option B: Claude 설정 토큰
 
-**Best for:** using your Claude subscription.
+**적합한 사용 사례:** Claude 구독을 사용할 때.
 
-### Where to get a setup-token
+### 설정 토큰을 얻는 방법
 
-Setup-tokens are created by the **Claude Code CLI**, not the Anthropic Console. You can run this on **any machine**:
+설정 토큰은 **Claude Code CLI**에서 생성되며, Anthropic 콘솔에서는 생성되지 않습니다. **어떤 기계에서든** 이 명령을 실행할 수 있습니다:
 
 ```bash
 claude setup-token
 ```
 
-Paste the token into OpenClaw (wizard: **Anthropic token (paste setup-token)**), or run it on the gateway host:
+토큰을 OpenClaw에 붙여 넣거나(마법사: **Anthropic token (paste setup-token)**), 게이트웨이 호스트에서 실행하세요:
 
 ```bash
 openclaw models auth setup-token --provider anthropic
 ```
 
-If you generated the token on a different machine, paste it:
+다른 기계에서 토큰을 생성한 경우, 붙여넣기:
 
 ```bash
 openclaw models auth paste-token --provider anthropic
 ```
 
-### CLI setup
+### CLI 설정 (설정 토큰)
 
 ```bash
-# Paste a setup-token during onboarding
+# 온보딩 중에 설정 토큰을 붙여넣습니다
 openclaw onboard --auth-choice setup-token
 ```
 
-### Config snippet
+### 설정 스니펫 (설정 토큰)
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "anthropic/claude-opus-4-5" } } },
+  agents: { defaults: { model: { primary: "anthropic/claude-opus-4-6" } } },
 }
 ```
 
-## Notes
+## 주의사항
 
-- Generate the setup-token with `claude setup-token` and paste it, or run `openclaw models auth setup-token` on the gateway host.
-- If you see “OAuth token refresh failed …” on a Claude subscription, re-auth with a setup-token. See [/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription](/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription).
-- Auth details + reuse rules are in [/concepts/oauth](/concepts/oauth).
+- `claude setup-token`으로 설정 토큰을 생성하고 붙여넣거나, 게이트웨이 호스트에서 `openclaw models auth setup-token`을 실행하세요.
+- Claude 구독에서 “OAuth token refresh failed …” 메시지가 표시되면, 설정 토큰으로 다시 인증하세요. [/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription](/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription)를 참조하세요.
+- 인증 세부사항 및 재사용 규칙은 [/concepts/oauth](/concepts/oauth)에 있습니다.
 
-## Troubleshooting
+## 문제 해결
 
-**401 errors / token suddenly invalid**
+**401 오류 / 토큰이 갑자기 무효화됨**
 
-- Claude subscription auth can expire or be revoked. Re-run `claude setup-token`
-  and paste it into the **gateway host**.
-- If the Claude CLI login lives on a different machine, use
-  `openclaw models auth paste-token --provider anthropic` on the gateway host.
+- Claude 구독 인증은 만료되거나 취소될 수 있습니다. `claude setup-token`을 다시 실행하고 게이트웨이 호스트에 붙여넣으세요.
+- 다른 기계에서 Claude CLI에 로그인한 경우, 게이트웨이 호스트에서 `openclaw models auth paste-token --provider anthropic`을 사용하세요.
 
-**No API key found for provider "anthropic"**
+**프로바이더 "anthropic"에 대한 API 키가 발견되지 않음**
 
-- Auth is **per agent**. New agents don’t inherit the main agent’s keys.
-- Re-run onboarding for that agent, or paste a setup-token / API key on the
-  gateway host, then verify with `openclaw models status`.
+- 인증은 **에이전트 별**입니다. 새로운 에이전트는 메인 에이전트의 키를 상속받지 않습니다.
+- 해당 에이전트에 대한 온보딩을 다시 수행하거나, 게이트웨이 호스트에서 설정 토큰 / API 키를 붙여넣고 `openclaw models status`로 확인하세요.
 
-**No credentials found for profile `anthropic:default`**
+**프로파일 `anthropic:default`에 대한 자격 증명이 발견되지 않음**
 
-- Run `openclaw models status` to see which auth profile is active.
-- Re-run onboarding, or paste a setup-token / API key for that profile.
+- 어떤 인증 프로파일이 활성화되어 있는지 확인하려면 `openclaw models status`를 실행하세요.
+- 온보딩을 다시 수행하거나, 해당 프로파일에 대한 설정 토큰 / API 키를 붙여넣으세요.
 
-**No available auth profile (all in cooldown/unavailable)**
+**사용 가능한 인증 프로파일이 없음 (모두 쿨다운/사용 불가 상태)**
 
-- Check `openclaw models status --json` for `auth.unusableProfiles`.
-- Add another Anthropic profile or wait for cooldown.
+- `openclaw models status --json`에서 `auth.unusableProfiles`을 확인하세요.
+- 다른 Anthropic 프로파일을 추가하거나 쿨다운을 기다리세요.
 
-More: [/gateway/troubleshooting](/gateway/troubleshooting) and [/help/faq](/help/faq).
+추가 정보: [/gateway/troubleshooting](/gateway/troubleshooting) 및 [/help/faq](/help/faq).

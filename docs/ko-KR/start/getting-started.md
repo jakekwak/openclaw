@@ -1,208 +1,134 @@
 ---
-summary: "Beginner guide: from zero to first message (wizard, auth, channels, pairing)"
+summary: "OpenClaw를 설치하고 몇 분 안에 첫 채팅을 실행하기."
 read_when:
-  - First time setup from zero
-  - You want the fastest path from install → onboarding → first message
-title: "Getting Started"
+  - 처음부터 시작하는 설정
+  - 작동하는 채팅으로 가는 가장 빠른 경로를 원할 때
+title: "시작하기"
 ---
 
-# Getting Started
+# 시작하기
 
-Goal: go from **zero** → **first working chat** (with sane defaults) as quickly as possible.
+목표: 최소한의 설정으로 첫 작업 채팅까지 가는 것.
 
-Fastest chat: open the Control UI (no channel setup needed). Run `openclaw dashboard`
-and chat in the browser, or open `http://127.0.0.1:18789/` on the gateway host.
-Docs: [Dashboard](/web/dashboard) and [Control UI](/web/control-ui).
+<Info>
+가장 빠른 채팅: 제어 UI를 열고 (채널 설정 필요 없음) `openclaw dashboard`를 실행하여
+브라우저에서 채팅하거나, 게이트웨이 호스트에서 `http://127.0.0.1:18789/`를 엽니다.
+문서: [Dashboard](/web/dashboard) 및 [Control UI](/web/control-ui).
+</Info>
 
-Recommended path: use the **CLI onboarding wizard** (`openclaw onboard`). It sets up:
+## 필요조건
 
-- model/auth (OAuth recommended)
-- gateway settings
-- channels (WhatsApp/Telegram/Discord/Mattermost (plugin)/...)
-- pairing defaults (secure DMs)
-- workspace bootstrap + skills
-- optional background service
+- Node 22 이상
 
-If you want the deeper reference pages, jump to: [Wizard](/start/wizard), [Setup](/start/setup), [Pairing](/start/pairing), [Security](/gateway/security).
+<Tip>
+Node 버전이 확실하지 않다면 `node --version`을 사용하여 확인하세요.
+</Tip>
 
-Sandboxing note: `agents.defaults.sandbox.mode: "non-main"` uses `session.mainKey` (default `"main"`),
-so group/channel sessions are sandboxed. If you want the main agent to always
-run on host, set an explicit per-agent override:
+## 빠른 설정 (CLI)
 
-```json
-{
-  "routing": {
-    "agents": {
-      "main": {
-        "workspace": "~/.openclaw/workspace",
-        "sandbox": { "mode": "off" }
-      }
-    }
-  }
-}
-```
+<Steps>
+  <Step title="OpenClaw 설치 (권장)">
+    <Tabs>
+      <Tab title="macOS/Linux">
+        ```bash
+        curl -fsSL https://openclaw.ai/install.sh | bash
+        ```
+        <img
+  src="/assets/install-script.svg"
+  alt="설치 스크립트 프로세스"
+  className="rounded-lg"
+/>
+      </Tab>
+      <Tab title="Windows (PowerShell)">
+        ```powershell
+        iwr -useb https://openclaw.ai/install.ps1 | iex
+        ```
+      </Tab>
+    </Tabs>
 
-## 0) Prereqs
+    <Note>
+    다른 설치 방법 및 요구 사항: [설치](/install).
+    </Note>
 
-- Node `>=22`
-- `pnpm` (optional; recommended if you build from source)
-- **Recommended:** Brave Search API key for web search. Easiest path:
-  `openclaw configure --section web` (stores `tools.web.search.apiKey`).
-  See [Web tools](/tools/web).
+  </Step>
+  <Step title="온보딩 마법사 실행">
+    ```bash
+    openclaw onboard --install-daemon
+    ```
 
-macOS: if you plan to build the apps, install Xcode / CLT. For the CLI + gateway only, Node is enough.
-Windows: use **WSL2** (Ubuntu recommended). WSL2 is strongly recommended; native Windows is untested, more problematic, and has poorer tool compatibility. Install WSL2 first, then run the Linux steps inside WSL. See [Windows (WSL2)](/platforms/windows).
+    마법사는 인증, 게이트웨이 설정 및 선택적 채널을 구성합니다.
+    자세한 내용은 [온보딩 마법사](/start/wizard)를 참조하세요.
 
-## 1) Install the CLI (recommended)
+  </Step>
+  <Step title="게이트웨이 확인">
+    서비스를 설치한 경우 이미 실행 중이어야 합니다:
 
-```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
-```
+    ```bash
+    openclaw gateway status
+    ```
 
-Installer options (install method, non-interactive, from GitHub): [Install](/install).
+  </Step>
+  <Step title="제어 UI 열기">
+    ```bash
+    openclaw dashboard
+    ```
+  </Step>
+</Steps>
 
-Windows (PowerShell):
+<Check>
+제어 UI가 로드되면, 게이트웨이가 사용 준비가 된 것입니다.
+</Check>
 
-```powershell
-iwr -useb https://openclaw.ai/install.ps1 | iex
-```
+## 선택적 확인 및 추가 기능
 
-Alternative (global install):
+<AccordionGroup>
+  <Accordion title="포어그라운드에서 게이트웨이 실행">
+    빠른 테스트나 문제 해결에 유용합니다.
 
-```bash
-npm install -g openclaw@latest
-```
+    ```bash
+    openclaw gateway --port 18789
+    ```
 
-```bash
-pnpm add -g openclaw@latest
-```
+  </Accordion>
+  <Accordion title="테스트 메시지 보내기">
+    구성된 채널이 필요합니다.
 
-## 2) Run the onboarding wizard (and install the service)
+    ```bash
+    openclaw message send --target +15555550123 --message "Hello from OpenClaw"
+    ```
 
-```bash
-openclaw onboard --install-daemon
-```
+  </Accordion>
+</AccordionGroup>
 
-What you’ll choose:
+## 유용한 환경 변수
 
-- **Local vs Remote** gateway
-- **Auth**: OpenAI Code (Codex) subscription (OAuth) or API keys. For Anthropic we recommend an API key; `claude setup-token` is also supported.
-- **Providers**: WhatsApp QR login, Telegram/Discord bot tokens, Mattermost plugin tokens, etc.
-- **Daemon**: background install (launchd/systemd; WSL2 uses systemd)
-  - **Runtime**: Node (recommended; required for WhatsApp/Telegram). Bun is **not recommended**.
-- **Gateway token**: the wizard generates one by default (even on loopback) and stores it in `gateway.auth.token`.
+OpenClaw를 서비스 계정으로 실행하거나 사용자 지정 구성/상태 위치를 원할 경우:
 
-Wizard doc: [Wizard](/start/wizard)
+- `OPENCLAW_HOME`은 내부 경로 해결에 사용되는 홈 디렉토리를 설정합니다.
+- `OPENCLAW_STATE_DIR`은 상태 디렉토리를 재정의합니다.
+- `OPENCLAW_CONFIG_PATH`는 구성 파일 경로를 재정의합니다.
 
-### Auth: where it lives (important)
+전체 환경 변수 참조: [환경 변수](/help/environment).
 
-- **Recommended Anthropic path:** set an API key (wizard can store it for service use). `claude setup-token` is also supported if you want to reuse Claude Code credentials.
+## 더 깊이 알아보기
 
-- OAuth credentials (legacy import): `~/.openclaw/credentials/oauth.json`
-- Auth profiles (OAuth + API keys): `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
+<Columns>
+  <Card title="온보딩 마법사 (상세)" href="/start/wizard">
+    전체 CLI 마법사 참조 및 고급 옵션.
+  </Card>
+  <Card title="macOS 앱 온보딩" href="/start/onboarding">
+    macOS 앱의 첫 실행 흐름.
+  </Card>
+</Columns>
 
-Headless/server tip: do OAuth on a normal machine first, then copy `oauth.json` to the gateway host.
+## 얻을 수 있는 것
 
-## 3) Start the Gateway
+- 실행 중인 게이트웨이
+- 인증 구성
+- 제어 UI 접근 또는 연결된 채널
 
-If you installed the service during onboarding, the Gateway should already be running:
+## 다음 단계
 
-```bash
-openclaw gateway status
-```
-
-Manual run (foreground):
-
-```bash
-openclaw gateway --port 18789 --verbose
-```
-
-Dashboard (local loopback): `http://127.0.0.1:18789/`
-If a token is configured, paste it into the Control UI settings (stored as `connect.params.auth.token`).
-
-⚠️ **Bun warning (WhatsApp + Telegram):** Bun has known issues with these
-channels. If you use WhatsApp or Telegram, run the Gateway with **Node**.
-
-## 3.5) Quick verify (2 min)
-
-```bash
-openclaw status
-openclaw health
-openclaw security audit --deep
-```
-
-## 4) Pair + connect your first chat surface
-
-### WhatsApp (QR login)
-
-```bash
-openclaw channels login
-```
-
-Scan via WhatsApp → Settings → Linked Devices.
-
-WhatsApp doc: [WhatsApp](/channels/whatsapp)
-
-### Telegram / Discord / others
-
-The wizard can write tokens/config for you. If you prefer manual config, start with:
-
-- Telegram: [Telegram](/channels/telegram)
-- Discord: [Discord](/channels/discord)
-- Mattermost (plugin): [Mattermost](/channels/mattermost)
-
-**Telegram DM tip:** your first DM returns a pairing code. Approve it (see next step) or the bot won’t respond.
-
-## 5) DM safety (pairing approvals)
-
-Default posture: unknown DMs get a short code and messages are not processed until approved.
-If your first DM gets no reply, approve the pairing:
-
-```bash
-openclaw pairing list whatsapp
-openclaw pairing approve whatsapp <code>
-```
-
-Pairing doc: [Pairing](/start/pairing)
-
-## From source (development)
-
-If you’re hacking on OpenClaw itself, run from source:
-
-```bash
-git clone https://github.com/openclaw/openclaw.git
-cd openclaw
-pnpm install
-pnpm ui:build # auto-installs UI deps on first run
-pnpm build
-openclaw onboard --install-daemon
-```
-
-If you don’t have a global install yet, run the onboarding step via `pnpm openclaw ...` from the repo.
-`pnpm build` also bundles A2UI assets; if you need to run just that step, use `pnpm canvas:a2ui:bundle`.
-
-Gateway (from this repo):
-
-```bash
-node openclaw.mjs gateway --port 18789 --verbose
-```
-
-## 7) Verify end-to-end
-
-In a new terminal, send a test message:
-
-```bash
-openclaw message send --target +15555550123 --message "Hello from OpenClaw"
-```
-
-If `openclaw health` shows “no auth configured”, go back to the wizard and set OAuth/key auth — the agent won’t be able to respond without it.
-
-Tip: `openclaw status --all` is the best pasteable, read-only debug report.
-Health probes: `openclaw health` (or `openclaw status --deep`) asks the running gateway for a health snapshot.
-
-## Next steps (optional, but great)
-
-- macOS menu bar app + voice wake: [macOS app](/platforms/macos)
-- iOS/Android nodes (Canvas/camera/voice): [Nodes](/nodes)
-- Remote access (SSH tunnel / Tailscale Serve): [Remote access](/gateway/remote) and [Tailscale](/gateway/tailscale)
-- Always-on / VPN setups: [Remote access](/gateway/remote), [exe.dev](/platforms/exe-dev), [Hetzner](/platforms/hetzner), [macOS remote](/platforms/mac/remote)
+- 다이렉트 메시지 안전성 및 승인: [페어링](/channels/pairing)
+- 더 많은 채널 연결: [채널](/channels)
+- 고급 워크플로 및 소스에서: [설정](/start/setup)

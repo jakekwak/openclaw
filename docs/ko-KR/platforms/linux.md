@@ -1,76 +1,74 @@
 ---
-summary: "Linux support + companion app status"
+summary: "Linux 지원 + 동반 앱 상태"
 read_when:
-  - Looking for Linux companion app status
-  - Planning platform coverage or contributions
+  - Linux 동반 앱 상태를 찾는 중
+  - 플랫폼 커버리지 또는 기여를 계획 중
 title: "Linux App"
 ---
 
 # Linux App
 
-The Gateway is fully supported on Linux. **Node is the recommended runtime**.
-Bun is not recommended for the Gateway (WhatsApp/Telegram bugs).
+게이트웨이는 Linux에서 완전히 지원됩니다. **Node는 권장 런타임입니다**.
+Bun은 게이트웨이(WhatsApp/Telegram 버그)에는 권장되지 않습니다.
 
-Native Linux companion apps are planned. Contributions are welcome if you want to help build one.
+Native Linux 동반 앱이 계획되어 있습니다. 개발에 도움을 주시고 싶은 분들의 기여를 환영합니다.
 
-## Beginner quick path (VPS)
+## 초급 빠른 경로 (VPS)
 
-1. Install Node 22+
+1. Node 22+ 설치
 2. `npm i -g openclaw@latest`
 3. `openclaw onboard --install-daemon`
-4. From your laptop: `ssh -N -L 18789:127.0.0.1:18789 <user>@<host>`
-5. Open `http://127.0.0.1:18789/` and paste your token
+4. 노트북에서: `ssh -N -L 18789:127.0.0.1:18789 <user>@<host>`
+5. `http://127.0.0.1:18789/`를 열고 토큰을 붙여넣기
 
-Step-by-step VPS guide: [exe.dev](/platforms/exe-dev)
+단계별 VPS 가이드: [exe.dev](/install/exe-dev)
 
-## Install
+## 설치
 
-- [Getting Started](/start/getting-started)
-- [Install & updates](/install/updating)
-- Optional flows: [Bun (experimental)](/install/bun), [Nix](/install/nix), [Docker](/install/docker)
+- [시작하기](/start/getting-started)
+- [설치 및 업데이트](/install/updating)
+- 선택적 흐름: [Bun (실험적)](/install/bun), [Nix](/install/nix), [Docker](/install/docker)
 
-## Gateway
+## 게이트웨이
 
-- [Gateway runbook](/gateway)
-- [Configuration](/gateway/configuration)
+- [게이트웨이 실행 가이드](/gateway)
+- [설정](/gateway/configuration)
 
-## Gateway service install (CLI)
+## 게이트웨이 서비스 설치 (CLI)
 
-Use one of these:
+다음 중 하나를 사용하십시오:
 
 ```
 openclaw onboard --install-daemon
 ```
 
-Or:
+또는:
 
 ```
 openclaw gateway install
 ```
 
-Or:
+또는:
 
 ```
 openclaw configure
 ```
 
-Select **Gateway service** when prompted.
+프롬프트가 나타나면 **게이트웨이 서비스**를 선택하십시오.
 
-Repair/migrate:
+수리/이전:
 
 ```
 openclaw doctor
 ```
 
-## System control (systemd user unit)
+## 시스템 제어 (systemd 사용자 유닛)
 
-OpenClaw installs a systemd **user** service by default. Use a **system**
-service for shared or always-on servers. The full unit example and guidance
-live in the [Gateway runbook](/gateway).
+OpenClaw는 기본적으로 systemd **사용자** 서비스를 설치합니다. 공유 또는 상시 가동 서버에는 **시스템** 서비스를 사용하십시오. 전체 유닛 예제와 지침은 [게이트웨이 실행 가이드](/gateway)에 있습니다.
 
 Minimal setup:
 
-Create `~/.config/systemd/user/openclaw-gateway[-<profile>].service`:
+`~/.config/systemd/user/openclaw-gateway[-<profile>].service`를 생성하십시오:
 
 ```
 [Unit]
@@ -87,7 +85,7 @@ RestartSec=5
 WantedBy=default.target
 ```
 
-Enable it:
+활성화:
 
 ```
 systemctl --user enable --now openclaw-gateway[-<profile>].service

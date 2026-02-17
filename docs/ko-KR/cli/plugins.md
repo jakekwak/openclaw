@@ -1,8 +1,8 @@
 ---
-summary: "CLI reference for `openclaw plugins` (list, install, enable/disable, doctor)"
+summary: "CLI reference for `openclaw plugins` (list, install, uninstall, enable/disable, doctor)"
 read_when:
-  - You want to install or manage in-process Gateway plugins
-  - You want to debug plugin load failures
+  - 인프로세스 게이트웨이 플러그인을 설치하거나 관리하고 싶을 때
+  - 플러그인 로드 실패를 디버그하고 싶을 때
 title: "plugins"
 ---
 
@@ -12,7 +12,7 @@ Manage Gateway plugins/extensions (loaded in-process).
 
 Related:
 
-- Plugin system: [Plugins](/plugin)
+- Plugin system: [Plugins](/tools/plugin)
 - Plugin manifest + schema: [Plugin manifest](/plugins/manifest)
 - Security hardening: [Security](/gateway/security)
 
@@ -23,6 +23,7 @@ openclaw plugins list
 openclaw plugins info <id>
 openclaw plugins enable <id>
 openclaw plugins disable <id>
+openclaw plugins uninstall <id>
 openclaw plugins doctor
 openclaw plugins update <id>
 openclaw plugins update --all
@@ -43,6 +44,9 @@ openclaw plugins install <path-or-spec>
 
 Security note: treat plugin installs like running code. Prefer pinned versions.
 
+Npm specs are **registry-only** (package name + optional version/tag). Git/URL/file
+specs are rejected. Dependency installs run with `--ignore-scripts` for safety.
+
 Supported archives: `.zip`, `.tgz`, `.tar.gz`, `.tar`.
 
 Use `--link` to avoid copying a local directory (adds to `plugins.load.paths`):
@@ -50,6 +54,20 @@ Use `--link` to avoid copying a local directory (adds to `plugins.load.paths`):
 ```bash
 openclaw plugins install -l ./my-plugin
 ```
+
+### Uninstall
+
+```bash
+openclaw plugins uninstall <id>
+openclaw plugins uninstall <id> --dry-run
+openclaw plugins uninstall <id> --keep-files
+```
+
+`uninstall`는 `plugins.entries`, `plugins.installs`, 플러그인 허용 목록 및 관련된 `plugins.load.paths` 항목에서 플러그인 기록을 제거합니다. 활성 메모리 플러그인의 경우, 메모리 슬롯은 `memory-core`로 재설정됩니다.
+
+기본적으로, uninstall은 활성 상태 디렉토리 확장 루트(`$OPENCLAW_STATE_DIR/extensions/<id>`) 아래의 플러그인 설치 디렉토리도 제거합니다. 파일을 유지하려면 `--keep-files`를 사용하십시오.
+
+`--keep-config`는 `--keep-files`의 폐기된 별칭으로 지원됩니다.
 
 ### Update
 

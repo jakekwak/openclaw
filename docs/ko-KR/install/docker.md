@@ -1,71 +1,89 @@
 ---
 summary: "Optional Docker-based setup and onboarding for OpenClaw"
 read_when:
-  - You want a containerized gateway instead of local installs
-  - You are validating the Docker flow
+  - 컨테이너화된 게이트웨이를 원하거나 로컬 설치 대신에 사용하는 경우
+  - Docker 흐름을 검증하려는 경우
 title: "도커"
 ---
 
 # Docker (optional)
 
-Docker is **optional**. Use it only if you want a containerized gateway or to validate the Docker flow.
+Docker는 **옵션**입니다. 컨테이너화된 게이트웨이를 원하거나 Docker 흐름을 검증하려는 경우에만 사용하세요.
 
-## Is Docker right for me?
+## Docker가 나에게 적합한가요?
 
-- **Yes**: you want an isolated, throwaway gateway environment or to run OpenClaw on a host without local installs.
-- **No**: you’re running on your own machine and just want the fastest dev loop. Use the normal install flow instead.
-- **Sandboxing note**: agent sandboxing uses Docker too, but it does **not** require the full gateway to run in Docker. See [Sandboxing](/gateway/sandboxing).
+- **예**: 분리되고 일회용 게이트웨이 환경을 원하거나 로컬 설치 없이 호스트에서 OpenClaw를 실행하려는 경우.
+- **아니오**: 개인 기기에서 실행 중이며, 가장 빠른 개발 루프를 원한다면. 대신 일반 설치 흐름을 사용하세요.
+- **샌드박스 주의사항**: 에이전트 샌드박스 격리 또한 Docker를 사용하지만, 전체 게이트웨이를 Docker에서 실행할 필요는 **없습니다**. [샌드박스 격리](/gateway/sandboxing)를 참조하세요.
 
-This guide covers:
+이 가이드는 다음을 다룹니다:
 
-- Containerized Gateway (full OpenClaw in Docker)
-- Per-session Agent Sandbox (host gateway + Docker-isolated agent tools)
+- 컨테이너화된 게이트웨이 (Docker에서의 전체 OpenClaw)
+- 세션별 에이전트 샌드박스 (호스트 게이트웨이 + Docker로 격리된 에이전트 도구)
 
-Sandboxing details: [Sandboxing](/gateway/sandboxing)
+샌드박스 격리 세부사항: [샌드박스 격리](/gateway/sandboxing)
 
-## Requirements
+## 요구사항
 
-- Docker Desktop (or Docker Engine) + Docker Compose v2
-- Enough disk for images + logs
+- Docker Desktop (또는 Docker Engine) + Docker Compose v2
+- 이미지 및 로그를 위한 충분한 디스크 공간
 
-## Containerized Gateway (Docker Compose)
+## 컨테이너화된 게이트웨이 (Docker Compose)
 
-### Quick start (recommended)
+### 빠른 시작 (권장)
 
-From repo root:
+저장소 루트에서:
 
 ```bash
 ./docker-setup.sh
 ```
 
-This script:
+이 스크립트는 다음을 수행합니다:
 
-- builds the gateway image
-- runs the onboarding wizard
-- prints optional provider setup hints
-- starts the gateway via Docker Compose
-- generates a gateway token and writes it to `.env`
+- 게이트웨이 이미지를 빌드
+- 온보딩 마법사 실행
+- 선택적 프로바이더 설정 힌트 출력
+- Docker Compose를 통해 게이트웨이 시작
+- 게이트웨이 토큰을 생성하고 `.env`에 기록
 
-Optional env vars:
+선택적 환경 변수:
 
-- `OPENCLAW_DOCKER_APT_PACKAGES` — install extra apt packages during build
-- `OPENCLAW_EXTRA_MOUNTS` — add extra host bind mounts
-- `OPENCLAW_HOME_VOLUME` — persist `/home/node` in a named volume
+- `OPENCLAW_DOCKER_APT_PACKAGES` — 빌드 중 추가 apt 패키지 설치
+- `OPENCLAW_EXTRA_MOUNTS` — 추가 호스트 바인드 마운트 추가
+- `OPENCLAW_HOME_VOLUME` — 명명된 볼륨에서 `/home/node` 유지
 
-After it finishes:
+완료 후:
 
-- Open `http://127.0.0.1:18789/` in your browser.
-- Paste the token into the Control UI (Settings → token).
-- Need the tokenized URL again? Run `docker compose run --rm openclaw-cli dashboard --no-open`.
+- 브라우저에서 `http://127.0.0.1:18789/`를 엽니다.
+- 토큰을 컨트롤 UI (설정 → 토큰)에 붙여넣습니다.
+- URL이 필요하신가요? `docker compose run --rm openclaw-cli dashboard --no-open`을 실행하세요.
 
-It writes config/workspace on the host:
+호스트에 config/workspace를 작성합니다:
 
 - `~/.openclaw/`
 - `~/.openclaw/workspace`
 
-Running on a VPS? See [Hetzner (Docker VPS)](/platforms/hetzner).
+VPS에서 실행 중이신가요? [Hetzner (Docker VPS)](/install/hetzner)를 참고하세요.
 
-### Manual flow (compose)
+### 쉘 헬퍼 (선택 사항)
+
+보다 쉬운 Docker 관리를 위해, `ClawDock`을 설치하세요:
+
+```bash
+mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/shell-helpers/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
+```
+
+**쉘 구성에 추가 (zsh):**
+
+```bash
+echo 'source ~/.clawdock/clawdock-helpers.sh' >> ~/.zshrc && source ~/.zshrc
+```
+
+이제 `clawdock-start`, `clawdock-stop`, `clawdock-dashboard` 등을 사용할 수 있습니다. 모든 명령어는 `clawdock-help`를 실행해 확인하세요.
+
+자세한 내용은 [`ClawDock` Helper README](https://github.com/openclaw/openclaw/blob/main/scripts/shell-helpers/README.md)를 확인하세요.
+
+### 수동 흐름 (compose)
 
 ```bash
 docker build -t openclaw:local -f Dockerfile .
@@ -73,18 +91,15 @@ docker compose run --rm openclaw-cli onboard
 docker compose up -d openclaw-gateway
 ```
 
-Note: run `docker compose ...` from the repo root. If you enabled
-`OPENCLAW_EXTRA_MOUNTS` or `OPENCLAW_HOME_VOLUME`, the setup script writes
-`docker-compose.extra.yml`; include it when running Compose elsewhere:
+참고: `docker compose ...`를 저장소 루트에서 실행하세요. `OPENCLAW_EXTRA_MOUNTS` 또는 `OPENCLAW_HOME_VOLUME`을 활성화한 경우, 설정 스크립트는 `docker-compose.extra.yml`을 작성합니다. 이를 다른 곳에서 Compose를 실행할 때 포함시키세요:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.extra.yml <command>
 ```
 
-### Control UI token + pairing (Docker)
+### 컨트롤 UI 토큰 + 페어링 (Docker)
 
-If you see “unauthorized” or “disconnected (1008): pairing required”, fetch a
-fresh dashboard link and approve the browser device:
+"unauthorized" 또는 "disconnected (1008): pairing required" 메시지가 보이는 경우, 새 대시보드 링크를 가져와 브라우저 장치를 승인하세요:
 
 ```bash
 docker compose run --rm openclaw-cli dashboard --no-open
@@ -92,45 +107,37 @@ docker compose run --rm openclaw-cli devices list
 docker compose run --rm openclaw-cli devices approve <requestId>
 ```
 
-More detail: [Dashboard](/web/dashboard), [Devices](/cli/devices).
+자세한 내용: [Dashboard](/web/dashboard), [Devices](/cli/devices).
 
-### Extra mounts (optional)
+### 추가 마운트 (선택 사항)
 
-If you want to mount additional host directories into the containers, set
-`OPENCLAW_EXTRA_MOUNTS` before running `docker-setup.sh`. This accepts a
-comma-separated list of Docker bind mounts and applies them to both
-`openclaw-gateway` and `openclaw-cli` by generating `docker-compose.extra.yml`.
+추가로 호스트 디렉토리를 컨테이너에 마운트하려면, `docker-setup.sh`를 실행하기 전에 `OPENCLAW_EXTRA_MOUNTS`를 설정하세요. 이것은 Docker 바인드 마운트를 쉼표로 구분한 목록을 수락하며, 이것을 통해 `openclaw-gateway`와 `openclaw-cli`에 적용됩니다. `docker-compose.extra.yml` 파일을 생성합니다.
 
-Example:
+예시:
 
 ```bash
 export OPENCLAW_EXTRA_MOUNTS="$HOME/.codex:/home/node/.codex:ro,$HOME/github:/home/node/github:rw"
 ./docker-setup.sh
 ```
 
-Notes:
+참고:
 
-- Paths must be shared with Docker Desktop on macOS/Windows.
-- If you edit `OPENCLAW_EXTRA_MOUNTS`, rerun `docker-setup.sh` to regenerate the
-  extra compose file.
-- `docker-compose.extra.yml` is generated. Don’t hand-edit it.
+- 경로는 macOS/Windows에서 Docker Desktop과 공유해야 합니다.
+- `OPENCLAW_EXTRA_MOUNTS`를 수정한 경우, `docker-setup.sh`를 다시 실행해 추가-compose 파일을 재생성하세요.
+- `docker-compose.extra.yml` 파일은 자동 생성됩니다. 직접 편집하지 마세요.
 
-### Persist the entire container home (optional)
+### 전체 컨테이너 홈 유지하기 (선택 사항)
 
-If you want `/home/node` to persist across container recreation, set a named
-volume via `OPENCLAW_HOME_VOLUME`. This creates a Docker volume and mounts it at
-`/home/node`, while keeping the standard config/workspace bind mounts. Use a
-named volume here (not a bind path); for bind mounts, use
-`OPENCLAW_EXTRA_MOUNTS`.
+컨테이너를 다시 생성할 때 `/home/node`를 유지하려면 명명된 볼륨을 `OPENCLAW_HOME_VOLUME` 통해 설정하세요. 이는 Docker 볼륨을 생성하고 `/home/node`에 마운트하며, 표준 설정/workspace 바인드 마운트를 유지합니다. 여기에서는 명명된 볼륨을 사용하고, 바인드 경로를 사용하려면 `OPENCLAW_EXTRA_MOUNTS`를 사용하세요.
 
-Example:
+예시:
 
 ```bash
 export OPENCLAW_HOME_VOLUME="openclaw_home"
 ./docker-setup.sh
 ```
 
-You can combine this with extra mounts:
+이를 추가 마운트와 결합할 수 있습니다:
 
 ```bash
 export OPENCLAW_HOME_VOLUME="openclaw_home"
@@ -138,91 +145,80 @@ export OPENCLAW_EXTRA_MOUNTS="$HOME/.codex:/home/node/.codex:ro,$HOME/github:/ho
 ./docker-setup.sh
 ```
 
-Notes:
+참고:
 
-- If you change `OPENCLAW_HOME_VOLUME`, rerun `docker-setup.sh` to regenerate the
-  extra compose file.
-- The named volume persists until removed with `docker volume rm <name>`.
+- `OPENCLAW_HOME_VOLUME`를 변경한 경우, `docker-setup.sh`를 다시 실행해 추가 compose 파일을 재생성하세요.
+- 명명된 볼륨은 `docker volume rm <name>` 명령어로 제거될 때까지 유지됩니다.
 
-### Install extra apt packages (optional)
+### 추가 apt 패키지 설치 (선택 사항)
 
-If you need system packages inside the image (for example, build tools or media
-libraries), set `OPENCLAW_DOCKER_APT_PACKAGES` before running `docker-setup.sh`.
-This installs the packages during the image build, so they persist even if the
-container is deleted.
+이미지 내에 시스템 패키지가 필요하다면 (예: 빌드 도구나 미디어 라이브러리), `docker-setup.sh`를 실행하기 전에 `OPENCLAW_DOCKER_APT_PACKAGES`를 설정하세요. 이 변수는 이미지를 빌드하는 동안 패키지를 설치하여, 컨테이너가 삭제되더라도 유지됩니다.
 
-Example:
+예시:
 
 ```bash
 export OPENCLAW_DOCKER_APT_PACKAGES="ffmpeg build-essential"
 ./docker-setup.sh
 ```
 
-Notes:
+참고:
 
-- This accepts a space-separated list of apt package names.
-- If you change `OPENCLAW_DOCKER_APT_PACKAGES`, rerun `docker-setup.sh` to rebuild
-  the image.
+- 이 변수는 apt 패키지 이름의 공백으로 구분된 목록을 수락합니다.
+- 'OPENCLAW_DOCKER_APT_PACKAGES`가 변경된 경우, 이미지를 재구축하기 위해 `docker-setup.sh`를 다시 실행하세요.
 
-### Power-user / full-featured container (opt-in)
+### 고급 사용자 / 전체 기능적 컨테이너 (선택 사항)
 
-The default Docker image is **security-first** and runs as the non-root `node`
-user. This keeps the attack surface small, but it means:
+기본 Docker 이미지는 **보안을 우선**으로 하며 비루트 `node` 사용자로 실행됩니다. 이는 공격 표면을 줄이지만, 다음을 의미합니다:
 
-- no system package installs at runtime
-- no Homebrew by default
-- no bundled Chromium/Playwright browsers
+- 런타임에 시스템 패키지를 설치하지 않습니다.
+- 기본적으로 Homebrew가 없습니다.
+- Chromium/Playwright 브라우저가 번들되지 않습니다.
 
-If you want a more full-featured container, use these opt-in knobs:
+보다 기능이 풍부한 컨테이너가 필요한 경우, 다음의 선택적 설정을 사용하세요:
 
-1. **Persist `/home/node`** so browser downloads and tool caches survive:
+1. **`/home/node` 유지**: 브라우저 다운로드와 도구 캐시가 유지됩니다.
 
 ```bash
 export OPENCLAW_HOME_VOLUME="openclaw_home"
 ./docker-setup.sh
 ```
 
-2. **Bake system deps into the image** (repeatable + persistent):
+2. **이미지 내에 시스템 종속성 베이킹** (반복 가능 + 지속 가능):
 
 ```bash
 export OPENCLAW_DOCKER_APT_PACKAGES="git curl jq"
 ./docker-setup.sh
 ```
 
-3. **Install Playwright browsers without `npx`** (avoids npm override conflicts):
+3. **`npx` 없이 Playwright 브라우저 설치** (npm 오버라이드 충돌 회피):
 
 ```bash
 docker compose run --rm openclaw-cli \
   node /app/node_modules/playwright-core/cli.js install chromium
 ```
 
-If you need Playwright to install system deps, rebuild the image with
-`OPENCLAW_DOCKER_APT_PACKAGES` instead of using `--with-deps` at runtime.
+Playwright가 시스템 종속성을 설치해야 하는 경우, 런타임에 `--with-deps` 대신 `OPENCLAW_DOCKER_APT_PACKAGES`로 이미지를 재구성하세요.
 
-4. **Persist Playwright browser downloads**:
+4. **Playwright 브라우저 다운로드 유지**:
 
-- Set `PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright` in
-  `docker-compose.yml`.
-- Ensure `/home/node` persists via `OPENCLAW_HOME_VOLUME`, or mount
-  `/home/node/.cache/ms-playwright` via `OPENCLAW_EXTRA_MOUNTS`.
+- `docker-compose.yml`에 `PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright` 설정.
+- `/home/node`는 `OPENCLAW_HOME_VOLUME`을 통해 지속되거나, `/home/node/.cache/ms-playwright`는 `OPENCLAW_EXTRA_MOUNTS`를 통해 마운트됩니다.
 
-### Permissions + EACCES
+### 권한 + EACCES
 
-The image runs as `node` (uid 1000). If you see permission errors on
-`/home/node/.openclaw`, make sure your host bind mounts are owned by uid 1000.
+이미지는 `node` (uid 1000)으로 실행됩니다. `/home/node/.openclaw`에서 권한 오류가 발생하면, 호스트 바인드 마운트가 uid 1000의 소유인지 확인하세요.
 
-Example (Linux host):
+예시 (Linux 호스트):
 
 ```bash
 sudo chown -R 1000:1000 /path/to/openclaw-config /path/to/openclaw-workspace
 ```
 
-If you choose to run as root for convenience, you accept the security tradeoff.
+편의상 루트로 실행하기로 선택한 경우, 보안 상의 위험을 감수하는 것입니다.
 
-### Faster rebuilds (recommended)
+### 더 빠른 재구축 (권장)
 
-To speed up rebuilds, order your Dockerfile so dependency layers are cached.
-This avoids re-running `pnpm install` unless lockfiles change:
+재구축 속도를 높이려면 Dockerfile을 의존성 계층이 캐시되도록 정렬하세요. 이는 lockfiles가 변경되지 않는 한 `pnpm install`을 재실행하지 않습니다:
 
 ```dockerfile
 FROM node:22-bookworm
@@ -252,9 +248,9 @@ ENV NODE_ENV=production
 CMD ["node","dist/index.js"]
 ```
 
-### Channel setup (optional)
+### 채널 설정 (선택 사항)
 
-Use the CLI container to configure channels, then restart the gateway if needed.
+CLI 컨테이너를 사용하여 채널을 구성한 다음 필요 시 게이트웨이를 다시 시작하세요.
 
 WhatsApp (QR):
 
@@ -262,105 +258,96 @@ WhatsApp (QR):
 docker compose run --rm openclaw-cli channels login
 ```
 
-Telegram (bot token):
+Telegram (봇 토큰):
 
 ```bash
 docker compose run --rm openclaw-cli channels add --channel telegram --token "<token>"
 ```
 
-Discord (bot token):
+Discord (봇 토큰):
 
 ```bash
 docker compose run --rm openclaw-cli channels add --channel discord --token "<token>"
 ```
 
-Docs: [WhatsApp](/channels/whatsapp), [Telegram](/channels/telegram), [Discord](/channels/discord)
+문서: [WhatsApp](/channels/whatsapp), [Telegram](/channels/telegram), [Discord](/channels/discord)
 
 ### OpenAI Codex OAuth (headless Docker)
 
-If you pick OpenAI Codex OAuth in the wizard, it opens a browser URL and tries
-to capture a callback on `http://127.0.0.1:1455/auth/callback`. In Docker or
-headless setups that callback can show a browser error. Copy the full redirect
-URL you land on and paste it back into the wizard to finish auth.
+마법사에서 OpenAI Codex OAuth를 선택하면 브라우저 URL을 열고 `http://127.0.0.1:1455/auth/callback`에서 콜백을 캡처하려고 시도합니다. Docker 또는 헤드리스 설정에서는 해당 콜백이 브라우저 오류를 표시할 수 있습니다. 잘못된 리디렉션 URL을 복사하여 마법사에 붙여 넣어 인증을 완료하세요.
 
-### Health check
+### 건강 확인
 
 ```bash
 docker compose exec openclaw-gateway node dist/index.js health --token "$OPENCLAW_GATEWAY_TOKEN"
 ```
 
-### E2E smoke test (Docker)
+### E2E 스모크 테스트 (Docker)
 
 ```bash
 scripts/e2e/onboard-docker.sh
 ```
 
-### QR import smoke test (Docker)
+### QR 가져오기 스모크 테스트 (Docker)
 
 ```bash
 pnpm test:docker:qr
 ```
 
-### Notes
+### 참고 사항
 
-- Gateway bind defaults to `lan` for container use.
-- Dockerfile CMD uses `--allow-unconfigured`; mounted config with `gateway.mode` not `local` will still start. Override CMD to enforce the guard.
-- The gateway container is the source of truth for sessions (`~/.openclaw/agents/<agentId>/sessions/`).
+- 게이트웨이 바인드는 컨테이너 사용을 위해 기본적으로 `lan`입니다.
+- Dockerfile CMD는 `--allow-unconfigured`를 사용합니다; `gateway.mode`가 `local`이 아닌 설치 구성은 여전히 시작됩니다. CMD를 무시하여 보호를 강화합니다.
+- 게이트웨이 컨테이너는 세션 (`~/.openclaw/agents/<agentId>/sessions/`)의 진실 소스입니다.
 
-## Agent Sandbox (host gateway + Docker tools)
+## 에이전트 샌드박스 (호스트 게이트웨이 + Docker 도구)
 
-Deep dive: [Sandboxing](/gateway/sandboxing)
+깊이 있는 안내: [샌드박스 격리](/gateway/sandboxing)
 
-### What it does
+### 그 작동 방식
 
-When `agents.defaults.sandbox` is enabled, **non-main sessions** run tools inside a Docker
-container. The gateway stays on your host, but the tool execution is isolated:
+`agents.defaults.sandbox`가 활성화되면, **비주요 세션**은 Docker 컨테이너 내에서 도구를 실행합니다. 게이트웨이는 호스트에 남아 있지만, 도구 실행은 격리됩니다:
 
-- scope: `"agent"` by default (one container + workspace per agent)
-- scope: `"session"` for per-session isolation
-- per-scope workspace folder mounted at `/workspace`
-- optional agent workspace access (`agents.defaults.sandbox.workspaceAccess`)
-- allow/deny tool policy (deny wins)
-- inbound media is copied into the active sandbox workspace (`media/inbound/*`) so tools can read it (with `workspaceAccess: "rw"`, this lands in the agent workspace)
+- 범위: 기본으로 `"agent"` (에이전트별 한 개의 컨테이너 + 작업 공간)
+- 범위: `"session"`은 세션별 격리
+- 각 범위의 작업 공간 폴더가 `/workspace`에 마운트됩니다
+- 선택적 에이전트 작업 공간 접근 (`agents.defaults.sandbox.workspaceAccess`)
+- 도구 정책 허용/거부 (거부가 우선)
+- 수신 미디어는 활성 샌드박스 작업 공간 (`media/inbound/*`)으로 복사되어 도구가 읽을 수 있도록 합니다 (`workspaceAccess: "rw"`인 경우, 에이전트 작업 공간에 위치)
 
-Warning: `scope: "shared"` disables cross-session isolation. All sessions share
-one container and one workspace.
+경고: `scope: "shared"`는 세션 간의 격리를 해제합니다. 모든 세션은 하나의 컨테이너와 하나의 작업 공간을 공유합니다.
 
-### Per-agent sandbox profiles (multi-agent)
+### 에이전트별 샌드박스 프로필 (다중 에이전트)
 
-If you use multi-agent routing, each agent can override sandbox + tool settings:
-`agents.list[].sandbox` and `agents.list[].tools` (plus `agents.list[].tools.sandbox.tools`). This lets you run
-mixed access levels in one gateway:
+다중 에이전트 라우팅을 사용하는 경우, 각 에이전트는 샌드박스 + 도구 설정을 재정의할 수 있습니다: `agents.list[].sandbox`와 `agents.list[].tools` (또한 `agents.list[].tools.sandbox.tools`). 이는 한 게이트웨이 내에서 다양한 접근 수준을 실행할 수 있게 합니다:
 
-- Full access (personal agent)
-- Read-only tools + read-only workspace (family/work agent)
-- No filesystem/shell tools (public agent)
+- 전체 접근 (개인용 에이전트)
+- 읽기 전용 도구 + 읽기 전용 작업 공간 (가정/직장용 에이전트)
+- 파일 시스템/셸 도구 없음 (공용 에이전트)
 
-See [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools) for examples,
-precedence, and troubleshooting.
+예시, 우선순위 및 문제 해결에 대한 자세한 내용은 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools)를 참조하세요.
 
-### Default behavior
+### 기본 동작
 
-- Image: `openclaw-sandbox:bookworm-slim`
-- One container per agent
-- Agent workspace access: `workspaceAccess: "none"` (default) uses `~/.openclaw/sandboxes`
-  - `"ro"` keeps the sandbox workspace at `/workspace` and mounts the agent workspace read-only at `/agent` (disables `write`/`edit`/`apply_patch`)
-  - `"rw"` mounts the agent workspace read/write at `/workspace`
-- Auto-prune: idle > 24h OR age > 7d
-- Network: `none` by default (explicitly opt-in if you need egress)
-- Default allow: `exec`, `process`, `read`, `write`, `edit`, `sessions_list`, `sessions_history`, `sessions_send`, `sessions_spawn`, `session_status`
-- Default deny: `browser`, `canvas`, `nodes`, `cron`, `discord`, `gateway`
+- 이미지: `openclaw-sandbox:bookworm-slim`
+- 에이전트별 하나의 컨테이너
+- 에이전트 작업 공간 접근: `workspaceAccess: "none"` (기본값) 사용 `~/.openclaw/sandboxes`
+  - `"ro"`는 샌드박스 작업 공간을 `/workspace`에 유지하고 에이전트 작업 공간을 읽기 전용으로 `/agent`에 마운트 ( `write`/`edit`/`apply_patch` 비활성화)
+  - `"rw"`는 에이전트 작업 공간을 읽기/쓰기 `/workspace`에 마운트
+- 자동 정리: 대기 > 24시간 또는 나이 > 7일
+- 네트워크: 기본 값 `none` (출구가 필요한 경우 명시적 선택 필요)
+- 기본 허용: `exec`, `process`, `read`, `write`, `edit`, `sessions_list`, `sessions_history`, `sessions_send`, `sessions_spawn`, `session_status`
+- 기본 거부: `browser`, `canvas`, `nodes`, `cron`, `discord`, `gateway`
 
-### Enable sandboxing
+### 샌드박스 격리 활성화
 
-If you plan to install packages in `setupCommand`, note:
+`setupCommand`에서 패키지를 설치할 계획이라면, 다음을 유의하세요:
 
-- Default `docker.network` is `"none"` (no egress).
-- `readOnlyRoot: true` blocks package installs.
-- `user` must be root for `apt-get` (omit `user` or set `user: "0:0"`).
-  OpenClaw auto-recreates containers when `setupCommand` (or docker config) changes
-  unless the container was **recently used** (within ~5 minutes). Hot containers
-  log a warning with the exact `openclaw sandbox recreate ...` command.
+- 기본 `docker.network`는 `"none"` (출구 없음).
+- `readOnlyRoot: true`는 패키지 설치를 차단합니다.
+- `user`는 `apt-get`을 위해 루트여야 합니다 ( `user`를 생략하거나 `user: "0:0"`으로 설정).
+  `setupCommand` (또는 docker 설정)가 변경되면 OpenClaw는 자동으로 컨테이너를 재생성합니다
+  컨테이너가 **최근에 사용되지 않은** 경우 (약 5분 이내). 뜨거운 컨테이너는 정확한 `openclaw sandbox recreate ...` 명령어를 로그로 경고합니다.
 
 ```json5
 {
@@ -368,7 +355,7 @@ If you plan to install packages in `setupCommand`, note:
     defaults: {
       sandbox: {
         mode: "non-main", // off | non-main | all
-        scope: "agent", // session | agent | shared (agent is default)
+        scope: "agent", // session | agent | shared (기본은 agent)
         workspaceAccess: "none", // none | ro | rw
         workspaceRoot: "~/.openclaw/sandboxes",
         docker: {
@@ -395,8 +382,8 @@ If you plan to install packages in `setupCommand`, note:
           extraHosts: ["internal.service:10.0.0.5"],
         },
         prune: {
-          idleHours: 24, // 0 disables idle pruning
-          maxAgeDays: 7, // 0 disables max-age pruning
+          idleHours: 24, // 0은 대기 정리 비활성화
+          maxAgeDays: 7, // 0은 최대 나이 정리 비활성화
         },
       },
     },
@@ -423,30 +410,30 @@ If you plan to install packages in `setupCommand`, note:
 }
 ```
 
-Hardening knobs live under `agents.defaults.sandbox.docker`:
+강화 설정은 `agents.defaults.sandbox.docker`에 위치합니다:
 `network`, `user`, `pidsLimit`, `memory`, `memorySwap`, `cpus`, `ulimits`,
 `seccompProfile`, `apparmorProfile`, `dns`, `extraHosts`.
 
-Multi-agent: override `agents.defaults.sandbox.{docker,browser,prune}.*` per agent via `agents.list[].sandbox.{docker,browser,prune}.*`
-(ignored when `agents.defaults.sandbox.scope` / `agents.list[].sandbox.scope` is `"shared"`).
+다중 에이전트: `agents.list[].sandbox.{docker,browser,prune}.*`를 통해 에이전트별로 `agents.defaults.sandbox.{docker,browser,prune}.*`를 재정의합니다.
+( 무시되는 경우 `agents.defaults.sandbox.scope` / `agents.list[].sandbox.scope` 는 `"shared"` ).
 
-### Build the default sandbox image
+### 기본 샌드박스 이미지 만들기
 
 ```bash
 scripts/sandbox-setup.sh
 ```
 
-This builds `openclaw-sandbox:bookworm-slim` using `Dockerfile.sandbox`.
+이는 `Dockerfile.sandbox`를 사용하여 `openclaw-sandbox:bookworm-slim`을 빌드합니다.
 
-### Sandbox common image (optional)
+### 샌드박스 공통 이미지 (선택 사항)
 
-If you want a sandbox image with common build tooling (Node, Go, Rust, etc.), build the common image:
+공통 빌드 도구가 포함된 샌드박스 이미지를 원하신다면 (Node, Go, Rust 등), 공통 이미지를 빌드하세요:
 
 ```bash
 scripts/sandbox-common-setup.sh
 ```
 
-This builds `openclaw-sandbox-common:bookworm-slim`. To use it:
+이는 `openclaw-sandbox-common:bookworm-slim`을 빌드합니다. 사용하려면:
 
 ```json5
 {
@@ -458,25 +445,23 @@ This builds `openclaw-sandbox-common:bookworm-slim`. To use it:
 }
 ```
 
-### Sandbox browser image
+### 샌드박스 브라우저 이미지
 
-To run the browser tool inside the sandbox, build the browser image:
+샌드박스 내에서 브라우저 도구를 실행하려면, 브라우저 이미지를 빌드하세요:
 
 ```bash
 scripts/sandbox-browser-setup.sh
 ```
 
-This builds `openclaw-sandbox-browser:bookworm-slim` using
-`Dockerfile.sandbox-browser`. The container runs Chromium with CDP enabled and
-an optional noVNC observer (headful via Xvfb).
+이는 `Dockerfile.sandbox-browser`을 사용하여 `openclaw-sandbox-browser:bookworm-slim`을 빌드합니다. 이 컨테이너는 CDP가 활성화된 Chromium과 선택적으로 noVNC 옵저버 (Xvfb를 통한 headful)를 실행합니다.
 
-Notes:
+참고 사항:
 
-- Headful (Xvfb) reduces bot blocking vs headless.
-- Headless can still be used by setting `agents.defaults.sandbox.browser.headless=true`.
-- No full desktop environment (GNOME) is needed; Xvfb provides the display.
+- Headful (Xvfb)은 headless 대비 봇 차단을 줄입니다.
+- Headless도 `agents.defaults.sandbox.browser.headless=true`로 설정하여 여전히 사용할 수 있습니다.
+- 전체 데스크탑 환경 (GNOME)은 필요하지 않으며; Xvfb가 디스플레이를 제공합니다.
 
-Use config:
+구성 사용:
 
 ```json5
 {
@@ -490,7 +475,7 @@ Use config:
 }
 ```
 
-Custom browser image:
+사용자 정의 브라우저 이미지:
 
 ```json5
 {
@@ -502,18 +487,17 @@ Custom browser image:
 }
 ```
 
-When enabled, the agent receives:
+활성화되면, 에이전트는 다음을 수신합니다:
 
-- a sandbox browser control URL (for the `browser` tool)
-- a noVNC URL (if enabled and headless=false)
+- 샌드박스 브라우저 제어 URL (`browser` 도구용)
+- noVNC URL (사용 가능하며 headless=false인 경우)
 
-Remember: if you use an allowlist for tools, add `browser` (and remove it from
-deny) or the tool remains blocked.
-Prune rules (`agents.defaults.sandbox.prune`) apply to browser containers too.
+기억하세요: 도구에 허용 목록을 사용하는 경우, `browser`를 추가하고 거부에서 제거하세요. 그렇지 않으면 도구가 계속 차단됩니다.
+시점 규칙 ( `agents.defaults.sandbox.prune` )은 브라우저 컨테이너에도 적용됩니다.
 
-### Custom sandbox image
+### 사용자 정의 샌드박스 이미지
 
-Build your own image and point config to it:
+자체 이미지를 구축하고 구성에 지정하세요:
 
 ```bash
 docker build -t my-openclaw-sbx -f Dockerfile.sandbox .
@@ -529,39 +513,35 @@ docker build -t my-openclaw-sbx -f Dockerfile.sandbox .
 }
 ```
 
-### Tool policy (allow/deny)
+### 도구 정책 (허용/거부)
 
-- `deny` wins over `allow`.
-- If `allow` is empty: all tools (except deny) are available.
-- If `allow` is non-empty: only tools in `allow` are available (minus deny).
+- `deny`는 항상 `allow`보다 우선합니다.
+- `allow`가 비어 있는 경우: 모든 도구가 (거부를 제외하고) 사용됩니다.
+- `allow`가 비어 있지 않은 경우: `allow`에만 있는 도구가 사용됩니다 (거부 항목 제외).
 
-### Pruning strategy
+### 프루닝 전략
 
-Two knobs:
+두 개의 설정:
 
-- `prune.idleHours`: remove containers not used in X hours (0 = disable)
-- `prune.maxAgeDays`: remove containers older than X days (0 = disable)
+- `prune.idleHours`: X 시간 동안 사용되지 않은 컨테이너 제거 (0 = 비활성화)
+- `prune.maxAgeDays`: X일이 지난 컨테이너 제거 (0 = 비활성화)
 
-Example:
+예시:
 
-- Keep busy sessions but cap lifetime:
+- 바쁜 세션 유지하되 수명을 제한:
   `idleHours: 24`, `maxAgeDays: 7`
-- Never prune:
+- 정리하지 않음:
   `idleHours: 0`, `maxAgeDays: 0`
 
-### Security notes
+### 보안 주의사항
 
-- Hard wall only applies to **tools** (exec/read/write/edit/apply_patch).
-- Host-only tools like browser/camera/canvas are blocked by default.
-- Allowing `browser` in sandbox **breaks isolation** (browser runs on host).
+- 강제 경계는 **도구**에만 적용됩니다 (exec/read/write/edit/apply_patch).
+- 호스트 전용 도구는 기본적으로 차단됩니다 (browser/camera/canvas).
+- 샌드박스에서 `browser`를 허용하는 것은 **격리를 파괴**합니다 (브라우저는 호스트에서 실행).
 
-## Troubleshooting
+## 문제 해결
 
-- Image missing: build with [`scripts/sandbox-setup.sh`](https://github.com/openclaw/openclaw/blob/main/scripts/sandbox-setup.sh) or set `agents.defaults.sandbox.docker.image`.
-- Container not running: it will auto-create per session on demand.
-- Permission errors in sandbox: set `docker.user` to a UID:GID that matches your
-  mounted workspace ownership (or chown the workspace folder).
-- Custom tools not found: OpenClaw runs commands with `sh -lc` (login shell), which
-  sources `/etc/profile` and may reset PATH. Set `docker.env.PATH` to prepend your
-  custom tool paths (e.g., `/custom/bin:/usr/local/share/npm-global/bin`), or add
-  a script under `/etc/profile.d/` in your Dockerfile.
+- 이미지 없음: [`scripts/sandbox-setup.sh`](https://github.com/openclaw/openclaw/blob/main/scripts/sandbox-setup.sh)로 빌드하거나 `agents.defaults.sandbox.docker.image`를 설정하세요.
+- 컨테이너가 실행되지 않음: 세션 수요에 따라 자동으로 생성됩니다.
+- 샌드박스에서의 권한 오류: `docker.user`를 마운트된 작업 공간 소유권에 맞는 UID:GID로 설정하거나 작업 공간 폴더의 소유권을 변경하세요.
+- 사용자 지정 도구를 찾을 수 없음: OpenClaw는 `sh -lc` (로그인 셸)로 명령을 실행하며, 이는 `/etc/profile`을 소스하며 PATH를 재설정할 수 있습니다. `docker.env.PATH`에 사용자 지정 도구 경로를 미리 설정하거나 Dockerfile 내 `/etc/profile.d/` 아래에 스크립트를 추가하세요.

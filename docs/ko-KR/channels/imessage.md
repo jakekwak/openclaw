@@ -1,28 +1,48 @@
 ---
-summary: "Legacy iMessage support via imsg (JSON-RPC over stdio). New setups should use BlueBubbles."
+summary: "Legacy iMessage 지원 (stdio 를 통해 JSON-RPC 를 사용하는 imsg). 신규 설정은 BlueBubbles 를 사용해야 합니다."
 read_when:
-  - Setting up iMessage support
-  - Debugging iMessage send/receive
-title: iMessage
+  - iMessage 지원 설정
+  - iMessage 발신/수신 문제 해결
+title: "iMessage"
 ---
 
 # iMessage (legacy: imsg)
 
-> **Recommended:** Use [BlueBubbles](/channels/bluebubbles) for new iMessage setups.
->
-> The `imsg` channel is a legacy external-CLI integration and may be removed in a future release.
+<Warning>
+신규 iMessage 배포에는 <a href="/channels/bluebubbles">BlueBubbles</a>를 사용하세요.
 
-Status: legacy external CLI integration. Gateway spawns `imsg rpc` (JSON-RPC over stdio).
+`imsg` 통합은 구식이며, 향후 릴리스에서 제거될 수 있습니다.
+</Warning>
 
-## Quick setup (beginner)
+상태: 전통적인 외부 CLI 통합. 게이트웨이는 `imsg rpc`를 스폰하며 stdio 상에서 JSON-RPC 를 통해 통신합니다 (별도의 데몬/포트 없음).
 
-1. Ensure Messages is signed in on this Mac.
-2. Install `imsg`:
-   - `brew install steipete/tap/imsg`
-3. Configure OpenClaw with `channels.imessage.cliPath` and `channels.imessage.dbPath`.
-4. Start the gateway and approve any macOS prompts (Automation + Full Disk Access).
+<CardGroup cols={3}>
+  <Card title="BlueBubbles (추천)" icon="message-circle" href="/channels/bluebubbles">
+    신규 설정에 추천되는 iMessage 경로.
+  </Card>
+  <Card title="페어링" icon="link" href="/channels/pairing">
+    iMessage 다이렉트 메시지는 디폴트로 페어링 모드를 사용합니다.
+  </Card>
+  <Card title="설정 참조" icon="settings" href="/gateway/configuration-reference#imessage">
+    전체 iMessage 필드 참조.
+  </Card>
+</CardGroup>
 
-Minimal config:
+## 빠른 설정
+
+<Tabs>
+  <Tab title="로컬 Mac (빠른 경로)">
+    <Steps>
+      <Step title="imsg 설치 및 검증">
+
+```bash
+brew install steipete/tap/imsg
+imsg rpc --help
+```
+
+      </Step>
+
+      <Step title="OpenClaw 설정">
 
 ```json5
 {
@@ -36,133 +56,153 @@ Minimal config:
 }
 ```
 
-## What it is
+      </Step>
 
-- iMessage channel backed by `imsg` on macOS.
-- Deterministic routing: replies always go back to iMessage.
-- DMs share the agent's main session; groups are isolated (`agent:<agentId>:imessage:group:<chat_id>`).
-- If a multi-participant thread arrives with `is_group=false`, you can still isolate it by `chat_id` using `channels.imessage.groups` (see “Group-ish threads” below).
-
-## Config writes
-
-By default, iMessage is allowed to write config updates triggered by `/config set|unset` (requires `commands.config: true`).
-
-Disable with:
-
-```json5
-{
-  channels: { imessage: { configWrites: false } },
-}
-```
-
-## Requirements
-
-- macOS with Messages signed in.
-- Full Disk Access for OpenClaw + `imsg` (Messages DB access).
-- Automation permission when sending.
-- `channels.imessage.cliPath` can point to any command that proxies stdin/stdout (for example, a wrapper script that SSHes to another Mac and runs `imsg rpc`).
-
-## Setup (fast path)
-
-1. Ensure Messages is signed in on this Mac.
-2. Configure iMessage and start the gateway.
-
-### Dedicated bot macOS user (for isolated identity)
-
-If you want the bot to send from a **separate iMessage identity** (and keep your personal Messages clean), use a dedicated Apple ID + a dedicated macOS user.
-
-1. Create a dedicated Apple ID (example: `my-cool-bot@icloud.com`).
-   - Apple may require a phone number for verification / 2FA.
-2. Create a macOS user (example: `openclawhome`) and sign into it.
-3. Open Messages in that macOS user and sign into iMessage using the bot Apple ID.
-4. Enable Remote Login (System Settings → General → Sharing → Remote Login).
-5. Install `imsg`:
-   - `brew install steipete/tap/imsg`
-6. Set up SSH so `ssh <bot-macos-user>@localhost true` works without a password.
-7. Point `channels.imessage.accounts.bot.cliPath` at an SSH wrapper that runs `imsg` as the bot user.
-
-First-run note: sending/receiving may require GUI approvals (Automation + Full Disk Access) in the _bot macOS user_. If `imsg rpc` looks stuck or exits, log into that user (Screen Sharing helps), run a one-time `imsg chats --limit 1` / `imsg send ...`, approve prompts, then retry.
-
-Example wrapper (`chmod +x`). Replace `<bot-macos-user>` with your actual macOS username:
+      <Step title="게이트웨이 시작">
 
 ```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-# Run an interactive SSH once first to accept host keys:
-#   ssh <bot-macos-user>@localhost true
-exec /usr/bin/ssh -o BatchMode=yes -o ConnectTimeout=5 -T <bot-macos-user>@localhost \
-  "/usr/local/bin/imsg" "$@"
+openclaw gateway
 ```
 
-Example config:
+      </Step>
 
-```json5
-{
-  channels: {
-    imessage: {
-      enabled: true,
-      accounts: {
-        bot: {
-          name: "Bot",
-          enabled: true,
-          cliPath: "/path/to/imsg-bot",
-          dbPath: "/Users/<bot-macos-user>/Library/Messages/chat.db",
-        },
-      },
-    },
-  },
-}
+      <Step title="첫 번째 다이렉트 메시지 페어링 승인 (기본 dmPolicy)">
+
+```bash
+openclaw pairing list imessage
+openclaw pairing approve imessage <CODE>
 ```
 
-For single-account setups, use flat options (`channels.imessage.cliPath`, `channels.imessage.dbPath`) instead of the `accounts` map.
+        페어링 요청은 1시간 후에 만료됩니다.
+      </Step>
+    </Steps>
 
-### Remote/SSH variant (optional)
+  </Tab>
 
-If you want iMessage on another Mac, set `channels.imessage.cliPath` to a wrapper that runs `imsg` on the remote macOS host over SSH. OpenClaw only needs stdio.
-
-Example wrapper:
+  <Tab title="SSH를 통한 원격 Mac">
+    OpenClaw는 stdio 호환 `cliPath`만 필요하므로, `cliPath`를 원격 Mac 에 SSH를 통해 `imsg`를 실행하는 래퍼 스크립트로 지정할 수 있습니다.
 
 ```bash
 #!/usr/bin/env bash
 exec ssh -T gateway-host imsg "$@"
 ```
 
-**Remote attachments:** When `cliPath` points to a remote host via SSH, attachment paths in the Messages database reference files on the remote machine. OpenClaw can automatically fetch these over SCP by setting `channels.imessage.remoteHost`:
+    첨부 파일이 활성화된 경우 추천 구성:
 
 ```json5
 {
   channels: {
     imessage: {
-      cliPath: "~/imsg-ssh", // SSH wrapper to remote Mac
-      remoteHost: "user@gateway-host", // for SCP file transfer
+      enabled: true,
+      cliPath: "~/.openclaw/scripts/imsg-ssh",
+      remoteHost: "user@gateway-host", // SCP 첨부 파일 가져오기에 사용
       includeAttachments: true,
     },
   },
 }
 ```
 
-If `remoteHost` is not set, OpenClaw attempts to auto-detect it by parsing the SSH command in your wrapper script. Explicit configuration is recommended for reliability.
+    `remoteHost`가 설정되지 않은 경우, OpenClaw는 SSH 래퍼 스크립트를 파싱하여 자동으로 감지하려고 시도합니다.
 
-#### Remote Mac via Tailscale (example)
+  </Tab>
+</Tabs>
 
-If the Gateway runs on a Linux host/VM but iMessage must run on a Mac, Tailscale is the simplest bridge: the Gateway talks to the Mac over the tailnet, runs `imsg` via SSH, and SCPs attachments back.
+## 요구 사항 및 권한 (macOS)
 
-Architecture:
+- `imsg`를 실행하는 Mac에서 Messages에 로그인되어 있어야 합니다.
+- OpenClaw/`imsg`를 실행 중인 프로세스 컨텍스트에는 전체 디스크 접근 권한이 필요합니다 (Messages DB에 접근).
+- Messages.app을 통해 메시지를 보내기 위해 자동화 권한이 필요합니다.
 
+<Tip>
+권한은 프로세스 컨텍스트별로 부여됩니다. 게이트웨이가 헤드리스(LaunchAgent/SSH) 상태로 실행 중인 경우, 동일한 컨텍스트에서 대화형 명령을 한 번 실행하여 프롬프트를 트리거하세요:
+
+```bash
+imsg chats --limit 1
+# 또는
+imsg send <handle> "test"
 ```
-┌──────────────────────────────┐          SSH (imsg rpc)          ┌──────────────────────────┐
-│ Gateway host (Linux/VM)      │──────────────────────────────────▶│ Mac with Messages + imsg │
-│ - openclaw gateway           │          SCP (attachments)        │ - Messages signed in     │
-│ - channels.imessage.cliPath  │◀──────────────────────────────────│ - Remote Login enabled   │
-└──────────────────────────────┘                                   └──────────────────────────┘
-              ▲
-              │ Tailscale tailnet (hostname or 100.x.y.z)
-              ▼
-        user@gateway-host
-```
 
-Concrete config example (Tailscale hostname):
+</Tip>
+
+## 접근 제어 및 라우팅
+
+<Tabs>
+  <Tab title="DM 정책">
+    `channels.imessage.dmPolicy`는 다이렉트 메시지를 제어합니다:
+
+    - `pairing` (기본값)
+    - `allowlist`
+    - `open` (`allowFrom`에 `"*"`을 포함해야 함)
+    - `disabled`
+
+    알로우 리스트 필드: `channels.imessage.allowFrom`.
+
+    알로우 리스트 항목은 핸들 또는 채팅 대상(`chat_id:*`, `chat_guid:*`, `chat_identifier:*`) 일 수 있습니다.
+
+  </Tab>
+
+  <Tab title="그룹 정책 + 멘션">
+    `channels.imessage.groupPolicy`는 그룹 처리 방식을 제어합니다:
+
+    - `allowlist` (구성된 경우 기본값)
+    - `open`
+    - `disabled`
+
+    그룹 발신자 알로우 리스트: `channels.imessage.groupAllowFrom`.
+
+    런타임 폴백: `groupAllowFrom`이 설정되지 않은 경우, iMessage 그룹 발신자 체크는 사용 가능한 경우 `allowFrom`으로 폴백합니다.
+
+    그룹 멘션 게이팅:
+
+    - iMessage는 네이티브 멘션 메타데이터가 없습니다
+    - 멘션 감지는 정규식 패턴을 사용합니다 (`agents.list[].groupChat.mentionPatterns`, 폴백 `messages.groupChat.mentionPatterns`)
+    - 패턴이 구성되지 않은 경우, 멘션 게이팅이 적용되지 않습니다
+
+    인증된 발신자의 제어 명령은 그룹에서 멘션 게이팅을 우회할 수 있습니다.
+
+  </Tab>
+
+  <Tab title="세션 및 결정적 응답">
+    - 다이렉트 메시지는 직접 라우팅을 사용하고, 그룹은 그룹 라우팅을 사용합니다.
+    - 기본 `session.dmScope=main`으로, iMessage 다이렉트 메시지는 에이전트의 메인 세션으로 병합됩니다.
+    - 그룹 세션은 격리되어 있습니다 (`agent:<agentId>:imessage:group:<chat_id>`).
+    - 응답은 시작 채널/대상 메타데이터를 사용하여 iMessage로 다시 라우팅됩니다.
+
+    그룹 유사 스레드 행동:
+
+    일부 다수 참여자 iMessage 스레드는 `is_group=false`로 도착할 수 있습니다.
+    해당 `chat_id`가 `channels.imessage.groups`에 명시적으로 구성된 경우, OpenClaw는 이를 그룹 트래픽(그룹 게이팅 + 그룹 세션 격리)으로 처리합니다.
+
+  </Tab>
+</Tabs>
+
+## 배포 패턴
+
+<AccordionGroup>
+  <Accordion title="전용 봇 macOS 사용자 (분리된 iMessage 계정)">
+    봇 트래픽을 개인 메시지 프로필과 분리하기 위해 전용 Apple ID 및 macOS 사용자를 사용합니다.
+
+    일반적인 흐름:
+
+    1. 전용 macOS 사용자 생성/로그인.
+    2. 해당 사용자에서 봇 Apple ID로 Messages 로그인.
+    3. 해당 사용자에서 `imsg` 설치.
+    4. OpenClaw가 해당 사용자 컨텍스트에서 `imsg`를 실행할 수 있도록 SSH 래퍼 생성.
+    5. `channels.imessage.accounts.<id>.cliPath` 및 `.dbPath`를 해당 사용자 프로필로 가리킵니다.
+
+    최초 실행 시 그 봇 사용자 세션에서 GUI 승인이 필요할 수 있습니다.
+
+  </Accordion>
+
+  <Accordion title="Tailscale 을 통한 원격 Mac (예제)">
+    일반적인 토폴로지:
+
+    - 게이트웨이는 Linux/VM에서 실행
+    - iMessage + `imsg`는 tailnet에 있는 Mac 에서 실행
+    - `cliPath` 래퍼는 SSH를 통해 `imsg`를 실행
+    - `remoteHost`는 SCP 첨부 파일 가져오기를 활성화
+
+    예제:
 
 ```json5
 {
@@ -178,122 +218,134 @@ Concrete config example (Tailscale hostname):
 }
 ```
 
-Example wrapper (`~/.openclaw/scripts/imsg-ssh`):
-
 ```bash
 #!/usr/bin/env bash
 exec ssh -T bot@mac-mini.tailnet-1234.ts.net imsg "$@"
 ```
 
-Notes:
+    SSH 키를 사용하여 SSH 및 SCP가 비대화형으로 작동하도록 합니다.
 
-- Ensure the Mac is signed in to Messages, and Remote Login is enabled.
-- Use SSH keys so `ssh bot@mac-mini.tailnet-1234.ts.net` works without prompts.
-- `remoteHost` should match the SSH target so SCP can fetch attachments.
+  </Accordion>
 
-Multi-account support: use `channels.imessage.accounts` with per-account config and optional `name`. See [`gateway/configuration`](/gateway/configuration#telegramaccounts--discordaccounts--slackaccounts--signalaccounts--imessageaccounts) for the shared pattern. Don't commit `~/.openclaw/openclaw.json` (it often contains tokens).
+  <Accordion title="멀티 계정 패턴">
+    iMessage는 `channels.imessage.accounts` 하에 계정별 구성을 지원합니다.
 
-## Access control (DMs + groups)
+    각 계정은 `cliPath`, `dbPath`, `allowFrom`, `groupPolicy`, `mediaMaxMb`, 및 히스토리 설정과 같은 필드를 변경할 수 있습니다.
 
-DMs:
+  </Accordion>
+</AccordionGroup>
 
-- Default: `channels.imessage.dmPolicy = "pairing"`.
-- Unknown senders receive a pairing code; messages are ignored until approved (codes expire after 1 hour).
-- Approve via:
-  - `openclaw pairing list imessage`
-  - `openclaw pairing approve imessage <CODE>`
-- Pairing is the default token exchange for iMessage DMs. Details: [Pairing](/start/pairing)
+## 미디어, 청킹, 및 전송 대상
 
-Groups:
+<AccordionGroup>
+  <Accordion title="첨부 파일 및 미디어">
+    - 인바운드 첨부 파일 수집은 선택 사항: `channels.imessage.includeAttachments`
+    - 원격 첨부 경로는 `remoteHost`가 설정된 경우 SCP를 통해 가져올 수 있음
+    - 아웃바운드 미디어 크기는 `channels.imessage.mediaMaxMb` 사용 (기본값 16MB)
+  </Accordion>
 
-- `channels.imessage.groupPolicy = open | allowlist | disabled`.
-- `channels.imessage.groupAllowFrom` controls who can trigger in groups when `allowlist` is set.
-- Mention gating uses `agents.list[].groupChat.mentionPatterns` (or `messages.groupChat.mentionPatterns`) because iMessage has no native mention metadata.
-- Multi-agent override: set per-agent patterns on `agents.list[].groupChat.mentionPatterns`.
+  <Accordion title="아웃바운드 청킹">
+    - 텍스트 청크 제한: `channels.imessage.textChunkLimit` (기본값 4,000)
+    - 청크 모드: `channels.imessage.chunkMode`
+      - `length` (기본값)
+      - `newline` (단락 우선 분할)
+  </Accordion>
 
-## How it works (behavior)
+  <Accordion title="주소 지정 형식">
+    선호되는 명시적 대상:
 
-- `imsg` streams message events; the gateway normalizes them into the shared channel envelope.
-- Replies always route back to the same chat id or handle.
+    - `chat_id:123` (안정적인 라우팅에 권장)
+    - `chat_guid:...`
+    - `chat_identifier:...`
 
-## Group-ish threads (`is_group=false`)
+    핸들 대상도 지원됨:
 
-Some iMessage threads can have multiple participants but still arrive with `is_group=false` depending on how Messages stores the chat identifier.
+    - `imessage:+1555...`
+    - `sms:+1555...`
+    - `user@example.com`
 
-If you explicitly configure a `chat_id` under `channels.imessage.groups`, OpenClaw treats that thread as a “group” for:
+```bash
+imsg chats --limit 20
+```
 
-- session isolation (separate `agent:<agentId>:imessage:group:<chat_id>` session key)
-- group allowlisting / mention gating behavior
+  </Accordion>
+</AccordionGroup>
 
-Example:
+## 설정 쓰기
+
+iMessage 는 기본적으로 채널에서 시작된 `/config set|unset`에 의한 설정 업데이트 작성을 허용합니다 (`commands.config: true` 필요).
+
+비활성화:
 
 ```json5
 {
   channels: {
     imessage: {
-      groupPolicy: "allowlist",
-      groupAllowFrom: ["+15555550123"],
-      groups: {
-        "42": { requireMention: false },
-      },
+      configWrites: false,
     },
   },
 }
 ```
 
-This is useful when you want an isolated personality/model for a specific thread (see [Multi-agent routing](/concepts/multi-agent)). For filesystem isolation, see [Sandboxing](/gateway/sandboxing).
+## 문제 해결
 
-## Media + limits
+<AccordionGroup>
+  <Accordion title="imsg 를 찾을 수 없음 또는 RPC 지원되지 않음">
+    바이너리 및 RPC 지원을 확인하세요:
 
-- Optional attachment ingestion via `channels.imessage.includeAttachments`.
-- Media cap via `channels.imessage.mediaMaxMb`.
-
-## Limits
-
-- Outbound text is chunked to `channels.imessage.textChunkLimit` (default 4000).
-- Optional newline chunking: set `channels.imessage.chunkMode="newline"` to split on blank lines (paragraph boundaries) before length chunking.
-- Media uploads are capped by `channels.imessage.mediaMaxMb` (default 16).
-
-## Addressing / delivery targets
-
-Prefer `chat_id` for stable routing:
-
-- `chat_id:123` (preferred)
-- `chat_guid:...`
-- `chat_identifier:...`
-- direct handles: `imessage:+1555` / `sms:+1555` / `user@example.com`
-
-List chats:
-
-```
-imsg chats --limit 20
+```bash
+imsg rpc --help
+openclaw channels status --probe
 ```
 
-## Configuration reference (iMessage)
+    프로브가 RPC가 지원되지 않는다고 보고하면, `imsg`를 업데이트 하세요.
 
-Full configuration: [Configuration](/gateway/configuration)
+  </Accordion>
 
-Provider options:
+  <Accordion title="다이렉트 메시지가 무시됨">
+    확인하세요:
 
-- `channels.imessage.enabled`: enable/disable channel startup.
-- `channels.imessage.cliPath`: path to `imsg`.
-- `channels.imessage.dbPath`: Messages DB path.
-- `channels.imessage.remoteHost`: SSH host for SCP attachment transfer when `cliPath` points to a remote Mac (e.g., `user@gateway-host`). Auto-detected from SSH wrapper if not set.
-- `channels.imessage.service`: `imessage | sms | auto`.
-- `channels.imessage.region`: SMS region.
-- `channels.imessage.dmPolicy`: `pairing | allowlist | open | disabled` (default: pairing).
-- `channels.imessage.allowFrom`: DM allowlist (handles, emails, E.164 numbers, or `chat_id:*`). `open` requires `"*"`. iMessage has no usernames; use handles or chat targets.
-- `channels.imessage.groupPolicy`: `open | allowlist | disabled` (default: allowlist).
-- `channels.imessage.groupAllowFrom`: group sender allowlist.
-- `channels.imessage.historyLimit` / `channels.imessage.accounts.*.historyLimit`: max group messages to include as context (0 disables).
-- `channels.imessage.dmHistoryLimit`: DM history limit in user turns. Per-user overrides: `channels.imessage.dms["<handle>"].historyLimit`.
-- `channels.imessage.groups`: per-group defaults + allowlist (use `"*"` for global defaults).
-- `channels.imessage.includeAttachments`: ingest attachments into context.
-- `channels.imessage.mediaMaxMb`: inbound/outbound media cap (MB).
-- `channels.imessage.textChunkLimit`: outbound chunk size (chars).
-- `channels.imessage.chunkMode`: `length` (default) or `newline` to split on blank lines (paragraph boundaries) before length chunking.
+    - `channels.imessage.dmPolicy`
+    - `channels.imessage.allowFrom`
+    - 페어링 승인 (`openclaw pairing list imessage`)
 
-Related global options:
+  </Accordion>
 
-- `agents.list[].groupChat.mentionPatterns` (or `messages.groupChat.mentionPatterns`).
-- `messages.responsePrefix`.
+  <Accordion title="그룹 메시지가 무시됨">
+    확인하세요:
+
+    - `channels.imessage.groupPolicy`
+    - `channels.imessage.groupAllowFrom`
+    - `channels.imessage.groups` 알로우 리스트 동작
+    - 멘션 패턴 구성 (`agents.list[].groupChat.mentionPatterns`)
+
+  </Accordion>
+
+  <Accordion title="원격 첨부가 실패함">
+    확인하세요:
+
+    - `channels.imessage.remoteHost`
+    - 게이트웨이 호스트로부터 SSH/SCP 키 인증
+    - Messages 를 실행 중인 Mac에서 원격 경로의 가독성
+
+  </Accordion>
+
+  <Accordion title="macOS 권한 프롬프트를 놓침">
+    동일한 사용자/세션 컨텍스트에서 대화형 GUI 터미널을 다시 실행하고 프롬프트를 승인하세요:
+
+```bash
+imsg chats --limit 1
+imsg send <handle> "test"
+```
+
+    OpenClaw/`imsg`를 실행하는 프로세스 컨텍스트에 전체 디스크 접근 + 자동화가 부여 되었는지 확인하세요.
+
+  </Accordion>
+</AccordionGroup>
+
+## 설정 참조 포인터
+
+- [설정 참조 - iMessage](/gateway/configuration-reference#imessage)
+- [게이트웨이 설정](/gateway/configuration)
+- [페어링](/channels/pairing)
+- [BlueBubbles](/channels/bluebubbles)

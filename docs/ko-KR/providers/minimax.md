@@ -1,70 +1,64 @@
 ---
-summary: "Use MiniMax M2.1 in OpenClaw"
+summary: "OpenClaw 에서 MiniMax M2.1 사용"
 read_when:
-  - You want MiniMax models in OpenClaw
-  - You need MiniMax setup guidance
+  - OpenClaw 에서 MiniMax 모델을 원할 때
+  - MiniMax 설정 가이드가 필요할 때
 title: "MiniMax"
 ---
 
 # MiniMax
 
-MiniMax is an AI company that builds the **M2/M2.1** model family. The current
-coding-focused release is **MiniMax M2.1** (December 23, 2025), built for
-real-world complex tasks.
+MiniMax 는 **M2/M2.1** 모델 계열을 구축하는 AI 회사입니다. 현재로서는 현실 세계의 복잡한 작업을 위해 제작된 **MiniMax M2.1** (2025년 12월 23일)이 가장 코딩에 중점을 둔 릴리스입니다.
 
-Source: [MiniMax M2.1 release note](https://www.minimax.io/news/minimax-m21)
+출처: [MiniMax M2.1 출시 노트](https://www.minimax.io/news/minimax-m21)
 
-## Model overview (M2.1)
+## 모델 개요 (M2.1)
 
-MiniMax highlights these improvements in M2.1:
+MiniMax 는 M2.1에서 다음과 같은 개선 사항을 강조합니다:
 
-- Stronger **multi-language coding** (Rust, Java, Go, C++, Kotlin, Objective-C, TS/JS).
-- Better **web/app development** and aesthetic output quality (including native mobile).
-- Improved **composite instruction** handling for office-style workflows, building on
-  interleaved thinking and integrated constraint execution.
-- **More concise responses** with lower token usage and faster iteration loops.
-- Stronger **tool/agent framework** compatibility and context management (Claude Code,
-  Droid/Factory AI, Cline, Kilo Code, Roo Code, BlackBox).
-- Higher-quality **dialogue and technical writing** outputs.
+- 강력한 **다중 언어 코딩** (Rust, Java, Go, C++, Kotlin, Objective-C, TS/JS).
+- 더 나은 **웹/앱 개발** 및 미적 출력 품질 (네이티브 모바일 포함).
+- 오피스 스타일의 워크플로를 위한 **복합 지침** 처리 개선, 교차 사고 및 통합된 제약 조건 실행 기반.
+- 낮은 토큰 사용과 빠른 반복 루프로 **더 간결한 응답**.
+- 강력한 **도구/에이전트 프레임워크** 호환성과 컨텍스트 관리 (Claude Code, Droid/Factory AI, Cline, Kilo Code, Roo Code, BlackBox).
+- 고품질의 **대화 및 기술 문서 작성** 출력.
 
 ## MiniMax M2.1 vs MiniMax M2.1 Lightning
 
-- **Speed:** Lightning is the “fast” variant in MiniMax’s pricing docs.
-- **Cost:** Pricing shows the same input cost, but Lightning has higher output cost.
-- **Coding plan routing:** The Lightning back-end isn’t directly available on the MiniMax
-  coding plan. MiniMax auto-routes most requests to Lightning, but falls back to the
-  regular M2.1 back-end during traffic spikes.
+- **속도:** Lightning은 MiniMax의 가격 문서에서 "빠른" 변형입니다.
+- **비용:** 가격은 동일한 입력 비용을 보여주지만, Lightning은 출력 비용이 더 높습니다.
+- **코딩 계획 라우팅:** Lightning 백엔드는 MiniMax 코딩 계획에서 직접 사용할 수 없습니다. MiniMax는 대부분의 요청을 Lightning으로 자동 라우팅하지만 트래픽 급증 시 일반 M2.1 백엔드로 돌아갑니다.
 
-## Choose a setup
+## 설정 선택
 
-### MiniMax OAuth (Coding Plan) — recommended
+### MiniMax OAuth (코딩 계획) — 추천
 
-**Best for:** quick setup with MiniMax Coding Plan via OAuth, no API key required.
+**최적의 대상:** OAuth를 통한 MiniMax 코딩 계획을 사용한 빠른 설정, API 키 불필요.
 
-Enable the bundled OAuth plugin and authenticate:
+번들로 제공된 OAuth 플러그인을 활성화하고 인증:
 
 ```bash
-openclaw plugins enable minimax-portal-auth  # skip if already loaded.
-openclaw gateway restart  # restart if gateway is already running
+openclaw plugins enable minimax-portal-auth  # 이미 로드된 경우 생략.
+openclaw gateway restart  # 게이트웨이가 이미 실행 중인 경우 재시작
 openclaw onboard --auth-choice minimax-portal
 ```
 
-You will be prompted to select an endpoint:
+엔드포인트 선택을 요청받을 것입니다:
 
-- **Global** - International users (`api.minimax.io`)
-- **CN** - Users in China (`api.minimaxi.com`)
+- **Global** - 국제 사용자 (`api.minimax.io`)
+- **CN** - 중국 사용자 (`api.minimaxi.com`)
 
-See [MiniMax OAuth plugin README](https://github.com/openclaw/openclaw/tree/main/extensions/minimax-portal-auth) for details.
+자세한 내용은 [MiniMax OAuth 플러그인 README](https://github.com/openclaw/openclaw/tree/main/extensions/minimax-portal-auth)를 참조하세요.
 
-### MiniMax M2.1 (API key)
+### MiniMax M2.1 (API 키)
 
-**Best for:** hosted MiniMax with Anthropic-compatible API.
+**최적의 대상:** Anthropic 호환 API를 사용하는 호스팅 MiniMax.
 
-Configure via CLI:
+CLI를 통해 구성:
 
-- Run `openclaw configure`
-- Select **Model/auth**
-- Choose **MiniMax M2.1**
+- `openclaw configure` 실행
+- **Model/auth** 선택
+- **MiniMax M2.1** 선택
 
 ```json5
 {
@@ -96,7 +90,7 @@ Configure via CLI:
 
 ### MiniMax M2.1 as fallback (Opus primary)
 
-**Best for:** keep Opus 4.5 as primary, fail over to MiniMax M2.1.
+**최적의 대상:** Opus 4.6을 기본으로 유지하고, MiniMax M2.1로 장애 조치.
 
 ```json5
 {
@@ -104,11 +98,11 @@ Configure via CLI:
   agents: {
     defaults: {
       models: {
-        "anthropic/claude-opus-4-5": { alias: "opus" },
+        "anthropic/claude-opus-4-6": { alias: "opus" },
         "minimax/MiniMax-M2.1": { alias: "minimax" },
       },
       model: {
-        primary: "anthropic/claude-opus-4-5",
+        primary: "anthropic/claude-opus-4-6",
         fallbacks: ["minimax/MiniMax-M2.1"],
       },
     },
@@ -116,13 +110,12 @@ Configure via CLI:
 }
 ```
 
-### Optional: Local via LM Studio (manual)
+### 선택 사항: LM Studio 를 통한 로컬 (수동)
 
-**Best for:** local inference with LM Studio.
-We have seen strong results with MiniMax M2.1 on powerful hardware (e.g. a
-desktop/server) using LM Studio's local server.
+**최적의 대상:** LM Studio 를 사용한 로컬 추론.
+당사는 강력한 하드웨어 (예: 데스크톱/서버)에서 LM Studio의 로컬 서버를 사용하여 MiniMax M2.1과 함께 강력한 결과를 보았습니다.
 
-Configure manually via `openclaw.json`:
+`openclaw.json`을 통해 수동으로 구성:
 
 ```json5
 {
@@ -156,52 +149,50 @@ Configure manually via `openclaw.json`:
 }
 ```
 
-## Configure via `openclaw configure`
+## `openclaw configure` 를 통한 구성
 
-Use the interactive config wizard to set MiniMax without editing JSON:
+인터랙티브 구성 마법사를 사용하여 JSON을 편집하지 않고 MiniMax를 설정하세요:
 
-1. Run `openclaw configure`.
-2. Select **Model/auth**.
-3. Choose **MiniMax M2.1**.
-4. Pick your default model when prompted.
+1. `openclaw configure` 실행.
+2. **Model/auth** 선택.
+3. **MiniMax M2.1** 선택.
+4. 프롬프트가 표시되면 기본 모델을 선택.
 
-## Configuration options
+## 구성 옵션
 
-- `models.providers.minimax.baseUrl`: prefer `https://api.minimax.io/anthropic` (Anthropic-compatible); `https://api.minimax.io/v1` is optional for OpenAI-compatible payloads.
-- `models.providers.minimax.api`: prefer `anthropic-messages`; `openai-completions` is optional for OpenAI-compatible payloads.
-- `models.providers.minimax.apiKey`: MiniMax API key (`MINIMAX_API_KEY`).
-- `models.providers.minimax.models`: define `id`, `name`, `reasoning`, `contextWindow`, `maxTokens`, `cost`.
-- `agents.defaults.models`: alias models you want in the allowlist.
-- `models.mode`: keep `merge` if you want to add MiniMax alongside built-ins.
+- `models.providers.minimax.baseUrl`: `https://api.minimax.io/anthropic` (Anthropic 호환)를 선호; `https://api.minimax.io/v1`는 OpenAI 호환 페이로드에 대한 선택 사항.
+- `models.providers.minimax.api`: `anthropic-messages`를 선호; `openai-completions`는 OpenAI 호환 페이로드에 대한 선택 사항.
+- `models.providers.minimax.apiKey`: MiniMax API 키 (`MINIMAX_API_KEY`).
+- `models.providers.minimax.models`: `id`, `name`, `reasoning`, `contextWindow`, `maxTokens`, `cost` 정의.
+- `agents.defaults.models`: 허용 목록에 원하는 모델의 별칭 지정.
+- `models.mode`: 기본 탑재 모델과 함께 MiniMax를 추가하려면 `merge`로 유지.
 
-## Notes
+## 주의사항
 
-- Model refs are `minimax/<model>`.
-- Coding Plan usage API: `https://api.minimaxi.com/v1/api/openplatform/coding_plan/remains` (requires a coding plan key).
-- Update pricing values in `models.json` if you need exact cost tracking.
-- Referral link for MiniMax Coding Plan (10% off): https://platform.minimax.io/subscribe/coding-plan?code=DbXJTRClnb&source=link
-- See [/concepts/model-providers](/concepts/model-providers) for provider rules.
-- Use `openclaw models list` and `openclaw models set minimax/MiniMax-M2.1` to switch.
+- 모델 참조는 `minimax/<model>`입니다.
+- 코딩 계획 사용 API: `https://api.minimaxi.com/v1/api/openplatform/coding_plan/remains` (코딩 계획 키 필요).
+- 정확한 비용 추적이 필요하면 `models.json`의 가격 값을 업데이트하십시오.
+- MiniMax 코딩 계획에 대한 추천 링크 (10% 할인): [https://platform.minimax.io/subscribe/coding-plan?code=DbXJTRClnb&source=link](https://platform.minimax.io/subscribe/coding-plan?code=DbXJTRClnb&source=link)
+- 공급자 규칙에 대한 내용은 [/concepts/model-providers](/concepts/model-providers)를 참조하세요.
+- `openclaw models list` 및 `openclaw models set minimax/MiniMax-M2.1`를 사용하여 전환.
 
-## Troubleshooting
+## 문제 해결
 
-### “Unknown model: minimax/MiniMax-M2.1”
+### "알 수 없는 모델: minimax/MiniMax-M2.1"
 
-This usually means the **MiniMax provider isn’t configured** (no provider entry
-and no MiniMax auth profile/env key found). A fix for this detection is in
-**2026.1.12** (unreleased at the time of writing). Fix by:
+이 경우 일반적으로 **MiniMax 프로바이더가 구성되지 않음**을 의미합니다 (프로바이더 항목 없음 및 MiniMax 인증 프로필/환경 키 없음). 이 감지에 대한 수정 사항은 **2026.1.12** (작성 당시 미출시)에 있습니다. 수정 방법:
 
-- Upgrading to **2026.1.12** (or run from source `main`), then restarting the gateway.
-- Running `openclaw configure` and selecting **MiniMax M2.1**, or
-- Adding the `models.providers.minimax` block manually, or
-- Setting `MINIMAX_API_KEY` (or a MiniMax auth profile) so the provider can be injected.
+- **2026.1.12**로 업그레이드 (또는 소스 `main`에서 실행), 그런 다음 게이트웨이를 재시작.
+- `openclaw configure`를 실행하고 **MiniMax M2.1**를 선택, 또는
+- `models.providers.minimax` 블록을 수동으로 추가, 또는
+- `MINIMAX_API_KEY` (또는 MiniMax 인증 프로필) 설정하여 프로바이더가 주입될 수 있도록 합니다.
 
-Make sure the model id is **case‑sensitive**:
+모델 ID가 **대소문자를 구분**하는 지 확인하세요:
 
 - `minimax/MiniMax-M2.1`
 - `minimax/MiniMax-M2.1-lightning`
 
-Then recheck with:
+그런 다음 다음 명령어로 다시 확인하십시오:
 
 ```bash
 openclaw models list

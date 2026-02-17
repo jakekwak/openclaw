@@ -1,156 +1,155 @@
 ---
 summary: "Camera capture (iOS node + macOS app) for agent use: photos (jpg) and short video clips (mp4)"
 read_when:
-  - Adding or modifying camera capture on iOS nodes or macOS
-  - Extending agent-accessible MEDIA temp-file workflows
-title: "Camera Capture"
+  - iOS 노드 또는 macOS에서 카메라 캡처 추가 또는 수정
+  - 에이전트가 접근 가능한 MEDIA 임시 파일 워크플로우 확장
+title: "카메라 캡처"
 ---
 
-# Camera capture (agent)
+# 카메라 캡처 (에이전트)
 
-OpenClaw supports **camera capture** for agent workflows:
+OpenClaw는 에이전트 워크플로우를 위한 **카메라 캡처**를 지원합니다:
 
-- **iOS node** (paired via Gateway): capture a **photo** (`jpg`) or **short video clip** (`mp4`, with optional audio) via `node.invoke`.
-- **Android node** (paired via Gateway): capture a **photo** (`jpg`) or **short video clip** (`mp4`, with optional audio) via `node.invoke`.
-- **macOS app** (node via Gateway): capture a **photo** (`jpg`) or **short video clip** (`mp4`, with optional audio) via `node.invoke`.
+- **iOS 노드** (게이트웨이를 통해 페어링됨): `node.invoke`를 통해 **사진** (`jpg`) 또는 **짧은 비디오 클립** (`mp4`, 선택적 오디오 포함)을 캡처합니다.
+- **Android 노드** (게이트웨이를 통해 페어링됨): `node.invoke`를 통해 **사진** (`jpg`) 또는 **짧은 비디오 클립** (`mp4`, 선택적 오디오 포함)을 캡처합니다.
+- **macOS 앱** (게이트웨이를 통해 노드): `node.invoke`를 통해 **사진** (`jpg`) 또는 **짧은 비디오 클립** (`mp4`, 선택적 오디오 포함)을 캡처합니다.
 
-All camera access is gated behind **user-controlled settings**.
+모든 카메라 액세스는 **사용자 제어 설정** 뒤에 위치합니다.
 
-## iOS node
+## iOS 노드
 
-### User setting (default on)
+### 사용자 설정 (기본값: 활성화)
 
-- iOS Settings tab → **Camera** → **Allow Camera** (`camera.enabled`)
-  - Default: **on** (missing key is treated as enabled).
-  - When off: `camera.*` commands return `CAMERA_DISABLED`.
+- iOS 설정 탭 → **카메라** → **카메라 허용** (`camera.enabled`)
+  - 기본값: **활성화** (키가 없을 경우 활성화로 간주).
+  - 비활성화 시: `camera.*` 명령어가 `CAMERA_DISABLED`를 반환합니다.
 
-### Commands (via Gateway `node.invoke`)
+### 명령어 (게이트웨이 `node.invoke` 통해)
 
 - `camera.list`
-  - Response payload:
-    - `devices`: array of `{ id, name, position, deviceType }`
+  - 응답 페이로드:
+    - `devices`: `{ id, name, position, deviceType }`의 배열
 
 - `camera.snap`
-  - Params:
-    - `facing`: `front|back` (default: `front`)
-    - `maxWidth`: number (optional; default `1600` on the iOS node)
-    - `quality`: `0..1` (optional; default `0.9`)
-    - `format`: currently `jpg`
-    - `delayMs`: number (optional; default `0`)
-    - `deviceId`: string (optional; from `camera.list`)
-  - Response payload:
+  - 파라미터:
+    - `facing`: `front|back` (기본값: `front`)
+    - `maxWidth`: 숫자 (선택사항; iOS 노드에서 기본값 `1600`)
+    - `quality`: `0..1` (선택사항; 기본값 `0.9`)
+    - `format`: 현재 `jpg`
+    - `delayMs`: 숫자 (선택사항; 기본값 `0`)
+    - `deviceId`: 문자열 (선택사항; `camera.list`에서 가져옴)
+  - 응답 페이로드:
     - `format: "jpg"`
     - `base64: "<...>"`
     - `width`, `height`
-  - Payload guard: photos are recompressed to keep the base64 payload under 5 MB.
+  - 페이로드 보호: 사진은 base64 페이로드를 5 MB 이하로 유지하기 위해 재압축됩니다.
 
 - `camera.clip`
-  - Params:
-    - `facing`: `front|back` (default: `front`)
-    - `durationMs`: number (default `3000`, clamped to a max of `60000`)
-    - `includeAudio`: boolean (default `true`)
-    - `format`: currently `mp4`
-    - `deviceId`: string (optional; from `camera.list`)
-  - Response payload:
+  - 파라미터:
+    - `facing`: `front|back` (기본값: `front`)
+    - `durationMs`: 숫자 (기본값 `3000`, 최대 `60000`으로 고정)
+    - `includeAudio`: 불리언 (기본값 `true`)
+    - `format`: 현재 `mp4`
+    - `deviceId`: 문자열 (선택사항; `camera.list`에서 가져옴)
+  - 응답 페이로드:
     - `format: "mp4"`
     - `base64: "<...>"`
     - `durationMs`
     - `hasAudio`
 
-### Foreground requirement
+### 포어그라운드 요구사항
 
-Like `canvas.*`, the iOS node only allows `camera.*` commands in the **foreground**. Background invocations return `NODE_BACKGROUND_UNAVAILABLE`.
+`canvas.*`와 유사하게, iOS 노드는 **포어그라운드**에서만 `camera.*` 명령어를 허용합니다. 백그라운드 호출은 `NODE_BACKGROUND_UNAVAILABLE`를 반환합니다.
 
-### CLI helper (temp files + MEDIA)
+### CLI 도우미 (임시 파일 + MEDIA)
 
-The easiest way to get attachments is via the CLI helper, which writes decoded media to a temp file and prints `MEDIA:<path>`.
+가장 쉬운 첨부 파일 가져오는 방법은 CLI 도우미를 통해 디코딩된 미디어를 임시 파일에 쓰고 `MEDIA:<path>`를 출력하는 것입니다.
 
-Examples:
+예제:
 
 ```bash
-openclaw nodes camera snap --node <id>               # default: both front + back (2 MEDIA lines)
+openclaw nodes camera snap --node <id>               # 기본값: 전면 + 후면 (2개의 MEDIA 줄)
 openclaw nodes camera snap --node <id> --facing front
 openclaw nodes camera clip --node <id> --duration 3000
 openclaw nodes camera clip --node <id> --no-audio
 ```
 
-Notes:
+참고:
 
-- `nodes camera snap` defaults to **both** facings to give the agent both views.
-- Output files are temporary (in the OS temp directory) unless you build your own wrapper.
+- `nodes camera snap`은 에이전트에게 두 보기 모두를 제공하기 위해 **둘 다** 방향을 기본값으로 합니다.
+- 출력 파일은 임시 (OS 임시 디렉토리에 저장)이며, 직접 래퍼를 작성하지 않는 한 임시 파일로 남습니다.
 
-## Android node
+## Android 노드
 
-### User setting (default on)
+### Android 사용자 설정 (기본값: 활성화)
 
-- Android Settings sheet → **Camera** → **Allow Camera** (`camera.enabled`)
-  - Default: **on** (missing key is treated as enabled).
-  - When off: `camera.*` commands return `CAMERA_DISABLED`.
+- Android 설정 시트 → **카메라** → **카메라 허용** (`camera.enabled`)
+  - 기본값: **활성화** (키가 없을 경우 활성화로 간주).
+  - 비활성화 시: `camera.*` 명령어가 `CAMERA_DISABLED`를 반환합니다.
 
-### Permissions
+### 권한
 
-- Android requires runtime permissions:
-  - `CAMERA` for both `camera.snap` and `camera.clip`.
-  - `RECORD_AUDIO` for `camera.clip` when `includeAudio=true`.
+- Android는 런타임 권한을 필요로 합니다:
+  - `CAMERA`는 `camera.snap`과 `camera.clip` 모두에 필요합니다.
+  - `RECORD_AUDIO`는 `camera.clip`에서 `includeAudio=true`일 경우 필요합니다.
 
-If permissions are missing, the app will prompt when possible; if denied, `camera.*` requests fail with a
-`*_PERMISSION_REQUIRED` error.
+권한이 누락된 경우, 가능할 때 앱에서 프롬프트를 표시합니다. 거부된 경우, `camera.*` 요청은 `*_PERMISSION_REQUIRED` 오류와 함께 실패합니다.
 
-### Foreground requirement
+### Android 포어그라운드 요구사항
 
-Like `canvas.*`, the Android node only allows `camera.*` commands in the **foreground**. Background invocations return `NODE_BACKGROUND_UNAVAILABLE`.
+`canvas.*`와 유사하게, Android 노드는 **포어그라운드**에서만 `camera.*` 명령어를 허용합니다. 백그라운드 호출은 `NODE_BACKGROUND_UNAVAILABLE`를 반환합니다.
 
-### Payload guard
+### 페이로드 보호
 
-Photos are recompressed to keep the base64 payload under 5 MB.
+사진은 base64 페이로드를 5 MB 이하로 유지하기 위해 재압축됩니다.
 
-## macOS app
+## macOS 앱
 
-### User setting (default off)
+### 사용자 설정 (기본값: 비활성화)
 
-The macOS companion app exposes a checkbox:
+macOS 동반 앱은 체크박스를 제공합니다:
 
-- **Settings → General → Allow Camera** (`openclaw.cameraEnabled`)
-  - Default: **off**
-  - When off: camera requests return “Camera disabled by user”.
+- **설정 → 일반 → 카메라 허용** (`openclaw.cameraEnabled`)
+  - 기본값: **비활성화**
+  - 비활성화 시: 카메라 요청은 "사용자에 의해 카메라 비활성화됨"을 반환합니다.
 
-### CLI helper (node invoke)
+### CLI 도우미 (노드 호출)
 
-Use the main `openclaw` CLI to invoke camera commands on the macOS node.
+주요 `openclaw` CLI를 사용하여 macOS 노드에서 카메라 명령어를 실행합니다.
 
-Examples:
+예제:
 
 ```bash
-openclaw nodes camera list --node <id>            # list camera ids
-openclaw nodes camera snap --node <id>            # prints MEDIA:<path>
+openclaw nodes camera list --node <id>            # 카메라 id 목록
+openclaw nodes camera snap --node <id>            # MEDIA:<path> 출력
 openclaw nodes camera snap --node <id> --max-width 1280
 openclaw nodes camera snap --node <id> --delay-ms 2000
 openclaw nodes camera snap --node <id> --device-id <id>
-openclaw nodes camera clip --node <id> --duration 10s          # prints MEDIA:<path>
-openclaw nodes camera clip --node <id> --duration-ms 3000      # prints MEDIA:<path> (legacy flag)
+openclaw nodes camera clip --node <id> --duration 10s          # MEDIA:<path> 출력
+openclaw nodes camera clip --node <id> --duration-ms 3000      # MEDIA:<path> 출력 (레거시 플래그)
 openclaw nodes camera clip --node <id> --device-id <id>
 openclaw nodes camera clip --node <id> --no-audio
 ```
 
-Notes:
+참고:
 
-- `openclaw nodes camera snap` defaults to `maxWidth=1600` unless overridden.
-- On macOS, `camera.snap` waits `delayMs` (default 2000ms) after warm-up/exposure settle before capturing.
-- Photo payloads are recompressed to keep base64 under 5 MB.
+- `openclaw nodes camera snap`은 `maxWidth=1600`을 기본값으로 사용합니다.
+- macOS에서는 `camera.snap`이 캡처하기 전에 워밍업/노출 안정화 후 `delayMs`(기본값 2000ms)를 기다립니다.
+- 사진 페이로드는 base64를 5 MB 이하로 유지하기 위해 재압축됩니다.
 
-## Safety + practical limits
+## 안전성 + 실용적 한계
 
-- Camera and microphone access trigger the usual OS permission prompts (and require usage strings in Info.plist).
-- Video clips are capped (currently `<= 60s`) to avoid oversized node payloads (base64 overhead + message limits).
+- 카메라 및 마이크 접근은 일반적인 OS 권한 프롬프트를 트리거하며, Info.plist에 사용 문자열이 필요합니다.
+- 비디오 클립은 너무 큰 노드 페이로드를 피하기 위해 (현재 `<= 60s`) 제한됩니다 (base64 오버헤드 + 메시지 한계).
 
-## macOS screen video (OS-level)
+## macOS 화면 비디오 (OS 수준)
 
-For _screen_ video (not camera), use the macOS companion:
+_화면_ 비디오(카메라 아님)의 경우, macOS 동반 앱을 사용합니다:
 
 ```bash
-openclaw nodes screen record --node <id> --duration 10s --fps 15   # prints MEDIA:<path>
+openclaw nodes screen record --node <id> --duration 10s --fps 15   # MEDIA:<path> 출력
 ```
 
-Notes:
+참고:
 
-- Requires macOS **Screen Recording** permission (TCC).
+- macOS **화면 녹화** 권한 (TCC)이 필요합니다.

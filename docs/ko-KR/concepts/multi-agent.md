@@ -1,92 +1,86 @@
 ---
-summary: "Multi-agent routing: isolated agents, channel accounts, and bindings"
+summary: "멀티 에이전트 라우팅: 격리된 에이전트, 채널 계정, 및 바인딩"
 title: Multi-Agent Routing
-read_when: "You want multiple isolated agents (workspaces + auth) in one gateway process."
+read_when: "하나의 게이트웨이 프로세스에서 다수의 격리된 에이전트(워크스페이스 + 인증)를 원할 때."
 status: active
 ---
 
 # Multi-Agent Routing
 
-Goal: multiple _isolated_ agents (separate workspace + `agentDir` + sessions), plus multiple channel accounts (e.g. two WhatsApps) in one running Gateway. Inbound is routed to an agent via bindings.
+목표: 하나의 실행중인 게이트웨이에서 여러 _격리된_ 에이전트(독립된 워크스페이스 + `agentDir` + 세션), 그리고 다수의 채널 계정(예: 두 개의 WhatsApp)을 운영하는 것입니다. 바인딩을 통해 들어오는 메세지가 에이전트로 라우팅됩니다.
 
-## What is “one agent”?
+## “하나의 에이전트”란?
 
-An **agent** is a fully scoped brain with its own:
+**에이전트**는 자체적으로 완전한 범위를 가진 지능체입니다:
 
-- **Workspace** (files, AGENTS.md/SOUL.md/USER.md, local notes, persona rules).
-- **State directory** (`agentDir`) for auth profiles, model registry, and per-agent config.
-- **Session store** (chat history + routing state) under `~/.openclaw/agents/<agentId>/sessions`.
+- **워크스페이스** (파일, AGENTS.md/SOUL.md/USER.md, 로컬 노트, 페르소나 규칙).
+- **상태 디렉토리** (`agentDir`) 인증 프로파일, 모델 레지스트리 및 에이전트별 설정.
+- **세션 저장소** (`~/.openclaw/agents/<agentId>/sessions` 이하의 채팅 기록과 라우팅 상태).
 
-Auth profiles are **per-agent**. Each agent reads from its own:
+인증 프로파일은 **에이전트별**입니다. 각 에이전트는 자신의 프로파일을 읽습니다:
 
 ```
 ~/.openclaw/agents/<agentId>/agent/auth-profiles.json
 ```
 
-Main agent credentials are **not** shared automatically. Never reuse `agentDir`
-across agents (it causes auth/session collisions). If you want to share creds,
-copy `auth-profiles.json` into the other agent's `agentDir`.
+주 에이전트 자격 증명은 자동으로 공유되지 **않습니다**. `agentDir`을 에이전트 간에 재사용하지 마십시오 (인증/세션 충돌을 유발할 수 있습니다). 자격 증명을 공유하려면, 다른 에이전트의 `agentDir`에 `auth-profiles.json`을 복사하십시오.
 
-Skills are per-agent via each workspace’s `skills/` folder, with shared skills
-available from `~/.openclaw/skills`. See [Skills: per-agent vs shared](/tools/skills#per-agent-vs-shared-skills).
+스킬은 각 워크스페이스의 `skills/` 폴더를 통해 에이전트별로 가능하며, 공통 스킬은 `~/.openclaw/skills`에서 이용할 수 있습니다. [스킬: 에이전트별 vs 공통](/tools/skills#per-agent-vs-shared-skills)을 참조하십시오.
 
-The Gateway can host **one agent** (default) or **many agents** side-by-side.
+게이트웨이는 **하나의 에이전트**(기본값) 또는 **여러 에이전트**를 나란히 호스팅할 수 있습니다.
 
-**Workspace note:** each agent’s workspace is the **default cwd**, not a hard
-sandbox. Relative paths resolve inside the workspace, but absolute paths can
-reach other host locations unless sandboxing is enabled. See
-[Sandboxing](/gateway/sandboxing).
+**워크스페이스 주의사항:** 각 에이전트의 워크스페이스는 **기본 현재 작업 디렉토리(cwd)**이며, 고정된 샌드박스가 아닙니다. 상대 경로는 워크스페이스 내부에서 해결되지만, 절대 경로는 샌드박스 격리가 활성화되지 않은 한 다른 호스트 위치에 도달할 수 있습니다. [샌드박스 격리](/gateway/sandboxing)를 참조하십시오.
 
-## Paths (quick map)
+## 경로 (빠른 맵)
 
-- Config: `~/.openclaw/openclaw.json` (or `OPENCLAW_CONFIG_PATH`)
-- State dir: `~/.openclaw` (or `OPENCLAW_STATE_DIR`)
-- Workspace: `~/.openclaw/workspace` (or `~/.openclaw/workspace-<agentId>`)
-- Agent dir: `~/.openclaw/agents/<agentId>/agent` (or `agents.list[].agentDir`)
-- Sessions: `~/.openclaw/agents/<agentId>/sessions`
+- 설정: `~/.openclaw/openclaw.json` (또는 `OPENCLAW_CONFIG_PATH`)
+- 상태 디렉토리: `~/.openclaw` (또는 `OPENCLAW_STATE_DIR`)
+- 워크스페이스: `~/.openclaw/workspace` (또는 `~/.openclaw/workspace-<agentId>`)
+- 에이전트 디렉토리: `~/.openclaw/agents/<agentId>/agent` (또는 `agents.list[].agentDir`)
+- 세션: `~/.openclaw/agents/<agentId>/sessions`
 
-### Single-agent mode (default)
+### 단일 에이전트 모드 (기본값)
 
-If you do nothing, OpenClaw runs a single agent:
+아무 것도 하지 않으면, OpenClaw는 단일 에이전트를 실행합니다:
 
-- `agentId` defaults to **`main`**.
-- Sessions are keyed as `agent:main:<mainKey>`.
-- Workspace defaults to `~/.openclaw/workspace` (or `~/.openclaw/workspace-<profile>` when `OPENCLAW_PROFILE` is set).
-- State defaults to `~/.openclaw/agents/main/agent`.
+- `agentId`는 **`main`**으로 기본 설정됩니다.
+- 세션은 `agent:main:<mainKey>`로 키가 지정됩니다.
+- 워크스페이스는 `~/.openclaw/workspace`(또는 `OPENCLAW_PROFILE`이 설정되었을 때 `~/.openclaw/workspace-<profile>`)로 기본 설정됩니다.
+- 상태는 `~/.openclaw/agents/main/agent`로 기본 설정됩니다.
 
-## Agent helper
+## 에이전트 도우미
 
-Use the agent wizard to add a new isolated agent:
+새로운 격리된 에이전트를 추가하려면 에이전트 마법사를 사용하십시오:
 
 ```bash
 openclaw agents add work
 ```
 
-Then add `bindings` (or let the wizard do it) to route inbound messages.
+그런 다음 들어오는 메시지를 라우팅하기 위해 `binding`을 추가하십시오 (또는 마법사에게 맡기십시오).
 
-Verify with:
+확인은 다음과 같이 수행합니다:
 
 ```bash
 openclaw agents list --bindings
 ```
 
-## Multiple agents = multiple people, multiple personalities
+## 여러 에이전트 = 여러 사람, 여러 인격
 
-With **multiple agents**, each `agentId` becomes a **fully isolated persona**:
+**여러 에이전트**를 사용하면 각 `agentId`는 **완전한 격리된 페르소나**가 됩니다:
 
-- **Different phone numbers/accounts** (per channel `accountId`).
-- **Different personalities** (per-agent workspace files like `AGENTS.md` and `SOUL.md`).
-- **Separate auth + sessions** (no cross-talk unless explicitly enabled).
+- **다른 전화번호/계정** (각 채널 `accountId`별).
+- **다른 인격** (`AGENTS.md` 및 `SOUL.md`와 같은 에이전트별 워크스페이스 파일별).
+- **별도의 인증 및 세션** (명시적으로 활성화되지 않는 한 상호작용 없음).
 
-This lets **multiple people** share one Gateway server while keeping their AI “brains” and data isolated.
+이를 통해 **여러 사람**이 하나의 게이트웨이 서버를 공유하면서도 AI "두뇌"와 데이터를 격리할 수 있습니다.
 
-## One WhatsApp number, multiple people (DM split)
+## 하나의 WhatsApp 번호, 여러 사람 (DM 분할)
 
-You can route **different WhatsApp DMs** to different agents while staying on **one WhatsApp account**. Match on sender E.164 (like `+15551234567`) with `peer.kind: "dm"`. Replies still come from the same WhatsApp number (no per‑agent sender identity).
+**하나의 WhatsApp 계정**에서 **다른 WhatsApp 다이렉트 메시지**를 다른 에이전트로 라우팅할 수 있습니다. 송신자 E.164(예: `+15551234567`)와 `peer.kind: "direct"`로 매칭하십시오. 답장은 동일한 WhatsApp 번호에서 계속 나오므로 에이전트별 발신자 식별은 없습니다.
 
-Important detail: direct chats collapse to the agent’s **main session key**, so true isolation requires **one agent per person**.
+중요 세부사항: 다이렉트 채팅은 에이전트의 **주 세션 키**로 병합되므로, 진정한 분리를 위해서는 **사람당 하나의 에이전트**가 필요합니다.
 
-Example:
+예제:
 
 ```json5
 {
@@ -97,8 +91,14 @@ Example:
     ],
   },
   bindings: [
-    { agentId: "alex", match: { channel: "whatsapp", peer: { kind: "dm", id: "+15551230001" } } },
-    { agentId: "mia", match: { channel: "whatsapp", peer: { kind: "dm", id: "+15551230002" } } },
+    {
+      agentId: "alex",
+      match: { channel: "whatsapp", peer: { kind: "direct", id: "+15551230001" } },
+    },
+    {
+      agentId: "mia",
+      match: { channel: "whatsapp", peer: { kind: "direct", id: "+15551230002" } },
+    },
   ],
   channels: {
     whatsapp: {
@@ -109,36 +109,38 @@ Example:
 }
 ```
 
-Notes:
+참고 사항:
 
-- DM access control is **global per WhatsApp account** (pairing/allowlist), not per agent.
-- For shared groups, bind the group to one agent or use [Broadcast groups](/broadcast-groups).
+- 다이렉트 메시지 접근 제어는 **WhatsApp 계정당 전역**(페어링/허용 목록)이며, 에이전트별이 아닙니다.
+- 공유 그룹의 경우 그룹을 하나의 에이전트에 바인딩하거나 [방송 그룹](/channels/broadcast-groups)을 사용하십시오.
 
-## Routing rules (how messages pick an agent)
+## 라우팅 규칙 (메시지가 에이전트를 선택하는 방식)
 
-Bindings are **deterministic** and **most-specific wins**:
+바인딩은 **결정론적**이며 **가장 구체적인 것이 승리합니다**:
 
-1. `peer` match (exact DM/group/channel id)
-2. `guildId` (Discord)
-3. `teamId` (Slack)
-4. `accountId` match for a channel
-5. channel-level match (`accountId: "*"`)
-6. fallback to default agent (`agents.list[].default`, else first list entry, default: `main`)
+1. `peer` 매칭 (정확한 DM/그룹/채널 ID)
+2. `parentPeer` 매칭 (스레드 상속)
+3. `guildId + roles` (Discord 역할 라우팅)
+4. `guildId` (Discord)
+5. `teamId` (Slack)
+6. 채널에 대한 `accountId` 매칭
+7. 채널 수준 매칭 (`accountId: "*"`)
+8. 기본 에이전트로 대체 (`agents.list[].default`, 아니면 첫 번째 리스트 항목, 기본값: `main`)
 
-## Multiple accounts / phone numbers
+바인딩이 여러 매칭 필드를 설정한 경우 (예: `peer` + `guildId`), 모든 지정된 필드가 필요합니다 (`AND` 의미).
 
-Channels that support **multiple accounts** (e.g. WhatsApp) use `accountId` to identify
-each login. Each `accountId` can be routed to a different agent, so one server can host
-multiple phone numbers without mixing sessions.
+## 다중 계정 / 전화번호
 
-## Concepts
+다수의 계정을 지원하는 채널 (예: WhatsApp)은 `accountId`를 사용하여 각 로그인을 식별합니다. 각 `accountId`는 다른 에이전트로 라우팅될 수 있으므로, 하나의 서버가 세션 섞임 없이 여러 전화번호를 호스트할 수 있습니다.
 
-- `agentId`: one “brain” (workspace, per-agent auth, per-agent session store).
-- `accountId`: one channel account instance (e.g. WhatsApp account `"personal"` vs `"biz"`).
-- `binding`: routes inbound messages to an `agentId` by `(channel, accountId, peer)` and optionally guild/team ids.
-- Direct chats collapse to `agent:<agentId>:<mainKey>` (per-agent “main”; `session.mainKey`).
+## 개념
 
-## Example: two WhatsApps → two agents
+- `agentId`: 하나의 “뇌” (워크스페이스, 에이전트별 인증, 에이전트별 세션 저장소).
+- `accountId`: 하나의 채널 계정 인스턴스 (예: WhatsApp 계정 `"personal"` vs `"biz"`).
+- `binding`: `(channel, accountId, peer)` 및 선택적으로 guild/team ID별로 메시지를 `agentId`로 라우팅합니다.
+- 다이렉트 채팅은 `agent:<agentId>:<mainKey>`로 압축됩니다 (에이전트별 “주”; `session.mainKey`).
+
+## 예시: 두 개의 WhatsApp → 두 개의 에이전트
 
 `~/.openclaw/openclaw.json` (JSON5):
 
@@ -162,12 +164,12 @@ multiple phone numbers without mixing sessions.
     ],
   },
 
-  // Deterministic routing: first match wins (most-specific first).
+  // 결정론적 라우팅: 첫 번째 매칭이 승리 (가장 구체적인 것부터).
   bindings: [
     { agentId: "home", match: { channel: "whatsapp", accountId: "personal" } },
     { agentId: "work", match: { channel: "whatsapp", accountId: "biz" } },
 
-    // Optional per-peer override (example: send a specific group to work agent).
+    // 선택적 피어별 오버라이드 (예: 특정 그룹을 work 에이전트로 보냄).
     {
       agentId: "work",
       match: {
@@ -178,7 +180,7 @@ multiple phone numbers without mixing sessions.
     },
   ],
 
-  // Off by default: agent-to-agent messaging must be explicitly enabled + allowlisted.
+  // 기본적으로 꺼짐: 에이전트 간 메시징은 명시적으로 활성화되고 허용 목록에 추가되어야 함.
   tools: {
     agentToAgent: {
       enabled: false,
@@ -190,11 +192,11 @@ multiple phone numbers without mixing sessions.
     whatsapp: {
       accounts: {
         personal: {
-          // Optional override. Default: ~/.openclaw/credentials/whatsapp/personal
+          // 선택적 오버라이드. 기본값: ~/.openclaw/credentials/whatsapp/personal
           // authDir: "~/.openclaw/credentials/whatsapp/personal",
         },
         biz: {
-          // Optional override. Default: ~/.openclaw/credentials/whatsapp/biz
+          // 선택적 오버라이드. 기본값: ~/.openclaw/credentials/whatsapp/biz
           // authDir: "~/.openclaw/credentials/whatsapp/biz",
         },
       },
@@ -203,9 +205,9 @@ multiple phone numbers without mixing sessions.
 }
 ```
 
-## Example: WhatsApp daily chat + Telegram deep work
+## 예시: WhatsApp 일상 대화 + Telegram 집중 작업
 
-Split by channel: route WhatsApp to a fast everyday agent and Telegram to an Opus agent.
+채널로 분할: WhatsApp을 빠른 일상 에이전트로 라우팅하고 Telegram을 Opus 에이전트로 라우팅.
 
 ```json5
 {
@@ -221,7 +223,7 @@ Split by channel: route WhatsApp to a fast everyday agent and Telegram to an Opu
         id: "opus",
         name: "Deep Work",
         workspace: "~/.openclaw/workspace-opus",
-        model: "anthropic/claude-opus-4-5",
+        model: "anthropic/claude-opus-4-6",
       },
     ],
   },
@@ -232,14 +234,14 @@ Split by channel: route WhatsApp to a fast everyday agent and Telegram to an Opu
 }
 ```
 
-Notes:
+참고 사항:
 
-- If you have multiple accounts for a channel, add `accountId` to the binding (for example `{ channel: "whatsapp", accountId: "personal" }`).
-- To route a single DM/group to Opus while keeping the rest on chat, add a `match.peer` binding for that peer; peer matches always win over channel-wide rules.
+- 채널에 대한 다중 계정을 사용 중인 경우, 바인딩에 `accountId`를 추가하십시오 (예: `{ channel: "whatsapp", accountId: "personal" }`).
+- 단일 DM/그룹을 Opus로 라우팅하면서 나머지는 채팅에 남겨두려면 그 피어에 대한 `match.peer` 바인딩을 추가하십시오; 피어 매칭은 항상 채널 전역 규칙보다 우선합니다.
 
-## Example: same channel, one peer to Opus
+## 예시: 동일 채널, Opus로 하나의 피어
 
-Keep WhatsApp on the fast agent, but route one DM to Opus:
+WhatsApp을 빠른 에이전트에 유지하고 하나의 DM을 Opus로 라우팅하십시오:
 
 ```json5
 {
@@ -255,23 +257,25 @@ Keep WhatsApp on the fast agent, but route one DM to Opus:
         id: "opus",
         name: "Deep Work",
         workspace: "~/.openclaw/workspace-opus",
-        model: "anthropic/claude-opus-4-5",
+        model: "anthropic/claude-opus-4-6",
       },
     ],
   },
   bindings: [
-    { agentId: "opus", match: { channel: "whatsapp", peer: { kind: "dm", id: "+15551234567" } } },
+    {
+      agentId: "opus",
+      match: { channel: "whatsapp", peer: { kind: "direct", id: "+15551234567" } },
+    },
     { agentId: "chat", match: { channel: "whatsapp" } },
   ],
 }
 ```
 
-Peer bindings always win, so keep them above the channel-wide rule.
+피어 바인딩은 항상 승리하므로, 채널 전역 규칙보다 위에 두십시오.
 
-## Family agent bound to a WhatsApp group
+## 가족 에이전트를 WhatsApp 그룹에 바인딩
 
-Bind a dedicated family agent to a single WhatsApp group, with mention gating
-and a tighter tool policy:
+특정 WhatsApp 그룹에 가족 전용 에이전트를 바인딩하고 멘션 게이팅과 엄격한 도구 정책을 사용하십시오:
 
 ```json5
 {
@@ -316,16 +320,14 @@ and a tighter tool policy:
 }
 ```
 
-Notes:
+참고 사항:
 
-- Tool allow/deny lists are **tools**, not skills. If a skill needs to run a
-  binary, ensure `exec` is allowed and the binary exists in the sandbox.
-- For stricter gating, set `agents.list[].groupChat.mentionPatterns` and keep
-  group allowlists enabled for the channel.
+- 도구 허용/거부 목록은 **도구**이지 스킬이 아님. 스킬이 바이너리를 실행해야 하는 경우, `exec`이 허용되어 있고 해당 바이너리가 샌드박스에 존재하는지 확인하십시오.
+- 더 엄격한 게이트를 위해 `agents.list[].groupChat.mentionPatterns`을 설정하고 채널에 대한 그룹 허용 목록을 유지하십시오.
 
-## Per-Agent Sandbox and Tool Configuration
+## 에이전트별 샌드박스 및 도구 설정
 
-Starting with v2026.1.6, each agent can have its own sandbox and tool restrictions:
+v2026.1.6부터 각 에이전트는 자체적인 샌드박스 및 도구 제한을 가질 수 있습니다:
 
 ```js
 {
@@ -335,24 +337,24 @@ Starting with v2026.1.6, each agent can have its own sandbox and tool restrictio
         id: "personal",
         workspace: "~/.openclaw/workspace-personal",
         sandbox: {
-          mode: "off",  // No sandbox for personal agent
+          mode: "off",  // 개인 에이전트에 샌드박스 없음
         },
-        // No tool restrictions - all tools available
+        // 도구 제한 없음 - 모든 도구 사용 가능
       },
       {
         id: "family",
         workspace: "~/.openclaw/workspace-family",
         sandbox: {
-          mode: "all",     // Always sandboxed
-          scope: "agent",  // One container per agent
+          mode: "all",     // 항상 샌드박스
+          scope: "agent",  // 에이전트당 하나의 컨테이너
           docker: {
-            // Optional one-time setup after container creation
+            // 컨테이너 생성 후 선택적 일회성 설정
             setupCommand: "apt-get update && apt-get install -y git curl",
           },
         },
         tools: {
-          allow: ["read"],                    // Only read tool
-          deny: ["exec", "write", "edit", "apply_patch"],    // Deny others
+          allow: ["read"],                    // 읽기 도구만 허용
+          deny: ["exec", "write", "edit", "apply_patch"],    // 나머지는 허용 안 함
         },
       },
     ],
@@ -360,17 +362,14 @@ Starting with v2026.1.6, each agent can have its own sandbox and tool restrictio
 }
 ```
 
-Note: `setupCommand` lives under `sandbox.docker` and runs once on container creation.
-Per-agent `sandbox.docker.*` overrides are ignored when the resolved scope is `"shared"`.
+참고: `setupCommand`는 `sandbox.docker` 아래에 있으며, 컨테이너 생성 시 한 번 실행됩니다. 에이전트별 `sandbox.docker.*` 재정의는 해석된 범위가 `"shared"`인 경우 무시됩니다.
 
-**Benefits:**
+**혜택:**
 
-- **Security isolation**: Restrict tools for untrusted agents
-- **Resource control**: Sandbox specific agents while keeping others on host
-- **Flexible policies**: Different permissions per agent
+- **보안 격리**: 신뢰할 수 없는 에이전트에 대한 도구 제한
+- **자원 관리**: 특정 에이전트의 샌드박스를 유지하면서 다른 에이전트는 호스트에 유지
+- **유연한 정책**: 에이전트별로 다른 권한
 
-Note: `tools.elevated` is **global** and sender-based; it is not configurable per agent.
-If you need per-agent boundaries, use `agents.list[].tools` to deny `exec`.
-For group targeting, use `agents.list[].groupChat.mentionPatterns` so @mentions map cleanly to the intended agent.
+참고: `tools.elevated`는 **전역적**이고 발신자 기반이며, 에이전트별로 구성할 수 없습니다. 에이전트별 경계를 설정하려면 `agents.list[].tools`를 사용하여 `exec`을 거부하십시오. 그룹 대상화를 위해 `agents.list[].groupChat.mentionPatterns`를 설정하여 멘션이 의도된 에이전트에 정확히 매핑되도록 합니다.
 
-See [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools) for detailed examples.
+자세한 예시는 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools)를 참조하십시오.

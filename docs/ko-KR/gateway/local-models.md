@@ -1,19 +1,19 @@
 ---
-summary: "Run OpenClaw on local LLMs (LM Studio, vLLM, LiteLLM, custom OpenAI endpoints)"
+summary: "로컬 LLM (LM Studio, vLLM, LiteLLM, custom OpenAI endpoints)에서 OpenClaw 실행"
 read_when:
-  - You want to serve models from your own GPU box
-  - You are wiring LM Studio or an OpenAI-compatible proxy
-  - You need the safest local model guidance
-title: "Local Models"
+  - 자체 GPU 박스에서 모델을 서비스하고 싶을 때
+  - LM Studio 또는 OpenAI 호환 프록시를 연결 중일 때
+  - 가장 안전한 로컬 모델 지침이 필요할 때
+title: "로컬 모델"
 ---
 
-# Local models
+# 로컬 모델
 
-Local is doable, but OpenClaw expects large context + strong defenses against prompt injection. Small cards truncate context and leak safety. Aim high: **≥2 maxed-out Mac Studios or equivalent GPU rig (~$30k+)**. A single **24 GB** GPU works only for lighter prompts with higher latency. Use the **largest / full-size model variant you can run**; aggressively quantized or “small” checkpoints raise prompt-injection risk (see [Security](/gateway/security)).
+로컬 실행이 가능하지만 OpenClaw는 큰 컨텍스트와 프롬프트 인젝션에 대한 강한 방어를 기대합니다. 작은 카드들은 컨텍스트를 잘라내어 안전성을 누출시킵니다. 목표는 높게 설정: **최소 2대의 최상급 Mac Studio 또는 이에 상응하는 GPU 장비 (~$30k+)**입니다. 단일 **24 GB** GPU는 더 높은 지연시간을 가진 가벼운 프롬프트에만 작동합니다. 실행 가능한 가장 큰/전체 크기 모델 변형을 사용하십시오; 과도하게 양자화되거나 "작은" 체크포인트는 프롬프트 인젝션 위험을 증가시킵니다 ([보안](/gateway/security) 참조).
 
-## Recommended: LM Studio + MiniMax M2.1 (Responses API, full-size)
+## 추천: LM Studio + MiniMax M2.1 (Responses API, 전체 크기)
 
-Best current local stack. Load MiniMax M2.1 in LM Studio, enable the local server (default `http://127.0.0.1:1234`), and use Responses API to keep reasoning separate from final text.
+현 시점 최고의 로컬 스택. LM Studio에서 MiniMax M2.1을 로드하고, 로컬 서버를 활성화한 후(기본값 `http://127.0.0.1:1234`), Responses API를 사용하여 추론을 최종 텍스트와 분리합니다.
 
 ```json5
 {
@@ -21,7 +21,7 @@ Best current local stack. Load MiniMax M2.1 in LM Studio, enable the local serve
     defaults: {
       model: { primary: "lmstudio/minimax-m2.1-gs32" },
       models: {
-        "anthropic/claude-opus-4-5": { alias: "Opus" },
+        "anthropic/claude-opus-4-6": { alias: "Opus" },
         "lmstudio/minimax-m2.1-gs32": { alias: "Minimax" },
       },
     },
@@ -50,17 +50,17 @@ Best current local stack. Load MiniMax M2.1 in LM Studio, enable the local serve
 }
 ```
 
-**Setup checklist**
+**설정 체크리스트**
 
-- Install LM Studio: https://lmstudio.ai
-- In LM Studio, download the **largest MiniMax M2.1 build available** (avoid “small”/heavily quantized variants), start the server, confirm `http://127.0.0.1:1234/v1/models` lists it.
-- Keep the model loaded; cold-load adds startup latency.
-- Adjust `contextWindow`/`maxTokens` if your LM Studio build differs.
-- For WhatsApp, stick to Responses API so only final text is sent.
+- LM Studio 설치: [https://lmstudio.ai](https://lmstudio.ai)
+- LM Studio에서 **가장 큰 MiniMax M2.1 빌드를 다운로드**하십시오(작고/과도하게 양자화된 변형 피하기), 서버를 시작하고, `http://127.0.0.1:1234/v1/models`가 이를 나열하는지 확인하세요.
+- 모델을 지속적으로 로드한 상태로 유지하세요; 냉로드는 시작 지연을 추가합니다.
+- LM Studio 빌드가 다르면 `contextWindow`/`maxTokens`를 조정하세요.
+- WhatsApp의 경우, Responses API를 사용하여 최종 텍스트만 전송되도록 하세요.
 
-Keep hosted models configured even when running local; use `models.mode: "merge"` so fallbacks stay available.
+로컬 실행 중에도 호스팅된 모델을 구성하세요; `models.mode: "merge"`를 사용하여 백업을 유지하세요.
 
-### Hybrid config: hosted primary, local fallback
+### 하이브리드 설정: 호스팅 기본, 로컬 백업
 
 ```json5
 {
@@ -68,12 +68,12 @@ Keep hosted models configured even when running local; use `models.mode: "merge"
     defaults: {
       model: {
         primary: "anthropic/claude-sonnet-4-5",
-        fallbacks: ["lmstudio/minimax-m2.1-gs32", "anthropic/claude-opus-4-5"],
+        fallbacks: ["lmstudio/minimax-m2.1-gs32", "anthropic/claude-opus-4-6"],
       },
       models: {
         "anthropic/claude-sonnet-4-5": { alias: "Sonnet" },
         "lmstudio/minimax-m2.1-gs32": { alias: "MiniMax Local" },
-        "anthropic/claude-opus-4-5": { alias: "Opus" },
+        "anthropic/claude-opus-4-6": { alias: "Opus" },
       },
     },
   },
@@ -101,18 +101,18 @@ Keep hosted models configured even when running local; use `models.mode: "merge"
 }
 ```
 
-### Local-first with hosted safety net
+### 로컬 우선, 호스팅 안전망
 
-Swap the primary and fallback order; keep the same providers block and `models.mode: "merge"` so you can fall back to Sonnet or Opus when the local box is down.
+기본 및 백업 순서를 바꾸십시오; 동일한 프로바이더 블록 및 `models.mode: "merge"`를 유지하여 로컬 박스가 다운될 때 Sonnet 또는 Opus로 백업할 수 있습니다.
 
-### Regional hosting / data routing
+### 지역별 호스팅 / 데이터 라우팅
 
-- Hosted MiniMax/Kimi/GLM variants also exist on OpenRouter with region-pinned endpoints (e.g., US-hosted). Pick the regional variant there to keep traffic in your chosen jurisdiction while still using `models.mode: "merge"` for Anthropic/OpenAI fallbacks.
-- Local-only remains the strongest privacy path; hosted regional routing is the middle ground when you need provider features but want control over data flow.
+- 호스팅된 MiniMax/Kimi/GLM 변형은 지역 고정 엔드포인트(e.g., US-hosted)와 함께 OpenRouter에 존재합니다. 그곳에서 지역 변형을 선택하여 원하는 관할 구역 내에서 트래픽을 유지하면서 Anthropic/OpenAI 백업을 위해 `models.mode: "merge"`를 사용할 수 있습니다.
+- 로컬 전용이 가장 강력한 개인 정보 보호 경로로 남아 있습니다; 호스팅된 지역 라우팅은 프로바이더 기능이 필요하지만 데이터 흐름에 대한 통제를 유지하고 싶을 때 중간 위치에 있습니다.
 
-## Other OpenAI-compatible local proxies
+## 다른 OpenAI 호환 로컬 프록시
 
-vLLM, LiteLLM, OAI-proxy, or custom gateways work if they expose an OpenAI-style `/v1` endpoint. Replace the provider block above with your endpoint and model ID:
+vLLM, LiteLLM, OAI-proxy 또는 사용자 정의 게이트웨이는 OpenAI 스타일의 `/v1` 엔드포인트를 노출하면 작동합니다. 위에 있는 프로바이더 블록을 자신의 엔드포인트 및 모델 ID로 교체하십시오:
 
 ```json5
 {
@@ -140,11 +140,11 @@ vLLM, LiteLLM, OAI-proxy, or custom gateways work if they expose an OpenAI-style
 }
 ```
 
-Keep `models.mode: "merge"` so hosted models stay available as fallbacks.
+`models.mode: "merge"`를 유지하여 호스팅된 모델이 백업으로 사용 가능하도록 합니다.
 
-## Troubleshooting
+## 문제 해결
 
-- Gateway can reach the proxy? `curl http://127.0.0.1:1234/v1/models`.
-- LM Studio model unloaded? Reload; cold start is a common “hanging” cause.
-- Context errors? Lower `contextWindow` or raise your server limit.
-- Safety: local models skip provider-side filters; keep agents narrow and compaction on to limit prompt injection blast radius.
+- 게이트웨이가 프록시에 도달할 수 있습니까? `curl http://127.0.0.1:1234/v1/models`.
+- LM Studio 모델이 언로드되었습니까? 다시 로드하십시오; 냉시작은 일반적인 "멈춤" 원인입니다.
+- 컨텍스트 오류? `contextWindow`를 낮추거나 서버 한도를 높이십시오.
+- 안전성: 로컬 모델은 프로바이더 측 필터를 건너뜁니다; 에이전트를 좁게 유지하고 프롬프트 인젝션 영향 범위를 제한하기 위해 압축을 켜 두십시오.

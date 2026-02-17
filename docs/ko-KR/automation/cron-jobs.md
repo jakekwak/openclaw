@@ -1,34 +1,37 @@
+```markdown
 ---
-summary: "Cron jobs + wakeups for the Gateway scheduler"
+summary: "게이트웨이 스케줄러를 위한 크론 작업 + 웨이크업"
 read_when:
-  - Scheduling background jobs or wakeups
-  - Wiring automation that should run with or alongside heartbeats
-  - Deciding between heartbeat and cron for scheduled tasks
-title: "Cron Jobs"
+  - 백그라운드 작업 또는 웨이크업을 스케줄링할 때
+  - 하트비트와 함께 또는 하트비트와 나란히 실행되어야 하는 자동화를 연결할 때
+  - 예약 작업에 대해 하트비트와 크론 중에서 결정할 때
+title: "크론 작업"
 ---
 
-# Cron jobs (Gateway scheduler)
+# 크론 작업 (게이트웨이 스케줄러)
 
-> **Cron vs Heartbeat?** See [Cron vs Heartbeat](/automation/cron-vs-heartbeat) for guidance on when to use each.
+> **Cron vs Heartbeat?** 각 사용처에 대한 지침은 [Cron vs Heartbeat](/automation/cron-vs-heartbeat)을 참조하세요.
 
-Cron is the Gateway’s built-in scheduler. It persists jobs, wakes the agent at
-the right time, and can optionally deliver output back to a chat.
+크론은 게이트웨이의 내장 스케줄러입니다. 작업을 유지하며, 에이전트를 적절한 시간에 깨우고, 출력물을 채팅으로 다시 전달할 수 있습니다.
 
-If you want _“run this every morning”_ or _“poke the agent in 20 minutes”_,
-cron is the mechanism.
+"매일 아침 실행하기" 또는 "20분 후 에이전트 호출하기"와 같은 동작을 원할 경우, 크론이 사용됩니다.
+
+문제 해결: [/automation/troubleshooting](/automation/troubleshooting)
 
 ## TL;DR
 
-- Cron runs **inside the Gateway** (not inside the model).
-- Jobs persist under `~/.openclaw/cron/` so restarts don’t lose schedules.
-- Two execution styles:
-  - **Main session**: enqueue a system event, then run on the next heartbeat.
-  - **Isolated**: run a dedicated agent turn in `cron:<jobId>`, with delivery (announce by default or none).
-- Wakeups are first-class: a job can request “wake now” vs “next heartbeat”.
+- 크론은 **게이트웨이 내부**에서 실행됩니다 (모델 내부에서 실행되지 않습니다).
+- 작업은 `~/.openclaw/cron/`에 저장되어 재시작 시에도 일정이 사라지지 않습니다.
+- 두 가지 실행 스타일:
+  - **메인 세션**: 시스템 이벤트를 대기열에 넣고, 다음 하트비트에 실행됩니다.
+  - **격리형**: `cron:<jobId>`에서 전용 에이전트 턴을 실행하며, 전달 옵션이 있으며 (기본값은 announce, 또는 전달 없음).
+- 웨이크업은 1급 시민입니다: 작업은 "지금 깨우기" 또는 "다음 하트비트"를 요청할 수 있습니다.
+- 웹훅 포스팅은 작업별로 `delivery.mode = "webhook"` + `delivery.to = "<url>"`을 통해 수행됩니다.
+- `notify: true`가 설정된 저장된 작업은 여전히 `cron.webhook`이 설정된 경우 레거시 백업으로 남아 있으며, 웹훅 전달 모드로 마이그레이션이 필요합니다.
 
-## Quick start (actionable)
+## 빠른 시작 (실행 가능)
 
-Create a one-shot reminder, verify it exists, and run it immediately:
+즉시 확인하고 실행할 수 있는 일회성 알림 생성:
 
 ```bash
 openclaw cron add \
@@ -40,11 +43,11 @@ openclaw cron add \
   --delete-after-run
 
 openclaw cron list
-openclaw cron run <job-id> --force
+openclaw cron run <job-id>
 openclaw cron runs --id <job-id>
 ```
 
-Schedule a recurring isolated job with delivery:
+전달이 포함된 반복 격리 작업 스케줄링:
 
 ```bash
 openclaw cron add \
@@ -58,195 +61,193 @@ openclaw cron add \
   --to "channel:C1234567890"
 ```
 
-## Tool-call equivalents (Gateway cron tool)
+## 도구 호출 동등 항목 (게이트웨이 크론 도구)
 
-For the canonical JSON shapes and examples, see [JSON schema for tool calls](/automation/cron-jobs#json-schema-for-tool-calls).
+표준 JSON 형태와 예제는 [도구 호출을 위한 JSON 스키마](/automation/cron-jobs#json-schema-for-tool-calls)를 참조하세요.
 
-## Where cron jobs are stored
+## 크론 작업의 저장 위치
 
-Cron jobs are persisted on the Gateway host at `~/.openclaw/cron/jobs.json` by default.
-The Gateway loads the file into memory and writes it back on changes, so manual edits
-are only safe when the Gateway is stopped. Prefer `openclaw cron add/edit` or the cron
-tool call API for changes.
+크론 작업은 기본적으로 게이트웨이 호스트의 `~/.openclaw/cron/jobs.json`에 지속적으로 저장됩니다.
+게이트웨이는 파일을 메모리에 로드하고 변경 시 다시 작성하므로, 수동으로 편집하는 것은 게이트웨이가 중지된 상태에서만 안전합니다. 변경 사항을 위해 `openclaw cron add/edit` 또는 크론 도구 호출 API를 사용하는 것이 좋습니다.
 
-## Beginner-friendly overview
+## 초보자 친화적 개요
 
-Think of a cron job as: **when** to run + **what** to do.
+크론 작업을 **언제** 실행할지 + **무엇을** 해야 할지로 생각하십시오.
 
-1. **Choose a schedule**
-   - One-shot reminder → `schedule.kind = "at"` (CLI: `--at`)
-   - Repeating job → `schedule.kind = "every"` or `schedule.kind = "cron"`
-   - If your ISO timestamp omits a timezone, it is treated as **UTC**.
+1. **일정을 선택하십시오**
+   - 일회성 알림 → `schedule.kind = "at"` (CLI: `--at`)
+   - 반복 작업 → `schedule.kind = "every"` 또는 `schedule.kind = "cron"`
+   - ISO 타임스탬프에 시간대가 없으면 **UTC**로 간주합니다.
 
-2. **Choose where it runs**
-   - `sessionTarget: "main"` → run during the next heartbeat with main context.
-   - `sessionTarget: "isolated"` → run a dedicated agent turn in `cron:<jobId>`.
+2. **실행 위치를 선택하십시오**
+   - `sessionTarget: "main"` → 주 컨텍스트에서 다음 하트비트 중 실행.
+   - `sessionTarget: "isolated"` → `cron:<jobId>`에서 전용 에이전트 턴 실행.
 
-3. **Choose the payload**
-   - Main session → `payload.kind = "systemEvent"`
-   - Isolated session → `payload.kind = "agentTurn"`
+3. **페이로드를 선택하십시오**
+   - 메인 세션 → `payload.kind = "systemEvent"`
+   - 격리 세션 → `payload.kind = "agentTurn"`
 
-Optional: one-shot jobs (`schedule.kind = "at"`) delete after success by default. Set
-`deleteAfterRun: false` to keep them (they will disable after success).
+선택 사항: 일회성 작업 (`schedule.kind = "at"`)은 기본적으로 성공 후 삭제됩니다. 유지하려면 `deleteAfterRun: false`를 설정하십시오 (성공 후 비활성화됩니다).
 
-## Concepts
+## 개념
 
-### Jobs
+### 작업
 
-A cron job is a stored record with:
+크론 작업은 저장된 기록이며, 다음을 포함합니다:
 
-- a **schedule** (when it should run),
-- a **payload** (what it should do),
-- optional **delivery mode** (announce or none).
-- optional **agent binding** (`agentId`): run the job under a specific agent; if
-  missing or unknown, the gateway falls back to the default agent.
+- **일정** (언제 실행할지),
+- **페이로드** (무엇을 수행할지),
+- 선택적 **전달 모드** (`announce`, `webhook`, 또는 `none`).
+- 선택적 **에이전트 바인딩** (`agentId`): 특정 에이전트로 작업 실행; 누락되거나 알 수 없는 경우 게이트웨이는 기본 에이전트를 사용합니다.
 
-Jobs are identified by a stable `jobId` (used by CLI/Gateway APIs).
-In agent tool calls, `jobId` is canonical; legacy `id` is accepted for compatibility.
-One-shot jobs auto-delete after success by default; set `deleteAfterRun: false` to keep them.
+작업은 안정적인 `jobId`로 식별됩니다 (CLI/게이트웨이 API에서 사용됨).
+에이전트 도구 호출에서는 `jobId`가 표준이며, 호환성을 위해 레거시 `id`도 허용됩니다.
+일회성 작업은 기본적으로 성공 후 자동으로 삭제됩니다. 유지하려면 `deleteAfterRun: false`를 설정하십시오.
 
-### Schedules
+### 일정
 
-Cron supports three schedule kinds:
+크론은 세 가지 일정 종류를 지원합니다:
 
-- `at`: one-shot timestamp via `schedule.at` (ISO 8601).
-- `every`: fixed interval (ms).
-- `cron`: 5-field cron expression with optional IANA timezone.
+- `at`: `schedule.at` (ISO 8601)을 통한 일회성 타임스탬프.
+- `every`: 고정 간격 (ms).
+- `cron`: 선택적 IANA 시간대가 있는 5 필드 크론 표현식.
 
-Cron expressions use `croner`. If a timezone is omitted, the Gateway host’s
-local timezone is used.
+크론 표현식은 `croner`를 사용합니다. 시간대를 생략하면 게이트웨이 호스트의 로컬 시간대가 사용됩니다.
 
-### Main vs isolated execution
+### 메인 vs 격리 실행
 
-#### Main session jobs (system events)
+#### 메인 세션 작업 (시스템 이벤트)
 
-Main jobs enqueue a system event and optionally wake the heartbeat runner.
-They must use `payload.kind = "systemEvent"`.
+메인 작업은 시스템 이벤트를 대기열에 넣고 선택적으로 하트비트 실행기를 깨웁니다.
+`payload.kind = "systemEvent"`를 사용해야 합니다.
 
-- `wakeMode: "next-heartbeat"` (default): event waits for the next scheduled heartbeat.
-- `wakeMode: "now"`: event triggers an immediate heartbeat run.
+- `wakeMode: "now"` (기본값): 이벤트가 즉시 하트비트를 실행합니다.
+- `wakeMode: "next-heartbeat"`: 이벤트가 다음 예정된 하트비트를 기다립니다.
 
-This is the best fit when you want the normal heartbeat prompt + main-session context.
-See [Heartbeat](/gateway/heartbeat).
+일반적인 하트비트 프롬프트 + 메인 세션 컨텍스트를 원하는 경우에 가장 적합합니다.
+[하트비트](/gateway/heartbeat)를 참조하세요.
 
-#### Isolated jobs (dedicated cron sessions)
+#### 격리 작업 (전용 크론 세션)
 
-Isolated jobs run a dedicated agent turn in session `cron:<jobId>`.
+격리 작업은 `cron:<jobId>` 세션에서 전용 에이전트 턴을 실행합니다.
 
-Key behaviors:
+주요 동작:
 
-- Prompt is prefixed with `[cron:<jobId> <job name>]` for traceability.
-- Each run starts a **fresh session id** (no prior conversation carry-over).
-- Default behavior: if `delivery` is omitted, isolated jobs announce a summary (`delivery.mode = "announce"`).
-- `delivery.mode` (isolated-only) chooses what happens:
-  - `announce`: deliver a summary to the target channel and post a brief summary to the main session.
-  - `none`: internal only (no delivery, no main-session summary).
-- `wakeMode` controls when the main-session summary posts:
-  - `now`: immediate heartbeat.
-  - `next-heartbeat`: waits for the next scheduled heartbeat.
+- 추적 가능성을 위해 프롬프트가 `[cron:<jobId> <job name>]`으로 접두사 적용.
+- 각 실행은 **새로운 세션 id**로 시작됩니다 (이전 대화는 이어지지 않음).
+- 기본 동작: `delivery`가 생략되면 격리 작업은 요약을 알립니다 (`delivery.mode = "announce"`).
+- `delivery.mode`는 발생할 일을 선택:
+  - `announce`: 타겟 채널에 요약을 전달하고 메인 세션에 짧은 요약을 게시.
+  - `webhook`: 요약이 포함된 완료 이벤트 페이로드를 `delivery.to`에 POST.
+  - `none`: 내부 전용 (전달 없음, 메인 세션 요약 없음).
+- `wakeMode`는 메인 세션 요약 게시 시간을 제어합니다:
+  - `now`: 즉시 하트비트.
+  - `next-heartbeat`: 다음 예정된 하트비트를 기다립니다.
 
-Use isolated jobs for noisy, frequent, or "background chores" that shouldn't spam
-your main chat history.
+주요 챗 기록을 스팸하지 않아야 하는 시끄럽고 빈번한 또는 "백그라운드 작업"에 격리 작업을 사용하세요.
 
-### Payload shapes (what runs)
+### 페이로드 형태 (실행할 작업)
 
-Two payload kinds are supported:
+두 가지 페이로드 종류가 지원됩니다:
 
-- `systemEvent`: main-session only, routed through the heartbeat prompt.
-- `agentTurn`: isolated-session only, runs a dedicated agent turn.
+- `systemEvent`: 메인 세션 전용, 하트비트 프롬프트를 통해 라우팅.
+- `agentTurn`: 격리 세션 전용, 전용 에이전트 턴 실행.
 
-Common `agentTurn` fields:
+일반적인 `agentTurn` 필드:
 
-- `message`: required text prompt.
-- `model` / `thinking`: optional overrides (see below).
-- `timeoutSeconds`: optional timeout override.
+- `message`: 필수 텍스트 프롬프트.
+- `model` / `thinking`: 선택적 재정의 (아래 참조).
+- `timeoutSeconds`: 선택적 타임아웃 재정의.
 
-Delivery config (isolated jobs only):
+전달 구성:
 
-- `delivery.mode`: `none` | `announce`.
-- `delivery.channel`: `last` or a specific channel.
-- `delivery.to`: channel-specific target (phone/chat/channel id).
-- `delivery.bestEffort`: avoid failing the job if announce delivery fails.
+- `delivery.mode`: `none` | `announce` | `webhook`.
+- `delivery.channel`: `last` 또는 특정 채널.
+- `delivery.to`: 채널별 타겟 (announce) 또는 웹훅 URL (webhook 모드).
+- `delivery.bestEffort`: 발표 배달 실패 시 작업이 실패하지 않도록 방지.
 
-Announce delivery suppresses messaging tool sends for the run; use `delivery.channel`/`delivery.to`
-to target the chat instead. When `delivery.mode = "none"`, no summary is posted to the main session.
+announce 전달은 실행 시 메시징 도구 전송을 억제합니다; 채팅 대신 타겟팅하려면 `delivery.channel`/`delivery.to`를 사용하십시오. `delivery.mode = "none"`인 경우 메인 세션에는 요약이 게시되지 않습니다.
 
-If `delivery` is omitted for isolated jobs, OpenClaw defaults to `announce`.
+격리 작업의 경우 `delivery`가 생략되면 OpenClaw는 기본적으로 `announce`로 설정됩니다.
 
-#### Announce delivery flow
+#### Announce 전달 흐름
 
-When `delivery.mode = "announce"`, cron delivers directly via the outbound channel adapters.
-The main agent is not spun up to craft or forward the message.
+`delivery.mode = "announce"`일 때, 크론은 아웃바운드 채널 어댑터를 통해 직접 전달합니다.
+메인 에이전트는 메시지를 작성하거나 전달하기 위해 실행되지 않습니다.
 
-Behavior details:
+동작 세부 사항:
 
-- Content: delivery uses the isolated run's outbound payloads (text/media) with normal chunking and
-  channel formatting.
-- Heartbeat-only responses (`HEARTBEAT_OK` with no real content) are not delivered.
-- If the isolated run already sent a message to the same target via the message tool, delivery is
-  skipped to avoid duplicates.
-- Missing or invalid delivery targets fail the job unless `delivery.bestEffort = true`.
-- A short summary is posted to the main session only when `delivery.mode = "announce"`.
-- The main-session summary respects `wakeMode`: `now` triggers an immediate heartbeat and
-  `next-heartbeat` waits for the next scheduled heartbeat.
+- 내용: 전달은 격리 실행의 아웃바운드 페이로드 (텍스트/미디어)를 사용하여 일반적인 청크로 나누고 채널 서식을 적용하여 전달합니다.
+- 하트비트 전용 응답 (`HEARTBEAT_OK`로 실제 내용이 없는 경우)은 전달되지 않습니다.
+- 격리 실행이 메시지 도구를 통해 이미 동일한 타겟에 메시지를 보냈다면, 중복을 피하기 위해 전달이 건너뜁니다.
+- 누락되었거나 잘못된 전달 타겟은 `delivery.bestEffort = true`이 아닌 경우 작업을 실패로 처리합니다.
+- 메인 세션에 짧은 요약은 `delivery.mode = "announce"`일 때만 게시됩니다.
+- 메인 세션 요약은 `wakeMode`를 따릅니다: `now`는 즉시 하트비트를 실행하고 `next-heartbeat`은 다음 예정된 하트비트를 기다립니다.
 
-### Model and thinking overrides
+#### 웹훅 전달 흐름
 
-Isolated jobs (`agentTurn`) can override the model and thinking level:
+`delivery.mode = "webhook"`일 때, 크론은 요약이 포함된 완료 이벤트 페이로드를 `delivery.to`에 POST합니다.
 
-- `model`: Provider/model string (e.g., `anthropic/claude-sonnet-4-20250514`) or alias (e.g., `opus`)
-- `thinking`: Thinking level (`off`, `minimal`, `low`, `medium`, `high`, `xhigh`; GPT-5.2 + Codex models only)
+동작 세부 사항:
 
-Note: You can set `model` on main-session jobs too, but it changes the shared main
-session model. We recommend model overrides only for isolated jobs to avoid
-unexpected context shifts.
+- 엔드포인트는 유효한 HTTP(S) URL이어야 합니다.
+- 웹훅 모드에서는 채널 전달이 시도되지 않습니다.
+- 웹훅 모드에서는 메인 세션 요약이 게시되지 않습니다.
+- `cron.webhookToken`이 설정된 경우, 인증 헤더는 `Authorization: Bearer <cron.webhookToken>`입니다.
+- 레거시 백업: `notify: true`가 설정된 저장된 작업은 여전히 `cron.webhook` (설정된 경우)에 게시되며, 경고 메시지와 함께 웹훅 전달 모드로 마이그레이션할 수 있습니다.
 
-Resolution priority:
+### 모델 및 사고 수준 재정의
 
-1. Job payload override (highest)
-2. Hook-specific defaults (e.g., `hooks.gmail.model`)
-3. Agent config default
+격리 작업 (`agentTurn`)은 모델과 사고 수준을 재정의할 수 있습니다:
 
-### Delivery (channel + target)
+- `model`: 프로바이더/모델 문자열 (예: `anthropic/claude-sonnet-4-20250514`) 또는 별칭 (예: `opus`)
+- `thinking`: 사고 수준 (`off`, `minimal`, `low`, `medium`, `high`, `xhigh`; GPT-5.2 + 코덱스 모델에만 해당)
 
-Isolated jobs can deliver output to a channel via the top-level `delivery` config:
+참고: 메인 세션 작업에 `model`을 설정할 수도 있지만, 이는 공유 메인 세션 모델을 변경합니다. 격리 작업에만 모델 재정의를 사용하는 것이 예기치 않은 컨텍스트 전환을 방지하는 데 권장됩니다.
 
-- `delivery.mode`: `announce` (deliver a summary) or `none`.
-- `delivery.channel`: `whatsapp` / `telegram` / `discord` / `slack` / `mattermost` (plugin) / `signal` / `imessage` / `last`.
-- `delivery.to`: channel-specific recipient target.
+우선순위 결정:
 
-Delivery config is only valid for isolated jobs (`sessionTarget: "isolated"`).
+1. 작업 페이로드 재정의 (가장 높은 우선순위)
+2. 훅별 기본값 (예: `hooks.gmail.model`)
+3. 에이전트 구성 기본값
 
-If `delivery.channel` or `delivery.to` is omitted, cron can fall back to the main session’s
-“last route” (the last place the agent replied).
+### 전달 (채널 + 타겟)
 
-Target format reminders:
+격리 작업은 상위 수준의 `delivery` 구성을 통해 채널에 출력을 전달할 수 있습니다:
 
-- Slack/Discord/Mattermost (plugin) targets should use explicit prefixes (e.g. `channel:<id>`, `user:<id>`) to avoid ambiguity.
-- Telegram topics should use the `:topic:` form (see below).
+- `delivery.mode`: `announce` (채널 전달), `webhook` (HTTP POST), 또는 `none`.
+- `delivery.channel`: `whatsapp` / `telegram` / `discord` / `slack` / `mattermost` (플러그인) / `signal` / `imessage` / `last`.
+- `delivery.to`: 채널별 수신 대상.
 
-#### Telegram delivery targets (topics / forum threads)
+`announce` 전달은 격리 작업 (`sessionTarget: "isolated"`)에만 유효합니다.
+`webhook` 전달은 메인 및 격리 작업 모두에 유효합니다.
 
-Telegram supports forum topics via `message_thread_id`. For cron delivery, you can encode
-the topic/thread into the `to` field:
+`delivery.channel` 또는 `delivery.to`가 생략되면, 크론은 메인 세션의 "마지막 경로" (마지막으로 에이전트가 답장한 장소)로 전환할 수 있습니다.
 
-- `-1001234567890` (chat id only)
-- `-1001234567890:topic:123` (preferred: explicit topic marker)
-- `-1001234567890:123` (shorthand: numeric suffix)
+타겟 형식 주의사항:
 
-Prefixed targets like `telegram:...` / `telegram:group:...` are also accepted:
+- Slack/Discord/Mattermost (플러그인) 타겟은 모호성을 피하기 위해 명시적 접두사를 사용해야 합니다 (예: `channel:<id>`, `user:<id>`).
+- Telegram 주제는 아래와 같은 `:topic:` 형식을 사용해야 합니다.
+
+#### Telegram 전달 타겟 (주제 / 포럼 스레드)
+
+Telegram은 `message_thread_id`를 통해 포럼 주제를 지원합니다. 크론 전달을 위해, 주제/스레드를 `to` 필드에 인코딩할 수 있습니다:
+
+- `-1001234567890` (채팅 id만)
+- `-1001234567890:topic:123` (권장: 명시적 주제 표시)
+- `-1001234567890:123` (축약형: 숫자 접미사)
+
+`telegram:...` / `telegram:group:...`과 같이 접두사 붙은 타겟도 허용됩니다:
 
 - `telegram:group:-1001234567890:topic:123`
 
-## JSON schema for tool calls
+## 도구 호출을 위한 JSON 스키마
 
-Use these shapes when calling Gateway `cron.*` tools directly (agent tool calls or RPC).
-CLI flags accept human durations like `20m`, but tool calls should use an ISO 8601 string
-for `schedule.at` and milliseconds for `schedule.everyMs`.
+게이트웨이 `cron.*` 도구를 직접 호출할 때 이 형태를 사용하십시오 (에이전트 도구 호출 또는 RPC). CLI 플래그는 `20m` 같은 인간의 지속 시간을 수용하지만, 도구 호출은 `schedule.at`의 ISO 8601 문자열과 `schedule.everyMs`의 밀리초를 사용해야 합니다.
 
-### cron.add params
+### cron.add 매개변수
 
-One-shot, main session job (system event):
+일회성, 메인 세션 작업 (시스템 이벤트):
 
 ```json
 {
@@ -259,7 +260,7 @@ One-shot, main session job (system event):
 }
 ```
 
-Recurring, isolated job with delivery:
+전달이 포함된 반복 격리 작업:
 
 ```json
 {
@@ -280,17 +281,17 @@ Recurring, isolated job with delivery:
 }
 ```
 
-Notes:
+노트:
 
-- `schedule.kind`: `at` (`at`), `every` (`everyMs`), or `cron` (`expr`, optional `tz`).
-- `schedule.at` accepts ISO 8601 (timezone optional; treated as UTC when omitted).
-- `everyMs` is milliseconds.
-- `sessionTarget` must be `"main"` or `"isolated"` and must match `payload.kind`.
-- Optional fields: `agentId`, `description`, `enabled`, `deleteAfterRun` (defaults to true for `at`),
+- `schedule.kind`: `at` (`at`), `every` (`everyMs`), 또는 `cron` (`expr`, 선택적 `tz`).
+- `schedule.at`은 ISO 8601을 받아들입니다 (시간대 선택 사항; 생략 시 UTC로 간주됨).
+- `everyMs`는 밀리초입니다.
+- `sessionTarget`은 `"main"` 또는 `"isolated"`이어야 하며 `payload.kind`와 일치해야 합니다.
+- 선택 필드: `agentId`, `description`, `enabled`, `deleteAfterRun` (`at`에 대해 기본값은 true),
   `delivery`.
-- `wakeMode` defaults to `"next-heartbeat"` when omitted.
+- `wakeMode`는 생략 시 기본값이 `"now"`입니다.
 
-### cron.update params
+### cron.update 매개변수
 
 ```json
 {
@@ -302,12 +303,12 @@ Notes:
 }
 ```
 
-Notes:
+노트:
 
-- `jobId` is canonical; `id` is accepted for compatibility.
-- Use `agentId: null` in the patch to clear an agent binding.
+- `jobId`는 표준입니다; 호환성을 위해 `id`도 허용됩니다.
+- 에이전트 바인딩을 해제하기 위해 패치에 `agentId: null`을 사용하세요.
 
-### cron.run and cron.remove params
+### cron.run 및 cron.remove 매개변수
 
 ```json
 { "jobId": "job-123", "mode": "force" }
@@ -317,32 +318,43 @@ Notes:
 { "jobId": "job-123" }
 ```
 
-## Storage & history
+## 저장소 및 히스토리
 
-- Job store: `~/.openclaw/cron/jobs.json` (Gateway-managed JSON).
-- Run history: `~/.openclaw/cron/runs/<jobId>.jsonl` (JSONL, auto-pruned).
-- Override store path: `cron.store` in config.
+- 작업 저장소: `~/.openclaw/cron/jobs.json` (게이트웨이 관리 JSON).
+- 실행 히스토리: `~/.openclaw/cron/runs/<jobId>.jsonl` (JSONL, 자동 정리).
+- 저장소 경로 오버라이드: 구성의 `cron.store`.
 
-## Configuration
+## 구성
 
 ```json5
 {
   cron: {
-    enabled: true, // default true
+    enabled: true, // 기본값은 true
     store: "~/.openclaw/cron/jobs.json",
-    maxConcurrentRuns: 1, // default 1
+    maxConcurrentRuns: 1, // 기본값은 1
+    webhook: "https://example.invalid/legacy", // 저장된 notify:true 작업에 대한 사용 중단된 백업
+    webhookToken: "replace-with-dedicated-webhook-token", // 웹훅 모드에 대한 선택적 베어러 토큰
   },
 }
 ```
 
-Disable cron entirely:
+웹훅 동작:
 
-- `cron.enabled: false` (config)
-- `OPENCLAW_SKIP_CRON=1` (env)
+- 권장 사항: 작업별로 `delivery.mode: "webhook"`을 설정하고 `delivery.to: "https://..."`을 설정하세요.
+- 웹훅 URL은 유효한 `http://` 또는 `https://` URL이어야 합니다.
+- 포스트 시, 페이로드는 크론 완료 이벤트 JSON입니다.
+- `cron.webhookToken`이 설정된 경우, 인증 헤더는 `Authorization: Bearer <cron.webhookToken>`입니다.
+- `cron.webhookToken`이 설정되지 않은 경우, 인증 헤더는 전송되지 않습니다.
+- 사용 중단된 백업: `notify: true`가 설정된 저장된 레거시 작업은 여전히 `cron.webhook`을 사용합니다 (존재할 경우).
 
-## CLI quickstart
+크론을 완전히 비활성화하기:
 
-One-shot reminder (UTC ISO, auto-delete after success):
+- `cron.enabled: false` (구성)
+- `OPENCLAW_SKIP_CRON=1` (환경 변수)
+
+## CLI 빠른 시작
+
+일회성 알림 (UTC ISO, 성공 후 자동 삭제):
 
 ```bash
 openclaw cron add \
@@ -354,7 +366,7 @@ openclaw cron add \
   --delete-after-run
 ```
 
-One-shot reminder (main session, wake immediately):
+일회성 알림 (메인 세션, 즉시 실행):
 
 ```bash
 openclaw cron add \
@@ -365,7 +377,7 @@ openclaw cron add \
   --wake now
 ```
 
-Recurring isolated job (announce to WhatsApp):
+반복 격리 작업 (WhatsApp에 알리기):
 
 ```bash
 openclaw cron add \
@@ -379,7 +391,7 @@ openclaw cron add \
   --to "+15551234567"
 ```
 
-Recurring isolated job (deliver to a Telegram topic):
+반복 격리 작업 (Telegram 주제에 전달):
 
 ```bash
 openclaw cron add \
@@ -393,7 +405,7 @@ openclaw cron add \
   --to "-1001234567890:topic:123"
 ```
 
-Isolated job with model and thinking override:
+모델 및 사고 수준 재정의가 포함된 격리 작업:
 
 ```bash
 openclaw cron add \
@@ -409,24 +421,25 @@ openclaw cron add \
   --to "+15551234567"
 ```
 
-Agent selection (multi-agent setups):
+에이전트 선택 (다중 에이전트 설정):
 
 ```bash
-# Pin a job to agent "ops" (falls back to default if that agent is missing)
+# 작업을 에이전트 "ops"에 고정 (해당 에이전트가 없으면 기본으로 대체)
 openclaw cron add --name "Ops sweep" --cron "0 6 * * *" --session isolated --message "Check ops queue" --agent ops
 
-# Switch or clear the agent on an existing job
+# 기존 작업의 에이전트를 전환 또는 해제
 openclaw cron edit <jobId> --agent ops
 openclaw cron edit <jobId> --clear-agent
 ```
 
-Manual run (debug):
+수동 실행 (강제 실행이 기본값임, `--due`를 사용하여 필요할 때만 실행):
 
 ```bash
-openclaw cron run <jobId> --force
+openclaw cron run <jobId>
+openclaw cron run <jobId> --due
 ```
 
-Edit an existing job (patch fields):
+기존 작업 편집 (필드 수정):
 
 ```bash
 openclaw cron edit <jobId> \
@@ -435,34 +448,47 @@ openclaw cron edit <jobId> \
   --thinking low
 ```
 
-Run history:
+실행 히스토리:
 
 ```bash
 openclaw cron runs --id <jobId> --limit 50
 ```
 
-Immediate system event without creating a job:
+작업 생성 없이 즉시 시스템 이벤트:
 
 ```bash
 openclaw system event --mode now --text "Next heartbeat: check battery."
 ```
 
-## Gateway API surface
+## 게이트웨이 API 표면
 
 - `cron.list`, `cron.status`, `cron.add`, `cron.update`, `cron.remove`
-- `cron.run` (force or due), `cron.runs`
-  For immediate system events without a job, use [`openclaw system event`](/cli/system).
+- `cron.run` (강제 실행 또는 예정된 실행), `cron.runs`
+  작업 없는 즉시 시스템 이벤트의 경우, [`openclaw system event`](/cli/system)를 사용하세요.
 
-## Troubleshooting
+## 문제 해결
 
-### “Nothing runs”
+### "아무것도 실행되지 않음"
 
-- Check cron is enabled: `cron.enabled` and `OPENCLAW_SKIP_CRON`.
-- Check the Gateway is running continuously (cron runs inside the Gateway process).
-- For `cron` schedules: confirm timezone (`--tz`) vs the host timezone.
+- 크론이 활성화되어 있는지 확인: `cron.enabled` 및 `OPENCLAW_SKIP_CRON`.
+- 게이트웨이가 지속적으로 실행 중인지 확인 (크론은 게이트웨이 프로세스 내에서 실행됨).
+- `cron` 일정의 경우: 시간대 (`--tz`)와 호스트 시간대 확인.
 
-### Telegram delivers to the wrong place
+### 실패 후 반복 작업이 계속 지연됨
 
-- For forum topics, use `-100…:topic:<id>` so it’s explicit and unambiguous.
-- If you see `telegram:...` prefixes in logs or stored “last route” targets, that’s normal;
-  cron delivery accepts them and still parses topic IDs correctly.
+- OpenClaw는 연속적인 오류 발생 후 반복 작업에는 지수 백오프 재시도를 적용합니다: 30초, 1분, 5분, 15분, 이후에는 60분 간격으로 재시도.
+- 백오프는 다음 성공적인 실행 후 자동으로 재설정됩니다.
+- 일회성 (`at`) 작업은 최종 실행 (`ok`, `error`, 또는 `skipped`) 후 비활성화되며 재시도하지 않습니다.
+
+### Telegram이 잘못된 곳으로 전달됨
+
+- 포럼 주제의 경우, `-100…:topic:<id>` 형식으로 명확하고 명시적으로 설정하십시오.
+- 로그 또는 저장된 "마지막 경로" 타겟에 `telegram:...` 접두사가 표시되는 것은 정상이며; 크론 전달은 이를 수용하고 여전히 주제 ID를 정확히 파싱합니다.
+
+### 하위 에이전트 발표 전달 재시도
+
+- 하위 에이전트 실행이 완료되면, 게이트웨이는 요청처 세션에 결과를 발표합니다.
+- 발표 흐름이 `false`를 반환하는 경우 (예: 요청처 세션이 바쁨), 게이트웨이는 최대 3회까지 `announceRetryCount`를 통해 추적하여 재시도합니다.
+- `endedAt` 이후 5분 이상 지난 발표는 무효화되어 무기한으로 오래된 항목이 반복되지 않도록 합니다.
+- 로그에 반복적인 발표 전달이 보이는 경우, 하위 에이전트 레지스트리에서 높은 `announceRetryCount` 값을 가진 항목을 확인하십시오.
+```

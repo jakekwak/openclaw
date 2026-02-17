@@ -1,7 +1,7 @@
 ---
 summary: "Elevated exec mode and /elevated directives"
 read_when:
-  - Adjusting elevated mode defaults, allowlists, or slash command behavior
+  - Elevated 모드 기본값, 허용 목록 또는 슬래시 명령어 동작을 조정할 때
 title: "Elevated Mode"
 ---
 
@@ -9,49 +9,49 @@ title: "Elevated Mode"
 
 ## What it does
 
-- `/elevated on` runs on the gateway host and keeps exec approvals (same as `/elevated ask`).
-- `/elevated full` runs on the gateway host **and** auto-approves exec (skips exec approvals).
-- `/elevated ask` runs on the gateway host but keeps exec approvals (same as `/elevated on`).
-- `on`/`ask` do **not** force `exec.security=full`; configured security/ask policy still applies.
-- Only changes behavior when the agent is **sandboxed** (otherwise exec already runs on the host).
-- Directive forms: `/elevated on|off|ask|full`, `/elev on|off|ask|full`.
-- Only `on|off|ask|full` are accepted; anything else returns a hint and does not change state.
+- `/elevated on`은 게이트웨이 호스트에서 실행되며 exec 승인을 유지합니다(또는 `/elevated ask`와 동일합니다).
+- `/elevated full`은 게이트웨이 호스트에서 **실행**되고 exec를 자동 승인합니다(exec 승인을 건너뜁니다).
+- `/elevated ask`은 게이트웨이 호스트에서 실행되지만 exec 승인을 유지합니다(또는 `/elevated on`과 동일합니다).
+- `on`/`ask`는 `exec.security=full`을 강제하지 **않습니다**; 구성된 보안/질의 정책은 여전히 적용됩니다.
+- 에이전트가 **샌드박스 격리**될 때만 동작을 변경합니다(그렇지 않으면 exec가 이미 호스트에서 실행됩니다).
+- 지시문의 형식: `/elevated on|off|ask|full`, `/elev on|off|ask|full`.
+- `on|off|ask|full`만 허용됩니다; 그 외의 입력은 힌트를 반환하고 상태를 변경하지 않습니다.
 
 ## What it controls (and what it doesn’t)
 
-- **Availability gates**: `tools.elevated` is the global baseline. `agents.list[].tools.elevated` can further restrict elevated per agent (both must allow).
-- **Per-session state**: `/elevated on|off|ask|full` sets the elevated level for the current session key.
-- **Inline directive**: `/elevated on|ask|full` inside a message applies to that message only.
-- **Groups**: In group chats, elevated directives are only honored when the agent is mentioned. Command-only messages that bypass mention requirements are treated as mentioned.
-- **Host execution**: elevated forces `exec` onto the gateway host; `full` also sets `security=full`.
-- **Approvals**: `full` skips exec approvals; `on`/`ask` honor them when allowlist/ask rules require.
-- **Unsandboxed agents**: no-op for location; only affects gating, logging, and status.
-- **Tool policy still applies**: if `exec` is denied by tool policy, elevated cannot be used.
-- **Separate from `/exec`**: `/exec` adjusts per-session defaults for authorized senders and does not require elevated.
+- **사용 가능성 게이트**: `tools.elevated`는 전역 기초입니다. `agents.list[].tools.elevated`는 에이전트별로 추가로 승격을 제한할 수 있습니다(둘 다 허용해야 합니다).
+- **세션별 상태**: `/elevated on|off|ask|full`은 현재 세션 키의 승격 수준을 설정합니다.
+- **인라인 지시문**: 메시지 내의 `/elevated on|ask|full`은 해당 메시지에만 적용됩니다.
+- **그룹**: 그룹 채팅에서는 에이전트가 언급될 때만 승격 지시문이 인식됩니다. 언급 요구사항을 우회하는 명령어 전용 메시지는 언급된 것으로 처리됩니다.
+- **호스트 실행**: 승격은 게이트웨이 호스트에서 `exec`를 강제하며; `full`은 여기에 `security=full`도 설정합니다.
+- **승인들**: `full`은 exec 승인을 건너뛰며; `on`/`ask`는 허용 목록/질의 규칙이 요구할 때 이를 준수합니다.
+- **샌드박스 격리되지 않은 에이전트들**: 위치에 대한 작동 없음; 차단, 로깅 및 상태에만 영향을 줍니다.
+- **도구 정책 여전히 적용**: 도구 정책에 의해 `exec`가 거부되면 승격을 사용할 수 없습니다.
+- **`/exec`과 분리됨**: `/exec`는 인증된 발신자에 대해 세션 기본값을 조정하며 승격이 필요하지 않습니다.
 
 ## Resolution order
 
-1. Inline directive on the message (applies only to that message).
-2. Session override (set by sending a directive-only message).
-3. Global default (`agents.defaults.elevatedDefault` in config).
+1. 메시지의 인라인 지시문 (해당 메시지에만 적용).
+2. 세션 오버라이드 (지시문 전용 메시지를 보내 설정).
+3. 글로벌 기본값 (구성의 `agents.defaults.elevatedDefault`).
 
 ## Setting a session default
 
-- Send a message that is **only** the directive (whitespace allowed), e.g. `/elevated full`.
-- Confirmation reply is sent (`Elevated mode set to full...` / `Elevated mode disabled.`).
-- If elevated access is disabled or the sender is not on the approved allowlist, the directive replies with an actionable error and does not change session state.
-- Send `/elevated` (or `/elevated:`) with no argument to see the current elevated level.
+- 지시문만 포함된 메시지를 전송합니다 (공백 허용), 예: `/elevated full`.
+- 확인 응답이 전송됩니다 (`Elevated mode set to full...` / `Elevated mode disabled.`).
+- 승급된 접근이 비활성화되었거나 발신자가 승인된 허용 목록에 없을 경우, 지시문은 실행 가능한 오류와 함께 응답하며 세션 상태를 변경하지 않습니다.
+- `/elevated` (또는 `/elevated:`)를 인수 없이 보내서 현재 승급 수준을 확인할 수 있습니다.
 
 ## Availability + allowlists
 
-- Feature gate: `tools.elevated.enabled` (default can be off via config even if the code supports it).
-- Sender allowlist: `tools.elevated.allowFrom` with per-provider allowlists (e.g. `discord`, `whatsapp`).
-- Per-agent gate: `agents.list[].tools.elevated.enabled` (optional; can only further restrict).
-- Per-agent allowlist: `agents.list[].tools.elevated.allowFrom` (optional; when set, the sender must match **both** global + per-agent allowlists).
-- Discord fallback: if `tools.elevated.allowFrom.discord` is omitted, the `channels.discord.dm.allowFrom` list is used as a fallback. Set `tools.elevated.allowFrom.discord` (even `[]`) to override. Per-agent allowlists do **not** use the fallback.
-- All gates must pass; otherwise elevated is treated as unavailable.
+- 기능 게이트: `tools.elevated.enabled` (설정이 허용하더라도 기본적으로 비활성화 가능).
+- 발신자 허용 목록: `tools.elevated.allowFrom`으로 프로바이더별 허용 목록 (예: `discord`, `whatsapp`).
+- 에이전트별 게이트: `agents.list[].tools.elevated.enabled` (선택적; 추가로 제한할 수만 있음).
+- 에이전트별 허용 목록: `agents.list[].tools.elevated.allowFrom` (선택적; 설정 시 발신자는 전역 및 에이전트별 허용 목록에 모두 일치해야 함).
+- Discord 대체: `tools.elevated.allowFrom.discord`가 생략되면 `channels.discord.allowFrom` 목록이 대체로 사용됩니다 (레거시: `channels.discord.dm.allowFrom`). `tools.elevated.allowFrom.discord` (빈 배열이라도)로 덮어씌울 수 있습니다. 에이전트별 허용 목록은 대체를 사용하지 **않습니다**.
+- 모든 게이트가 통과해야 하며, 그렇지 않으면 승급이 사용 불가능으로 처리됩니다.
 
 ## Logging + status
 
-- Elevated exec calls are logged at info level.
-- Session status includes elevated mode (e.g. `elevated=ask`, `elevated=full`).
+- 승격된 exec 호출은 정보 수준으로 기록됩니다.
+- 세션 상태에는 승급 모드가 포함됩니다 (예: `elevated=ask`, `elevated=full`).

@@ -1,98 +1,265 @@
 ---
-summary: "Troubleshooting hub: symptoms → checks → fixes"
+summary: "Symptom first troubleshooting hub for OpenClaw"
 read_when:
-  - You see an error and want the fix path
-  - The installer says “success” but the CLI doesn’t work
-title: "Troubleshooting"
+  - OpenClaw is not working and you need the fastest path to a fix
+  - You want a triage flow before diving into deep runbooks
+title: "문제 해결"
 ---
 
-# Troubleshooting
+# 문제 해결
 
-## First 60 seconds
+단 2분만 있다면, 이 페이지를 초기 진단의 출입구로 사용하세요.
 
-Run these in order:
+## 처음 60초
+
+다음 절차를 정확하게 순서대로 실행하세요:
 
 ```bash
 openclaw status
 openclaw status --all
 openclaw gateway probe
-openclaw logs --follow
+openclaw gateway status
 openclaw doctor
+openclaw channels status --probe
+openclaw logs --follow
 ```
 
-If the gateway is reachable, deep probes:
+한 줄로 좋은 출력 결과:
 
-```bash
-openclaw status --deep
+- `openclaw status` → 구성된 채널이 보이고 명확한 인증 오류가 없음.
+- `openclaw status --all` → 전체 보고서가 존재하고 공유 가능함.
+- `openclaw gateway probe` → 예상한 게이트웨이 대상에 도달 가능.
+- `openclaw gateway status` → `Runtime: running` 및 `RPC probe: ok`.
+- `openclaw doctor` → 차단되는 설정/서비스 오류 없음.
+- `openclaw channels status --probe` → 채널이 `connected` 또는 `ready` 상태 보고.
+- `openclaw logs --follow` → 지속적인 활동, 반복되는 치명적 오류 없음.
+
+## 의사 결정 트리
+
+```mermaid
+flowchart TD
+  A[OpenClaw is not working] --> B{What breaks first}
+  B --> C[No replies]
+  B --> D[Dashboard or Control UI will not connect]
+  B --> E[Gateway will not start or service not running]
+  B --> F[Channel connects but messages do not flow]
+  B --> G[Cron or heartbeat did not fire or did not deliver]
+  B --> H[Node is paired but camera canvas screen exec fails]
+  B --> I[Browser tool fails]
+
+  C --> C1[/No replies section/]
+  D --> D1[/Control UI section/]
+  E --> E1[/Gateway section/]
+  F --> F1[/Channel flow section/]
+  G --> G1[/Automation section/]
+  H --> H1[/Node tools section/]
+  I --> I1[/Browser section/]
 ```
 
-## Common “it broke” cases
+<AccordionGroup>
+  <Accordion title="No replies">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw channels status --probe
+    openclaw pairing list <channel>
+    openclaw logs --follow
+    ```
 
-### `openclaw: command not found`
+    좋은 출력 결과는 다음과 같습니다:
 
-Almost always a Node/npm PATH issue. Start here:
+    - `Runtime: running`
+    - `RPC probe: ok`
+    - `channels status --probe`에서 채널이 연결/준비 상태로 표시됨
+    - 발신자가 승인된 것처럼 보임 (또는 다이렉트 메시지 정책이 오픈/허용 목록)
 
-- [Install (Node/npm PATH sanity)](/install#nodejs--npm-path-sanity)
+    일반적인 로그 서명:
 
-### Installer fails (or you need full logs)
+    - `drop guild message (mention required` → Discord에서 멘션 게이팅으로 메시지가 차단됨.
+    - `pairing request` → 발신자가 승인되지 않았고 다이렉트 메시지 쌍으로 승인 대기 중.
+    - `blocked` / `allowlist` in channel logs → 발신자, 방 또는 그룹이 필터링됨.
 
-Re-run the installer in verbose mode to see the full trace and npm output:
+    심층 페이지:
 
-```bash
-curl -fsSL https://openclaw.ai/install.sh | bash -s -- --verbose
-```
+    - [/gateway/troubleshooting#no-replies](/gateway/troubleshooting#no-replies)
+    - [/channels/troubleshooting](/channels/troubleshooting)
+    - [/channels/pairing](/channels/pairing)
 
-For beta installs:
+  </Accordion>
 
-```bash
-curl -fsSL https://openclaw.ai/install.sh | bash -s -- --beta --verbose
-```
+  <Accordion title="Dashboard or Control UI will not connect">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw logs --follow
+    openclaw doctor
+    openclaw channels status --probe
+    ```
 
-You can also set `OPENCLAW_VERBOSE=1` instead of the flag.
+    좋은 출력 결과는 다음과 같습니다:
 
-### Gateway “unauthorized”, can’t connect, or keeps reconnecting
+    - `Dashboard: http://...`가 `openclaw gateway status`에 표시됨
+    - `RPC probe: ok`
+    - 로그에 인증 루프 없음
 
-- [Gateway troubleshooting](/gateway/troubleshooting)
-- [Gateway authentication](/gateway/authentication)
+    일반적인 로그 서명:
 
-### Control UI fails on HTTP (device identity required)
+    - `device identity required` → HTTPS/비보안 컨텍스트에서 장치 인증 완료 불가.
+    - `unauthorized` / reconnect loop → 잘못된 토큰/비밀번호 또는 인증 모드 불일치.
+    - `gateway connect failed:` → UI가 잘못된 URL/포트 또는 도달 불가능한 게이트웨이를 대상으로 설정됨.
 
-- [Gateway troubleshooting](/gateway/troubleshooting)
-- [Control UI](/web/control-ui#insecure-http)
+    심층 페이지:
 
-### `docs.openclaw.ai` shows an SSL error (Comcast/Xfinity)
+    - [/gateway/troubleshooting#dashboard-control-ui-connectivity](/gateway/troubleshooting#dashboard-control-ui-connectivity)
+    - [/web/control-ui](/web/control-ui)
+    - [/gateway/authentication](/gateway/authentication)
 
-Some Comcast/Xfinity connections block `docs.openclaw.ai` via Xfinity Advanced Security.
-Disable Advanced Security or add `docs.openclaw.ai` to the allowlist, then retry.
+  </Accordion>
 
-- Xfinity Advanced Security help: https://www.xfinity.com/support/articles/using-xfinity-xfi-advanced-security
-- Quick sanity checks: try a mobile hotspot or VPN to confirm it’s ISP-level filtering
+  <Accordion title="Gateway will not start or service installed but not running">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw logs --follow
+    openclaw doctor
+    openclaw channels status --probe
+    ```
 
-### Service says running, but RPC probe fails
+    좋은 출력 결과는 다음과 같습니다:
 
-- [Gateway troubleshooting](/gateway/troubleshooting)
-- [Background process / service](/gateway/background-process)
+    - `Service: ... (loaded)`
+    - `Runtime: running`
+    - `RPC probe: ok`
 
-### Model/auth failures (rate limit, billing, “all models failed”)
+    일반적인 로그 서명:
 
-- [Models](/cli/models)
-- [OAuth / auth concepts](/concepts/oauth)
+    - `Gateway start blocked: set gateway.mode=local` → 게이트웨이 모드가 설정되지 않음/원격.
+    - `refusing to bind gateway ... without auth` → 비인증 비밀번호/토큰 없이 비로컬 루프백에 바인드 거부.
+    - `another gateway instance is already listening` or `EADDRINUSE` → 포트가 이미 사용 중.
 
-### `/model` says `model not allowed`
+    심층 페이지:
 
-This usually means `agents.defaults.models` is configured as an allowlist. When it’s non-empty,
-only those provider/model keys can be selected.
+    - [/gateway/troubleshooting#gateway-service-not-running](/gateway/troubleshooting#gateway-service-not-running)
+    - [/gateway/background-process](/gateway/background-process)
+    - [/gateway/configuration](/gateway/configuration)
 
-- Check the allowlist: `openclaw config get agents.defaults.models`
-- Add the model you want (or clear the allowlist) and retry `/model`
-- Use `/models` to browse the allowed providers/models
+  </Accordion>
 
-### When filing an issue
+  <Accordion title="Channel connects but messages do not flow">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw logs --follow
+    openclaw doctor
+    openclaw channels status --probe
+    ```
 
-Paste a safe report:
+    좋은 출력 결과는 다음과 같습니다:
 
-```bash
-openclaw status --all
-```
+    - 채널 전송이 연결됨.
+    - 쌍/허용 목록 검사가 통과됨.
+    - 필요한 경우 멘션이 감지됨.
 
-If you can, include the relevant log tail from `openclaw logs --follow`.
+    일반적인 로그 서명:
+
+    - `mention required` → 그룹 멘션 게이팅이 처리 차단.
+    - `pairing` / `pending` → 다이렉트 메시지 발신자가 아직 승인되지 않음.
+    - `not_in_channel`, `missing_scope`, `Forbidden`, `401/403` → 채널 권한 토큰 문제.
+
+    심층 페이지:
+
+    - [/gateway/troubleshooting#channel-connected-messages-not-flowing](/gateway/troubleshooting#channel-connected-messages-not-flowing)
+    - [/channels/troubleshooting](/channels/troubleshooting)
+
+  </Accordion>
+
+  <Accordion title="Cron or heartbeat did not fire or did not deliver">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw cron status
+    openclaw cron list
+    openclaw cron runs --id <jobId> --limit 20
+    openclaw logs --follow
+    ```
+
+    좋은 출력 결과는 다음과 같습니다:
+
+    - `cron.status`가 다음으로 깨어날 예정으로 활성화된 상태로 표시됨.
+    - `cron runs`가 최근 `ok` 항목을 표시함.
+    - 하트비트가 활성화되고 활성 시간대 외부가 아님.
+
+    일반적인 로그 서명:
+
+    - `cron: scheduler disabled; jobs will not run automatically` → 크론이 비활성화됨.
+    - `heartbeat skipped` with `reason=quiet-hours` → 설정된 활성 시간대 외부.
+    - `requests-in-flight` → 주레인 바쁨; 하트비트 깨우기 연기됨.
+    - `unknown accountId` → 하트비트 전달 대상 계정이 존재하지 않음.
+
+    심층 페이지:
+
+    - [/gateway/troubleshooting#cron-and-heartbeat-delivery](/gateway/troubleshooting#cron-and-heartbeat-delivery)
+    - [/automation/troubleshooting](/automation/troubleshooting)
+    - [/gateway/heartbeat](/gateway/heartbeat)
+
+  </Accordion>
+
+  <Accordion title="Node is paired but tool fails camera canvas screen exec">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw nodes status
+    openclaw nodes describe --node <idOrNameOrIp>
+    openclaw logs --follow
+    ```
+
+    좋은 출력 결과는 다음과 같습니다:
+
+    - 노드가 `node` 역할로 연결되고 쌍으로 지정되어 있음.
+    - 실행하려는 명령에 대한 기능이 존재함.
+    - 도구에 대한 권한 상태가 부여됨.
+
+    일반적인 로그 서명:
+
+    - `NODE_BACKGROUND_UNAVAILABLE` → 노드 앱을 포그라운드로 가져오세요.
+    - `*_PERMISSION_REQUIRED` → OS 권한이 거부/누락됨.
+    - `SYSTEM_RUN_DENIED: approval required` → 실행 승인이 대기 중.
+    - `SYSTEM_RUN_DENIED: allowlist miss` → 명령이 실행 허용 목록에 없음.
+
+    심층 페이지:
+
+    - [/gateway/troubleshooting#node-paired-tool-fails](/gateway/troubleshooting#node-paired-tool-fails)
+    - [/nodes/troubleshooting](/nodes/troubleshooting)
+    - [/tools/exec-approvals](/tools/exec-approvals)
+
+  </Accordion>
+
+  <Accordion title="Browser tool fails">
+    ```bash
+    openclaw status
+    openclaw gateway status
+    openclaw browser status
+    openclaw logs --follow
+    openclaw doctor
+    ```
+
+    좋은 출력 결과는 다음과 같습니다:
+
+    - 브라우저 상태가 `running: true` 및 선택된 브라우저/프로필을 표시함.
+    - `openclaw` 프로필 시작 또는 `chrome` 릴레이에 연결된 탭이 있음.
+
+    일반적인 로그 서명:
+
+    - `Failed to start Chrome CDP on port` → 로컬 브라우저 실행 실패.
+    - `browser.executablePath not found` → 설정된 이진 경로가 잘못됨.
+    - `Chrome extension relay is running, but no tab is connected` → 확장 프로그램이 연결되지 않음.
+    - `Browser attachOnly is enabled ... not reachable` → 붙임 전용 프로필에 라이브 CDP 대상이 없음.
+
+    심층 페이지:
+
+    - [/gateway/troubleshooting#browser-tool-fails](/gateway/troubleshooting#browser-tool-fails)
+    - [/tools/browser-linux-troubleshooting](/tools/browser-linux-troubleshooting)
+    - [/tools/chrome-extension](/tools/chrome-extension)
+
+  </Accordion>
+</AccordionGroup>

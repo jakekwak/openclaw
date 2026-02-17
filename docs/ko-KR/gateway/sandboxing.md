@@ -1,77 +1,76 @@
 ---
-summary: "How OpenClaw sandboxing works: modes, scopes, workspace access, and images"
-title: Sandboxing
-read_when: "You want a dedicated explanation of sandboxing or need to tune agents.defaults.sandbox."
+summary: "OpenClaw 샌드박스 격리 작동 방식: 모드, 범위, 작업 공간 접근 및 이미지"
+title: 샌드박스 격리
+read_when: "샌드박스 격리에 대한 전용 설명이 필요하거나 agents.defaults.sandbox 를 조정해야 할 때"
 status: active
 ---
 
-# Sandboxing
+# 샌드박스 격리
 
-OpenClaw can run **tools inside Docker containers** to reduce blast radius.
-This is **optional** and controlled by configuration (`agents.defaults.sandbox` or
-`agents.list[].sandbox`). If sandboxing is off, tools run on the host.
-The Gateway stays on the host; tool execution runs in an isolated sandbox
-when enabled.
+OpenClaw 는 폭발 반경을 줄이기 위해 **도구를 Docker 컨테이너 내에서 실행**할 수 있습니다.
+이는 **옵션**이며 설정 (`agents.defaults.sandbox` 또는 `agents.list[].sandbox`)에 의해 제어됩니다. 샌드박스 격리가 꺼져 있으면 도구는 호스트에서 실행됩니다.
+게이트웨이는 호스트에 남아 있으며, 샌드박스 격리가 활성화되면 도구 실행은 격리된 샌드박스에서 실행됩니다.
 
-This is not a perfect security boundary, but it materially limits filesystem
-and process access when the model does something dumb.
+이는 완벽한 보안 경계가 아니지만, 모델이 잘못된 처리를 할 때 파일 시스템과 프로세스 접근을 실질적으로 제한합니다.
 
-## What gets sandboxed
+## 무엇이 샌드박스 격리되는가
 
-- Tool execution (`exec`, `read`, `write`, `edit`, `apply_patch`, `process`, etc.).
-- Optional sandboxed browser (`agents.defaults.sandbox.browser`).
-  - By default, the sandbox browser auto-starts (ensures CDP is reachable) when the browser tool needs it.
-    Configure via `agents.defaults.sandbox.browser.autoStart` and `agents.defaults.sandbox.browser.autoStartTimeoutMs`.
-  - `agents.defaults.sandbox.browser.allowHostControl` lets sandboxed sessions target the host browser explicitly.
-  - Optional allowlists gate `target: "custom"`: `allowedControlUrls`, `allowedControlHosts`, `allowedControlPorts`.
+- 도구 실행 (`exec`, `read`, `write`, `edit`, `apply_patch`, `process` 등).
+- 선택적 샌드박스 격리 브라우저 (`agents.defaults.sandbox.browser`).
+  - 기본적으로 샌드박스 격리 브라우저는 브라우저 도구가 필요할 때 CDP 에 접근할 수 있도록 자동 시작됩니다.
+    설정은 `agents.defaults.sandbox.browser.autoStart` 및 `agents.defaults.sandbox.browser.autoStartTimeoutMs` 를 통해 가능합니다.
+  - `agents.defaults.sandbox.browser.allowHostControl` 은 샌드박스 격리 세션이 호스트 브라우저를 명시적으로 지정할 수 있도록 합니다.
+  - 선택적 허용 목록(allowlist)이 `target: "custom"` 을 제한합니다: `allowedControlUrls`, `allowedControlHosts`, `allowedControlPorts`.
 
-Not sandboxed:
+샌드박스 격리가 되지 않는 것:
 
-- The Gateway process itself.
-- Any tool explicitly allowed to run on the host (e.g. `tools.elevated`).
-  - **Elevated exec runs on the host and bypasses sandboxing.**
-  - If sandboxing is off, `tools.elevated` does not change execution (already on host). See [Elevated Mode](/tools/elevated).
+- 게이트웨이 프로세스
+- 호스트에서 실행할 수 있도록 명시적으로 허용된 도구 (예: `tools.elevated`).
+  - **Elevated exec 는 호스트에서 실행되며 샌드박스 격리를 우회합니다.**
+  - 샌드박스 격리가 꺼져 있는 경우, `tools.elevated` 는 실행을 변경하지 않습니다 (이미 호스트에서 실행 중). [Elevated Mode](/tools/elevated) 를 참조하세요.
 
-## Modes
+## 모드
 
-`agents.defaults.sandbox.mode` controls **when** sandboxing is used:
+`agents.defaults.sandbox.mode` 는 샌드박스 격리가 **언제** 사용되는지를 제어합니다:
 
-- `"off"`: no sandboxing.
-- `"non-main"`: sandbox only **non-main** sessions (default if you want normal chats on host).
-- `"all"`: every session runs in a sandbox.
-  Note: `"non-main"` is based on `session.mainKey` (default `"main"`), not agent id.
-  Group/channel sessions use their own keys, so they count as non-main and will be sandboxed.
+- `"off"`: 샌드박스 격리를 사용하지 않음.
+- `"non-main"`: **non-main** 세션만 샌드박스 격리 (호스트에서 정상적인 채팅을 원할 때 기본값).
+- `"all"`: 모든 세션이 샌드박스 격리에서 실행.
+  주의: `"non-main"` 은 에이전트 ID 가 아니라 `session.mainKey` (기본값 `"main"`) 에 기초합니다.
+  그룹/채널 세션은 각각의 키를 사용하며, 이는 비주요 세션으로 간주되어 샌드박스 격리됩니다.
 
-## Scope
+## 범위
 
-`agents.defaults.sandbox.scope` controls **how many containers** are created:
+`agents.defaults.sandbox.scope` 는 **얼마나 많은 컨테이너**가 생성되는지를 제어합니다:
 
-- `"session"` (default): one container per session.
-- `"agent"`: one container per agent.
-- `"shared"`: one container shared by all sandboxed sessions.
+- `"session"` (기본값): 세션당 하나의 컨테이너.
+- `"agent"`: 에이전트당 하나의 컨테이너.
+- `"shared"`: 샌드박스 격리된 모든 세션에 의해 공유되는 하나의 컨테이너.
 
-## Workspace access
+## 작업 공간 접근
 
-`agents.defaults.sandbox.workspaceAccess` controls **what the sandbox can see**:
+`agents.defaults.sandbox.workspaceAccess` 는 샌드박스가 **무엇을 볼 수 있는**지를 제어합니다:
 
-- `"none"` (default): tools see a sandbox workspace under `~/.openclaw/sandboxes`.
-- `"ro"`: mounts the agent workspace read-only at `/agent` (disables `write`/`edit`/`apply_patch`).
-- `"rw"`: mounts the agent workspace read/write at `/workspace`.
+- `"none"` (기본값): 도구가 `~/.openclaw/sandboxes` 아래의 샌드박스 작업 공간을 봅니다.
+- `"ro"`: 에이전트 작업 공간을 `/agent` 에 읽기 전용으로 마운트 ( `write`/`edit`/`apply_patch` 비활성화).
+- `"rw"`: 에이전트 작업 공간을 `/workspace` 에 읽기/쓰기 가능으로 마운트.
 
-Inbound media is copied into the active sandbox workspace (`media/inbound/*`).
-Skills note: the `read` tool is sandbox-rooted. With `workspaceAccess: "none"`,
-OpenClaw mirrors eligible skills into the sandbox workspace (`.../skills`) so
-they can be read. With `"rw"`, workspace skills are readable from
-`/workspace/skills`.
+수신 미디어는 활성 샌드박스 작업 공간 (`media/inbound/*`) 으로 복사됩니다.
+스킬 주의사항: `read` 도구는 샌드박스의 루트를 기준으로 동작합니다. `workspaceAccess: "none"`일 경우 OpenClaw 는 사용할 수 있는 스킬을 샌드박스 작업 공간 (`.../skills`) 에 미러링하여 읽을 수 있도록 합니다. `"rw"`일 때, 작업 공간 스킬은 `/workspace/skills` 에서 읽을 수 있습니다.
 
-## Custom bind mounts
+## 사용자 정의 바인드 마운트
 
-`agents.defaults.sandbox.docker.binds` mounts additional host directories into the container.
-Format: `host:container:mode` (e.g., `"/home/user/source:/source:rw"`).
+`agents.defaults.sandbox.docker.binds` 는 추가 호스트 디렉터리를 컨테이너에 마운트합니다.
+형식: `host:container:mode` (예: `"/home/user/source:/source:rw"`).
 
-Global and per-agent binds are **merged** (not replaced). Under `scope: "shared"`, per-agent binds are ignored.
+전역 및 에이전트별 바인드는 **병합**됩니다 (대체되지 않음). `scope: "shared"` 일 때, 에이전트별 바인드는 무시됩니다.
 
-Example (read-only source + docker socket):
+`agents.defaults.sandbox.browser.binds` 는 **샌드박스 격리 브라우저** 컨테이너에 추가 호스트 디렉터리를 마운트합니다.
+
+- 설정 시 ( `[]` 포함), 브라우저 컨테이너에 대해서 `agents.defaults.sandbox.docker.binds` 를 대체합니다.
+- 생략 시, 브라우저 컨테이너는 `agents.defaults.sandbox.docker.binds` 를 기본값으로 사용합니다 (이전 버전과 호환).
+
+예: (읽기 전용 소스 + 추가 데이터 디렉터리):
 
 ```json5
 {
@@ -79,7 +78,7 @@ Example (read-only source + docker socket):
     defaults: {
       sandbox: {
         docker: {
-          binds: ["/home/user/source:/source:ro", "/var/run/docker.sock:/var/run/docker.sock"],
+          binds: ["/home/user/source:/source:ro", "/var/data/myapp:/data:ro"],
         },
       },
     },
@@ -97,80 +96,75 @@ Example (read-only source + docker socket):
 }
 ```
 
-Security notes:
+보안 주의사항:
 
-- Binds bypass the sandbox filesystem: they expose host paths with whatever mode you set (`:ro` or `:rw`).
-- Sensitive mounts (e.g., `docker.sock`, secrets, SSH keys) should be `:ro` unless absolutely required.
-- Combine with `workspaceAccess: "ro"` if you only need read access to the workspace; bind modes stay independent.
-- See [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) for how binds interact with tool policy and elevated exec.
+- 바인드는 샌드박스 파일 시스템을 우회합니다: 설정한 모드 (`:ro` 또는 `:rw`) 로 호스트 경로를 노출합니다.
+- OpenClaw 는 위험한 바인드 소스를 차단합니다 (예: `docker.sock`, `/etc`, `/proc`, `/sys`, `/dev` 및 이를 노출할 부모 마운트).
+- 민감한 마운트 (예: 비밀, SSH 키, 서비스 자격증명)는 반드시 필요하지 않은 한 `:ro` 로 설정해야 합니다.
+- 작업 공간에 대한 읽기 접근만 필요한 경우 `workspaceAccess: "ro"` 와 결합하세요; 바인드 모드는 독립적으로 유지됩니다.
+- 바인드가 도구 정책 및 Elevated exec 와 어떻게 상호 작용하는지에 대해서는 [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) 을 참조하세요.
 
-## Images + setup
+## 이미지 + 설정
 
-Default image: `openclaw-sandbox:bookworm-slim`
+기본 이미지: `openclaw-sandbox:bookworm-slim`
 
-Build it once:
+한번 빌드하세요:
 
 ```bash
 scripts/sandbox-setup.sh
 ```
 
-Note: the default image does **not** include Node. If a skill needs Node (or
-other runtimes), either bake a custom image or install via
-`sandbox.docker.setupCommand` (requires network egress + writable root +
-root user).
+주의: 기본 이미지에는 Node가 포함되어 있지 않습니다. 스킬이 Node (또는 다른 실행 환경)을 필요로 하는 경우, 사용자 정의 이미지를 빌드하거나 `sandbox.docker.setupCommand` 를 통해 설치하세요 (네트워크 출구 + 쓰기 가능한 루트 + 루트 사용자 필요).
 
-Sandboxed browser image:
+샌드박스 격리 브라우저 이미지:
 
 ```bash
 scripts/sandbox-browser-setup.sh
 ```
 
-By default, sandbox containers run with **no network**.
-Override with `agents.defaults.sandbox.docker.network`.
+기본적으로, 샌드박스 컨테이너는 **네트워크 없이** 실행됩니다.
+`agents.defaults.sandbox.docker.network` 를 통해 오버라이드하세요.
 
-Docker installs and the containerized gateway live here:
+Docker 설치와 컨테이너화된 게이트웨이는 여기에서 찾을 수 있습니다:
 [Docker](/install/docker)
 
-## setupCommand (one-time container setup)
+## setupCommand (단일 컨테이너 설정)
 
-`setupCommand` runs **once** after the sandbox container is created (not on every run).
-It executes inside the container via `sh -lc`.
+`setupCommand` 는 샌드박스 컨테이너가 생성된 후 **한번** 실행됩니다 (매번 실행되지 않음).
+컨테이너 내부에서 `sh -lc` 를 통해 실행됩니다.
 
-Paths:
+경로:
 
-- Global: `agents.defaults.sandbox.docker.setupCommand`
-- Per-agent: `agents.list[].sandbox.docker.setupCommand`
+- 전역: `agents.defaults.sandbox.docker.setupCommand`
+- 에이전트별: `agents.list[].sandbox.docker.setupCommand`
 
-Common pitfalls:
+일반적인 문제점:
 
-- Default `docker.network` is `"none"` (no egress), so package installs will fail.
-- `readOnlyRoot: true` prevents writes; set `readOnlyRoot: false` or bake a custom image.
-- `user` must be root for package installs (omit `user` or set `user: "0:0"`).
-- Sandbox exec does **not** inherit host `process.env`. Use
-  `agents.defaults.sandbox.docker.env` (or a custom image) for skill API keys.
+- 기본 `docker.network` 는 `"none"` 이므로 (출구 없음) 패키지 설치가 실패합니다.
+- `readOnlyRoot: true` 는 쓰기를 금지합니다; `readOnlyRoot: false` 로 설정하거나 사용자 정의 이미지를 빌드하세요.
+- 패키지 설치를 위해서는 `user`가 루트여야 합니다 ( `user` 를 생략하거나 `user: "0:0"` 으로 설정).
+- 샌드박스 exec 는 호스트의 `process.env` 를 상속하지 않습니다. 스킬 API 키의 경우 `agents.defaults.sandbox.docker.env` 를 사용하세요 (또는 사용자 정의 이미지를 사용).
 
-## Tool policy + escape hatches
+## 도구 정책 + 탈출구
 
-Tool allow/deny policies still apply before sandbox rules. If a tool is denied
-globally or per-agent, sandboxing doesn’t bring it back.
+도구 허용/거부 정책은 여전히 샌드박스 규칙 이전에 적용됩니다. 도구가 전역 또는 에이전트별로 거부된 경우, 샌드박스 격리는 이를 다시 가져오지 않습니다.
 
-`tools.elevated` is an explicit escape hatch that runs `exec` on the host.
-`/exec` directives only apply for authorized senders and persist per session; to hard-disable
-`exec`, use tool policy deny (see [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated)).
+`tools.elevated` 는 호스트에서 `exec` 를 실행하는 명시적인 탈출구입니다.
+`/exec` 지시는 승인된 발신자에게만 적용되며 세션당 지속됩니다; `exec` 를 완전히 비활성화하려면 도구 정책 거부를 사용하십시오 ( [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) 를 참조하세요).
 
-Debugging:
+디버깅:
 
-- Use `openclaw sandbox explain` to inspect effective sandbox mode, tool policy, and fix-it config keys.
-- See [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) for the “why is this blocked?” mental model.
-  Keep it locked down.
+- `openclaw sandbox explain` 를 사용하여 실제 샌드박스 모드, 도구 정책, 오류 수정 설정 키를 검사하세요.
+- "왜 막혔는가?"에 대한 정신적 모델은 [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) 을 참조하세요.
+  보안을 철저히 유지하세요.
 
-## Multi-agent overrides
+## 다중 에이전트 오버라이드
 
-Each agent can override sandbox + tools:
-`agents.list[].sandbox` and `agents.list[].tools` (plus `agents.list[].tools.sandbox.tools` for sandbox tool policy).
-See [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools) for precedence.
+각 에이전트는 샌드박스 및 도구를 오버라이드할 수 있습니다:
+`agents.list[].sandbox` 및 `agents.list[].tools` (샌드박스 도구 정책에 대해서는 `agents.list[].tools.sandbox.tools` 를 추가).
+우선순위에 대해서는 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools) 를 참조하세요.
 
-## Minimal enable example
+## 최소 활성화 예시
 
 ```json5
 {
@@ -186,8 +180,8 @@ See [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools) for precedence.
 }
 ```
 
-## Related docs
+## 관련 문서
 
-- [Sandbox Configuration](/gateway/configuration#agentsdefaults-sandbox)
-- [Multi-Agent Sandbox & Tools](/multi-agent-sandbox-tools)
-- [Security](/gateway/security)
+- [샌드박스 설정](/gateway/configuration#agentsdefaults-sandbox)
+- [다중 에이전트 샌드박스 및 도구](/tools/multi-agent-sandbox-tools)
+- [보안](/gateway/security)

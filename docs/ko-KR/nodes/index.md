@@ -1,31 +1,31 @@
 ---
-summary: "Nodes: pairing, capabilities, permissions, and CLI helpers for canvas/camera/screen/system"
+summary: "노드: 페어링, 기능, 권한, 캔버스/카메라/화면/시스템을 위한 CLI 도우미"
 read_when:
-  - Pairing iOS/Android nodes to a gateway
-  - Using node canvas/camera for agent context
-  - Adding new node commands or CLI helpers
-title: "Nodes"
+  - iOS/Android 노드를 게이트웨이에 페어링할 때
+  - 에이전트 컨텍스트로 노드 캔버스/카메라를 사용할 때
+  - 새로운 노드 명령어나 CLI 도우미를 추가할 때
+title: "노드"
 ---
 
-# Nodes
+# 노드
 
-A **node** is a companion device (macOS/iOS/Android/headless) that connects to the Gateway **WebSocket** (same port as operators) with `role: "node"` and exposes a command surface (e.g. `canvas.*`, `camera.*`, `system.*`) via `node.invoke`. Protocol details: [Gateway protocol](/gateway/protocol).
+**노드**는 게이트웨이 **웹소켓** (운영자와 동일한 포트)에 `role: "node"`로 연결하고 `node.invoke`를 통해 명령어 인터페이스 (`canvas.*`, `camera.*`, `system.*` 등)를 노출하는 동반 장치 (macOS/iOS/Android/헤드리스)입니다. 프로토콜 세부사항: [게이트웨이 프로토콜](/gateway/protocol).
 
-Legacy transport: [Bridge protocol](/gateway/bridge-protocol) (TCP JSONL; deprecated/removed for current nodes).
+이전 전송 프로토콜: [브리지 프로토콜](/gateway/bridge-protocol) (TCP JSONL; 현재 노드에서는 사용 안 함/폐기).
 
-macOS can also run in **node mode**: the menubar app connects to the Gateway’s WS server and exposes its local canvas/camera commands as a node (so `openclaw nodes …` works against this Mac).
+macOS는 **노드 모드**로 실행할 수도 있습니다: 상태 표시줄 앱은 게이트웨이의 WS 서버에 연결하고 로컬 캔버스/카메라 명령어를 노드로서 노출합니다 (따라서 `openclaw nodes …`가 이 Mac에 대해 작동함).
 
-Notes:
+노트:
 
-- Nodes are **peripherals**, not gateways. They don’t run the gateway service.
-- Telegram/WhatsApp/etc. messages land on the **gateway**, not on nodes.
+- 노드는 **주변 장치**이며, 게이트웨이가 아닙니다. 게이트웨이 서비스는 실행하지 않습니다.
+- Telegram/WhatsApp/등 메시지는 **게이트웨이**에 도착하며, 노드에 도착하지 않습니다.
+- 문제 해결 안내서: [/nodes/troubleshooting](/nodes/troubleshooting)
 
-## Pairing + status
+## 페어링 + 상태
 
-**WS nodes use device pairing.** Nodes present a device identity during `connect`; the Gateway
-creates a device pairing request for `role: node`. Approve via the devices CLI (or UI).
+**WS 노드는 장치 페어링을 사용합니다.** 노드는 `connect` 중에 장치 아이덴티티를 제시하고, 게이트웨이는 `role: node`에 대한 장치 페어링 요청을 생성합니다. CLI (또는 UI)를 통해 승인합니다.
 
-Quick CLI:
+빠른 CLI:
 
 ```bash
 openclaw devices list
@@ -35,64 +35,59 @@ openclaw nodes status
 openclaw nodes describe --node <idOrNameOrIp>
 ```
 
-Notes:
+노트:
 
-- `nodes status` marks a node as **paired** when its device pairing role includes `node`.
-- `node.pair.*` (CLI: `openclaw nodes pending/approve/reject`) is a separate gateway-owned
-  node pairing store; it does **not** gate the WS `connect` handshake.
+- `nodes status`는 장치 페어링 역할에 `node`가 포함되었을 때 노드를 **페어링된** 것으로 표시합니다.
+- `node.pair.*` (CLI: `openclaw nodes pending/approve/reject`)는 게이트웨이 소유의 별도 노드 페어링 스토어입니다. WS `connect` 핸드셰이크를 **막지** 않습니다.
 
-## Remote node host (system.run)
+## 원격 노드 호스트 (system.run)
 
-Use a **node host** when your Gateway runs on one machine and you want commands
-to execute on another. The model still talks to the **gateway**; the gateway
-forwards `exec` calls to the **node host** when `host=node` is selected.
+게이트웨이가 한 장치에서 실행되고 다른 장치에서 명령어를 실행하고자 할 때 **노드 호스트**를 사용합니다. 모델은 여전히 **게이트웨이**와 대화하며, 게이트웨이는 `host=node`가 선택되었을 때 `exec` 호출을 **노드 호스트**로 전달합니다.
 
-### What runs where
+### 어디에서 무엇이 실행되는가
 
-- **Gateway host**: receives messages, runs the model, routes tool calls.
-- **Node host**: executes `system.run`/`system.which` on the node machine.
-- **Approvals**: enforced on the node host via `~/.openclaw/exec-approvals.json`.
+- **게이트웨이 호스트**: 메시지를 받고, 모델을 실행하며, 도구 호출을 라우트합니다.
+- **노드 호스트**: 노드 머신에서 `system.run`/`system.which`를 실행합니다.
+- **승인**: `~/.openclaw/exec-approvals.json`를 통해 노드 호스트에서 적용됩니다.
 
-### Start a node host (foreground)
+### 노드 호스트 시작 (전면)
 
-On the node machine:
+노드 머신에서:
 
 ```bash
 openclaw node run --host <gateway-host> --port 18789 --display-name "Build Node"
 ```
 
-### Remote gateway via SSH tunnel (loopback bind)
+### SSH 터널을 통한 원격 게이트웨이 (로컬 루프백 바인드)
 
-If the Gateway binds to loopback (`gateway.bind=loopback`, default in local mode),
-remote node hosts cannot connect directly. Create an SSH tunnel and point the
-node host at the local end of the tunnel.
+만약 게이트웨이가 로컬 루프백에 바인드된다면 (`gateway.bind=loopback`, 로컬 모드에서 기본), 원격 노드 호스트는 직접 연결할 수 없습니다. SSH 터널을 생성하고 노드 호스트를 터널의 로컬 끝에 지시하십시오.
 
-Example (node host -> gateway host):
+예제 (노드 호스트 -> 게이트웨이 호스트):
 
 ```bash
-# Terminal A (keep running): forward local 18790 -> gateway 127.0.0.1:18789
+# 터미널 A (계속 실행): 로컬 18790을 게이트웨이 127.0.0.1:18789로 전달
 ssh -N -L 18790:127.0.0.1:18789 user@gateway-host
 
-# Terminal B: export the gateway token and connect through the tunnel
+# 터미널 B: 게이트웨이 토큰을 내보내고 터널을 통해 연결
 export OPENCLAW_GATEWAY_TOKEN="<gateway-token>"
 openclaw node run --host 127.0.0.1 --port 18790 --display-name "Build Node"
 ```
 
-Notes:
+노트:
 
-- The token is `gateway.auth.token` from the gateway config (`~/.openclaw/openclaw.json` on the gateway host).
-- `openclaw node run` reads `OPENCLAW_GATEWAY_TOKEN` for auth.
+- 토큰은 게이트웨이 구성 (`~/.openclaw/openclaw.json`의 `gateway.auth.token`)에서 가져옵니다.
+- `openclaw node run`은 인증을 위해 `OPENCLAW_GATEWAY_TOKEN`을 읽습니다.
 
-### Start a node host (service)
+### 노드 호스트 시작 (서비스)
 
 ```bash
 openclaw node install --host <gateway-host> --port 18789 --display-name "Build Node"
 openclaw node restart
 ```
 
-### Pair + name
+### 페어링 + 이름 설정
 
-On the gateway host:
+게이트웨이 호스트에서:
 
 ```bash
 openclaw nodes pending
@@ -100,25 +95,25 @@ openclaw nodes approve <requestId>
 openclaw nodes list
 ```
 
-Naming options:
+이름 설정 옵션:
 
-- `--display-name` on `openclaw node run` / `openclaw node install` (persists in `~/.openclaw/node.json` on the node).
-- `openclaw nodes rename --node <id|name|ip> --name "Build Node"` (gateway override).
+- `openclaw node run` / `openclaw node install`에서 `--display-name` (노드의 `~/.openclaw/node.json`에 영구 저장).
+- `openclaw nodes rename --node <id|name|ip> --name "Build Node"` (게이트웨이 오버라이드).
 
-### Allowlist the commands
+### 명령어 허용 목록 지정
 
-Exec approvals are **per node host**. Add allowlist entries from the gateway:
+실행 승인은 **노드 호스트 당**입니다. 게이트웨이에서 허용 목록 항목을 추가하십시오.
 
 ```bash
 openclaw approvals allowlist add --node <id|name|ip> "/usr/bin/uname"
 openclaw approvals allowlist add --node <id|name|ip> "/usr/bin/sw_vers"
 ```
 
-Approvals live on the node host at `~/.openclaw/exec-approvals.json`.
+승인은 `~/.openclaw/exec-approvals.json`의 노드 호스트에 있습니다.
 
-### Point exec at the node
+### 노드에 실행 지점 설정
 
-Configure defaults (gateway config):
+기본값 구성 (게이트웨이 설정):
 
 ```bash
 openclaw config set tools.exec.host node
@@ -126,43 +121,42 @@ openclaw config set tools.exec.security allowlist
 openclaw config set tools.exec.node "<id-or-name>"
 ```
 
-Or per session:
+또는 세션 당:
 
 ```
 /exec host=node security=allowlist node=<id-or-name>
 ```
 
-Once set, any `exec` call with `host=node` runs on the node host (subject to the
-node allowlist/approvals).
+한 번 설정되면, `host=node`가 있는 모든 `exec` 호출은 노드 호스트에서 실행됩니다 (노드 허용 목록/승인 대상임).
 
-Related:
+관련 문서:
 
-- [Node host CLI](/cli/node)
-- [Exec tool](/tools/exec)
-- [Exec approvals](/tools/exec-approvals)
+- [노드 호스트 CLI](/cli/node)
+- [실행 도구](/tools/exec)
+- [실행 승인](/tools/exec-approvals)
 
-## Invoking commands
+## 명령어 호출
 
-Low-level (raw RPC):
+저수준 (원시 RPC):
 
 ```bash
 openclaw nodes invoke --node <idOrNameOrIp> --command canvas.eval --params '{"javaScript":"location.href"}'
 ```
 
-Higher-level helpers exist for the common “give the agent a MEDIA attachment” workflows.
+상위 레벨 도우미는 "에이전트에게 MEDIA 첨부 파일을 제공"하는 일반적인 작업 흐름을 위해 존재합니다.
 
-## Screenshots (canvas snapshots)
+## 스크린샷 (캔버스 스냅샷)
 
-If the node is showing the Canvas (WebView), `canvas.snapshot` returns `{ format, base64 }`.
+노드가 캔버스 (웹뷰)를 표시하고 있다면, `canvas.snapshot`는 `{ format, base64 }`를 반환합니다.
 
-CLI helper (writes to a temp file and prints `MEDIA:<path>`):
+CLI 도우미 (임시 파일로 작성하고 `MEDIA:<경로>`를 출력):
 
 ```bash
 openclaw nodes canvas snapshot --node <idOrNameOrIp> --format png
 openclaw nodes canvas snapshot --node <idOrNameOrIp> --format jpg --max-width 1200 --quality 0.9
 ```
 
-### Canvas controls
+### 캔버스 제어
 
 ```bash
 openclaw nodes canvas present --node <idOrNameOrIp> --target https://example.com
@@ -171,12 +165,12 @@ openclaw nodes canvas navigate https://example.com --node <idOrNameOrIp>
 openclaw nodes canvas eval --node <idOrNameOrIp> --js "document.title"
 ```
 
-Notes:
+노트:
 
-- `canvas present` accepts URLs or local file paths (`--target`), plus optional `--x/--y/--width/--height` for positioning.
-- `canvas eval` accepts inline JS (`--js`) or a positional arg.
+- `canvas present`는 URL이나 로컬 파일 경로 (`--target`)를 허용하며, 추가적으로 `--x/--y/--width/--height`를 사용하여 위치를 지정할 수 있습니다.
+- `canvas eval`은 인라인 JS (`--js`)나 위치 인수를 허용합니다.
 
-### A2UI (Canvas)
+### A2UI (캔버스)
 
 ```bash
 openclaw nodes canvas a2ui push --node <idOrNameOrIp> --text "Hello"
@@ -184,158 +178,152 @@ openclaw nodes canvas a2ui push --node <idOrNameOrIp> --jsonl ./payload.jsonl
 openclaw nodes canvas a2ui reset --node <idOrNameOrIp>
 ```
 
-Notes:
+노트:
 
-- Only A2UI v0.8 JSONL is supported (v0.9/createSurface is rejected).
+- A2UI v0.8 JSONL만 지원되며 (v0.9/createSurface는 거부됨).
 
-## Photos + videos (node camera)
+## 사진 + 비디오 (노드 카메라)
 
-Photos (`jpg`):
+사진 (`jpg`):
 
 ```bash
 openclaw nodes camera list --node <idOrNameOrIp>
-openclaw nodes camera snap --node <idOrNameOrIp>            # default: both facings (2 MEDIA lines)
+openclaw nodes camera snap --node <idOrNameOrIp>            # 기본값: 양방향 (2 MEDIA 라인)
 openclaw nodes camera snap --node <idOrNameOrIp> --facing front
 ```
 
-Video clips (`mp4`):
+비디오 클립 (`mp4`):
 
 ```bash
 openclaw nodes camera clip --node <idOrNameOrIp> --duration 10s
 openclaw nodes camera clip --node <idOrNameOrIp> --duration 3000 --no-audio
 ```
 
-Notes:
+노트:
 
-- The node must be **foregrounded** for `canvas.*` and `camera.*` (background calls return `NODE_BACKGROUND_UNAVAILABLE`).
-- Clip duration is clamped (currently `<= 60s`) to avoid oversized base64 payloads.
-- Android will prompt for `CAMERA`/`RECORD_AUDIO` permissions when possible; denied permissions fail with `*_PERMISSION_REQUIRED`.
+- `canvas.*`와 `camera.*`에 대해 노드는 **전면에** 있어야 합니다 (백그라운드 호출은 `NODE_BACKGROUND_UNAVAILABLE` 반환).
+- 클립 길이는 현재 `<= 60s`로 제한되어 있습니다, 이는 기본적인 base64 페이로드의 크기를 제한하기 위한 것입니다.
+- Android는 가능한 경우 `CAMERA`/`RECORD_AUDIO` 권한을 요청합니다; 거부된 권한은 `*_PERMISSION_REQUIRED`로 실패합니다.
 
-## Screen recordings (nodes)
+## 화면 녹화 (노드)
 
-Nodes expose `screen.record` (mp4). Example:
+노드는 `screen.record` (mp4)를 노출합니다. 예제:
 
 ```bash
 openclaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10
 openclaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10 --no-audio
 ```
 
-Notes:
+노트:
 
-- `screen.record` requires the node app to be foregrounded.
-- Android will show the system screen-capture prompt before recording.
-- Screen recordings are clamped to `<= 60s`.
-- `--no-audio` disables microphone capture (supported on iOS/Android; macOS uses system capture audio).
-- Use `--screen <index>` to select a display when multiple screens are available.
+- `screen.record`는 노드 앱이 전면에 있어야 합니다.
+- Android는 녹화 전에 시스템 화면 캡처 프롬프트를 표시합니다.
+- 화면 녹화는 `<= 60s`로 제한됩니다.
+- `--no-audio`는 마이크 캡처를 비활성화합니다 (iOS/Android에서 지원; macOS는 시스템 캡처 오디오 사용).
+- 여러 화면이 있을 경우 `--screen <index>`를 사용하여 디스플레이를 선택하십시오.
 
-## Location (nodes)
+## 위치 (노드)
 
-Nodes expose `location.get` when Location is enabled in settings.
+노드는 설정에서 위치가 활성화되었을 때 `location.get`을 노출합니다.
 
-CLI helper:
+CLI 도우미:
 
 ```bash
 openclaw nodes location get --node <idOrNameOrIp>
 openclaw nodes location get --node <idOrNameOrIp> --accuracy precise --max-age 15000 --location-timeout 10000
 ```
 
-Notes:
+노트:
 
-- Location is **off by default**.
-- “Always” requires system permission; background fetch is best-effort.
-- The response includes lat/lon, accuracy (meters), and timestamp.
+- 위치는 **기본적으로 꺼져 있음**.
+- "항상"은 시스템 권한이 필요합니다; 백그라운드 가져오기는 최선의 노력을 기울입니다.
+- 응답에는 위도/경도, 정밀도 (미터), 타임스탬프가 포함됩니다.
 
-## SMS (Android nodes)
+## SMS (Android 노드)
 
-Android nodes can expose `sms.send` when the user grants **SMS** permission and the device supports telephony.
+Android 노드는 사용자가 **SMS** 권한을 부여하고 장치가 전화 기능을 지원하는 경우 `sms.send`를 노출할 수 있습니다.
 
-Low-level invoke:
+저수준 호출:
 
 ```bash
 openclaw nodes invoke --node <idOrNameOrIp> --command sms.send --params '{"to":"+15555550123","message":"Hello from OpenClaw"}'
 ```
 
-Notes:
+노트:
 
-- The permission prompt must be accepted on the Android device before the capability is advertised.
-- Wi-Fi-only devices without telephony will not advertise `sms.send`.
+- 권한 프롬프트는 Android 장치에서 기능이 광고되기 전에 수락되어야 합니다.
+- 전화 기능이 없는 Wi-Fi 전용 장치는 `sms.send`를 광고하지 않습니다.
 
-## System commands (node host / mac node)
+## 시스템 명령어 (노드 호스트 / mac 노드)
 
-The macOS node exposes `system.run`, `system.notify`, and `system.execApprovals.get/set`.
-The headless node host exposes `system.run`, `system.which`, and `system.execApprovals.get/set`.
+macOS 노드는 `system.run`, `system.notify`, 및 `system.execApprovals.get/set`을 노출합니다.
+헤드리스 노드 호스트는 `system.run`, `system.which`, 및 `system.execApprovals.get/set`을 노출합니다.
 
-Examples:
+예제:
 
 ```bash
 openclaw nodes run --node <idOrNameOrIp> -- echo "Hello from mac node"
 openclaw nodes notify --node <idOrNameOrIp> --title "Ping" --body "Gateway ready"
 ```
 
-Notes:
+노트:
 
-- `system.run` returns stdout/stderr/exit code in the payload.
-- `system.notify` respects notification permission state on the macOS app.
-- `system.run` supports `--cwd`, `--env KEY=VAL`, `--command-timeout`, and `--needs-screen-recording`.
-- `system.notify` supports `--priority <passive|active|timeSensitive>` and `--delivery <system|overlay|auto>`.
-- macOS nodes drop `PATH` overrides; headless node hosts only accept `PATH` when it prepends the node host PATH.
-- On macOS node mode, `system.run` is gated by exec approvals in the macOS app (Settings → Exec approvals).
-  Ask/allowlist/full behave the same as the headless node host; denied prompts return `SYSTEM_RUN_DENIED`.
-- On headless node host, `system.run` is gated by exec approvals (`~/.openclaw/exec-approvals.json`).
+- `system.run`는 페이로드 내 표준 출력/표준 오류/종료 코드를 반환합니다.
+- `system.notify`는 macOS 앱의 알림 권한 상태를 따릅니다.
+- `system.run`은 `--cwd`, `--env KEY=VAL`, `--command-timeout`, 및 `--needs-screen-recording`을 지원합니다.
+- `system.notify`는 `--priority <passive|active|timeSensitive>`와 `--delivery <system|overlay|auto>`를 지원합니다.
+- 노드 호스트는 `PATH` 오버라이드를 무시합니다. 추가 PATH 항목이 필요한 경우, 노드 호스트 서비스 환경을 설정하거나 표준 위치에 도구를 설치하십시오. `--env`를 통해 `PATH`를 전달하지 마십시오.
+- macOS 노드 모드에서 `system.run`은 macOS 앱의 실행 승인 (설정 → 실행 승인)에 의해 게이트됩니다. 묻기/허용 목록/전체는 헤드리스 노드 호스트와 동일하게 작동합니다; 거부된 프롬프트는 `SYSTEM_RUN_DENIED` 반환.
+- 헤드리스 노드 호스트에서는 `system.run`이 실행 승인 (`~/.openclaw/exec-approvals.json`)에 의해 게이트됩니다.
 
-## Exec node binding
+## 실행 노드 바인딩
 
-When multiple nodes are available, you can bind exec to a specific node.
-This sets the default node for `exec host=node` (and can be overridden per agent).
+여러 노드가 사용 가능한 경우, 특정 노드에 실행을 바인딩할 수 있습니다. 이는 `exec host=node`의 기본 노드를 설정하며 에이전트 별로 덮어쓸 수 있습니다.
 
-Global default:
+글로벌 기본값:
 
 ```bash
 openclaw config set tools.exec.node "node-id-or-name"
 ```
 
-Per-agent override:
+에이전트 별 오버라이드:
 
 ```bash
 openclaw config get agents.list
 openclaw config set agents.list[0].tools.exec.node "node-id-or-name"
 ```
 
-Unset to allow any node:
+아무 노드나 허용하는 것으로 설정 해제:
 
 ```bash
 openclaw config unset tools.exec.node
 openclaw config unset agents.list[0].tools.exec.node
 ```
 
-## Permissions map
+## 권한 맵
 
-Nodes may include a `permissions` map in `node.list` / `node.describe`, keyed by permission name (e.g. `screenRecording`, `accessibility`) with boolean values (`true` = granted).
+노드는 `node.list` / `node.describe`에 권한 이름(e.g., `screenRecording`, `accessibility`)으로 키가 설정된 `permissions` 맵을 포함할 수 있으며, 부울 값(`true` = 허용됨)을 가집니다.
 
-## Headless node host (cross-platform)
+## 헤드리스 노드 호스트 (크로스 플랫폼)
 
-OpenClaw can run a **headless node host** (no UI) that connects to the Gateway
-WebSocket and exposes `system.run` / `system.which`. This is useful on Linux/Windows
-or for running a minimal node alongside a server.
+OpenClaw는 게이트웨이 웹소켓에 연결하고 `system.run` / `system.which`를 노출하는 **헤드리스 노드 호스트** (UI 없음)를 실행할 수 있습니다. 이는 Linux/Windows에서 유용하거나 서버와 함께 최소한의 노드를 실행하기 위해 유용합니다.
 
-Start it:
+시작 방법:
 
 ```bash
 openclaw node run --host <gateway-host> --port 18789
 ```
 
-Notes:
+노트:
 
-- Pairing is still required (the Gateway will show a node approval prompt).
-- The node host stores its node id, token, display name, and gateway connection info in `~/.openclaw/node.json`.
-- Exec approvals are enforced locally via `~/.openclaw/exec-approvals.json`
-  (see [Exec approvals](/tools/exec-approvals)).
-- On macOS, the headless node host prefers the companion app exec host when reachable and falls
-  back to local execution if the app is unavailable. Set `OPENCLAW_NODE_EXEC_HOST=app` to require
-  the app, or `OPENCLAW_NODE_EXEC_FALLBACK=0` to disable fallback.
-- Add `--tls` / `--tls-fingerprint` when the Gateway WS uses TLS.
+- 여전히 페어링이 필요합니다 (게이트웨이는 노드 승인 프롬프트를 표시할 것입니다).
+- 노드 호스트는 `~/.openclaw/node.json`에 노드 ID, 토큰, 표시 이름, 게이트웨이 연결 정보를 저장합니다.
+- 실행 승인은 `~/.openclaw/exec-approvals.json`를 통해 로컬에서 적용됩니다
+  (참조 [실행 승인](/tools/exec-approvals)).
+- macOS에서 헤드리스 노드 호스트는 동반 앱 실행 호스트가 도달 가능한 경우 이를 선호하며, 앱이 사용 불가능할 땐 로컬 실행으로 대체합니다. `OPENCLAW_NODE_EXEC_HOST=app`을 설정하여 앱 필요를 지정하거나, `OPENCLAW_NODE_EXEC_FALLBACK=0`으로 대체 기능을 비활성화하십시오.
+- 게이트웨이 WS가 TLS를 사용하는 경우 `--tls` / `--tls-fingerprint`를 추가하십시오.
 
-## Mac node mode
+## Mac 노드 모드
 
-- The macOS menubar app connects to the Gateway WS server as a node (so `openclaw nodes …` works against this Mac).
-- In remote mode, the app opens an SSH tunnel for the Gateway port and connects to `localhost`.
+- macOS 상태 표시줄 앱은 노드로서 게이트웨이 WS 서버에 연결하며 (따라서 `openclaw nodes …`가 이 Mac에 대해 작동함).
+- 원격 모드에서는 앱이 게이트웨이 포트에 대해 SSH 터널을 열고 `localhost`에 연결합니다.

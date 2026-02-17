@@ -1,19 +1,19 @@
 ---
-summary: "Schema-accurate configuration examples for common OpenClaw setups"
+summary: "일반적인 OpenClaw 설정에 대한 스키마에 맞는 구성 예제"
 read_when:
-  - Learning how to configure OpenClaw
-  - Looking for configuration examples
-  - Setting up OpenClaw for the first time
-title: "Configuration Examples"
+  - OpenClaw 설정 방법 배우기
+  - 구성 예제 찾기
+  - 처음 OpenClaw 설정하기
+title: "구성 예제"
 ---
 
-# Configuration Examples
+# 구성 예제
 
-Examples below are aligned with the current config schema. For the exhaustive reference and per-field notes, see [Configuration](/gateway/configuration).
+아래의 예제는 현재 구성 스키마와 일치합니다. 자세한 참조와 필드별 노트는 [Configuration](/gateway/configuration)을 참조하세요.
 
-## Quick start
+## 시작하기
 
-### Absolute minimum
+### 절대 최소
 
 ```json5
 {
@@ -22,9 +22,9 @@ Examples below are aligned with the current config schema. For the exhaustive re
 }
 ```
 
-Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
+`~/.openclaw/openclaw.json`에 저장하면 해당 번호에서 봇에 다이렉트 메시지를 보낼 수 있습니다.
 
-### Recommended starter
+### 추천 스타터
 
 ```json5
 {
@@ -46,13 +46,13 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
 }
 ```
 
-## Expanded example (major options)
+## 확장 예제 (주요 옵션)
 
-> JSON5 lets you use comments and trailing commas. Regular JSON works too.
+> JSON5를 사용하면 주석과 후행 쉼표를 사용할 수 있습니다. 일반 JSON도 작동합니다.
 
 ```json5
 {
-  // Environment + shell
+  // 환경 + 셸
   env: {
     OPENROUTER_API_KEY: "sk-or-...",
     vars: {
@@ -64,10 +64,14 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Auth profile metadata (secrets live in auth-profiles.json)
+  // 인증 프로필 메타데이터 (비밀은 auth-profiles.json에 저장됨)
   auth: {
     profiles: {
-      "anthropic:me@example.com": { provider: "anthropic", mode: "oauth", email: "me@example.com" },
+      "anthropic:me@example.com": {
+        provider: "anthropic",
+        mode: "oauth",
+        email: "me@example.com",
+      },
       "anthropic:work": { provider: "anthropic", mode: "api_key" },
       "openai:default": { provider: "openai", mode: "api_key" },
       "openai-codex:default": { provider: "openai-codex", mode: "oauth" },
@@ -79,14 +83,14 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Identity
+  // 정체성
   identity: {
     name: "Samantha",
     theme: "helpful sloth",
     emoji: "🦥",
   },
 
-  // Logging
+  // 로깅
   logging: {
     level: "info",
     file: "/tmp/openclaw/openclaw.log",
@@ -95,7 +99,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     redactSensitive: "tools",
   },
 
-  // Message formatting
+  // 메시지 형식
   messages: {
     messagePrefix: "[openclaw]",
     responsePrefix: ">",
@@ -103,7 +107,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     ackReactionScope: "group-mentions",
   },
 
-  // Routing + queue
+  // 라우팅 + 큐
   routing: {
     groupChat: {
       mentionPatterns: ["@openclaw", "openclaw"],
@@ -126,7 +130,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Tooling
+  // 도구
   tools: {
     media: {
       audio: {
@@ -134,7 +138,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
         maxBytes: 20971520,
         models: [
           { provider: "openai", model: "gpt-4o-mini-transcribe" },
-          // Optional CLI fallback (Whisper binary):
+          // 옵션 CLI 대체 (Whisper 바이너리):
           // { type: "cli", command: "whisper", args: ["--model", "base", "{{MediaPath}}"] }
         ],
         timeoutSeconds: 120,
@@ -147,7 +151,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Session behavior
+  // 세션 동작
   session: {
     scope: "per-sender",
     reset: {
@@ -160,14 +164,25 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
     resetTriggers: ["/new", "/reset"],
     store: "~/.openclaw/agents/default/sessions/sessions.json",
+    maintenance: {
+      mode: "warn",
+      pruneAfter: "30d",
+      maxEntries: 500,
+      rotateBytes: "10mb",
+    },
     typingIntervalSeconds: 5,
     sendPolicy: {
       default: "allow",
-      rules: [{ action: "deny", match: { channel: "discord", chatType: "group" } }],
+      rules: [
+        {
+          action: "deny",
+          match: { channel: "discord", chatType: "group" }
+        }
+      ],
     },
   },
 
-  // Channels
+  // 채널
   channels: {
     whatsapp: {
       dmPolicy: "pairing",
@@ -219,20 +234,20 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Agent runtime
+  // 에이전트 런타임
   agents: {
     defaults: {
       workspace: "~/.openclaw/workspace",
       userTimezone: "America/Chicago",
       model: {
         primary: "anthropic/claude-sonnet-4-5",
-        fallbacks: ["anthropic/claude-opus-4-5", "openai/gpt-5.2"],
+        fallbacks: ["anthropic/claude-opus-4-6", "openai/gpt-5.2"],
       },
       imageModel: {
         primary: "openrouter/anthropic/claude-sonnet-4-5",
       },
       models: {
-        "anthropic/claude-opus-4-5": { alias: "opus" },
+        "anthropic/claude-opus-4-6": { alias: "opus" },
         "anthropic/claude-sonnet-4-5": { alias: "sonnet" },
         "openai/gpt-5.2": { alias: "gpt" },
       },
@@ -313,7 +328,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Custom model providers
+  // 사용자 정의 모델 프로바이더
   models: {
     mode: "merge",
     providers: {
@@ -339,20 +354,21 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Cron jobs
+  // 크론 작업
   cron: {
     enabled: true,
     store: "~/.openclaw/cron/cron.json",
     maxConcurrentRuns: 2,
+    sessionRetention: "24h",
   },
 
-  // Webhooks
+  // 웹훅
   hooks: {
     enabled: true,
     path: "/hooks",
     token: "shared-secret",
     presets: ["gmail"],
-    transformsDir: "~/.openclaw/hooks",
+    transformsDir: "~/.openclaw/hooks/transforms",
     mappings: [
       {
         id: "gmail-hook",
@@ -368,7 +384,10 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
         to: "+15555550123",
         thinking: "low",
         timeoutSeconds: 300,
-        transform: { module: "./transforms/gmail.js", export: "transformGmail" },
+        transform: {
+          module: "gmail.js",
+          export: "transformGmail",
+        },
       },
     ],
     gmail: {
@@ -386,7 +405,7 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
     },
   },
 
-  // Gateway + networking
+  // 게이트웨이 + 네트워킹
   gateway: {
     mode: "local",
     port: 18789,
@@ -423,9 +442,9 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
 }
 ```
 
-## Common patterns
+## 일반 패턴
 
-### Multi-platform setup
+### 멀티 플랫폼 설정
 
 ```json5
 {
@@ -446,23 +465,23 @@ Save to `~/.openclaw/openclaw.json` and you can DM the bot from that number.
 }
 ```
 
-### Secure DM mode (shared inbox / multi-user DMs)
+### 보안 다이렉트 메시지 모드 (공유 인박스 / 다중 사용자 다이렉트 메시지)
 
-If more than one person can DM your bot (multiple entries in `allowFrom`, pairing approvals for multiple people, or `dmPolicy: "open"`), enable **secure DM mode** so DMs from different senders don’t share one context by default:
+여러 사람이 봇에 다이렉트 메시지를 보낼 수 있다면 (`allowFrom`에 여러 항목, 여러 사람을 위한 페어링 승인 또는 `dmPolicy: "open"`), **보안 다이렉트 메시지 모드**를 활성화하여 기본적으로 다른 발신자의 다이렉트 메시지가 하나의 컨텍스트를 공유하지 않도록 합니다:
 
 ```json5
 {
-  // Secure DM mode (recommended for multi-user or sensitive DM agents)
+  // 보안 다이렉트 메시지 모드 (다중 사용자 또는 민감한 다이렉트 메시지 에이전트에 추천)
   session: { dmScope: "per-channel-peer" },
 
   channels: {
-    // Example: WhatsApp multi-user inbox
+    // 예: WhatsApp 다중 사용자 인박스
     whatsapp: {
       dmPolicy: "allowlist",
       allowFrom: ["+15555550123", "+15555550124"],
     },
 
-    // Example: Discord multi-user inbox
+    // 예: Discord 다중 사용자 인박스
     discord: {
       enabled: true,
       token: "YOUR_DISCORD_BOT_TOKEN",
@@ -472,7 +491,7 @@ If more than one person can DM your bot (multiple entries in `allowFrom`, pairin
 }
 ```
 
-### OAuth with API key failover
+### OAuth 및 API 키 대체
 
 ```json5
 {
@@ -496,13 +515,13 @@ If more than one person can DM your bot (multiple entries in `allowFrom`, pairin
     workspace: "~/.openclaw/workspace",
     model: {
       primary: "anthropic/claude-sonnet-4-5",
-      fallbacks: ["anthropic/claude-opus-4-5"],
+      fallbacks: ["anthropic/claude-opus-4-6"],
     },
   },
 }
 ```
 
-### Anthropic subscription + API key, MiniMax fallback
+### Anthropic 구독 + API 키, MiniMax 대체
 
 ```json5
 {
@@ -534,14 +553,14 @@ If more than one person can DM your bot (multiple entries in `allowFrom`, pairin
   agent: {
     workspace: "~/.openclaw/workspace",
     model: {
-      primary: "anthropic/claude-opus-4-5",
+      primary: "anthropic/claude-opus-4-6",
       fallbacks: ["minimax/MiniMax-M2.1"],
     },
   },
 }
 ```
 
-### Work bot (restricted access)
+### 작업 봇 (제한된 액세스)
 
 ```json5
 {
@@ -566,7 +585,7 @@ If more than one person can DM your bot (multiple entries in `allowFrom`, pairin
 }
 ```
 
-### Local models only
+### 로컬 모델만 사용
 
 ```json5
 {
@@ -598,9 +617,9 @@ If more than one person can DM your bot (multiple entries in `allowFrom`, pairin
 }
 ```
 
-## Tips
+## 팁
 
-- If you set `dmPolicy: "open"`, the matching `allowFrom` list must include `"*"`.
-- Provider IDs differ (phone numbers, user IDs, channel IDs). Use the provider docs to confirm the format.
-- Optional sections to add later: `web`, `browser`, `ui`, `discovery`, `canvasHost`, `talk`, `signal`, `imessage`.
-- See [Providers](/channels/whatsapp) and [Troubleshooting](/gateway/troubleshooting) for deeper setup notes.
+- `dmPolicy: "open"`으로 설정하면, 일치하는 `allowFrom` 목록에 `"*"`이 포함되어야 합니다.
+- 프로바이더 ID는 다릅니다(전화번호, 사용자 ID, 채널 ID). 형식을 확인하려면 프로바이더 문서를 참조하세요.
+- 나중에 추가할 수 있는 선택적 섹션: `web`, `browser`, `ui`, `discovery`, `canvasHost`, `talk`, `signal`, `imessage`.
+- 더 깊은 설정 노트는 [Providers](/channels/whatsapp) 및 [Troubleshooting](/gateway/troubleshooting)를 참조하세요.

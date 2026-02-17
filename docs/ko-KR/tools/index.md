@@ -1,21 +1,18 @@
 ---
-summary: "Agent tool surface for OpenClaw (browser, canvas, nodes, message, cron) replacing legacy `openclaw-*` skills"
+summary: "OpenClaw 용 에이전트 도구 인터페이스 (브라우저, 캔버스, 노드, 메시지, 크론)로 레거시 `openclaw-*` 스킬을 대체합니다."
 read_when:
-  - Adding or modifying agent tools
-  - Retiring or changing `openclaw-*` skills
+  - 에이전트 도구 추가 또는 수정
+  - `openclaw-*` 스킬 삭제 또는 변경
 title: "Tools"
 ---
 
 # Tools (OpenClaw)
 
-OpenClaw exposes **first-class agent tools** for browser, canvas, nodes, and cron.
-These replace the old `openclaw-*` skills: the tools are typed, no shelling,
-and the agent should rely on them directly.
+OpenClaw는 브라우저, 캔버스, 노드, 크론을 위한 **일급 에이전트 도구**를 제공합니다. 이는 기존의 `openclaw-*` 스킬을 대체합니다. 도구는 타입화되어 있으며, 쉘 사용을 피하고 에이전트는 이를 직접적으로 의존해야 합니다.
 
-## Disabling tools
+## 도구 비활성화
 
-You can globally allow/deny tools via `tools.allow` / `tools.deny` in `openclaw.json`
-(deny wins). This prevents disallowed tools from being sent to model providers.
+`openclaw.json`에서 `tools.allow` / `tools.deny`를 통해 전역적으로 도구를 허용/거부할 수 있습니다 (거부가 우선). 이는 모델 프로바이더로 보내지는 비허용 도구를 방지합니다.
 
 ```json5
 {
@@ -23,25 +20,24 @@ You can globally allow/deny tools via `tools.allow` / `tools.deny` in `openclaw.
 }
 ```
 
-Notes:
+주요 내용:
 
-- Matching is case-insensitive.
-- `*` wildcards are supported (`"*"` means all tools).
-- If `tools.allow` only references unknown or unloaded plugin tool names, OpenClaw logs a warning and ignores the allowlist so core tools stay available.
+- 매칭은 대소문자를 구분하지 않습니다.
+- `*`와일드카드가 지원됩니다 (`"*"`은 모든 도구를 의미합니다).
+- `tools.allow`가 불명확하거나 로드되지 않은 플러그인 도구 이름만 참조하는 경우, OpenClaw는 경고를 로그에 기록하고 허용 목록을 무시하여 핵심 도구가 계속 사용 가능하게 합니다.
 
-## Tool profiles (base allowlist)
+## 도구 프로필 (기본 허용 목록)
 
-`tools.profile` sets a **base tool allowlist** before `tools.allow`/`tools.deny`.
-Per-agent override: `agents.list[].tools.profile`.
+`tools.profile`은 `tools.allow`/`tools.deny` 전에 **기본 도구 허용 목록**을 설정합니다. 에이전트별 오버라이드는 `agents.list[].tools.profile`을 사용합니다.
 
-Profiles:
+프로필:
 
-- `minimal`: `session_status` only
+- `minimal`: `session_status`만
 - `coding`: `group:fs`, `group:runtime`, `group:sessions`, `group:memory`, `image`
 - `messaging`: `group:messaging`, `sessions_list`, `sessions_history`, `sessions_send`, `session_status`
-- `full`: no restriction (same as unset)
+- `full`: 제한 없음 (미설정과 동일)
 
-Example (messaging-only by default, allow Slack + Discord tools too):
+예시 (기본적으로 메시징 전용, Slack + Discord 도구도 허용):
 
 ```json5
 {
@@ -52,7 +48,7 @@ Example (messaging-only by default, allow Slack + Discord tools too):
 }
 ```
 
-Example (coding profile, but deny exec/process everywhere):
+예시 (코딩 프로필이지만 exec/process를 항상 거부):
 
 ```json5
 {
@@ -63,7 +59,7 @@ Example (coding profile, but deny exec/process everywhere):
 }
 ```
 
-Example (global coding profile, messaging-only support agent):
+예시 (글로벌 코딩 프로필, 메시징 전용 지원 에이전트):
 
 ```json5
 {
@@ -79,18 +75,13 @@ Example (global coding profile, messaging-only support agent):
 }
 ```
 
-## Provider-specific tool policy
+## 프로바이더별 도구 정책
 
-Use `tools.byProvider` to **further restrict** tools for specific providers
-(or a single `provider/model`) without changing your global defaults.
-Per-agent override: `agents.list[].tools.byProvider`.
+`tools.byProvider`를 사용하여 특정 프로바이더 (또는 단일 `provider/model`)에 대한 도구를 **추가적으로 제한**할 수 있습니다. 글로벌 기본값을 변경하지 않고 적용 가능합니다. 에이전트별 오버라이드는 `agents.list[].tools.byProvider`를 사용합니다.
 
-This is applied **after** the base tool profile and **before** allow/deny lists,
-so it can only narrow the tool set.
-Provider keys accept either `provider` (e.g. `google-antigravity`) or
-`provider/model` (e.g. `openai/gpt-5.2`).
+이는 **기본 도구 프로필** 이후 및 허용/거부 목록 전에 적용되며, 도구 집합을 제한할 수만 있습니다. 프로바이더 키는 `provider` (예: `google-antigravity`) 또는 `provider/model` (예: `openai/gpt-5.2`)를 수용합니다.
 
-Example (keep global coding profile, but minimal tools for Google Antigravity):
+예시 (글로벌 코딩 프로필 유지, Google Antigravity에 대해 최소 도구 사용):
 
 ```json5
 {
@@ -103,7 +94,7 @@ Example (keep global coding profile, but minimal tools for Google Antigravity):
 }
 ```
 
-Example (provider/model-specific allowlist for a flaky endpoint):
+예시 (불안정한 엔드포인트에 대한 프로바이더/모델별 허용 목록):
 
 ```json5
 {
@@ -116,7 +107,7 @@ Example (provider/model-specific allowlist for a flaky endpoint):
 }
 ```
 
-Example (agent-specific override for a single provider):
+예시 (단일 프로바이더에 대한 에이전트별 오버라이드):
 
 ```json5
 {
@@ -135,12 +126,11 @@ Example (agent-specific override for a single provider):
 }
 ```
 
-## Tool groups (shorthands)
+## 도구 그룹 (약어)
 
-Tool policies (global, agent, sandbox) support `group:*` entries that expand to multiple tools.
-Use these in `tools.allow` / `tools.deny`.
+도구 정책 (글로벌, 에이전트, 샌드박스)은 `group:*` 항목을 사용하여 여러 도구로 확장 가능합니다. 이를 `tools.allow` / `tools.deny`에서 사용하십시오.
 
-Available groups:
+사용 가능한 그룹:
 
 - `group:runtime`: `exec`, `bash`, `process`
 - `group:fs`: `read`, `write`, `edit`, `apply_patch`
@@ -151,9 +141,9 @@ Available groups:
 - `group:automation`: `cron`, `gateway`
 - `group:messaging`: `message`
 - `group:nodes`: `nodes`
-- `group:openclaw`: all built-in OpenClaw tools (excludes provider plugins)
+- `group:openclaw`: 모든 내장 OpenClaw 도구 (프로바이더 플러그인 제외)
 
-Example (allow only file tools + browser):
+예시 (파일 도구만 + 브라우저 허용):
 
 ```json5
 {
@@ -163,179 +153,206 @@ Example (allow only file tools + browser):
 }
 ```
 
-## Plugins + tools
+## 플러그인 + 도구
 
-Plugins can register **additional tools** (and CLI commands) beyond the core set.
-See [Plugins](/plugin) for install + config, and [Skills](/tools/skills) for how
-tool usage guidance is injected into prompts. Some plugins ship their own skills
-alongside tools (for example, the voice-call plugin).
+플러그인은 핵심 세트를 넘어서 **추가 도구**(및 CLI 명령어)를 등록할 수 있습니다. 설치 및 설정에 대한 정보는 [플러그인](/tools/plugin)을 참조하고 도구 사용 지침이 프롬프트에 주입되는 방식은 [스킬](/tools/skills)을 참조하십시오. 일부 플러그인은 도구와 함께 자체 스킬도 제공합니다 (예: 음성 통화 플러그인).
 
-Optional plugin tools:
+옵션 플러그인 도구:
 
-- [Lobster](/tools/lobster): typed workflow runtime with resumable approvals (requires the Lobster CLI on the gateway host).
-- [LLM Task](/tools/llm-task): JSON-only LLM step for structured workflow output (optional schema validation).
+- [Lobster](/tools/lobster): 재개 가능한 승인 기능이 있는 타입화된 워크플로우 런타임 (게이트웨이 호스트에 Lobster CLI 필요).
+- [LLM Task](/tools/llm-task): 구조화된 워크플로우 출력을 위한 JSON 전용 LLM 단계 (옵션 스키마 검증).
 
-## Tool inventory
+## 도구 인벤토리
 
 ### `apply_patch`
 
-Apply structured patches across one or more files. Use for multi-hunk edits.
-Experimental: enable via `tools.exec.applyPatch.enabled` (OpenAI models only).
+하나 이상의 파일에 구조화된 패치를 적용합니다. 다중 헝크 편집에 사용하십시오. 실험적 기능: `tools.exec.applyPatch.enabled`로 활성화 (OpenAI 모델만). `tools.exec.applyPatch.workspaceOnly`는 기본적으로 `true`로 설정되어 있습니다 (워크스페이스에 한정됨). `apply_patch`가 워크스페이스 디렉토리 외부에 쓰기/삭제하도록 하려면 이를 `false`로 설정하세요.
 
 ### `exec`
 
-Run shell commands in the workspace.
+작업 공간에서 셸 명령어를 실행합니다.
 
-Core parameters:
+핵심 매개변수:
 
-- `command` (required)
-- `yieldMs` (auto-background after timeout, default 10000)
-- `background` (immediate background)
-- `timeout` (seconds; kills the process if exceeded, default 1800)
-- `elevated` (bool; run on host if elevated mode is enabled/allowed; only changes behavior when the agent is sandboxed)
+- `command` (필수)
+- `yieldMs` (타임아웃 후 자동 백그라운드, 기본값 10000)
+- `background` (즉시 백그라운드)
+- `timeout` (초; 초과 시 프로세스 종료, 기본값 1800)
+- `elevated` (bool; 호스트에서 올라간 모드가 활성화/허용될 경우 실행; 에이전트가 샌드박스 격리된 경우에만 동작 변경)
 - `host` (`sandbox | gateway | node`)
 - `security` (`deny | allowlist | full`)
 - `ask` (`off | on-miss | always`)
-- `node` (node id/name for `host=node`)
-- Need a real TTY? Set `pty: true`.
+- `node` (`host=node` 시 노드 id/이름)
+- 실제 TTY가 필요한가요? `pty: true`를 설정하세요.
 
-Notes:
+주요 내용: 
 
-- Returns `status: "running"` with a `sessionId` when backgrounded.
-- Use `process` to poll/log/write/kill/clear background sessions.
-- If `process` is disallowed, `exec` runs synchronously and ignores `yieldMs`/`background`.
-- `elevated` is gated by `tools.elevated` plus any `agents.list[].tools.elevated` override (both must allow) and is an alias for `host=gateway` + `security=full`.
-- `elevated` only changes behavior when the agent is sandboxed (otherwise it’s a no-op).
-- `host=node` can target a macOS companion app or a headless node host (`openclaw node run`).
-- gateway/node approvals and allowlists: [Exec approvals](/tools/exec-approvals).
+- 백그라운드 상태에서는 `sessionId`와 함께 `status: "running"`을 반환합니다.
+- `process`를 사용하여 백그라운드 세션을 폴링/로그/기록/종료/삭제할 수 있습니다.
+- `process`가 허용되지 않는 경우, `exec`는 동기식으로 실행하며 `yieldMs`/`background`를 무시합니다.
+- `elevated`는 `tools.elevated`와 `agents.list[].tools.elevated` 오버라이드를 모두 허용해야 하며, `host=gateway` + `security=full`의 별칭 역할을 합니다.
+- `elevated`는 에이전트가 샌드박스 격리된 경우에만 동작을 변경하며, 그렇지 않으면 동작하지 않습니다.
+- `host=node`는 macOS 동반 앱이나 헤드리스 노드 호스트 (`openclaw node run`)를 대상으로 할 수 있습니다.
+- 게이트웨이/노드 승인 및 허용 목록: [Exec 승인](/tools/exec-approvals).
 
 ### `process`
 
-Manage background exec sessions.
+백그라운드 exec 세션을 관리합니다.
 
-Core actions:
+핵심 작업:
 
-- `list`, `poll`, `log`, `write`, `kill`, `clear`, `remove`
+- `list`, `poll`, `log`, `write`, `kill`, `clear`, `remove` 
 
-Notes:
+주요 내용:
 
-- `poll` returns new output and exit status when complete.
-- `log` supports line-based `offset`/`limit` (omit `offset` to grab the last N lines).
-- `process` is scoped per agent; sessions from other agents are not visible.
+- `poll`은 새로운 출력과 완료 시 종료 상태를 반환합니다.
+- `log`는 라인 기반의 `offset`/`limit`을 지원합니다 (`offset`을 생략하면 마지막 N 라인을 가져옵니다).
+- `process`는 에이전트별로 범위가 지정되며, 다른 에이전트의 세션은 보이지 않습니다.
+
+### `loop-detection` (도구 호출 루프 가드레일)
+
+OpenClaw는 최근 도구 호출 이력을 추적하여 반복적인 성과 없는 루프를 감지할 때 차단하거나 경고합니다.
+`tools.loopDetection.enabled: true`로 활성화하세요 (기본값은 `false`).
+
+```json5
+{
+  tools: {
+    loopDetection: {
+      enabled: true,
+      warningThreshold: 10,
+      criticalThreshold: 20,
+      globalCircuitBreakerThreshold: 30,
+      historySize: 30,
+      detectors: {
+        genericRepeat: true,
+        knownPollNoProgress: true,
+        pingPong: true,
+      },
+    },
+  },
+}
+```
+
+- `genericRepeat`: 도구와 매개변수가 동일한 반복적인 호출 패턴.
+- `knownPollNoProgress`: 동일한 출력의 반복적인 폴링 도구.
+- `pingPong`: 진행되지 않는 `A/B/A/B` 반복 패턴.
+- 에이전트별 오버라이드: `agents.list[].tools.loopDetection`.
 
 ### `web_search`
 
-Search the web using Brave Search API.
+Brave Search API를 사용하여 웹을 검색합니다.
 
-Core parameters:
+핵심 매개변수:
 
-- `query` (required)
-- `count` (1–10; default from `tools.web.search.maxResults`)
+- `query` (필수)
+- `count` (1–10; 기본값은 `tools.web.search.maxResults`에서 설정)
 
-Notes:
+주요 내용:
 
-- Requires a Brave API key (recommended: `openclaw configure --section web`, or set `BRAVE_API_KEY`).
-- Enable via `tools.web.search.enabled`.
-- Responses are cached (default 15 min).
-- See [Web tools](/tools/web) for setup.
+- Brave API 키가 필요합니다 (권장: `openclaw configure --section web` 명령어나 `BRAVE_API_KEY` 설정).
+- `tools.web.search.enabled`로 활성화.
+- 응답은 캐시됩니다 (기본 15분).
+- 설정은 [웹 도구](/tools/web)를 참조하십시오.
 
 ### `web_fetch`
 
-Fetch and extract readable content from a URL (HTML → markdown/text).
+URL에서 읽을 수 있는 콘텐츠를 추출 (HTML → markdown/text)합니다.
 
-Core parameters:
+핵심 매개변수:
 
-- `url` (required)
+- `url` (필수)
 - `extractMode` (`markdown` | `text`)
-- `maxChars` (truncate long pages)
+- `maxChars` (긴 페이지를 자름)
 
-Notes:
+주요 내용:
 
-- Enable via `tools.web.fetch.enabled`.
-- `maxChars` is clamped by `tools.web.fetch.maxCharsCap` (default 50000).
-- Responses are cached (default 15 min).
-- For JS-heavy sites, prefer the browser tool.
-- See [Web tools](/tools/web) for setup.
-- See [Firecrawl](/tools/firecrawl) for the optional anti-bot fallback.
+- `tools.web.fetch.enabled`로 활성화.
+- `maxChars`는 `tools.web.fetch.maxCharsCap`으로 제한됩니다 (기본 50000).
+- 응답은 캐시됩니다 (기본 15분).
+- JS가 많은 사이트의 경우 브라우저 도구를 선호하십시오.
+- 설정은 [웹 도구](/tools/web)를 참조하십시오.
+- 선택적 안티봇 대체는 [Firecrawl](/tools/firecrawl)를 참조하십시오.
 
 ### `browser`
 
-Control the dedicated OpenClaw-managed browser.
+OpenClaw에서 관리하는 전용 브라우저를 제어합니다.
 
-Core actions:
+핵심 작업:
 
 - `status`, `start`, `stop`, `tabs`, `open`, `focus`, `close`
 - `snapshot` (aria/ai)
-- `screenshot` (returns image block + `MEDIA:<path>`)
-- `act` (UI actions: click/type/press/hover/drag/select/fill/resize/wait/evaluate)
+- `screenshot` (이미지 블록 + `MEDIA:<path>` 반환)
+- `act` (UI 작업: click/type/press/hover/drag/select/fill/resize/wait/evaluate)
 - `navigate`, `console`, `pdf`, `upload`, `dialog`
 
-Profile management:
+프로필 관리:
 
-- `profiles` — list all browser profiles with status
-- `create-profile` — create new profile with auto-allocated port (or `cdpUrl`)
-- `delete-profile` — stop browser, delete user data, remove from config (local only)
-- `reset-profile` — kill orphan process on profile's port (local only)
+- `profiles` — 모든 브라우저 프로필을 상태와 함께 나열
+- `create-profile` — 자동 할당된 포트(또는 `cdpUrl`)로 새 프로필 생성
+- `delete-profile` — 브라우저 중지, 사용자 데이터 삭제, 설정에서 삭제 (로컬 전용)
+- `reset-profile` — 고아 프로세스를 프로필의 포트에서 종료 (로컬 전용)
 
-Common parameters:
+공통 매개변수:
 
-- `profile` (optional; defaults to `browser.defaultProfile`)
+- `profile` (옵션; 기본값은 `browser.defaultProfile`)
 - `target` (`sandbox` | `host` | `node`)
-- `node` (optional; picks a specific node id/name)
-  Notes:
-- Requires `browser.enabled=true` (default is `true`; set `false` to disable).
-- All actions accept optional `profile` parameter for multi-instance support.
-- When `profile` is omitted, uses `browser.defaultProfile` (defaults to "chrome").
-- Profile names: lowercase alphanumeric + hyphens only (max 64 chars).
-- Port range: 18800-18899 (~100 profiles max).
-- Remote profiles are attach-only (no start/stop/reset).
-- If a browser-capable node is connected, the tool may auto-route to it (unless you pin `target`).
-- `snapshot` defaults to `ai` when Playwright is installed; use `aria` for the accessibility tree.
-- `snapshot` also supports role-snapshot options (`interactive`, `compact`, `depth`, `selector`) which return refs like `e12`.
-- `act` requires `ref` from `snapshot` (numeric `12` from AI snapshots, or `e12` from role snapshots); use `evaluate` for rare CSS selector needs.
-- Avoid `act` → `wait` by default; use it only in exceptional cases (no reliable UI state to wait on).
-- `upload` can optionally pass a `ref` to auto-click after arming.
-- `upload` also supports `inputRef` (aria ref) or `element` (CSS selector) to set `<input type="file">` directly.
+- `node` (옵션; 특정 노드 id/이름 선택)
+
+주요 내용:
+
+- `browser.enabled=true`가 필요 (기본값은 `true`; 비활성화하려면 `false`로 설정).
+- 모든 작업은 다중 인스턴스 지원을 위한 선택적 `profile` 매개변수를 수용합니다.
+- `profile`이 생략되면 "chrome"으로 기본 설정되는 `browser.defaultProfile`을 사용합니다.
+- 프로필 이름은 소문자, 영문자 및 하이픈만 허용 (최대 64자).
+- 포트 범위: 18800-18899 (~100개 프로필 최대).
+- 원격 프로필은 부착 전용 (시작/중지/재설정 없음).
+- 브라우저 사용 가능한 노드가 연결된 경우, 도구가 자동으로 해당 노드로 경로를 지정할 수 있습니다 (직접 `target`을 지정하지 않은 경우).
+- `snapshot`은 Playwright가 설치된 경우 기본적으로 `ai` 사용; 접근성 트리를 위한 `aria` 사용.
+- `snapshot`은 `interactive`, `compact`, `depth`, `selector`와 같은 역할 스냅샷 옵션도 지원하여 `e12`와 같은 참조를 반환합니다.
+- `act`는 `snapshot`의 `ref`을 필요로 하며, AI 스냅샷의 숫자 `12` 또는 역할 스냅샷의 `e12` 입니다. 드문 CSS 선택기 필요 시 `evaluate`를 사용하십시오.
+- 기본적으로 `act` → `wait`를 피하십시오; 신뢰할 수 있는 UI 상태가 없는 경우에만 사용하십시오.
+- `upload`는 선택적으로 무장 후 자동 클릭을 위한 `ref`를 전달할 수 있습니다.
+- `upload`는 또한 `<input type="file">`을 직접 설정하기 위한 `inputRef` (aria 참조) 또는 `element` (CSS 선택기)를 지원합니다.
 
 ### `canvas`
 
-Drive the node Canvas (present, eval, snapshot, A2UI).
+노드 캔버스를 구동합니다 (present, eval, snapshot, A2UI).
 
-Core actions:
+핵심 작업:
 
 - `present`, `hide`, `navigate`, `eval`
-- `snapshot` (returns image block + `MEDIA:<path>`)
+- `snapshot` (이미지 블록 + `MEDIA:<path>` 반환)
 - `a2ui_push`, `a2ui_reset`
 
-Notes:
+주요 내용:
 
-- Uses gateway `node.invoke` under the hood.
-- If no `node` is provided, the tool picks a default (single connected node or local mac node).
-- A2UI is v0.8 only (no `createSurface`); the CLI rejects v0.9 JSONL with line errors.
-- Quick smoke: `openclaw nodes canvas a2ui push --node <id> --text "Hello from A2UI"`.
+- 게이트웨이 `node.invoke`를 내부적으로 사용합니다.
+- `node`가 제공되지 않으면, 도구는 기본값을 선택합니다 (단일 연결 노드 또는 로컬 맥 노드).
+- A2UI는 v0.8만 지원 ( `createSurface` 없음); CLI는 v0.9 JSONL을 라인 오류로 거부합니다.
+- 빠른 테스트: `openclaw nodes canvas a2ui push --node <id> --text "Hello from A2UI"`.
 
 ### `nodes`
 
-Discover and target paired nodes; send notifications; capture camera/screen.
+짝지어진 노드를 검색하고 대상으로 합니다; 알림을 보내고 카메라/스크린을 캡처합니다.
 
-Core actions:
+핵심 작업:
 
 - `status`, `describe`
-- `pending`, `approve`, `reject` (pairing)
+- `pending`, `approve`, `reject` (페어링)
 - `notify` (macOS `system.notify`)
 - `run` (macOS `system.run`)
 - `camera_snap`, `camera_clip`, `screen_record`
 - `location_get`
 
-Notes:
+주요 내용:
 
-- Camera/screen commands require the node app to be foregrounded.
-- Images return image blocks + `MEDIA:<path>`.
-- Videos return `FILE:<path>` (mp4).
-- Location returns a JSON payload (lat/lon/accuracy/timestamp).
-- `run` params: `command` argv array; optional `cwd`, `env` (`KEY=VAL`), `commandTimeoutMs`, `invokeTimeoutMs`, `needsScreenRecording`.
+- 카메라/스크린 명령은 노드 앱이 전경에 있어야 합니다.
+- 이미지는 이미지 블록 + `MEDIA:<path>`로 반환됩니다.
+- 비디오는 `FILE:<path>`(mp4)로 반환됩니다.
+- 위치는 JSON 페이로드 (위도/경도/정확도/타임스탬프)로 반환됩니다.
+- `run` 매개변수: `command` argv 배열; 옵션으로 `cwd`, `env` (`KEY=VAL`), `commandTimeoutMs`, `invokeTimeoutMs`, `needsScreenRecording`.
 
-Example (`run`):
+예시 (`run`):
 
 ```json
 {
@@ -351,28 +368,28 @@ Example (`run`):
 
 ### `image`
 
-Analyze an image with the configured image model.
+구성된 이미지 모델로 이미지를 분석합니다.
 
-Core parameters:
+핵심 매개변수:
 
-- `image` (required path or URL)
-- `prompt` (optional; defaults to "Describe the image.")
-- `model` (optional override)
-- `maxBytesMb` (optional size cap)
+- `image` (필수 경로 또는 URL)
+- `prompt` (옵션; 기본값은 "Describe the image.")
+- `model` (옵션 오버라이드)
+- `maxBytesMb` (옵션 사이즈 제한)
 
-Notes:
+주요 내용:
 
-- Only available when `agents.defaults.imageModel` is configured (primary or fallbacks), or when an implicit image model can be inferred from your default model + configured auth (best-effort pairing).
-- Uses the image model directly (independent of the main chat model).
+- `agents.defaults.imageModel`이 구성되었을 때만 사용 가능 (주요 또는 보조), 또는 기본 모델과 구성된 인증에서 암시적 이미지 모델을 유추할 수 있을 때 (최선의 짝짓기).
+- 주 채팅 모델과 독립적으로 이미지 모델을 직접 사용합니다.
 
 ### `message`
 
-Send messages and channel actions across Discord/Google Chat/Slack/Telegram/WhatsApp/Signal/iMessage/MS Teams.
+Discord/Google Chat/Slack/Telegram/WhatsApp/Signal/iMessage/MS Teams에서 메시지 및 채널 작업을 보냅니다.
 
-Core actions:
+핵심 작업:
 
-- `send` (text + optional media; MS Teams also supports `card` for Adaptive Cards)
-- `poll` (WhatsApp/Discord/MS Teams polls)
+- `send` (텍스트 + 옵션 미디어; MS Teams는 `card`도 지원, 적응형 카드용)
+- `poll` (WhatsApp/Discord/MS Teams 설문조사)
 - `react` / `reactions` / `read` / `edit` / `delete`
 - `pin` / `unpin` / `list-pins`
 - `permissions`
@@ -387,123 +404,125 @@ Core actions:
 - `event-list` / `event-create`
 - `timeout` / `kick` / `ban`
 
-Notes:
+주요 내용:
 
-- `send` routes WhatsApp via the Gateway; other channels go direct.
-- `poll` uses the Gateway for WhatsApp and MS Teams; Discord polls go direct.
-- When a message tool call is bound to an active chat session, sends are constrained to that session’s target to avoid cross-context leaks.
+- `send`는 WhatsApp이 게이트웨이를 통해 라우팅되고, 다른 채널은 직접 연결됩니다.
+- `poll`은 WhatsApp과 MS Teams는 게이트웨이를 사용하고, Discord 설문조사는 직접 연결됩니다.
+- 메시지 도구 호출이 활성 채팅 세션에 바인딩된 경우, 전송은 그 세션의 대상으로 제한되어 교차 컨텍스트 유출을 방지합니다.
 
 ### `cron`
 
-Manage Gateway cron jobs and wakeups.
+게이트웨이 크론 작업 및 웨이크업을 관리합니다.
 
-Core actions:
+핵심 작업:
 
 - `status`, `list`
 - `add`, `update`, `remove`, `run`, `runs`
-- `wake` (enqueue system event + optional immediate heartbeat)
+- `wake` (시스템 이벤트 큐에 추가 + 선택사항 즉시 하트비트)
 
-Notes:
+주요 내용:
 
-- `add` expects a full cron job object (same schema as `cron.add` RPC).
-- `update` uses `{ id, patch }`.
+- `add`는 전체 크론 작업 객체가 필요 (`cron.add` RPC와 동일한 스키마).
+- `update`는 `{ id, patch }`을 사용.
 
 ### `gateway`
 
-Restart or apply updates to the running Gateway process (in-place).
+실행 중인 게이트웨이 프로세스를 다시 시작하거나 업데이트를 적용합니다 (인플레이스).
 
-Core actions:
+핵심 작업:
 
-- `restart` (authorizes + sends `SIGUSR1` for in-process restart; `openclaw gateway` restart in-place)
+- `restart` (권한 부여 + 프로세스 내 재시작을 위한 `SIGUSR1` 전송; `openclaw gateway` 인플레이스 재시작)
 - `config.get` / `config.schema`
-- `config.apply` (validate + write config + restart + wake)
-- `config.patch` (merge partial update + restart + wake)
-- `update.run` (run update + restart + wake)
+- `config.apply` (유효성 검사 + 설정 기록 + 재시작 + 웨이크)
+- `config.patch` (부분 업데이트 병합 + 재시작 + 웨이크)
+- `update.run` (업데이트 실행 + 재시작 + 웨이크)
 
-Notes:
+주요 내용:
 
-- Use `delayMs` (defaults to 2000) to avoid interrupting an in-flight reply.
-- `restart` is disabled by default; enable with `commands.restart: true`.
+- 비행 중인 응답을 방해하지 않도록 `delayMs`(기본값 2000)를 사용하십시오.
+- `restart`는 기본적으로 비활성화되어 있으며, `commands.restart: true`로 활성화 가능합니다.
 
 ### `sessions_list` / `sessions_history` / `sessions_send` / `sessions_spawn` / `session_status`
 
-List sessions, inspect transcript history, or send to another session.
+세션 나열, 대화 내역 검사, 또는 다른 세션으로 전송합니다.
 
-Core parameters:
+핵심 매개변수:
 
-- `sessions_list`: `kinds?`, `limit?`, `activeMinutes?`, `messageLimit?` (0 = none)
-- `sessions_history`: `sessionKey` (or `sessionId`), `limit?`, `includeTools?`
-- `sessions_send`: `sessionKey` (or `sessionId`), `message`, `timeoutSeconds?` (0 = fire-and-forget)
+- `sessions_list`: `kinds?`, `limit?`, `activeMinutes?`, `messageLimit?` (0 = 없음)
+- `sessions_history`: `sessionKey` (또는 `sessionId`), `limit?`, `includeTools?`
+- `sessions_send`: `sessionKey` (또는 `sessionId`), `message`, `timeoutSeconds?` (0 = fire-and-forget)
 - `sessions_spawn`: `task`, `label?`, `agentId?`, `model?`, `runTimeoutSeconds?`, `cleanup?`
-- `session_status`: `sessionKey?` (default current; accepts `sessionId`), `model?` (`default` clears override)
+- `session_status`: `sessionKey?` (기본값 현재; `sessionId` 수용), `model?` (`default`는 오버라이드를 해제)
 
-Notes:
+주요 내용:
 
-- `main` is the canonical direct-chat key; global/unknown are hidden.
-- `messageLimit > 0` fetches last N messages per session (tool messages filtered).
-- `sessions_send` waits for final completion when `timeoutSeconds > 0`.
-- Delivery/announce happens after completion and is best-effort; `status: "ok"` confirms the agent run finished, not that the announce was delivered.
-- `sessions_spawn` starts a sub-agent run and posts an announce reply back to the requester chat.
-- `sessions_spawn` is non-blocking and returns `status: "accepted"` immediately.
-- `sessions_send` runs a reply‑back ping‑pong (reply `REPLY_SKIP` to stop; max turns via `session.agentToAgent.maxPingPongTurns`, 0–5).
-- After the ping‑pong, the target agent runs an **announce step**; reply `ANNOUNCE_SKIP` to suppress the announcement.
+- `main`은 정규직 채팅 키이며, 글로벌/알 수 없는 것은 숨겨집니다.
+- `messageLimit > 0`은 각 세션에서 마지막 N개의 메시지를 가져옵니다 (도구 메시지는 필터링됨).
+- `sessions_send`는 `timeoutSeconds > 0`일 때 최종 완료를 대기합니다.
+- 전달/공지 사항은 완료 후 발생하고 최선의 결과로만 이루어지며, `status: "ok"`는 에이전트 실행이 완료되었음을 확인하지 않고 공지 사항이 전달되었음을 표시합니다.
+- `sessions_spawn`는 하위 에이전트 실행을 시작하며 요청 채팅에 공지 답장을 게시합니다.
+- `sessions_spawn`는 비차단이며 `status: "accepted"`를 즉시 반환합니다.
+- `sessions_send`는 답장 백 ping-pong을 실행합니다 (답장 `REPLY_SKIP`으로 중단; `session.agentToAgent.maxPingPongTurns` 통해 최대 턴 설정, 0–5).
+- ping-pong 후 대상 에이전트는 **announce step**을 실행하며, 공지 사항을 억제하려면 `ANNOUNCE_SKIP`으로 답장하세요.
+- 샌드박스 제한: 현재 세션이 샌드박스 격리되고 `agents.defaults.sandbox.sessionToolsVisibility: "spawned"`인 경우, OpenClaw는 `tools.sessions.visibility`를 `tree`로 제한합니다.
 
 ### `agents_list`
 
-List agent ids that the current session may target with `sessions_spawn`.
+현재 세션이 `sessions_spawn`으로 타겟팅할 수 있는 에이전트 ID를 나열합니다.
 
-Notes:
+주요 내용:
 
-- Result is restricted to per-agent allowlists (`agents.list[].subagents.allowAgents`).
-- When `["*"]` is configured, the tool includes all configured agents and marks `allowAny: true`.
+- 결과는 에이전트별 허용 목록 (`agents.list[].subagents.allowAgents`)으로 제한됩니다.
+- `["*"]`이 구성된 경우, 도구는 구성된 모든 에이전트를 포함하며 `allowAny: true`로 표시됩니다.
 
-## Parameters (common)
+## 매개변수 (공통)
 
-Gateway-backed tools (`canvas`, `nodes`, `cron`):
+게이트웨이가 지원하는 도구 (`canvas`, `nodes`, `cron`):
 
-- `gatewayUrl` (default `ws://127.0.0.1:18789`)
-- `gatewayToken` (if auth enabled)
+- `gatewayUrl` (기본값 `ws://127.0.0.1:18789`)
+- `gatewayToken` (인증 활성화 시)
 - `timeoutMs`
 
-Browser tool:
+참고: `gatewayUrl`이 설정된 경우, `gatewayToken`을 명시적으로 포함하십시오. 도구는 재정의를 위한 구성이나 환경 자격 증명을 상속하지 않으며, 명시적 자격 증명이 없으면 오류가 발생합니다.
 
-- `profile` (optional; defaults to `browser.defaultProfile`)
+브라우저 도구:
+
+- `profile` (옵션; 기본값은 `browser.defaultProfile`)
 - `target` (`sandbox` | `host` | `node`)
-- `node` (optional; pin a specific node id/name)
+- `node` (옵션; 특정 노드 id/이름 고정)
 
-## Recommended agent flows
+## 추천 에이전트 흐름
 
-Browser automation:
+브라우저 자동화:
 
 1. `browser` → `status` / `start`
-2. `snapshot` (ai or aria)
+2. `snapshot` (ai 또는 aria)
 3. `act` (click/type/press)
-4. `screenshot` if you need visual confirmation
+4. 시각적 확인이 필요한 경우 `screenshot`
 
-Canvas render:
+캔버스 렌더링:
 
 1. `canvas` → `present`
-2. `a2ui_push` (optional)
+2. `a2ui_push` (선택사항)
 3. `snapshot`
 
-Node targeting:
+노드 타겟팅:
 
 1. `nodes` → `status`
-2. `describe` on the chosen node
+2. 선택한 노드를 `describe`
 3. `notify` / `run` / `camera_snap` / `screen_record`
 
-## Safety
+## 안전성
 
-- Avoid direct `system.run`; use `nodes` → `run` only with explicit user consent.
-- Respect user consent for camera/screen capture.
-- Use `status/describe` to ensure permissions before invoking media commands.
+- 직접적인 `system.run` 사용을 피하십시오; 사용자의 명시적 동의가 있을 때만 `nodes` → `run`을 사용하십시오.
+- 카메라/스크린 캡처에 대한 사용자 동의를 존중하십시오.
+- 미디어 명령을 실행하기 전에 `status/describe`를 사용하여 권한을 확인하십시오.
 
-## How tools are presented to the agent
+## 에이전트에게 도구가 제공되는 방법
 
-Tools are exposed in two parallel channels:
+도구는 두 개의 병렬 채널로 노출됩니다:
 
-1. **System prompt text**: a human-readable list + guidance.
-2. **Tool schema**: the structured function definitions sent to the model API.
+1. **시스템 프롬프트 텍스트**: 사람이 읽을 수 있는 목록 및 지침.
+2. **도구 스키마**: 모델 API에 전송되는 구조화된 함수 정의.
 
-That means the agent sees both “what tools exist” and “how to call them.” If a tool
-doesn’t appear in the system prompt or the schema, the model cannot call it.
+이는 에이전트가 "어떤 도구가 존재하는지"와 "어떻게 호출하는지"를 모두 확인한다는 것을 의미합니다. 도구가 시스템 프롬프트나 스키마에 나타나지 않으면 모델이 호출할 수 없습니다.

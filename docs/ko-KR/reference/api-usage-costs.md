@@ -1,137 +1,133 @@
 ---
-summary: "Audit what can spend money, which keys are used, and how to view usage"
+summary: "누가 돈을 쓸 수 있는지, 어떤 키가 사용되는지, 사용량을 어떻게 보는지 감사하기"
 read_when:
-  - You want to understand which features may call paid APIs
-  - You need to audit keys, costs, and usage visibility
-  - You’re explaining /status or /usage cost reporting
-title: "API Usage and Costs"
+  - 유료 API를 호출할 수 있는 기능을 이해하고 싶을 때
+  - 키, 비용 및 사용량 가시성을 감사해야 할 때
+  - /status 또는 /usage 비용 보고서를 설명할 때
+title: "API 사용 및 비용"
 ---
 
-# API usage & costs
+# API 사용 및 비용
 
-This doc lists **features that can invoke API keys** and where their costs show up. It focuses on
-OpenClaw features that can generate provider usage or paid API calls.
+이 문서는 **API 키를 호출할 수 있는 기능**과 그 비용이 어디에 표시되는지를 나열합니다. OpenClaw 기능에 주목하여 프로바이더 사용량 또는 유료 API 호출을 생성할 수 있습니다.
 
-## Where costs show up (chat + CLI)
+## 비용이 표시되는 위치 (채팅 + CLI)
 
-**Per-session cost snapshot**
+**세션별 비용 스냅샷**
 
-- `/status` shows the current session model, context usage, and last response tokens.
-- If the model uses **API-key auth**, `/status` also shows **estimated cost** for the last reply.
+- `/status`는 현재 세션 모델, 컨텍스트 사용량, 마지막 응답 토큰을 보여줍니다.
+- 모델이 **API 키 인증**을 사용하는 경우, `/status`는 마지막 응답에 대한 **추정 비용**도 보여줍니다.
 
-**Per-message cost footer**
+**메시지별 비용 푸터**
 
-- `/usage full` appends a usage footer to every reply, including **estimated cost** (API-key only).
-- `/usage tokens` shows tokens only; OAuth flows hide dollar cost.
+- `/usage full`은 모든 응답에 사용량 푸터를 추가하며, **추정 비용**도 포함됩니다 (API 키만 해당).
+- `/usage tokens`는 토큰만 표시하며, OAuth 흐름은 금액 비용을 숨깁니다.
 
-**CLI usage windows (provider quotas)**
+**CLI 사용 창 (프로바이더 쿼터)**
 
-- `openclaw status --usage` and `openclaw channels list` show provider **usage windows**
-  (quota snapshots, not per-message costs).
+- `openclaw status --usage`와 `openclaw channels list`는 프로바이더 **사용 창**을 보여줍니다
+  (쿼터 스냅샷, 메시지별 비용이 아님).
 
-See [Token use & costs](/token-use) for details and examples.
+자세한 내용과 예시는 [Token use & costs](/reference/token-use)를 참조하세요.
 
-## How keys are discovered
+## 키가 발견되는 방법
 
-OpenClaw can pick up credentials from:
+OpenClaw는 다음에서 자격 증명을 가져올 수 있습니다:
 
-- **Auth profiles** (per-agent, stored in `auth-profiles.json`).
-- **Environment variables** (e.g. `OPENAI_API_KEY`, `BRAVE_API_KEY`, `FIRECRAWL_API_KEY`).
-- **Config** (`models.providers.*.apiKey`, `tools.web.search.*`, `tools.web.fetch.firecrawl.*`,
+- **인증 프로필** (에이전트별, `auth-profiles.json`에 저장).
+- **환경 변수** (예: `OPENAI_API_KEY`, `BRAVE_API_KEY`, `FIRECRAWL_API_KEY`).
+- **설정** (`models.providers.*.apiKey`, `tools.web.search.*`, `tools.web.fetch.firecrawl.*`,
   `memorySearch.*`, `talk.apiKey`).
-- **Skills** (`skills.entries.<name>.apiKey`) which may export keys to the skill process env.
+- **스킬** (`skills.entries.<name>.apiKey`)은 스킬 프로세스 환경으로 키를 내보낼 수 있습니다.
 
-## Features that can spend keys
+## 키를 소모할 수 있는 기능들
 
-### 1) Core model responses (chat + tools)
+### 1) 핵심 모델 응답 (채팅 + 도구)
 
-Every reply or tool call uses the **current model provider** (OpenAI, Anthropic, etc). This is the
-primary source of usage and cost.
+모든 응답 또는 도구 호출은 **현재 모델 프로바이더**를 사용합니다 (OpenAI, Anthropic 등). 이것이 사용량과 비용의 주된 출처입니다.
 
-See [Models](/providers/models) for pricing config and [Token use & costs](/token-use) for display.
+가격 설정은 [Models](/providers/models)를 참조하고, 디스플레이는 [Token use & costs](/reference/token-use)를 확인하세요.
 
-### 2) Media understanding (audio/image/video)
+### 2) 미디어 이해 (오디오/이미지/비디오)
 
-Inbound media can be summarized/transcribed before the reply runs. This uses model/provider APIs.
+수신 미디어는 응답이 실행되기 전에 요약/전사될 수 있습니다. 이는 모델/프로바이더 API를 사용합니다.
 
-- Audio: OpenAI / Groq / Deepgram (now **auto-enabled** when keys exist).
-- Image: OpenAI / Anthropic / Google.
-- Video: Google.
+- 오디오: OpenAI / Groq / Deepgram (키가 존재할 때 **자동으로 활성화**).
+- 이미지: OpenAI / Anthropic / Google.
+- 비디오: Google.
 
-See [Media understanding](/nodes/media-understanding).
+[미디어 이해](/nodes/media-understanding)를 참조하세요.
 
-### 3) Memory embeddings + semantic search
+### 3) 메모리 임베딩 + 시맨틱 검색
 
-Semantic memory search uses **embedding APIs** when configured for remote providers:
+시맨틱 메모리 검색은 외부 프로바이더에 대해 구성된 경우 **임베딩 API**를 사용합니다:
 
-- `memorySearch.provider = "openai"` → OpenAI embeddings
-- `memorySearch.provider = "gemini"` → Gemini embeddings
-- Optional fallback to OpenAI if local embeddings fail
+- `memorySearch.provider = "openai"` → OpenAI 임베딩
+- `memorySearch.provider = "gemini"` → Gemini 임베딩
+- `memorySearch.provider = "voyage"` → Voyage 임베딩
+- 로컬 임베딩 실패 시 선택적으로 원격 프로바이더로 대체
 
-You can keep it local with `memorySearch.provider = "local"` (no API usage).
+로컬로 유지하려면 `memorySearch.provider = "local"`을 사용하세요 (API 사용 없음).
 
-See [Memory](/concepts/memory).
+자세한 내용은 [Memory](/concepts/memory)를 참조하세요.
 
-### 4) Web search tool (Brave / Perplexity via OpenRouter)
+### 4) 웹 검색 도구 (Brave / Perplexity via OpenRouter)
 
-`web_search` uses API keys and may incur usage charges:
+`web_search`는 API 키를 사용하며, 사용량 요금이 발생할 수 있습니다:
 
-- **Brave Search API**: `BRAVE_API_KEY` or `tools.web.search.apiKey`
-- **Perplexity** (via OpenRouter): `PERPLEXITY_API_KEY` or `OPENROUTER_API_KEY`
+- **Brave Search API**: `BRAVE_API_KEY` 또는 `tools.web.search.apiKey`
+- **Perplexity** (OpenRouter 경유): `PERPLEXITY_API_KEY` 또는 `OPENROUTER_API_KEY`
 
-**Brave free tier (generous):**
+**Brave 무료 계층 (관대한 조건):**
 
-- **2,000 requests/month**
-- **1 request/second**
-- **Credit card required** for verification (no charge unless you upgrade)
+- **2,000 요청/월**
+- **1 요청/초**
+- **신용 카드 필요** (업그레이드하지 않으면 요금 없음)
 
-See [Web tools](/tools/web).
+자세한 내용은 [Web tools](/tools/web)를 참조하세요.
 
-### 5) Web fetch tool (Firecrawl)
+### 5) 웹 페치 도구 (Firecrawl)
 
-`web_fetch` can call **Firecrawl** when an API key is present:
+`web_fetch`는 API 키가 있을 경우 **Firecrawl**를 호출할 수 있습니다:
 
-- `FIRECRAWL_API_KEY` or `tools.web.fetch.firecrawl.apiKey`
+- `FIRECRAWL_API_KEY` 또는 `tools.web.fetch.firecrawl.apiKey`
 
-If Firecrawl isn’t configured, the tool falls back to direct fetch + readability (no paid API).
+Firecrawl이 구성되지 않은 경우, 도구는 직접 페치 + 가독성으로 대체됩니다 (유료 API 없음).
 
-See [Web tools](/tools/web).
+자세한 내용은 [Web tools](/tools/web)를 참조하세요.
 
-### 6) Provider usage snapshots (status/health)
+### 6) 프로바이더 사용 스냅샷 (상태/건강)
 
-Some status commands call **provider usage endpoints** to display quota windows or auth health.
-These are typically low-volume calls but still hit provider APIs:
+일부 상태 명령어는 **프로바이더 사용 엔드포인트**를 호출하여 쿼터 창이나 인증 상태를 표시합니다.
+이것들은 일반적으로 저용량 호출이지만 여전히 프로바이더 API를 호출합니다:
 
 - `openclaw status --usage`
 - `openclaw models status --json`
 
-See [Models CLI](/cli/models).
+자세한 내용은 [Models CLI](/cli/models)를 참조하세요.
 
-### 7) Compaction safeguard summarization
+### 7) 압축 보호 요약
 
-The compaction safeguard can summarize session history using the **current model**, which
-invokes provider APIs when it runs.
+압축 보호는 **현재 모델**을 사용하여 세션 기록을 요약할 수 있으며, 실행될 때 프로바이더 API를 호출합니다.
 
-See [Session management + compaction](/reference/session-management-compaction).
+자세한 내용은 [Session management + compaction](/reference/session-management-compaction)를 참조하세요.
 
-### 8) Model scan / probe
+### 8) 모델 스캔 / 프로브
 
-`openclaw models scan` can probe OpenRouter models and uses `OPENROUTER_API_KEY` when
-probing is enabled.
+`openclaw models scan`는 OpenRouter 모델을 프로빙 할 수 있으며, 프로빙이 활성화되면 `OPENROUTER_API_KEY`를 사용합니다.
 
-See [Models CLI](/cli/models).
+자세한 내용은 [Models CLI](/cli/models)를 참조하세요.
 
-### 9) Talk (speech)
+### 9) 토크 (음성)
 
-Talk mode can invoke **ElevenLabs** when configured:
+토크 모드는 구성된 경우 **ElevenLabs**를 호출할 수 있습니다:
 
-- `ELEVENLABS_API_KEY` or `talk.apiKey`
+- `ELEVENLABS_API_KEY` 또는 `talk.apiKey`
 
-See [Talk mode](/nodes/talk).
+자세한 내용은 [Talk mode](/nodes/talk)를 참조하세요.
 
-### 10) Skills (third-party APIs)
+### 10) 스킬 (서드파티 API)
 
-Skills can store `apiKey` in `skills.entries.<name>.apiKey`. If a skill uses that key for external
-APIs, it can incur costs according to the skill’s provider.
+스킬은 `skills.entries.<name>.apiKey`에 `apiKey`를 저장할 수 있습니다. 스킬이 외부 API에 그 키를 사용할 경우, 스킬의 프로바이더에 따라 비용이 발생할 수 있습니다.
 
-See [Skills](/tools/skills).
+자세한 내용은 [Skills](/tools/skills)를 참조하세요.

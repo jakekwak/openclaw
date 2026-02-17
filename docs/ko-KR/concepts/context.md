@@ -1,108 +1,108 @@
 ---
-summary: "Context: what the model sees, how it is built, and how to inspect it"
+summary: "컨텍스트: 모델이 보는 것, 구축 방법 및 검사 방법"
 read_when:
-  - You want to understand what “context” means in OpenClaw
-  - You are debugging why the model “knows” something (or forgot it)
-  - You want to reduce context overhead (/context, /status, /compact)
-title: "Context"
+  - OpenClaw에서 "컨텍스트"가 무엇을 의미하는지 이해하고 싶을 때
+  - 모델이 왜 무언가를 "알고" 있는지(혹은 잊어버렸는지) 디버깅할 때
+  - 컨텍스트 오버헤드를 줄이고 싶을 때 (/context, /status, /compact)
+title: "컨텍스트"
 ---
 
-# Context
+# 컨텍스트
 
-“Context” is **everything OpenClaw sends to the model for a run**. It is bounded by the model’s **context window** (token limit).
+"컨텍스트"는 **OpenClaw가 실행 시 모델에 보내는 모든 것**입니다. 이는 모델의 **컨텍스트 윈도우**(토큰 제한)에 의해 제한됩니다.
 
-Beginner mental model:
+초보자용 사고 모델:
 
-- **System prompt** (OpenClaw-built): rules, tools, skills list, time/runtime, and injected workspace files.
-- **Conversation history**: your messages + the assistant’s messages for this session.
-- **Tool calls/results + attachments**: command output, file reads, images/audio, etc.
+- **시스템 프롬프트**(OpenClaw가 구축): 규칙, 도구, 스킬 목록, 시간/런타임 및 주입된 워크스페이스 파일.
+- **대화 역사**: 사용자의 메시지 + 이 세션에 대한 비서의 메시지.
+- **도구 호출/결과 + 첨부파일**: 명령어 출력, 파일 읽기, 이미지/오디오 등.
 
-Context is _not the same thing_ as “memory”: memory can be stored on disk and reloaded later; context is what’s inside the model’s current window.
+컨텍스트는 "메모리"와 _같지 않습니다_: 메모리는 디스크에 저장되고 나중에 다시 불러올 수 있지만, 컨텍스트는 모델의 현재 창 안에 있는 것입니다.
 
-## Quick start (inspect context)
+## 빠른 시작 (컨텍스트 검사)
 
-- `/status` → quick “how full is my window?” view + session settings.
-- `/context list` → what’s injected + rough sizes (per file + totals).
-- `/context detail` → deeper breakdown: per-file, per-tool schema sizes, per-skill entry sizes, and system prompt size.
-- `/usage tokens` → append per-reply usage footer to normal replies.
-- `/compact` → summarize older history into a compact entry to free window space.
+- `/status` → 내 윈도우가 얼마나 찼는지 빠르게 확인하고 세션 설정을 볼 수 있습니다.
+- `/context list` → 주입된 것과 대략적인 크기(파일별 + 총합).
+- `/context detail` → 파일별, 도구 스키마 사이즈별, 스킬 항목 크기별, 시스템 프롬프트 크기에 대한 더 깊은 분석.
+- `/usage tokens` → 일반 응답에 대한 사용 후미를 추가합니다.
+- `/compact` → 오래된 히스토리를 요약하여 윈도우 공간을 확보합니다.
 
-See also: [Slash commands](/tools/slash-commands), [Token use & costs](/token-use), [Compaction](/concepts/compaction).
+참조: [슬래시 명령어](/tools/slash-commands), [토큰 사용 및 비용](/reference/token-use), [요약](/concepts/compaction).
 
-## Example output
+## 예제 출력
 
-Values vary by model, provider, tool policy, and what’s in your workspace.
+값은 모델, 프로바이더, 도구 정책 및 워크스페이스 내용에 따라 달라집니다.
 
 ### `/context list`
 
 ```
-🧠 Context breakdown
-Workspace: <workspaceDir>
-Bootstrap max/file: 20,000 chars
-Sandbox: mode=non-main sandboxed=false
-System prompt (run): 38,412 chars (~9,603 tok) (Project Context 23,901 chars (~5,976 tok))
+🧠 컨텍스트 분해
+워크스페이스: <workspaceDir>
+부트스트랩 최대/파일: 20,000 문자
+샌드박스: mode=non-main sandboxed=false
+시스템 프롬프트 (실행): 38,412 문자 (~9,603 tok) (프로젝트 컨텍스트 23,901 문자 (~5,976 tok))
 
-Injected workspace files:
-- AGENTS.md: OK | raw 1,742 chars (~436 tok) | injected 1,742 chars (~436 tok)
-- SOUL.md: OK | raw 912 chars (~228 tok) | injected 912 chars (~228 tok)
-- TOOLS.md: TRUNCATED | raw 54,210 chars (~13,553 tok) | injected 20,962 chars (~5,241 tok)
-- IDENTITY.md: OK | raw 211 chars (~53 tok) | injected 211 chars (~53 tok)
-- USER.md: OK | raw 388 chars (~97 tok) | injected 388 chars (~97 tok)
-- HEARTBEAT.md: MISSING | raw 0 | injected 0
-- BOOTSTRAP.md: OK | raw 0 chars (~0 tok) | injected 0 chars (~0 tok)
+주입된 워크스페이스 파일:
+- AGENTS.md: OK | 원본 1,742 문자 (~436 tok) | 주입됨 1,742 문자 (~436 tok)
+- SOUL.md: OK | 원본 912 문자 (~228 tok) | 주입됨 912 문자 (~228 tok)
+- TOOLS.md: 잘림 | 원본 54,210 문자 (~13,553 tok) | 주입됨 20,962 문자 (~5,241 tok)
+- IDENTITY.md: OK | 원본 211 문자 (~53 tok) | 주입됨 211 문자 (~53 tok)
+- USER.md: OK | 원본 388 문자 (~97 tok) | 주입됨 388 문자 (~97 tok)
+- HEARTBEAT.md: 없음 | 원본 0 | 주입됨 0
+- BOOTSTRAP.md: OK | 원본 0 문자 (~0 tok) | 주입됨 0 문자 (~0 tok)
 
-Skills list (system prompt text): 2,184 chars (~546 tok) (12 skills)
-Tools: read, edit, write, exec, process, browser, message, sessions_send, …
-Tool list (system prompt text): 1,032 chars (~258 tok)
-Tool schemas (JSON): 31,988 chars (~7,997 tok) (counts toward context; not shown as text)
-Tools: (same as above)
+스킬 목록 (시스템 프롬프트 텍스트): 2,184 문자 (~546 tok) (12 스킬)
+도구: read, edit, write, exec, process, browser, message, sessions_send, …
+도구 목록 (시스템 프롬프트 텍스트): 1,032 문자 (~258 tok)
+도구 스키마 (JSON): 31,988 문자 (~7,997 tok) (컨텍스트에 포함됨; 텍스트로 표시되지 않음)
+도구: (위와 동일)
 
-Session tokens (cached): 14,250 total / ctx=32,000
+세션 토큰 (캐시됨): 총 14,250개 / ctx=32,000
 ```
 
 ### `/context detail`
 
 ```
-🧠 Context breakdown (detailed)
+🧠 컨텍스트 분해 (세부)
 …
-Top skills (prompt entry size):
-- frontend-design: 412 chars (~103 tok)
-- oracle: 401 chars (~101 tok)
-… (+10 more skills)
+최고 스킬 (프롬프트 항목 크기):
+- frontend-design: 412 문자 (~103 tok)
+- oracle: 401 문자 (~101 tok)
+… (+10개 더 많은 스킬)
 
-Top tools (schema size):
-- browser: 9,812 chars (~2,453 tok)
-- exec: 6,240 chars (~1,560 tok)
-… (+N more tools)
+최고 도구 (스키마 크기):
+- browser: 9,812 문자 (~2,453 tok)
+- exec: 6,240 문자 (~1,560 tok)
+… (+N개 더 많은 도구)
 ```
 
-## What counts toward the context window
+## 컨텍스트 윈도우에 포함되는 것들
 
-Everything the model receives counts, including:
+모델이 받는 모든 것들이 포함됩니다:
 
-- System prompt (all sections).
-- Conversation history.
-- Tool calls + tool results.
-- Attachments/transcripts (images/audio/files).
-- Compaction summaries and pruning artifacts.
-- Provider “wrappers” or hidden headers (not visible, still counted).
+- 시스템 프롬프트 (모든 섹션).
+- 대화 역사.
+- 도구 호출 + 도구 결과.
+- 첨부파일/전사본 (이미지/오디오/파일).
+- 요약 및 가지치기 아티팩트.
+- 프로바이더 "랩퍼" 또는 숨겨진 헤더 (보이지 않지만, 여전히 계산됨).
 
-## How OpenClaw builds the system prompt
+## OpenClaw가 시스템 프롬프트를 구축하는 방법
 
-The system prompt is **OpenClaw-owned** and rebuilt each run. It includes:
+시스템 프롬프트는 **OpenClaw 소유**이며 매 실행 시 다시 구축됩니다. 포함된 것들은:
 
-- Tool list + short descriptions.
-- Skills list (metadata only; see below).
-- Workspace location.
-- Time (UTC + converted user time if configured).
-- Runtime metadata (host/OS/model/thinking).
-- Injected workspace bootstrap files under **Project Context**.
+- 도구 목록 + 짧은 설명.
+- 스킬 목록 (메타데이터만; 아래 참조).
+- 워크스페이스 위치.
+- 시간 (UTC + 설정 시 변환된 사용자 시간).
+- 런타임 메타데이터 (호스트/OS/모델/생각).
+- **프로젝트 컨텍스트** 아래의 주입된 워크스페이스 부트스트랩 파일.
 
-Full breakdown: [System Prompt](/concepts/system-prompt).
+전체 분석: [시스템 프롬프트](/concepts/system-prompt).
 
-## Injected workspace files (Project Context)
+## 주입된 워크스페이스 파일 (프로젝트 컨텍스트)
 
-By default, OpenClaw injects a fixed set of workspace files (if present):
+기본적으로, OpenClaw는 (존재하는 경우) 고정된 워크스페이스 파일 집합을 주입합니다:
 
 - `AGENTS.md`
 - `SOUL.md`
@@ -110,52 +110,52 @@ By default, OpenClaw injects a fixed set of workspace files (if present):
 - `IDENTITY.md`
 - `USER.md`
 - `HEARTBEAT.md`
-- `BOOTSTRAP.md` (first-run only)
+- `BOOTSTRAP.md` (첫 실행 시에만)
 
-Large files are truncated per-file using `agents.defaults.bootstrapMaxChars` (default `20000` chars). `/context` shows **raw vs injected** sizes and whether truncation happened.
+큰 파일은 `agents.defaults.bootstrapMaxChars` (기본 `20000` 문자)을 사용하여 파일별로 잘립니다. OpenClaw는 `agents.defaults.bootstrapTotalMaxChars` (기본 `150000` 문자)를 사용하여 파일 전체의 총 부트스트랩 주입 제한도 시행합니다. `/context`는 **원본 대 주입** 크기와 잘림 여부를 보여줍니다.
 
-## Skills: what’s injected vs loaded on-demand
+## 스킬: 주입된 것 vs 필요 시 로드된 것
 
-The system prompt includes a compact **skills list** (name + description + location). This list has real overhead.
+시스템 프롬프트에는 압축된 **스킬 목록**(이름 + 설명 + 위치)이 포함되어 있습니다. 이 목록은 실제 오버헤드를 가집니다.
 
-Skill instructions are _not_ included by default. The model is expected to `read` the skill’s `SKILL.md` **only when needed**.
+스킬 지침은 기본적으로 포함되지 _않습니다_. 모델은 **필요할 때만** 스킬의 `SKILL.md`를 `읽어야` 합니다.
 
-## Tools: there are two costs
+## 도구: 두 가지 비용
 
-Tools affect context in two ways:
+도구는 두 가지 방식으로 컨텍스트에 영향을 미칩니다:
 
-1. **Tool list text** in the system prompt (what you see as “Tooling”).
-2. **Tool schemas** (JSON). These are sent to the model so it can call tools. They count toward context even though you don’t see them as plain text.
+1. 시스템 프롬프트에 포함된 **도구 목록 텍스트**(“도구화”로 보이는 것들).
+2. **도구 스키마** (JSON). 이는 모델이 도구를 호출할 수 있도록 모델에 전송됩니다. 이는 일반 텍스트로 보이지 않더라도 컨텍스트에 포함됩니다.
 
-`/context detail` breaks down the biggest tool schemas so you can see what dominates.
+`/context detail`은 가장 큰 도구 스키마를 분해하여 무엇이 주를 이루는지 보여줍니다.
 
-## Commands, directives, and “inline shortcuts”
+## 명령어, 지시어, "인라인 단축키"
 
-Slash commands are handled by the Gateway. There are a few different behaviors:
+슬래시 명령어는 게이트웨이에 의해 처리됩니다. 몇 가지 다른 동작이 있습니다:
 
-- **Standalone commands**: a message that is only `/...` runs as a command.
-- **Directives**: `/think`, `/verbose`, `/reasoning`, `/elevated`, `/model`, `/queue` are stripped before the model sees the message.
-  - Directive-only messages persist session settings.
-  - Inline directives in a normal message act as per-message hints.
-- **Inline shortcuts** (allowlisted senders only): certain `/...` tokens inside a normal message can run immediately (example: “hey /status”), and are stripped before the model sees the remaining text.
+- **독립형 명령어**: 오직 `/...`로만 이루어진 메시지는 명령어로 실행됩니다.
+- **지시어**: `/think`, `/verbose`, `/reasoning`, `/elevated`, `/model`, `/queue`는 모델이 메시지를 보기 전에 제거됩니다.
+  - 지시어만 있는 메시지는 세션 설정을 유지합니다.
+  - 일반 메시지에 있는 인라인 지시어는 메시지별 힌트로 작동합니다.
+- **인라인 단축키**(허용된 발신자만): 일반 메시지 내부의 특정 `/...` 토큰은 즉시 실행될 수 있으며(예: "hey /status"), 모델이 나머지 텍스트를 보기 전에 제거됩니다.
 
-Details: [Slash commands](/tools/slash-commands).
+세부 사항: [슬래시 명령어](/tools/slash-commands).
 
-## Sessions, compaction, and pruning (what persists)
+## 세션, 요약, 가지치기 (지속되는 것)
 
-What persists across messages depends on the mechanism:
+메시지 간 지속되는 것은 메커니즘에 따라 다릅니다:
 
-- **Normal history** persists in the session transcript until compacted/pruned by policy.
-- **Compaction** persists a summary into the transcript and keeps recent messages intact.
-- **Pruning** removes old tool results from the _in-memory_ prompt for a run, but does not rewrite the transcript.
+- **일반 역사**는 정책에 의해 축약/가지치기될 때까지 세션 전사본에 유지됩니다.
+- **요약**은 텍스트 요약을 전사본에 지속시키며 최근 메시지를 온전히 유지합니다.
+- **가지치기**는 실행 시 _메모리 내_ 프롬프트에서 오래된 도구 결과를 제거하지만, 전사본을 다시 작성하지 않습니다.
 
-Docs: [Session](/concepts/session), [Compaction](/concepts/compaction), [Session pruning](/concepts/session-pruning).
+문서: [세션](/concepts/session), [요약](/concepts/compaction), [세션 가지치기](/concepts/session-pruning).
 
-## What `/context` actually reports
+## `/context`가 실제로 보고하는 것
 
-`/context` prefers the latest **run-built** system prompt report when available:
+`/context`는 가능할 경우 최신 **실행 빌드** 시스템 프롬프트 보고서를 선호합니다:
 
-- `System prompt (run)` = captured from the last embedded (tool-capable) run and persisted in the session store.
-- `System prompt (estimate)` = computed on the fly when no run report exists (or when running via a CLI backend that doesn’t generate the report).
+- `System prompt (run)` = 마지막에 임베드된(도구 사용 가능) 실행에서 캡처되어 세션 저장소에 유지됩니다.
+- `System prompt (estimate)` = 실행 보고서가 없을 때 یا 보고서를 생성하지 않는 CLI 백엔드를 통해 실행될 때 대략적으로 계산됩니다.
 
-Either way, it reports sizes and top contributors; it does **not** dump the full system prompt or tool schemas.
+어느 쪽이든, 이를 통해 크기와 주요 기여자를 보고하며, 전체 시스템 프롬프트나 도구 스키마를 덤프하지 **않습니다**.

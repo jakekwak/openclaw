@@ -1,328 +1,254 @@
 ---
-summary: "Runbook for the Gateway service, lifecycle, and operations"
+summary: "게이트웨이 서비스의 실행 계획, 라이프사이클 및 운영에 대한 런북"
 read_when:
-  - Running or debugging the gateway process
-title: "Gateway Runbook"
+  - 게이트웨이 프로세스를 실행하거나 디버깅할 때
+title: "게이트웨이 런북"
 ---
 
-# Gateway service runbook
+# 게이트웨이 런북
 
-Last updated: 2025-12-09
+이 페이지는 게이트웨이 서비스의 초기 시작 및 두 번째 단계 운영에 사용됩니다.
 
-## What it is
+<CardGroup cols={2}>
+  <Card title="심층 문제 해결" icon="siren" href="/gateway/troubleshooting">
+    증상 중심의 진단, 명확한 명령어 단계 및 로그 특성.
+  </Card>
+  <Card title="설정" icon="sliders" href="/gateway/configuration">
+    작업 지향 설정 가이드 + 전체 설정 참조.
+  </Card>
+</CardGroup>
 
-- The always-on process that owns the single Baileys/Telegram connection and the control/event plane.
-- Replaces the legacy `gateway` command. CLI entry point: `openclaw gateway`.
-- Runs until stopped; exits non-zero on fatal errors so the supervisor restarts it.
+## 5분 내 로컬 시작
 
-## How to run (local)
+<Steps>
+  <Step title="게이트웨이 시작">
 
 ```bash
 openclaw gateway --port 18789
-# for full debug/trace logs in stdio:
+# debug/trace mirrored to stdio
 openclaw gateway --port 18789 --verbose
-# if the port is busy, terminate listeners then start:
+# force-kill listener on selected port, then start
 openclaw gateway --force
-# dev loop (auto-reload on TS changes):
-pnpm gateway:watch
 ```
 
-- Config hot reload watches `~/.openclaw/openclaw.json` (or `OPENCLAW_CONFIG_PATH`).
-  - Default mode: `gateway.reload.mode="hybrid"` (hot-apply safe changes, restart on critical).
-  - Hot reload uses in-process restart via **SIGUSR1** when needed.
-  - Disable with `gateway.reload.mode="off"`.
-- Binds WebSocket control plane to `127.0.0.1:<port>` (default 18789).
-- The same port also serves HTTP (control UI, hooks, A2UI). Single-port multiplex.
-  - OpenAI Chat Completions (HTTP): [`/v1/chat/completions`](/gateway/openai-http-api).
-  - OpenResponses (HTTP): [`/v1/responses`](/gateway/openresponses-http-api).
-  - Tools Invoke (HTTP): [`/tools/invoke`](/gateway/tools-invoke-http-api).
-- Starts a Canvas file server by default on `canvasHost.port` (default `18793`), serving `http://<gateway-host>:18793/__openclaw__/canvas/` from `~/.openclaw/workspace/canvas`. Disable with `canvasHost.enabled=false` or `OPENCLAW_SKIP_CANVAS_HOST=1`.
-- Logs to stdout; use launchd/systemd to keep it alive and rotate logs.
-- Pass `--verbose` to mirror debug logging (handshakes, req/res, events) from the log file into stdio when troubleshooting.
-- `--force` uses `lsof` to find listeners on the chosen port, sends SIGTERM, logs what it killed, then starts the gateway (fails fast if `lsof` is missing).
-- If you run under a supervisor (launchd/systemd/mac app child-process mode), a stop/restart typically sends **SIGTERM**; older builds may surface this as `pnpm` `ELIFECYCLE` exit code **143** (SIGTERM), which is a normal shutdown, not a crash.
-- **SIGUSR1** triggers an in-process restart when authorized (gateway tool/config apply/update, or enable `commands.restart` for manual restarts).
-- Gateway auth is required by default: set `gateway.auth.token` (or `OPENCLAW_GATEWAY_TOKEN`) or `gateway.auth.password`. Clients must send `connect.params.auth.token/password` unless using Tailscale Serve identity.
-- The wizard now generates a token by default, even on loopback.
-- Port precedence: `--port` > `OPENCLAW_GATEWAY_PORT` > `gateway.port` > default `18789`.
+  </Step>
 
-## Remote access
-
-- Tailscale/VPN preferred; otherwise SSH tunnel:
-  ```bash
-  ssh -N -L 18789:127.0.0.1:18789 user@host
-  ```
-- Clients then connect to `ws://127.0.0.1:18789` through the tunnel.
-- If a token is configured, clients must include it in `connect.params.auth.token` even over the tunnel.
-
-## Multiple gateways (same host)
-
-Usually unnecessary: one Gateway can serve multiple messaging channels and agents. Use multiple Gateways only for redundancy or strict isolation (ex: rescue bot).
-
-Supported if you isolate state + config and use unique ports. Full guide: [Multiple gateways](/gateway/multiple-gateways).
-
-Service names are profile-aware:
-
-- macOS: `bot.molt.<profile>` (legacy `com.openclaw.*` may still exist)
-- Linux: `openclaw-gateway-<profile>.service`
-- Windows: `OpenClaw Gateway (<profile>)`
-
-Install metadata is embedded in the service config:
-
-- `OPENCLAW_SERVICE_MARKER=openclaw`
-- `OPENCLAW_SERVICE_KIND=gateway`
-- `OPENCLAW_SERVICE_VERSION=<version>`
-
-Rescue-Bot Pattern: keep a second Gateway isolated with its own profile, state dir, workspace, and base port spacing. Full guide: [Rescue-bot guide](/gateway/multiple-gateways#rescue-bot-guide).
-
-### Dev profile (`--dev`)
-
-Fast path: run a fully-isolated dev instance (config/state/workspace) without touching your primary setup.
+  <Step title="서비스 상태 확인">
 
 ```bash
-openclaw --dev setup
-openclaw --dev gateway --allow-unconfigured
-# then target the dev instance:
-openclaw --dev status
-openclaw --dev health
+openclaw gateway status
+openclaw status
+openclaw logs --follow
 ```
 
-Defaults (can be overridden via env/flags/config):
+건강한 기준선: `Runtime: running` 그리고 `RPC probe: ok`.
 
-- `OPENCLAW_STATE_DIR=~/.openclaw-dev`
-- `OPENCLAW_CONFIG_PATH=~/.openclaw-dev/openclaw.json`
-- `OPENCLAW_GATEWAY_PORT=19001` (Gateway WS + HTTP)
-- browser control service port = `19003` (derived: `gateway.port+2`, loopback only)
-- `canvasHost.port=19005` (derived: `gateway.port+4`)
-- `agents.defaults.workspace` default becomes `~/.openclaw/workspace-dev` when you run `setup`/`onboard` under `--dev`.
+  </Step>
 
-Derived ports (rules of thumb):
-
-- Base port = `gateway.port` (or `OPENCLAW_GATEWAY_PORT` / `--port`)
-- browser control service port = base + 2 (loopback only)
-- `canvasHost.port = base + 4` (or `OPENCLAW_CANVAS_HOST_PORT` / config override)
-- Browser profile CDP ports auto-allocate from `browser.controlPort + 9 .. + 108` (persisted per profile).
-
-Checklist per instance:
-
-- unique `gateway.port`
-- unique `OPENCLAW_CONFIG_PATH`
-- unique `OPENCLAW_STATE_DIR`
-- unique `agents.defaults.workspace`
-- separate WhatsApp numbers (if using WA)
-
-Service install per profile:
+  <Step title="채널 준비 상태 확인">
 
 ```bash
-openclaw --profile main gateway install
-openclaw --profile rescue gateway install
+openclaw channels status --probe
 ```
 
-Example:
+  </Step>
+</Steps>
+
+<Note>
+게이트웨이 설정 리로드는 활성 설정 파일 경로(프로파일/상태 기본값에서 해결되거나 `OPENCLAW_CONFIG_PATH`로 설정된 경로)를 감시합니다.
+기본 모드는 `gateway.reload.mode="hybrid"`입니다.
+</Note>
+
+## 런타임 모델
+
+- 항상 실행되는 프로세스로 라우팅, 제어 평면 및 채널 연결을 처리.
+- 다음을 위한 단일 멀티플렉스 포트:
+  - WebSocket 제어/RPC
+  - HTTP APIs (OpenAI 호환, 응답, 도구 호출)
+  - 제어 UI 및 훅
+- 기본 바인드 모드: `로컬 루프백`.
+- 인증은 기본적으로 필요(`gateway.auth.token` / `gateway.auth.password`, 또는 `OPENCLAW_GATEWAY_TOKEN` / `OPENCLAW_GATEWAY_PASSWORD`).
+
+### 포트 및 바인드 우선순위
+
+| 설정         | 해결 순서                                                       |
+| ------------ | ------------------------------------------------------------- |
+| 게이트웨이 포트 | `--port` → `OPENCLAW_GATEWAY_PORT` → `gateway.port` → `18789` |
+| 바인드 모드    | CLI/override → `gateway.bind` → `로컬 루프백`               |
+
+### 핫 리로드 모드
+
+| `gateway.reload.mode` | 동작                                            |
+| --------------------- | ------------------------------------------ |
+| `off`                 | 설정 리로드 안 함                                |
+| `hot`                 | 핫-세이프한 변경 만 적용                         |
+| `restart`             | 리로드가 필요한 변경 시 재시작                      |
+| `hybrid` (기본)       | 안전할 때 핫 적용, 필요 시 재시작                 |
+
+## 운영자 명령 세트
+
+```bash
+openclaw gateway status
+openclaw gateway status --deep
+openclaw gateway status --json
+openclaw gateway install
+openclaw gateway restart
+openclaw gateway stop
+openclaw logs --follow
+openclaw doctor
+```
+
+## 원격 액세스
+
+선호: Tailscale/VPN.
+대체: SSH 터널.
+
+```bash
+ssh -N -L 18789:127.0.0.1:18789 user@host
+```
+
+그런 다음 클라이언트를 로컬에서 `ws://127.0.0.1:18789`에 연결합니다.
+
+<Warning>
+게이트웨이 인증이 설정된 경우, 클라이언트는 SSH 터널을 통해서도 인증(`token`/`password`)을 보내야 합니다.
+</Warning>
+
+참조: [원격 게이트웨이](/gateway/remote), [인증](/gateway/authentication), [Tailscale](/gateway/tailscale).
+
+## 감시 및 서비스 라이프사이클
+
+상용 환경과 유사한 신뢰성을 위해 감시 실행을 사용하십시오.
+
+<Tabs>
+  <Tab title="macOS (launchd)">
+
+```bash
+openclaw gateway install
+openclaw gateway status
+openclaw gateway restart
+openclaw gateway stop
+```
+
+LaunchAgent 레이블은 기본적으로 `ai.openclaw.gateway` 이며, 이름이 지정된 프로파일일 경우 `ai.openclaw.<profile>`. `openclaw doctor`는 서비스 설정 드리프트를 검사 및 수정합니다.
+
+  </Tab>
+
+  <Tab title="Linux (systemd user)">
+
+```bash
+openclaw gateway install
+systemctl --user enable --now openclaw-gateway[-<profile>].service
+openclaw gateway status
+```
+
+로그아웃 후에도 지속적으로 유지하려면, 잔류를 활성화하십시오:
+
+```bash
+sudo loginctl enable-linger <user>
+```
+
+  </Tab>
+
+  <Tab title="Linux (system service)">
+
+다중 사용자 및 항상 켜져 있는 호스트를 위해 시스템 단위를 사용하십시오.
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now openclaw-gateway[-<profile>].service
+```
+
+  </Tab>
+</Tabs>
+
+## 하나의 호스트에 여러 게이트웨이
+
+대부분의 설정은 **하나의** 게이트웨이를 실행해야 합니다.
+엄격한 격리 또는 중복성을 위해 여러 게이트웨이를 사용할 수 있습니다 (예: 구출 프로필).
+
+인스턴스별 체크리스트:
+
+- 고유한 `gateway.port`
+- 고유한 `OPENCLAW_CONFIG_PATH`
+- 고유한 `OPENCLAW_STATE_DIR`
+- 고유한 `agents.defaults.workspace`
+
+예시:
 
 ```bash
 OPENCLAW_CONFIG_PATH=~/.openclaw/a.json OPENCLAW_STATE_DIR=~/.openclaw-a openclaw gateway --port 19001
 OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b openclaw gateway --port 19002
 ```
 
-## Protocol (operator view)
+참조: [여러 게이트웨이](/gateway/multiple-gateways).
 
-- Full docs: [Gateway protocol](/gateway/protocol) and [Bridge protocol (legacy)](/gateway/bridge-protocol).
-- Mandatory first frame from client: `req {type:"req", id, method:"connect", params:{minProtocol,maxProtocol,client:{id,displayName?,version,platform,deviceFamily?,modelIdentifier?,mode,instanceId?}, caps, auth?, locale?, userAgent? } }`.
-- Gateway replies `res {type:"res", id, ok:true, payload:hello-ok }` (or `ok:false` with an error, then closes).
-- After handshake:
-  - Requests: `{type:"req", id, method, params}` → `{type:"res", id, ok, payload|error}`
-  - Events: `{type:"event", event, payload, seq?, stateVersion?}`
-- Structured presence entries: `{host, ip, version, platform?, deviceFamily?, modelIdentifier?, mode, lastInputSeconds?, ts, reason?, tags?[], instanceId? }` (for WS clients, `instanceId` comes from `connect.client.instanceId`).
-- `agent` responses are two-stage: first `res` ack `{runId,status:"accepted"}`, then a final `res` `{runId,status:"ok"|"error",summary}` after the run finishes; streamed output arrives as `event:"agent"`.
+### Dev 프로필 빠른 경로
 
-## Methods (initial set)
+```bash
+openclaw --dev setup
+openclaw --dev gateway --allow-unconfigured
+openclaw --dev status
+```
 
-- `health` — full health snapshot (same shape as `openclaw health --json`).
-- `status` — short summary.
-- `system-presence` — current presence list.
-- `system-event` — post a presence/system note (structured).
-- `send` — send a message via the active channel(s).
-- `agent` — run an agent turn (streams events back on same connection).
-- `node.list` — list paired + currently-connected nodes (includes `caps`, `deviceFamily`, `modelIdentifier`, `paired`, `connected`, and advertised `commands`).
-- `node.describe` — describe a node (capabilities + supported `node.invoke` commands; works for paired nodes and for currently-connected unpaired nodes).
-- `node.invoke` — invoke a command on a node (e.g. `canvas.*`, `camera.*`).
-- `node.pair.*` — pairing lifecycle (`request`, `list`, `approve`, `reject`, `verify`).
+기본값에는 격리된 상태/설정과 기본 게이트웨이 포트 `19001`이 포함되어 있습니다.
 
-See also: [Presence](/concepts/presence) for how presence is produced/deduped and why a stable `client.instanceId` matters.
+## 프로토콜 빠른 참조 (운영자 관점)
 
-## Events
+- 클라이언트의 첫 프레임은 `connect` 여야 합니다.
+- 게이트웨이는 `hello-ok` 스냅샷(`presence`, `health`, `stateVersion`, `uptimeMs`, 제한/정책)을 반환합니다.
+- 요청: `req(method, params)` → `res(ok/payload|error)`.
+- 일반 이벤트: `connect.challenge`, `agent`, `chat`, `presence`, `tick`, `health`, `heartbeat`, `shutdown`.
 
-- `agent` — streamed tool/output events from the agent run (seq-tagged).
-- `presence` — presence updates (deltas with stateVersion) pushed to all connected clients.
-- `tick` — periodic keepalive/no-op to confirm liveness.
-- `shutdown` — Gateway is exiting; payload includes `reason` and optional `restartExpectedMs`. Clients should reconnect.
+에이전트 실행은 두 단계로 진행됩니다:
 
-## WebChat integration
+1. 즉각적인 수락 확인 (`status:"accepted"`)
+2. 최종 완료 응답 (`status:"ok"|"error"`), 중간에 스트리밍된 `agent` 이벤트 포함.
 
-- WebChat is a native SwiftUI UI that talks directly to the Gateway WebSocket for history, sends, abort, and events.
-- Remote use goes through the same SSH/Tailscale tunnel; if a gateway token is configured, the client includes it during `connect`.
-- macOS app connects via a single WS (shared connection); it hydrates presence from the initial snapshot and listens for `presence` events to update the UI.
+전체 프로토콜 문서 참조: [게이트웨이 프로토콜](/gateway/protocol).
 
-## Typing and validation
+## 운영 점검
 
-- Server validates every inbound frame with AJV against JSON Schema emitted from the protocol definitions.
-- Clients (TS/Swift) consume generated types (TS directly; Swift via the repo’s generator).
-- Protocol definitions are the source of truth; regenerate schema/models with:
-  - `pnpm protocol:gen`
-  - `pnpm protocol:gen:swift`
+### 활성 상태 확인
 
-## Connection snapshot
+- WS를 열고 `connect`를 전송합니다.
+- 스냅샷과 함께 `hello-ok` 응답을 기대합니다.
 
-- `hello-ok` includes a `snapshot` with `presence`, `health`, `stateVersion`, and `uptimeMs` plus `policy {maxPayload,maxBufferedBytes,tickIntervalMs}` so clients can render immediately without extra requests.
-- `health`/`system-presence` remain available for manual refresh, but are not required at connect time.
-
-## Error codes (res.error shape)
-
-- Errors use `{ code, message, details?, retryable?, retryAfterMs? }`.
-- Standard codes:
-  - `NOT_LINKED` — WhatsApp not authenticated.
-  - `AGENT_TIMEOUT` — agent did not respond within the configured deadline.
-  - `INVALID_REQUEST` — schema/param validation failed.
-  - `UNAVAILABLE` — Gateway is shutting down or a dependency is unavailable.
-
-## Keepalive behavior
-
-- `tick` events (or WS ping/pong) are emitted periodically so clients know the Gateway is alive even when no traffic occurs.
-- Send/agent acknowledgements remain separate responses; do not overload ticks for sends.
-
-## Replay / gaps
-
-- Events are not replayed. Clients detect seq gaps and should refresh (`health` + `system-presence`) before continuing. WebChat and macOS clients now auto-refresh on gap.
-
-## Supervision (macOS example)
-
-- Use launchd to keep the service alive:
-  - Program: path to `openclaw`
-  - Arguments: `gateway`
-  - KeepAlive: true
-  - StandardOut/Err: file paths or `syslog`
-- On failure, launchd restarts; fatal misconfig should keep exiting so the operator notices.
-- LaunchAgents are per-user and require a logged-in session; for headless setups use a custom LaunchDaemon (not shipped).
-  - `openclaw gateway install` writes `~/Library/LaunchAgents/bot.molt.gateway.plist`
-    (or `bot.molt.<profile>.plist`; legacy `com.openclaw.*` is cleaned up).
-  - `openclaw doctor` audits the LaunchAgent config and can update it to current defaults.
-
-## Gateway service management (CLI)
-
-Use the Gateway CLI for install/start/stop/restart/status:
+### 준비 상태 확인
 
 ```bash
 openclaw gateway status
-openclaw gateway install
-openclaw gateway stop
-openclaw gateway restart
-openclaw logs --follow
+openclaw channels status --probe
+openclaw health
 ```
 
-Notes:
+### 간극 복구
 
-- `gateway status` probes the Gateway RPC by default using the service’s resolved port/config (override with `--url`).
-- `gateway status --deep` adds system-level scans (LaunchDaemons/system units).
-- `gateway status --no-probe` skips the RPC probe (useful when networking is down).
-- `gateway status --json` is stable for scripts.
-- `gateway status` reports **supervisor runtime** (launchd/systemd running) separately from **RPC reachability** (WS connect + status RPC).
-- `gateway status` prints config path + probe target to avoid “localhost vs LAN bind” confusion and profile mismatches.
-- `gateway status` includes the last gateway error line when the service looks running but the port is closed.
-- `logs` tails the Gateway file log via RPC (no manual `tail`/`grep` needed).
-- If other gateway-like services are detected, the CLI warns unless they are OpenClaw profile services.
-  We still recommend **one gateway per machine** for most setups; use isolated profiles/ports for redundancy or a rescue bot. See [Multiple gateways](/gateway/multiple-gateways).
-  - Cleanup: `openclaw gateway uninstall` (current service) and `openclaw doctor` (legacy migrations).
-- `gateway install` is a no-op when already installed; use `openclaw gateway install --force` to reinstall (profile/env/path changes).
+이벤트는 재생되지 않습니다. 시퀀스 간극이 발생하면 상태(`health`, `system-presence`)를 갱신한 후 계속합니다.
 
-Bundled mac app:
+## 일반적인 실패 시그니처
 
-- OpenClaw.app can bundle a Node-based gateway relay and install a per-user LaunchAgent labeled
-  `bot.molt.gateway` (or `bot.molt.<profile>`; legacy `com.openclaw.*` labels still unload cleanly).
-- To stop it cleanly, use `openclaw gateway stop` (or `launchctl bootout gui/$UID/bot.molt.gateway`).
-- To restart, use `openclaw gateway restart` (or `launchctl kickstart -k gui/$UID/bot.molt.gateway`).
-  - `launchctl` only works if the LaunchAgent is installed; otherwise use `openclaw gateway install` first.
-  - Replace the label with `bot.molt.<profile>` when running a named profile.
+| 시그니처                                                      | 가능성 있는 문제                             |
+| -------------------------------------------------------------- | ---------------------------------------- |
+| `refusing to bind gateway ... without auth`                    | 인증 정보가 없는 비-로컬 루프백 바인드       |
+| `another gateway instance is already listening` / `EADDRINUSE` | 포트 충돌                            |
+| `Gateway start blocked: set gateway.mode=local`                | 원격 모드로 설정된 구성                |
+| `unauthorized` during connect                                  | 클라이언트와 게이트웨이 간의 인증 불일치 |
 
-## Supervision (systemd user unit)
+전체 진단 단계는 [게이트웨이 문제 해결](/gateway/troubleshooting)을 참조하십시오.
 
-OpenClaw installs a **systemd user service** by default on Linux/WSL2. We
-recommend user services for single-user machines (simpler env, per-user config).
-Use a **system service** for multi-user or always-on servers (no lingering
-required, shared supervision).
+## 안전 보장
 
-`openclaw gateway install` writes the user unit. `openclaw doctor` audits the
-unit and can update it to match the current recommended defaults.
+- 게이트웨이 프로토콜 클라이언트는 게이트웨이를 사용할 수 없을 때 빠르게 실패합니다(암시적인 직접 채널 백업 없음).
+- 잘못된 메시지나 연결이 아닌 첫 프레임은 거부되고 소켓이 닫힙니다.
+- 정상적인 종료: 소켓 닫힘 전 `shutdown` 이벤트 발생.
 
-Create `~/.config/systemd/user/openclaw-gateway[-<profile>].service`:
+---
 
-```
-[Unit]
-Description=OpenClaw Gateway (profile: <profile>, v<version>)
-After=network-online.target
-Wants=network-online.target
+관련 항목:
 
-[Service]
-ExecStart=/usr/local/bin/openclaw gateway --port 18789
-Restart=always
-RestartSec=5
-Environment=OPENCLAW_GATEWAY_TOKEN=
-WorkingDirectory=/home/youruser
-
-[Install]
-WantedBy=default.target
-```
-
-Enable lingering (required so the user service survives logout/idle):
-
-```
-sudo loginctl enable-linger youruser
-```
-
-Onboarding runs this on Linux/WSL2 (may prompt for sudo; writes `/var/lib/systemd/linger`).
-Then enable the service:
-
-```
-systemctl --user enable --now openclaw-gateway[-<profile>].service
-```
-
-**Alternative (system service)** - for always-on or multi-user servers, you can
-install a systemd **system** unit instead of a user unit (no lingering needed).
-Create `/etc/systemd/system/openclaw-gateway[-<profile>].service` (copy the unit above,
-switch `WantedBy=multi-user.target`, set `User=` + `WorkingDirectory=`), then:
-
-```
-sudo systemctl daemon-reload
-sudo systemctl enable --now openclaw-gateway[-<profile>].service
-```
-
-## Windows (WSL2)
-
-Windows installs should use **WSL2** and follow the Linux systemd section above.
-
-## Operational checks
-
-- Liveness: open WS and send `req:connect` → expect `res` with `payload.type="hello-ok"` (with snapshot).
-- Readiness: call `health` → expect `ok: true` and a linked channel in `linkChannel` (when applicable).
-- Debug: subscribe to `tick` and `presence` events; ensure `status` shows linked/auth age; presence entries show Gateway host and connected clients.
-
-## Safety guarantees
-
-- Assume one Gateway per host by default; if you run multiple profiles, isolate ports/state and target the right instance.
-- No fallback to direct Baileys connections; if the Gateway is down, sends fail fast.
-- Non-connect first frames or malformed JSON are rejected and the socket is closed.
-- Graceful shutdown: emit `shutdown` event before closing; clients must handle close + reconnect.
-
-## CLI helpers
-
-- `openclaw gateway health|status` — request health/status over the Gateway WS.
-- `openclaw message send --target <num> --message "hi" [--media ...]` — send via Gateway (idempotent for WhatsApp).
-- `openclaw agent --message "hi" --to <num>` — run an agent turn (waits for final by default).
-- `openclaw gateway call <method> --params '{"k":"v"}'` — raw method invoker for debugging.
-- `openclaw gateway stop|restart` — stop/restart the supervised gateway service (launchd/systemd).
-- Gateway helper subcommands assume a running gateway on `--url`; they no longer auto-spawn one.
-
-## Migration guidance
-
-- Retire uses of `openclaw gateway` and the legacy TCP control port.
-- Update clients to speak the WS protocol with mandatory connect and structured presence.
+- [문제 해결](/gateway/troubleshooting)
+- [백그라운드 프로세스](/gateway/background-process)
+- [설정](/gateway/configuration)
+- [건강](/gateway/health)
+- [의사](/gateway/doctor)
+- [인증](/gateway/authentication)

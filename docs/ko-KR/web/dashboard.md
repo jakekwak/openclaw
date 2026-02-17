@@ -1,46 +1,46 @@
 ---
-summary: "Gateway dashboard (Control UI) access and auth"
+summary: "Gateway 대시보드 (Control UI) 액세스 및 인증"
 read_when:
-  - Changing dashboard authentication or exposure modes
-title: "Dashboard"
+  - 대시보드 인증 또는 노출 모드를 변경하는 경우
+title: "대시보드"
 ---
 
-# Dashboard (Control UI)
+# 대시보드 (Control UI)
 
-The Gateway dashboard is the browser Control UI served at `/` by default
-(override with `gateway.controlUi.basePath`).
+Gateway 대시보드는 기본적으로 `/`에서 제공되는 브라우저 Control UI입니다
+(`gateway.controlUi.basePath`를 사용하여 변경 가능).
 
-Quick open (local Gateway):
+빠른 열기 (로컬 게이트웨이):
 
-- http://127.0.0.1:18789/ (or http://localhost:18789/)
+- [http://127.0.0.1:18789/](http://127.0.0.1:18789/) (또는 [http://localhost:18789/](http://localhost:18789/))
 
-Key references:
+핵심 참고 사항:
 
-- [Control UI](/web/control-ui) for usage and UI capabilities.
-- [Tailscale](/gateway/tailscale) for Serve/Funnel automation.
-- [Web surfaces](/web) for bind modes and security notes.
+- [Control UI](/web/control-ui) 사용법과 UI 기능.
+- [Tailscale](/gateway/tailscale) Serve/Funnel 자동화.
+- [Web surfaces](/web) 바인드 모드 및 보안 노트.
 
-Authentication is enforced at the WebSocket handshake via `connect.params.auth`
-(token or password). See `gateway.auth` in [Gateway configuration](/gateway/configuration).
+인증은 WebSocket 핸드셰이크 시 `connect.params.auth` (토큰 또는 비밀번호)를 통해 적용됩니다.
+[Gateway 설정](/gateway/configuration)에서 `gateway.auth`를 참조하세요.
 
-Security note: the Control UI is an **admin surface** (chat, config, exec approvals).
-Do not expose it publicly. The UI stores the token in `localStorage` after first load.
-Prefer localhost, Tailscale Serve, or an SSH tunnel.
+보안 주의: Control UI는 **관리자 표면**입니다 (채팅, 설정, 실행 승인).
+공개하지 마세요. UI는 처음 로드 후 토큰을 `localStorage`에 저장합니다.
+localhost, Tailscale Serve, 또는 SSH 터널 사용을 권장합니다.
 
-## Fast path (recommended)
+## 빠른 경로 (권장)
 
-- After onboarding, the CLI now auto-opens the dashboard with your token and prints the same tokenized link.
-- Re-open anytime: `openclaw dashboard` (copies link, opens browser if possible, shows SSH hint if headless).
-- The token stays local (query param only); the UI strips it after first load and saves it in localStorage.
+- 온보딩 후, CLI는 대시보드를 자동으로 열고 비토큰화된 링크를 출력합니다.
+- 언제든지 다시 열기: `openclaw dashboard` (링크를 복사하고, 가능하면 브라우저를 열며, 헤드리스 상태에서 SSH 힌트를 표시).
+- UI에서 인증을 요구할 경우, Control UI 설정에 `gateway.auth.token` (또는 `OPENCLAW_GATEWAY_TOKEN`)에서 토큰을 붙여넣으세요.
 
-## Token basics (local vs remote)
+## 토큰 기본 사항 (로컬 대 원격)
 
-- **Localhost**: open `http://127.0.0.1:18789/`. If you see “unauthorized,” run `openclaw dashboard` and use the tokenized link (`?token=...`).
-- **Token source**: `gateway.auth.token` (or `OPENCLAW_GATEWAY_TOKEN`); the UI stores it after first load.
-- **Not localhost**: use Tailscale Serve (tokenless if `gateway.auth.allowTailscale: true`), tailnet bind with a token, or an SSH tunnel. See [Web surfaces](/web).
+- **Localhost**: `http://127.0.0.1:18789/`를 엽니다.
+- **토큰 출처**: `gateway.auth.token` (또는 `OPENCLAW_GATEWAY_TOKEN`); 연결한 후 UI는 복사본을 localStorage에 저장합니다.
+- **Not localhost**: Tailscale Serve 사용 (`gateway.auth.allowTailscale: true`일 경우 토큰 없음), 토큰 포함 tailnet 바인드 또는 SSH 터널. [Web surfaces](/web) 참조.
 
-## If you see “unauthorized” / 1008
+## "unauthorized" / 1008 표시될 경우
 
-- Run `openclaw dashboard` to get a fresh tokenized link.
-- Ensure the gateway is reachable (local: `openclaw status`; remote: SSH tunnel `ssh -N -L 18789:127.0.0.1:18789 user@host` then open `http://127.0.0.1:18789/?token=...`).
-- In the dashboard settings, paste the same token you configured in `gateway.auth.token` (or `OPENCLAW_GATEWAY_TOKEN`).
+- 게이트웨이에 연결 가능한지 확인하세요 (로컬: `openclaw status`; 원격: SSH 터널 `ssh -N -L 18789:127.0.0.1:18789 user@host` 그런 다음 `http://127.0.0.1:18789/` 열기).
+- 게이트웨이 호스트에서 토큰 가져오기: `openclaw config get gateway.auth.token` (또는 하나 생성: `openclaw doctor --generate-gateway-token`).
+- 대시보드 설정에서 인증 필드에 토큰을 붙여넣은 후 연결하세요.
