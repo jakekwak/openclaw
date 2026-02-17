@@ -16,6 +16,10 @@
       "url": "/zh-CN"
     },
     {
+      "name": "한국어",
+      "url": "/ko-KR"
+    },
+    {
       "name": "GitHub",
       "url": "https://github.com/openclaw/openclaw"
     },
@@ -716,7 +720,11 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["index", "start/showcase", "start/lore"]
+                "pages": [
+                  "index",
+                  "start/showcase",
+                  "start/lore"
+                ]
               },
               {
                 "group": "Installation",
@@ -762,7 +770,9 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["channels/index"]
+                "pages": [
+                  "channels/index"
+                ]
               },
               {
                 "group": "Messaging platforms",
@@ -825,7 +835,10 @@
               },
               {
                 "group": "Multi-agent",
-                "pages": ["concepts/multi-agent", "concepts/presence"]
+                "pages": [
+                  "concepts/multi-agent",
+                  "concepts/presence"
+                ]
               },
               {
                 "group": "Messages and delivery",
@@ -843,7 +856,9 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["tools/index"]
+                "pages": [
+                  "tools/index"
+                ]
               },
               {
                 "group": "Built-in tools",
@@ -869,7 +884,11 @@
               },
               {
                 "group": "Agent coordination",
-                "pages": ["tools/agent-send", "tools/subagents", "multi-agent-sandbox-tools"]
+                "pages": [
+                  "tools/agent-send",
+                  "tools/subagents",
+                  "multi-agent-sandbox-tools"
+                ]
               },
               {
                 "group": "Skills and extensions",
@@ -915,11 +934,18 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["providers/index", "providers/models", "concepts/models"]
+                "pages": [
+                  "providers/index",
+                  "providers/models",
+                  "concepts/models"
+                ]
               },
               {
                 "group": "Configuration",
-                "pages": ["concepts/model-providers", "concepts/model-failover"]
+                "pages": [
+                  "concepts/model-providers",
+                  "concepts/model-failover"
+                ]
               },
               {
                 "group": "Providers",
@@ -983,7 +1009,11 @@
                   },
                   {
                     "group": "Networking and discovery",
-                    "pages": ["gateway/pairing", "gateway/discovery", "gateway/bonjour"]
+                    "pages": [
+                      "gateway/pairing",
+                      "gateway/discovery",
+                      "gateway/bonjour"
+                    ]
                   }
                 ]
               },
@@ -1005,11 +1035,19 @@
               },
               {
                 "group": "Security",
-                "pages": ["security/formal-verification"]
+                "pages": [
+                  "security/formal-verification"
+                ]
               },
               {
                 "group": "Web interfaces",
-                "pages": ["web/index", "web/control-ui", "web/dashboard", "web/webchat", "tui"]
+                "pages": [
+                  "web/index",
+                  "web/control-ui",
+                  "web/dashboard",
+                  "web/webchat",
+                  "tui"
+                ]
               },
               {
                 "group": "macOS companion app",
@@ -1037,7 +1075,7 @@
             ]
           },
           {
-            "tab": "Reference",
+            "tab": "참조",
             "groups": [
               {
                 "group": "CLI commands",
@@ -1082,7 +1120,10 @@
               },
               {
                 "group": "RPC and API",
-                "pages": ["reference/rpc", "reference/device-models"]
+                "pages": [
+                  "reference/rpc",
+                  "reference/device-models"
+                ]
               },
               {
                 "group": "Templates",
@@ -1111,16 +1152,23 @@
               },
               {
                 "group": "Release notes",
-                "pages": ["reference/RELEASING", "reference/test"]
+                "pages": [
+                  "reference/RELEASING",
+                  "reference/test"
+                ]
               }
             ]
           },
           {
-            "tab": "Help",
+            "tab": "도움말",
             "groups": [
               {
                 "group": "Help",
-                "pages": ["help/index", "help/troubleshooting", "help/faq"]
+                "pages": [
+                  "help/index",
+                  "help/troubleshooting",
+                  "help/faq"
+                ]
               },
               {
                 "group": "Environment and debugging",
@@ -1144,7 +1192,11 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["zh-CN/index", "zh-CN/start/showcase", "zh-CN/start/lore"]
+                "pages": [
+                  "zh-CN/index",
+                  "zh-CN/start/showcase",
+                  "zh-CN/start/lore"
+                ]
               },
               {
                 "group": "Installation",
@@ -1190,7 +1242,9 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["zh-CN/channels/index"]
+                "pages": [
+                  "zh-CN/channels/index"
+                ]
               },
               {
                 "group": "Messaging platforms",
@@ -1253,7 +1307,10 @@
               },
               {
                 "group": "Multi-agent",
-                "pages": ["zh-CN/concepts/multi-agent", "zh-CN/concepts/presence"]
+                "pages": [
+                  "zh-CN/concepts/multi-agent",
+                  "zh-CN/concepts/presence"
+                ]
               },
               {
                 "group": "Messages and delivery",
@@ -1271,7 +1328,9 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": ["zh-CN/tools/index"]
+                "pages": [
+                  "zh-CN/tools/index"
+                ]
               },
               {
                 "group": "Built-in tools",
@@ -1355,7 +1414,10 @@
               },
               {
                 "group": "Configuration",
-                "pages": ["zh-CN/concepts/model-providers", "zh-CN/concepts/model-failover"]
+                "pages": [
+                  "zh-CN/concepts/model-providers",
+                  "zh-CN/concepts/model-failover"
+                ]
               },
               {
                 "group": "Providers",
@@ -1445,7 +1507,9 @@
               },
               {
                 "group": "Security",
-                "pages": ["zh-CN/security/formal-verification"]
+                "pages": [
+                  "zh-CN/security/formal-verification"
+                ]
               },
               {
                 "group": "Web interfaces",
@@ -1528,7 +1592,10 @@
               },
               {
                 "group": "RPC and API",
-                "pages": ["zh-CN/reference/rpc", "zh-CN/reference/device-models"]
+                "pages": [
+                  "zh-CN/reference/rpc",
+                  "zh-CN/reference/device-models"
+                ]
               },
               {
                 "group": "Templates",
@@ -1557,7 +1624,10 @@
               },
               {
                 "group": "Release notes",
-                "pages": ["zh-CN/reference/RELEASING", "zh-CN/reference/test"]
+                "pages": [
+                  "zh-CN/reference/RELEASING",
+                  "zh-CN/reference/test"
+                ]
               }
             ]
           },
@@ -1566,7 +1636,11 @@
             "groups": [
               {
                 "group": "Help",
-                "pages": ["zh-CN/help/index", "zh-CN/help/troubleshooting", "zh-CN/help/faq"]
+                "pages": [
+                  "zh-CN/help/index",
+                  "zh-CN/help/troubleshooting",
+                  "zh-CN/help/faq"
+                ]
               },
               {
                 "group": "Environment and debugging",
@@ -1576,6 +1650,478 @@
                   "zh-CN/testing",
                   "zh-CN/scripts",
                   "zh-CN/reference/session-management-compaction"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "ko",
+        "tabs": [
+          {
+            "tab": "시작하기",
+            "groups": [
+              {
+                "group": "개요",
+                "pages": [
+                  "ko-KR/index",
+                  "ko-KR/start/showcase",
+                  "ko-KR/start/lore"
+                ]
+              },
+              {
+                "group": "설치",
+                "pages": [
+                  "ko-KR/install/index",
+                  "ko-KR/install/installer",
+                  "ko-KR/install/docker",
+                  "ko-KR/install/bun",
+                  "ko-KR/install/nix",
+                  "ko-KR/install/ansible",
+                  "ko-KR/install/development-channels",
+                  "ko-KR/install/updating",
+                  "ko-KR/install/uninstall"
+                ]
+              },
+              {
+                "group": "Setup",
+                "pages": [
+                  "ko-KR/start/getting-started",
+                  "ko-KR/start/wizard",
+                  "ko-KR/start/setup",
+                  "ko-KR/start/onboarding",
+                  "ko-KR/start/pairing",
+                  "ko-KR/start/openclaw",
+                  "ko-KR/start/hubs"
+                ]
+              },
+              {
+                "group": "Platforms",
+                "pages": [
+                  "ko-KR/platforms/index",
+                  "ko-KR/platforms/macos",
+                  "ko-KR/platforms/linux",
+                  "ko-KR/platforms/windows",
+                  "ko-KR/platforms/android",
+                  "ko-KR/platforms/ios"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "채널",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "ko-KR/channels/index"
+                ]
+              },
+              {
+                "group": "Messaging platforms",
+                "pages": [
+                  "ko-KR/channels/whatsapp",
+                  "ko-KR/channels/telegram",
+                  "ko-KR/channels/grammy",
+                  "ko-KR/channels/discord",
+                  "ko-KR/channels/slack",
+                  "ko-KR/channels/feishu",
+                  "ko-KR/channels/googlechat",
+                  "ko-KR/channels/mattermost",
+                  "ko-KR/channels/signal",
+                  "ko-KR/channels/imessage",
+                  "ko-KR/channels/msteams",
+                  "ko-KR/channels/line",
+                  "ko-KR/channels/matrix",
+                  "ko-KR/channels/zalo",
+                  "ko-KR/channels/zalouser"
+                ]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
+                  "ko-KR/concepts/group-messages",
+                  "ko-KR/concepts/groups",
+                  "ko-KR/broadcast-groups",
+                  "ko-KR/concepts/channel-routing",
+                  "ko-KR/channels/location",
+                  "ko-KR/channels/troubleshooting"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "에이전트",
+            "groups": [
+              {
+                "group": "Fundamentals",
+                "pages": [
+                  "ko-KR/concepts/architecture",
+                  "ko-KR/concepts/agent",
+                  "ko-KR/concepts/agent-loop",
+                  "ko-KR/concepts/system-prompt",
+                  "ko-KR/concepts/context",
+                  "ko-KR/concepts/agent-workspace",
+                  "ko-KR/concepts/oauth"
+                ]
+              },
+              {
+                "group": "Sessions and memory",
+                "pages": [
+                  "ko-KR/concepts/session",
+                  "ko-KR/concepts/sessions",
+                  "ko-KR/concepts/session-pruning",
+                  "ko-KR/concepts/session-tool",
+                  "ko-KR/concepts/memory",
+                  "ko-KR/concepts/compaction"
+                ]
+              },
+              {
+                "group": "Multi-agent",
+                "pages": [
+                  "ko-KR/concepts/multi-agent",
+                  "ko-KR/concepts/presence"
+                ]
+              },
+              {
+                "group": "Messages and delivery",
+                "pages": [
+                  "ko-KR/concepts/messages",
+                  "ko-KR/concepts/streaming",
+                  "ko-KR/concepts/retry",
+                  "ko-KR/concepts/queue"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "도구",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "ko-KR/tools/index"
+                ]
+              },
+              {
+                "group": "Built-in tools",
+                "pages": [
+                  "ko-KR/tools/lobster",
+                  "ko-KR/tools/llm-task",
+                  "ko-KR/tools/exec",
+                  "ko-KR/tools/web",
+                  "ko-KR/tools/apply-patch",
+                  "ko-KR/tools/elevated",
+                  "ko-KR/tools/thinking",
+                  "ko-KR/tools/reactions"
+                ]
+              },
+              {
+                "group": "Browser",
+                "pages": [
+                  "ko-KR/tools/browser",
+                  "ko-KR/tools/browser-login",
+                  "ko-KR/tools/chrome-extension",
+                  "ko-KR/tools/browser-linux-troubleshooting"
+                ]
+              },
+              {
+                "group": "Agent coordination",
+                "pages": [
+                  "ko-KR/tools/agent-send",
+                  "ko-KR/tools/subagents",
+                  "ko-KR/multi-agent-sandbox-tools"
+                ]
+              },
+              {
+                "group": "Skills and extensions",
+                "pages": [
+                  "ko-KR/tools/slash-commands",
+                  "ko-KR/tools/skills",
+                  "ko-KR/tools/skills-config",
+                  "ko-KR/tools/clawhub",
+                  "ko-KR/plugin",
+                  "ko-KR/plugins/voice-call",
+                  "ko-KR/plugins/zalouser"
+                ]
+              },
+              {
+                "group": "Automation",
+                "pages": [
+                  "ko-KR/hooks",
+                  "ko-KR/hooks/soul-evil",
+                  "ko-KR/automation/cron-jobs",
+                  "ko-KR/automation/cron-vs-heartbeat",
+                  "ko-KR/automation/webhook",
+                  "ko-KR/automation/gmail-pubsub",
+                  "ko-KR/automation/poll",
+                  "ko-KR/automation/auth-monitoring"
+                ]
+              },
+              {
+                "group": "Media and devices",
+                "pages": [
+                  "ko-KR/nodes/index",
+                  "ko-KR/nodes/images",
+                  "ko-KR/nodes/audio",
+                  "ko-KR/nodes/camera",
+                  "ko-KR/nodes/talk",
+                  "ko-KR/nodes/voicewake",
+                  "ko-KR/nodes/location-command"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "모델",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "ko-KR/providers/index",
+                  "ko-KR/providers/models",
+                  "ko-KR/concepts/models"
+                ]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
+                  "ko-KR/concepts/model-providers",
+                  "ko-KR/concepts/model-failover"
+                ]
+              },
+              {
+                "group": "Providers",
+                "pages": [
+                  "ko-KR/providers/anthropic",
+                  "ko-KR/providers/openai",
+                  "ko-KR/providers/openrouter",
+                  "ko-KR/bedrock",
+                  "ko-KR/providers/vercel-ai-gateway",
+                  "ko-KR/providers/moonshot",
+                  "ko-KR/providers/minimax",
+                  "ko-KR/providers/opencode",
+                  "ko-KR/providers/glm",
+                  "ko-KR/providers/zai",
+                  "ko-KR/providers/synthetic"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "인프라구조",
+            "groups": [
+              {
+                "group": "Gateway",
+                "pages": [
+                  "ko-KR/gateway/index",
+                  {
+                    "group": "Configuration and operations",
+                    "pages": [
+                      "ko-KR/gateway/configuration",
+                      "ko-KR/gateway/configuration-examples",
+                      "ko-KR/gateway/authentication",
+                      "ko-KR/gateway/health",
+                      "ko-KR/gateway/heartbeat",
+                      "ko-KR/gateway/doctor",
+                      "ko-KR/gateway/logging",
+                      "ko-KR/gateway/gateway-lock",
+                      "ko-KR/gateway/background-process",
+                      "ko-KR/gateway/multiple-gateways",
+                      "ko-KR/gateway/troubleshooting"
+                    ]
+                  },
+                  {
+                    "group": "Security and sandboxing",
+                    "pages": [
+                      "ko-KR/gateway/security/index",
+                      "ko-KR/gateway/sandboxing",
+                      "ko-KR/gateway/sandbox-vs-tool-policy-vs-elevated"
+                    ]
+                  },
+                  {
+                    "group": "Protocols and APIs",
+                    "pages": [
+                      "ko-KR/gateway/protocol",
+                      "ko-KR/gateway/bridge-protocol",
+                      "ko-KR/gateway/openai-http-api",
+                      "ko-KR/gateway/tools-invoke-http-api",
+                      "ko-KR/gateway/cli-backends",
+                      "ko-KR/gateway/local-models"
+                    ]
+                  },
+                  {
+                    "group": "Networking and discovery",
+                    "pages": [
+                      "ko-KR/gateway/pairing",
+                      "ko-KR/gateway/discovery",
+                      "ko-KR/gateway/bonjour"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Remote access and deployment",
+                "pages": [
+                  "ko-KR/gateway/remote",
+                  "ko-KR/gateway/remote-gateway-readme",
+                  "ko-KR/gateway/tailscale",
+                  "ko-KR/platforms/fly",
+                  "ko-KR/platforms/hetzner",
+                  "ko-KR/platforms/gcp",
+                  "ko-KR/platforms/macos-vm",
+                  "ko-KR/platforms/exe-dev",
+                  "ko-KR/railway",
+                  "ko-KR/render",
+                  "ko-KR/northflank"
+                ]
+              },
+              {
+                "group": "Security",
+                "pages": [
+                  "ko-KR/security/formal-verification"
+                ]
+              },
+              {
+                "group": "Web interfaces",
+                "pages": [
+                  "ko-KR/web/index",
+                  "ko-KR/web/control-ui",
+                  "ko-KR/web/dashboard",
+                  "ko-KR/web/webchat",
+                  "ko-KR/tui"
+                ]
+              },
+              {
+                "group": "macOS companion app",
+                "pages": [
+                  "ko-KR/platforms/mac/dev-setup",
+                  "ko-KR/platforms/mac/menu-bar",
+                  "ko-KR/platforms/mac/voicewake",
+                  "ko-KR/platforms/mac/voice-overlay",
+                  "ko-KR/platforms/mac/webchat",
+                  "ko-KR/platforms/mac/canvas",
+                  "ko-KR/platforms/mac/child-process",
+                  "ko-KR/platforms/mac/health",
+                  "ko-KR/platforms/mac/icon",
+                  "ko-KR/platforms/mac/logging",
+                  "ko-KR/platforms/mac/permissions",
+                  "ko-KR/platforms/mac/remote",
+                  "ko-KR/platforms/mac/signing",
+                  "ko-KR/platforms/mac/release",
+                  "ko-KR/platforms/mac/bundled-gateway",
+                  "ko-KR/platforms/mac/xpc",
+                  "ko-KR/platforms/mac/skills",
+                  "ko-KR/platforms/mac/peekaboo"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "참조",
+            "groups": [
+              {
+                "group": "CLI commands",
+                "pages": [
+                  "ko-KR/cli/index",
+                  "ko-KR/cli/agent",
+                  "ko-KR/cli/agents",
+                  "ko-KR/cli/approvals",
+                  "ko-KR/cli/browser",
+                  "ko-KR/cli/channels",
+                  "ko-KR/cli/configure",
+                  "ko-KR/cli/cron",
+                  "ko-KR/cli/dashboard",
+                  "ko-KR/cli/directory",
+                  "ko-KR/cli/dns",
+                  "ko-KR/cli/docs",
+                  "ko-KR/cli/doctor",
+                  "ko-KR/cli/gateway",
+                  "ko-KR/cli/health",
+                  "ko-KR/cli/hooks",
+                  "ko-KR/cli/logs",
+                  "ko-KR/cli/memory",
+                  "ko-KR/cli/message",
+                  "ko-KR/cli/models",
+                  "ko-KR/cli/nodes",
+                  "ko-KR/cli/onboard",
+                  "ko-KR/cli/pairing",
+                  "ko-KR/cli/plugins",
+                  "ko-KR/cli/reset",
+                  "ko-KR/cli/sandbox",
+                  "ko-KR/cli/security",
+                  "ko-KR/cli/sessions",
+                  "ko-KR/cli/setup",
+                  "ko-KR/cli/skills",
+                  "ko-KR/cli/status",
+                  "ko-KR/cli/system",
+                  "ko-KR/cli/tui",
+                  "ko-KR/cli/uninstall",
+                  "ko-KR/cli/update",
+                  "ko-KR/cli/voicecall"
+                ]
+              },
+              {
+                "group": "RPC and API",
+                "pages": [
+                  "ko-KR/reference/rpc",
+                  "ko-KR/reference/device-models"
+                ]
+              },
+              {
+                "group": "Templates",
+                "pages": [
+                  "ko-KR/reference/AGENTS.default",
+                  "ko-KR/reference/templates/AGENTS",
+                  "ko-KR/reference/templates/BOOT",
+                  "ko-KR/reference/templates/BOOTSTRAP",
+                  "ko-KR/reference/templates/HEARTBEAT",
+                  "ko-KR/reference/templates/IDENTITY",
+                  "ko-KR/reference/templates/SOUL",
+                  "ko-KR/reference/templates/TOOLS",
+                  "ko-KR/reference/templates/USER"
+                ]
+              },
+              {
+                "group": "Technical reference",
+                "pages": [
+                  "ko-KR/concepts/typebox",
+                  "ko-KR/concepts/markdown-formatting",
+                  "ko-KR/concepts/typing-indicators",
+                  "ko-KR/concepts/usage-tracking",
+                  "ko-KR/concepts/timezone",
+                  "ko-KR/token-use"
+                ]
+              },
+              {
+                "group": "Release notes",
+                "pages": [
+                  "ko-KR/reference/RELEASING",
+                  "ko-KR/reference/test"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "도움말",
+            "groups": [
+              {
+                "group": "Help",
+                "pages": [
+                  "ko-KR/help/index",
+                  "ko-KR/help/troubleshooting",
+                  "ko-KR/help/faq"
+                ]
+              },
+              {
+                "group": "Environment and debugging",
+                "pages": [
+                  "ko-KR/environment",
+                  "ko-KR/debugging",
+                  "ko-KR/testing",
+                  "ko-KR/scripts",
+                  "ko-KR/reference/session-management-compaction"
                 ]
               }
             ]
