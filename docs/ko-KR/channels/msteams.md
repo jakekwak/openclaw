@@ -35,7 +35,7 @@ openclaw plugins install ./extensions/msteams
 
 구성/온보딩 중에 Teams를 선택하고, git 체크아웃이 감지되면 OpenClaw가 자동으로 로컬 설치 경로를 제공합니다.
 
-자세한 내용: [플러그인](/tools/plugin)
+자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 빠른 설정 (초보자용)
 
@@ -471,7 +471,7 @@ Teams 마크다운은 Slack이나 Discord보다 제한적입니다:
 
 ## 라우팅 및 세션
 
-- 세션 키는 표준 에이전트 형식을 따릅니다 (자세한 내용은 [/concepts/session](/concepts/session) 참조):
+- 세션 키는 표준 에이전트 형식을 따릅니다 (자세한 내용은 [/concepts/session](/ko-KR/concepts/session) 참조):
   - 다이렉트 메시지는 메인 세션을 공유합니다 (`agent:<agentId>:<mainKey>`).
   - 채널/그룹 메시지는 대화 ID를 사용합니다:
     - `agent:<agentId>:msteams:channel:<conversationId>`

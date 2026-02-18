@@ -14,14 +14,14 @@ Docker는 **옵션**입니다. 컨테이너화된 게이트웨이를 원하거�
 
 - **예**: 분리되고 일회용 게이트웨이 환경을 원하거나 로컬 설치 없이 호스트에서 OpenClaw를 실행하려는 경우.
 - **아니오**: 개인 기기에서 실행 중이며, 가장 빠른 개발 루프를 원한다면. 대신 일반 설치 흐름을 사용하세요.
-- **샌드박스 주의사항**: 에이전트 샌드박스 격리 또한 Docker를 사용하지만, 전체 게이트웨이를 Docker에서 실행할 필요는 **없습니다**. [샌드박스 격리](/gateway/sandboxing)를 참조하세요.
+- **샌드박스 주의사항**: 에이전트 샌드박스 격리 또한 Docker를 사용하지만, 전체 게이트웨이를 Docker에서 실행할 필요는 **없습니다**. [샌드박스 격리](/ko-KR/gateway/sandboxing)를 참조하세요.
 
 이 가이드는 다음을 다룹니다:
 
 - 컨테이너화된 게이트웨이 (Docker에서의 전체 OpenClaw)
 - 세션별 에이전트 샌드박스 (호스트 게이트웨이 + Docker로 격리된 에이전트 도구)
 
-샌드박스 격리 세부사항: [샌드박스 격리](/gateway/sandboxing)
+샌드박스 격리 세부사항: [샌드박스 격리](/ko-KR/gateway/sandboxing)
 
 ## 요구사항
 
@@ -63,7 +63,7 @@ Docker는 **옵션**입니다. 컨테이너화된 게이트웨이를 원하거�
 - `~/.openclaw/`
 - `~/.openclaw/workspace`
 
-VPS에서 실행 중이신가요? [Hetzner (Docker VPS)](/install/hetzner)를 참고하세요.
+VPS에서 실행 중이신가요? [Hetzner (Docker VPS)](/ko-KR/install/hetzner)를 참고하세요.
 
 ### 쉘 헬퍼 (선택 사항)
 
@@ -107,7 +107,7 @@ docker compose run --rm openclaw-cli devices list
 docker compose run --rm openclaw-cli devices approve <requestId>
 ```
 
-자세한 내용: [Dashboard](/web/dashboard), [Devices](/cli/devices).
+자세한 내용: [Dashboard](/ko-KR/web/dashboard), [Devices](/ko-KR/cli/devices).
 
 ### 추가 마운트 (선택 사항)
 
@@ -270,7 +270,7 @@ Discord (봇 토큰):
 docker compose run --rm openclaw-cli channels add --channel discord --token "<token>"
 ```
 
-문서: [WhatsApp](/channels/whatsapp), [Telegram](/channels/telegram), [Discord](/channels/discord)
+문서: [WhatsApp](/ko-KR/channels/whatsapp), [Telegram](/ko-KR/channels/telegram), [Discord](/ko-KR/channels/discord)
 
 ### OpenAI Codex OAuth (headless Docker)
 
@@ -302,7 +302,7 @@ pnpm test:docker:qr
 
 ## 에이전트 샌드박스 (호스트 게이트웨이 + Docker 도구)
 
-깊이 있는 안내: [샌드박스 격리](/gateway/sandboxing)
+깊이 있는 안내: [샌드박스 격리](/ko-KR/gateway/sandboxing)
 
 ### 그 작동 방식
 
@@ -325,7 +325,7 @@ pnpm test:docker:qr
 - 읽기 전용 도구 + 읽기 전용 작업 공간 (가정/직장용 에이전트)
 - 파일 시스템/셸 도구 없음 (공용 에이전트)
 
-예시, 우선순위 및 문제 해결에 대한 자세한 내용은 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools)를 참조하세요.
+예시, 우선순위 및 문제 해결에 대한 자세한 내용은 [Multi-Agent Sandbox & Tools](/ko-KR/tools/multi-agent-sandbox-tools)를 참조하세요.
 
 ### 기본 동작
 

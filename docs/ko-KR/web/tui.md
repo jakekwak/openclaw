@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "Terminal UI (TUI): 어느 기기에서나 게이트웨이에 연결"
 read_when:
@@ -107,7 +106,7 @@ openclaw tui --url ws://<host>:<port> --token <gateway-token>
 - `/settings`
 - `/exit`
 
-기타 게이트웨이 슬래시 명령어 (예: `/context`)는 게이트웨이로 전달되어 시스템 출력으로 표시됩니다. [슬래시 명령어](/tools/slash-commands)를 참조하세요.
+기타 게이트웨이 슬래시 명령어 (예: `/context`)는 게이트웨이로 전달되어 시스템 출력으로 표시됩니다. [슬래시 명령어](/ko-KR/tools/slash-commands)를 참조하세요.
 
 ## 로컬 쉘 명령어
 
@@ -160,4 +159,3 @@ openclaw tui --url ws://<host>:<port> --token <gateway-token>
 - `disconnected`: 게이트웨이가 실행 중인지 확인하고 `--url/--token/--password`가 올바른지 확인합니다.
 - 선택기 내 에이전트 없음: `openclaw agents list`와 라우팅 구성을 확인합니다.
 - 빈 세션 선택기: 전역 범위에 있거나 아직 세션이 없을 수 있습니다.
-```

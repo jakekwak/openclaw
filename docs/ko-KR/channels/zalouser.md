@@ -18,7 +18,7 @@ Zalo Personal은 플러그인으로 제공되며 기본 설치에는 포함되�
 
 - CLI를 통해 설치: `openclaw plugins install @openclaw/zalouser`
 - 또는 소스 체크아웃에서 설치: `openclaw plugins install ./extensions/zalouser`
-- 자세한 내용: [플러그인](/tools/plugin)
+- 자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 필수 조건: zca-cli
 

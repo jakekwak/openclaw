@@ -13,13 +13,13 @@ title: "Android 앱"
 
 - 역할: 동반 노드 앱 (Android는 게이트웨이를 호스팅하지 않습니다).
 - 게이트웨이 필요: 예 (macOS, Linux, 또는 WSL2를 통해 Windows에서 실행).
-- 설치: [시작하기](/start/getting-started) + [페어링](/gateway/pairing).
-- 게이트웨이: [런북](/gateway) + [설정](/gateway/configuration).
-  - 프로토콜: [게이트웨이 프로토콜](/gateway/protocol) (노드 + 제어 플레인).
+- 설치: [시작하기](/ko-KR/start/getting-started) + [페어링](/ko-KR/gateway/pairing).
+- 게이트웨이: [런북](/ko-KR/gateway) + [설정](/ko-KR/gateway/configuration).
+  - 프로토콜: [게이트웨이 프로토콜](/ko-KR/gateway/protocol) (노드 + 제어 플레인).
 
 ## 시스템 제어
 
-시스템 제어 (launchd/systemd)는 게이트웨이 호스트에 위치합니다. [게이트웨이](/gateway)를 참조하세요.
+시스템 제어 (launchd/systemd)는 게이트웨이 호스트에 위치합니다. [게이트웨이](/ko-KR/gateway)를 참조하세요.
 
 ## 연결 런북
 
@@ -59,7 +59,7 @@ openclaw gateway --port 18789 --verbose
 dns-sd -B _openclaw-gw._tcp local.
 ```
 
-더 많은 디버깅 참고 사항: [Bonjour](/gateway/bonjour).
+더 많은 디버깅 참고 사항: [Bonjour](/ko-KR/gateway/bonjour).
 
 #### 유니캐스트 DNS-SD를 통한 테일넷 (비엔나 ⇄ 런던) 검색
 
@@ -68,7 +68,7 @@ Android NSD/mDNS 검색은 네트워크를 넘나들지 않습니다. 귀하의 
 1. 게이트웨이 호스트에서 DNS-SD 존(예: `openclaw.internal.`)을 설정하고 `_openclaw-gw._tcp` 레코드를 게시합니다.
 2. 해당 DNS 서버를 가리키는 조정된 도메인에 대한 Tailscale 스플릿 DNS를 설정합니다.
 
-자세한 사항 및 예제 CoreDNS 설정: [Bonjour](/gateway/bonjour).
+자세한 사항 및 예제 CoreDNS 설정: [Bonjour](/ko-KR/gateway/bonjour).
 
 ### 3) Android에서 연결
 
@@ -93,7 +93,7 @@ openclaw nodes pending
 openclaw nodes approve <requestId>
 ```
 
-페어링 세부정보: [게이트웨이 페어링](/gateway/pairing).
+페어링 세부정보: [게이트웨이 페어링](/ko-KR/gateway/pairing).
 
 ### 5) 노드 연결 확인
 
@@ -148,4 +148,4 @@ A2UI 호스트는 `http://<gateway-host>:18789/__openclaw__/a2ui/`에 위치합�
 - `camera.snap` (jpg)
 - `camera.clip` (mp4)
 
-매개변수 및 CLI 도우미에 대해 [카메라 노드](/nodes/camera)를 참조하세요.
+매개변수 및 CLI 도우미에 대해 [카메라 노드](/ko-KR/nodes/camera)를 참조하세요.

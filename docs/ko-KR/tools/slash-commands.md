@@ -81,7 +81,7 @@ title: "슬래시 명령어"
 - `/config show|get|set|unset` (디스크에 설정 유지, 소유자 전용; `commands.config: true` 필요)
 - `/debug show|set|unset|reset` (런타임 오버라이드, 소유자 전용; `commands.debug: true` 필요)
 - `/usage off|tokens|full|cost` (응답별 사용 요약 또는 현지 비용 요약)
-- `/tts off|always|inbound|tagged|status|provider|limit|summary|audio` (TTS 제어; [/tts](/tts) 참조)
+- `/tts off|always|inbound|tagged|status|provider|limit|summary|audio` (TTS 제어; [/tts](/ko-KR/tts) 참조)
   - Discord: 네이티브 명령어는 `/voice`임 (Discord는 `/tts`를 예약); 텍스트 `/tts`도 여전히 작동.
 - `/stop`
 - `/restart`
@@ -102,7 +102,7 @@ title: "슬래시 명령어"
 
 텍스트 전용:
 
-- `/compact [instructions]` ([/concepts/compaction](/concepts/compaction) 참조)
+- `/compact [instructions]` ([/concepts/compaction](/ko-KR/concepts/compaction) 참조)
 - `! <command>` (호스트 전용; 한 번에 하나씩; 장기 실행 작업에는 `!poll` + `!stop` 사용)
 - `!poll` (출력 / 상태 확인; 선택적 `sessionId` 수락; `/bash poll`도 작동)
 - `!stop` (실행 중인 bash 작업 정지; 선택적 `sessionId` 수락; `/bash stop`도 작동)
@@ -127,7 +127,7 @@ title: "슬래시 명령어"
   - `/skill <name> [input]`은 이름으로 스킬을 실행합니다 (네이티브 명령어 제한이 스킬별 명령을 방해할 때 유용함).
   - 기본적으로, 스킬 명령어는 일반 요청으로 모델에 전달됩니다.
   - 스킬은 `명령-전달: 도구`를 선언하여 명령어를 도구로 직접 라우팅할 수 있습니다 (결정론적, 모델 없음).
-  - 예: `/prose` (OpenProse 플러그인) — [OpenProse](/prose) 참조.
+  - 예: `/prose` (OpenProse 플러그인) — [OpenProse](/ko-KR/prose) 참조.
 - **네이티브 명령어 인수:** Discord는 동적 옵션의 자동 완성을 사용하며, 필수 인수를 생략할 때 버튼 메뉴를 사용합니다. Telegram과 Slack은 명령이 선택지를 지원할 때 버튼 메뉴를 보여주며 인수를 생략합니다.
 
 ## 사용 표면 (어디에 무엇이 나타나는가)

@@ -27,7 +27,7 @@ openclaw plugins install @openclaw/tlon
 openclaw plugins install ./extensions/tlon
 ```
 
-자세한 내용: [플러그인](/tools/plugin)
+자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 설정
 

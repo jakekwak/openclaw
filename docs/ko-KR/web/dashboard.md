@@ -16,12 +16,12 @@ Gateway 대시보드는 기본적으로 `/`에서 제공되는 브라우저 Cont
 
 핵심 참고 사항:
 
-- [Control UI](/web/control-ui) 사용법과 UI 기능.
-- [Tailscale](/gateway/tailscale) Serve/Funnel 자동화.
-- [Web surfaces](/web) 바인드 모드 및 보안 노트.
+- [Control UI](/ko-KR/web/control-ui) 사용법과 UI 기능.
+- [Tailscale](/ko-KR/gateway/tailscale) Serve/Funnel 자동화.
+- [Web surfaces](/ko-KR/web) 바인드 모드 및 보안 노트.
 
 인증은 WebSocket 핸드셰이크 시 `connect.params.auth` (토큰 또는 비밀번호)를 통해 적용됩니다.
-[Gateway 설정](/gateway/configuration)에서 `gateway.auth`를 참조하세요.
+[Gateway 설정](/ko-KR/gateway/configuration)에서 `gateway.auth`를 참조하세요.
 
 보안 주의: Control UI는 **관리자 표면**입니다 (채팅, 설정, 실행 승인).
 공개하지 마세요. UI는 처음 로드 후 토큰을 `localStorage`에 저장합니다.
@@ -37,7 +37,7 @@ localhost, Tailscale Serve, 또는 SSH 터널 사용을 권장합니다.
 
 - **Localhost**: `http://127.0.0.1:18789/`를 엽니다.
 - **토큰 출처**: `gateway.auth.token` (또는 `OPENCLAW_GATEWAY_TOKEN`); 연결한 후 UI는 복사본을 localStorage에 저장합니다.
-- **Not localhost**: Tailscale Serve 사용 (`gateway.auth.allowTailscale: true`일 경우 토큰 없음), 토큰 포함 tailnet 바인드 또는 SSH 터널. [Web surfaces](/web) 참조.
+- **Not localhost**: Tailscale Serve 사용 (`gateway.auth.allowTailscale: true`일 경우 토큰 없음), 토큰 포함 tailnet 바인드 또는 SSH 터널. [Web surfaces](/ko-KR/web) 참조.
 
 ## "unauthorized" / 1008 표시될 경우
 

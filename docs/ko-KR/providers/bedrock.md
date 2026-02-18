@@ -1,4 +1,3 @@
-```yaml
 ---
 summary: "OpenClaw 에서 Amazon Bedrock (Converse API) 모델 사용"
 read_when:
@@ -162,4 +161,3 @@ openclaw models list
 - OpenClaw 는 자격 증명 소스를 다음 순서로 노출합니다: `AWS_BEARER_TOKEN_BEDROCK`, 그다음 `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY`, 그다음 `AWS_PROFILE`, 그다음 기본 AWS SDK 체인.
 - Reasoning 지원은 모델에 따라 다르며, 현재 기능은 Bedrock 모델 카드에서 확인하세요.
 - 관리되는 키 흐름을 선호하는 경우 Bedrock 앞에 OpenAI 호환 프록시를 배치하고 이를 OpenAI 프로바이더로 구성할 수도 있습니다.
-```

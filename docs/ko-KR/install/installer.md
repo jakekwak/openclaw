@@ -1,7 +1,7 @@
 ---
 summary: "설치 스크립트의 작동 방식 (install.sh, install-cli.sh, install.ps1), 플래그, 및 자동화"
 read_when:
-  - `openclaw.ai/install.sh`를 이해하고자 하는 경우
+  - openclaw.ai/install.sh를 이해하고자 하는 경우
   - 설치를 자동화하고자 하는 경우 (CI / 헤드리스)
   - GitHub 체크아웃에서 설치하고자 하는 경우
 title: "설치프로그램 내부"
@@ -53,7 +53,7 @@ OpenClaw은 `openclaw.ai`에서 제공하는 세 가지 설치 스크립트를 �
 </Tabs>
 
 <Note>
-설치가 성공했지만 새로운 터미널에서 `openclaw`가 인식되지 않는 경우, [Node.js 문제 해결](/install/node#troubleshooting)을 참조하세요.
+설치가 성공했지만 새로운 터미널에서 `openclaw`가 인식되지 않는 경우, [Node.js 문제 해결](/ko-KR/install/node#troubleshooting)을 참조하세요.
 </Note>
 
 ---
@@ -400,6 +400,6 @@ TTY가 없고 설치 방법이 설정되지 않은 경우, 기본값으로 `npm`
   </Accordion>
 
   <Accordion title="설치 후 openclaw이 인식되지 않음">
-    대개 PATH 문제입니다. [Node.js 문제 해결](/install/node#troubleshooting)을 참조하세요.
+    대개 PATH 문제입니다. [Node.js 문제 해결](/ko-KR/install/node#troubleshooting)을 참조하세요.
   </Accordion>
 </AccordionGroup>

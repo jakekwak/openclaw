@@ -19,7 +19,7 @@ title: "스크립트"
 ## 인증 모니터링 스크립트
 
 인증 모니터링 스크립트는 여기에 문서화되어 있습니다:
-[/automation/auth-monitoring](/automation/auth-monitoring)
+[/automation/auth-monitoring](/ko-KR/automation/auth-monitoring)
 
 ## 스크립트 추가 시
 

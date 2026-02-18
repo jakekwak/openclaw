@@ -27,7 +27,7 @@ OpenClaw 는 폭발 반경을 줄이기 위해 **도구를 Docker 컨테이너 �
 - 게이트웨이 프로세스
 - 호스트에서 실행할 수 있도록 명시적으로 허용된 도구 (예: `tools.elevated`).
   - **Elevated exec 는 호스트에서 실행되며 샌드박스 격리를 우회합니다.**
-  - 샌드박스 격리가 꺼져 있는 경우, `tools.elevated` 는 실행을 변경하지 않습니다 (이미 호스트에서 실행 중). [Elevated Mode](/tools/elevated) 를 참조하세요.
+  - 샌드박스 격리가 꺼져 있는 경우, `tools.elevated` 는 실행을 변경하지 않습니다 (이미 호스트에서 실행 중). [Elevated Mode](/ko-KR/tools/elevated) 를 참조하세요.
 
 ## 모드
 
@@ -102,7 +102,7 @@ OpenClaw 는 폭발 반경을 줄이기 위해 **도구를 Docker 컨테이너 �
 - OpenClaw 는 위험한 바인드 소스를 차단합니다 (예: `docker.sock`, `/etc`, `/proc`, `/sys`, `/dev` 및 이를 노출할 부모 마운트).
 - 민감한 마운트 (예: 비밀, SSH 키, 서비스 자격증명)는 반드시 필요하지 않은 한 `:ro` 로 설정해야 합니다.
 - 작업 공간에 대한 읽기 접근만 필요한 경우 `workspaceAccess: "ro"` 와 결합하세요; 바인드 모드는 독립적으로 유지됩니다.
-- 바인드가 도구 정책 및 Elevated exec 와 어떻게 상호 작용하는지에 대해서는 [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) 을 참조하세요.
+- 바인드가 도구 정책 및 Elevated exec 와 어떻게 상호 작용하는지에 대해서는 [Sandbox vs Tool Policy vs Elevated](/ko-KR/gateway/sandbox-vs-tool-policy-vs-elevated) 을 참조하세요.
 
 ## 이미지 + 설정
 
@@ -126,7 +126,7 @@ scripts/sandbox-browser-setup.sh
 `agents.defaults.sandbox.docker.network` 를 통해 오버라이드하세요.
 
 Docker 설치와 컨테이너화된 게이트웨이는 여기에서 찾을 수 있습니다:
-[Docker](/install/docker)
+[Docker](/ko-KR/install/docker)
 
 ## setupCommand (단일 컨테이너 설정)
 
@@ -150,19 +150,19 @@ Docker 설치와 컨테이너화된 게이트웨이는 여기에서 찾을 수 �
 도구 허용/거부 정책은 여전히 샌드박스 규칙 이전에 적용됩니다. 도구가 전역 또는 에이전트별로 거부된 경우, 샌드박스 격리는 이를 다시 가져오지 않습니다.
 
 `tools.elevated` 는 호스트에서 `exec` 를 실행하는 명시적인 탈출구입니다.
-`/exec` 지시는 승인된 발신자에게만 적용되며 세션당 지속됩니다; `exec` 를 완전히 비활성화하려면 도구 정책 거부를 사용하십시오 ( [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) 를 참조하세요).
+`/exec` 지시는 승인된 발신자에게만 적용되며 세션당 지속됩니다; `exec` 를 완전히 비활성화하려면 도구 정책 거부를 사용하십시오 ( [Sandbox vs Tool Policy vs Elevated](/ko-KR/gateway/sandbox-vs-tool-policy-vs-elevated) 를 참조하세요).
 
 디버깅:
 
 - `openclaw sandbox explain` 를 사용하여 실제 샌드박스 모드, 도구 정책, 오류 수정 설정 키를 검사하세요.
-- "왜 막혔는가?"에 대한 정신적 모델은 [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) 을 참조하세요.
+- "왜 막혔는가?"에 대한 정신적 모델은 [Sandbox vs Tool Policy vs Elevated](/ko-KR/gateway/sandbox-vs-tool-policy-vs-elevated) 을 참조하세요.
   보안을 철저히 유지하세요.
 
 ## 다중 에이전트 오버라이드
 
 각 에이전트는 샌드박스 및 도구를 오버라이드할 수 있습니다:
 `agents.list[].sandbox` 및 `agents.list[].tools` (샌드박스 도구 정책에 대해서는 `agents.list[].tools.sandbox.tools` 를 추가).
-우선순위에 대해서는 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools) 를 참조하세요.
+우선순위에 대해서는 [Multi-Agent Sandbox & Tools](/ko-KR/tools/multi-agent-sandbox-tools) 를 참조하세요.
 
 ## 최소 활성화 예시
 
@@ -182,6 +182,6 @@ Docker 설치와 컨테이너화된 게이트웨이는 여기에서 찾을 수 �
 
 ## 관련 문서
 
-- [샌드박스 설정](/gateway/configuration#agentsdefaults-sandbox)
-- [다중 에이전트 샌드박스 및 도구](/tools/multi-agent-sandbox-tools)
-- [보안](/gateway/security)
+- [샌드박스 설정](/ko-KR/gateway/configuration#agentsdefaults-sandbox)
+- [다중 에이전트 샌드박스 및 도구](/ko-KR/tools/multi-agent-sandbox-tools)
+- [보안](/ko-KR/gateway/security)

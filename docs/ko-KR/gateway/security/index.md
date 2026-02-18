@@ -9,7 +9,7 @@ title: "보안"
 
 ## 빠른 점검: `openclaw security audit`
 
-참고: [형식 검증 (보안 모델)](/security/formal-verification/)
+참고: [형식 검증 (보안 모델)](/ko-KR/security/formal-verification/)
 
 정기적으로 실행하세요 (특히 설정 변경 후 또는 네트워크 노출 후):
 
@@ -149,8 +149,8 @@ OpenClaw의 입장:
 ## 명령어 인증 모델
 
 슬래시 명령어와 지시문은 **인증된 발신자**만을 위해 존중됩니다. 인증은
-채널 허용 목록/페어링 및 `commands.useAccessGroups`에서 파생됩니다 (자세한 내용은 [설정](/gateway/configuration)
-및 [슬래시 명령어](/tools/slash-commands)를 참조하세요). 채널 허용 목록이 비어 있거나 `"*"`를 포함하면,
+채널 허용 목록/페어링 및 `commands.useAccessGroups`에서 파생됩니다 (자세한 내용은 [설정](/ko-KR/gateway/configuration)
+및 [슬래시 명령어](/ko-KR/tools/slash-commands)를 참조하세요). 채널 허용 목록이 비어 있거나 `"*"`를 포함하면,
 해당 채널의 명령어는 사실상 개방됩니다.
 
 `/exec`는 세션 전용 편의를 위해 사용됩니다. 설정을 기록하거나
@@ -169,7 +169,7 @@ OpenClaw의 입장:
   - OpenClaw는 `npm pack`을 사용하고 해당 디렉터리에서 `npm install --omit=dev`를 실행합니다 (NPM 수명 주기 스크립트가 설치 동안 코드를 실행할 수 있음).
   - 고정된, 정확한 버전 (`@scope/pkg@1.2.3`)을 선호하고, 활성화하기 전에 디스크에 있는 압축해제된 코드를 검사하세요.
 
-세부사항: [플러그인](/tools/plugin)
+세부사항: [플러그인](/ko-KR/tools/plugin)
 
 ## DM 접근 모델 (페어링 / 허용 목록 / 개방 / 비활성화)
 
@@ -187,7 +187,7 @@ openclaw pairing list <channel>
 openclaw pairing approve <channel> <code>
 ```
 
-세부 사항 + 디스크상의 파일: [페어링](/channels/pairing)
+세부 사항 + 디스크상의 파일: [페어링](/ko-KR/channels/pairing)
 
 ## DM 세션 격리 (다중 사용자 모드)
 
@@ -208,7 +208,7 @@ openclaw pairing approve <channel> <code>
 - 기본값: `session.dmScope: "main"` (모든 DMs이 연속성을 위해 하나의 세션을 공유함).
 - 보안 DM 모드: `session.dmScope: "per-channel-peer"` (각 채널+발신자 쌍이 격리된 DM 컨텍스트를 갖습니다).
 
-동일 채널에서 여러 계정을 실행하는 경우, 대신 `per-account-channel-peer`를 사용하세요. 동일한 사람이 여러 채널에서 연락하는 경우, `session.identityLinks`를 사용하여 DM 세션을 하나의 정규화된 ID로 병합하세요. [세션 관리](/concepts/session) 및 [설정](/gateway/configuration)을 참조하세요.
+동일 채널에서 여러 계정을 실행하는 경우, 대신 `per-account-channel-peer`를 사용하세요. 동일한 사람이 여러 채널에서 연락하는 경우, `session.identityLinks`를 사용하여 DM 세션을 하나의 정규화된 ID로 병합하세요. [세션 관리](/ko-KR/concepts/session) 및 [설정](/ko-KR/gateway/configuration)을 참조하세요.
 
 ## 허용 목록 (DM + 그룹) — 용어 설명
 
@@ -223,7 +223,7 @@ OpenClaw에는 두 개의 별도 "누가 나를 활성화할 수 있는가?" 레
     - `channels.discord.guilds` / `channels.slack.channels`: 표면별 허용 목록 + 언급 기본값.
   - **보안 주의사항:** `dmPolicy="open"` 및 `groupPolicy="open"`을 최후의 방어책 설정으로 취급하세요. 거의 사용하지 않아야 하며; 룸의 모든 멤버를 완전히 신뢰하지 않는 한 페어링 + 허용 목록을 선호하세요.
 
-세부 사항: [설정](/gateway/configuration) 및 [그룹](/channels/groups)
+세부 사항: [설정](/ko-KR/gateway/configuration) 및 [그룹](/ko-KR/channels/groups)
 
 ## 프롬프트 인젝션 (무엇이며, 왜 중요한가)
 
@@ -433,7 +433,7 @@ Doctor로 하나 생성할 수 있습니다: `openclaw doctor --generate-gateway
 
 - `gateway.auth.mode: "token"`: 공유 베어러 토큰 (대부분의 설정에 권장).
 - `gateway.auth.mode: "password"`: 암호 인증 (환경 변수를 통해 설정 선호: `OPENCLAW_GATEWAY_PASSWORD`).
-- `gateway.auth.mode: "trusted-proxy"`: 사용자 인증 및 ID 전달을 인증하기 위해 ID 인식 리버스 프록시를 신뢰 (참고 [Trusted Proxy Auth](/gateway/trusted-proxy-auth)).
+- `gateway.auth.mode: "trusted-proxy"`: 사용자 인증 및 ID 전달을 인증하기 위해 ID 인식 리버스 프록시를 신뢰 (참고 [Trusted Proxy Auth](/ko-KR/gateway/trusted-proxy-auth)).
 
 회전 체크리스트 (토큰/암호):
 
@@ -451,7 +451,7 @@ Doctor로 하나 생성할 수 있습니다: `openclaw doctor --generate-gateway
 Tailscale이 주입한 `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-host`를 포함하는 요청에만 발생합니다.
 
 **보안 규칙:** 이러한 헤더를 자체 리버스 프록시에서 전달하지 마세요. 게이트웨이 앞에서 TLS를 종료하거나
-프록시를 사용하는 경우, `gateway.auth.allowTailscale`을 비활성화하고 대신 토큰/암호 인증(또는 [Trusted Proxy Auth](/gateway/trusted-proxy-auth))을 사용하세요.
+프록시를 사용하는 경우, `gateway.auth.allowTailscale`을 비활성화하고 대신 토큰/암호 인증(또는 [Trusted Proxy Auth](/ko-KR/gateway/trusted-proxy-auth))을 사용하세요.
 
 신뢰할 수 있는 프록시:
 
@@ -461,12 +461,12 @@ IP를 확인하고 HTTP 인증/로컬 검사를 수행합니다.
 - 프록시가 `x-forwarded-for`를 **덮어쓰고** 게이트웨이 포트에 대한 직접 액세스를 차단하도록
 확인하세요.
 
-[Tailscale](/gateway/tailscale) 및 [웹 개요](/web)를 참조하세요.
+[Tailscale](/ko-KR/gateway/tailscale) 및 [웹 개요](/ko-KR/web)를 참조하세요.
 
 ### 0.6.1) 노드 호스트를 통한 브라우저 제어 (권장됨)
 
 게이트웨이가 원격이지만 브라우저가 다른 기기에서 실행되는 경우, **노드 호스트**를
-브라우저 기기에서 실행하고 게이트웨이가 브라우저 동작을 프록시하도록 하세요 (참고 [Browser tool](/tools/browser)).
+브라우저 기기에서 실행하고 게이트웨이가 브라우저 동작을 프록시하도록 하세요 (참고 [Browser tool](/ko-KR/tools/browser)).
 노드 페어링을 관리자 접근과 같게 취급하세요.
 
 권장 패턴:
@@ -511,7 +511,7 @@ IP를 확인하고 HTTP 인증/로컬 검사를 수행합니다.
 - 진단을 공유할 때, 원본 로그보다 `openclaw status --all` (붙여넣기 가능, 비밀 편집됨)을 선호하세요.
 - 장기 보유가 필요 없다면 오래된 세션 전사본 및 로그 파일을 정리하세요.
 
-세부: [로깅](/gateway/logging)
+세부: [로깅](/ko-KR/gateway/logging)
 
 ### 1) DMs: 기본적으로 페어링
 
@@ -591,12 +591,12 @@ AI를 개인 전화 번호와 별도로 실행하는 것을 고려하세요:
 
 ## 샌드박스 격리 (권장됨)
 
-전용 문서: [샌드박스 격리](/gateway/sandboxing)
+전용 문서: [샌드박스 격리](/ko-KR/gateway/sandboxing)
 
 두 가지 보완 접근 방식:
 
-- **전체 게이트웨이를 Docker로 실행** (컨테이너 경계): [Docker](/install/docker)
-- **도구 샌드박스** (`agents.defaults.sandbox`, 호스트 게이트웨이 + Docker로 격리된 도구): [샌드박스 격리](/gateway/sandboxing)
+- **전체 게이트웨이를 Docker로 실행** (컨테이너 경계): [Docker](/ko-KR/install/docker)
+- **도구 샌드박스** (`agents.defaults.sandbox`, 호스트 게이트웨이 + Docker로 격리된 도구): [샌드박스 격리](/ko-KR/gateway/sandboxing)
 
 참고: 교차 에이전트 접근을 방지하려면, `agents.defaults.sandbox.scope`를 `"agent"` (기본값)
 또는 `"session"`으로 유지하여 세션별로 더 엄격한 격리를 수행하세요. `scope: "shared"`는
@@ -632,7 +632,7 @@ AI를 개인 전화 번호와 별도로 실행하는 것을 고려하세요:
 
 멀티 에이전트 라우팅을 통해, 각 에이전트는 자체 샌드박스 + 도구 정책을 가질 수 있습니다:
 이를 사용하여 에이전트별로 **전체 접근**, **읽기 전용**, 또는 **접근 없음**을 부여하세요.
-자세한 내용과 우선 순위 규칙은 [멀티-에이전트 샌드박스 및 도구](/tools/multi-agent-sandbox-tools)를 참조하세요.
+자세한 내용과 우선 순위 규칙은 [멀티-에이전트 샌드박스 및 도구](/ko-KR/tools/multi-agent-sandbox-tools)를 참조하세요.
 
 일반적인 사용 사례:
 

@@ -65,7 +65,7 @@ OpenClaw는 하위 에이전트를 위한 더 작은 시스템 프롬프트를 �
 
 내부 훅은 `agent:bootstrap`을 통해 이 단계를 가로채어 주입된 부트스트랩 파일을 변형하거나 교체할 수 있습니다 (예: `SOUL.md`를 대체 페르소나로 변경).
 
-각 주입된 파일이 얼마나 기여하는지 (원본 vs 주입, 자름 변환, 도구 스키마 오버헤드)를 검사하려면 `/context list` 또는 `/context detail`을 사용하세요. [컨텍스트](/concepts/context)를 참조하십시오.
+각 주입된 파일이 얼마나 기여하는지 (원본 vs 주입, 자름 변환, 도구 스키마 오버헤드)를 검사하려면 `/context list` 또는 `/context detail`을 사용하세요. [컨텍스트](/ko-KR/concepts/context)를 참조하십시오.
 
 ## 시간 처리
 
@@ -76,7 +76,7 @@ OpenClaw는 하위 에이전트를 위한 더 작은 시스템 프롬프트를 �
 - `agents.defaults.userTimezone`
 - `agents.defaults.timeFormat` (`auto` | `12` | `24`)
 
-전체 동작 세부 사항은 [날짜 및 시간](/date-time)을 참조하십시오.
+전체 동작 세부 사항은 [날짜 및 시간](/ko-KR/date-time)을 참조하십시오.
 
 ## 스킬
 

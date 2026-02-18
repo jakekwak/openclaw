@@ -9,7 +9,7 @@ title: "Setup"
 # Setup
 
 <Note>
-처음 설정 중이라면 [시작하기](/start/getting-started)부터 시작하십시오. 마법사에 대한 자세한 내용은 [온보딩 마법사](/start/wizard)를 참조하세요.
+처음 설정 중이라면 [시작하기](/ko-KR/start/getting-started)부터 시작하십시오. 마법사에 대한 자세한 내용은 [온보딩 마법사](/ko-KR/start/wizard)를 참조하세요.
 </Note>
 
 Last updated: 2026-01-01
@@ -24,7 +24,7 @@ Last updated: 2026-01-01
 
 - Node `>=22`
 - `pnpm`
-- Docker (optional; only for containerized setup/e2e — see [Docker](/install/docker))
+- Docker (optional; only for containerized setup/e2e — see [Docker](/ko-KR/install/docker))
 
 ## Tailoring strategy (so updates don’t hurt)
 
@@ -132,7 +132,7 @@ Use this when debugging auth or deciding what to back up:
 - **Pairing allowlists**: `~/.openclaw/credentials/<channel>-allowFrom.json`
 - **Model auth profiles**: `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
 - **Legacy OAuth import**: `~/.openclaw/credentials/oauth.json`
-  More detail: [Security](/gateway/security#credential-storage-map).
+  More detail: [Security](/ko-KR/gateway/security#credential-storage-map).
 
 ## Updating (without wrecking your setup)
 
@@ -150,12 +150,12 @@ sudo loginctl enable-linger $USER
 ```
 
 For always-on or multi-user servers, consider a **system** service instead of a
-user service (no lingering needed). See [Gateway runbook](/gateway) for the systemd notes.
+user service (no lingering needed). See [Gateway runbook](/ko-KR/gateway) for the systemd notes.
 
 ## Related docs
 
-- [Gateway runbook](/gateway) (flags, supervision, ports)
-- [Gateway configuration](/gateway/configuration) (config schema + examples)
-- [Discord](/channels/discord) and [Telegram](/channels/telegram) (reply tags + replyToMode settings)
-- [OpenClaw assistant setup](/start/openclaw)
-- [macOS app](/platforms/macos) (gateway lifecycle)
+- [Gateway runbook](/ko-KR/gateway) (flags, supervision, ports)
+- [Gateway configuration](/ko-KR/gateway/configuration) (config schema + examples)
+- [Discord](/ko-KR/channels/discord) and [Telegram](/ko-KR/channels/telegram) (reply tags + replyToMode settings)
+- [OpenClaw assistant setup](/ko-KR/start/openclaw)
+- [macOS app](/ko-KR/platforms/macos) (gateway lifecycle)

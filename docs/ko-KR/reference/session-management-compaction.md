@@ -21,10 +21,10 @@ title: "세션 관리 심층 분석"
 
 보다 상위 개요가 필요하다면, 다음을 먼저 시작하세요:
 
-- [/concepts/session](/concepts/session)
-- [/concepts/compaction](/concepts/compaction)
-- [/concepts/session-pruning](/concepts/session-pruning)
-- [/reference/transcript-hygiene](/reference/transcript-hygiene)
+- [/concepts/session](/ko-KR/concepts/session)
+- [/concepts/compaction](/ko-KR/concepts/compaction)
+- [/concepts/session-pruning](/ko-KR/concepts/session-pruning)
+- [/reference/transcript-hygiene](/ko-KR/reference/transcript-hygiene)
 
 ---
 
@@ -77,7 +77,7 @@ OpenClaw는 `src/config/sessions.ts`를 통해 이를 해결합니다.
 - Cron: `cron:<job.id>`
 - 웹훅: `hook:<uuid>` (재정의되지 않는 한)
 
-기본 규칙은 [/concepts/session](/concepts/session)에 문서화되어 있습니다.
+기본 규칙은 [/concepts/session](/ko-KR/concepts/session)에 문서화되어 있습니다.
 
 ---
 
@@ -154,7 +154,7 @@ OpenClaw는 의도적으로 전사를 "수정하지 않습니다"; 게이트웨�
 - 컨텍스트 윈도우는 모델 카탈로그에서 가져오며 (설정을 통해 재정의 가능).
 - 저장소의 `contextTokens`는 런타임 추정/보고 값입니다. 엄격한 보증으로 간주하지 마세요.
 
-자세한 내용은 [/token-use](/reference/token-use)를 참조하세요.
+자세한 내용은 [/token-use](/ko-KR/reference/token-use)를 참조하세요.
 
 ---
 
@@ -167,7 +167,7 @@ OpenClaw는 의도적으로 전사를 "수정하지 않습니다"; 게이트웨�
 - 압축 요약
 - `firstKeptEntryId` 이후 메시지
 
-압축은 **지속적**입니다 (세션 가지치기와 다르게). [/concepts/session-pruning](/concepts/session-pruning)을 참조하세요.
+압축은 **지속적**입니다 (세션 가지치기와 다르게). [/concepts/session-pruning](/ko-KR/concepts/session-pruning)을 참조하세요.
 
 ---
 
@@ -263,7 +263,7 @@ OpenClaw는 **사전 임계값 플러시** 접근 방식을 사용합니다:
 - 플러시는 압축 주기당 한 번 실행됩니다 (`sessions.json`에 추적).
 - 플러시는 내장 Pi 세션에서만 작동 (CLI 백엔드는 건너뜁니다).
 - 플러시는 세션 작업 영역이 읽기 전용일 때 건너뜁니다 (`workspaceAccess: "ro"` 또는 `"none"`).
-- 작업 영역 파일 레이아웃 및 쓰기 패턴에 대한 자세한 내용은 [Memory](/concepts/memory)을 참조하세요.
+- 작업 영역 파일 레이아웃 및 쓰기 패턴에 대한 자세한 내용은 [Memory](/ko-KR/concepts/memory)을 참조하세요.
 
 Pi는 확장 API에서 `session_before_compact` 훅을 노출하지만, OpenClaw의 플러시 로직은 오늘날 게이트웨이 측에 존재합니다.
 
@@ -271,7 +271,7 @@ Pi는 확장 API에서 `session_before_compact` 훅을 노출하지만, OpenClaw
 
 ## 문제 해결 체크리스트
 
-- 세션 키가 잘못되었나요? [/concepts/session](/concepts/session)를 시작하고 `/status`에서 `sessionKey`를 확인하세요.
+- 세션 키가 잘못되었나요? [/concepts/session](/ko-KR/concepts/session)를 시작하고 `/status`에서 `sessionKey`를 확인하세요.
 - 저장소와 전사 불일치? `openclaw status`에서 게이트웨이 호스트와 저장소 경로를 확인하세요.
 - 압축 스팸? 다음을 확인하세요:
   - 모델 컨텍스트 윈도우 (너무 작음)

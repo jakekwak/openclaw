@@ -10,10 +10,10 @@ title: "게이트웨이 런북"
 이 페이지는 게이트웨이 서비스의 초기 시작 및 두 번째 단계 운영에 사용됩니다.
 
 <CardGroup cols={2}>
-  <Card title="심층 문제 해결" icon="siren" href="/gateway/troubleshooting">
+  <Card title="심층 문제 해결" icon="siren" href="/ko-KR/gateway/troubleshooting">
     증상 중심의 진단, 명확한 명령어 단계 및 로그 특성.
   </Card>
-  <Card title="설정" icon="sliders" href="/gateway/configuration">
+  <Card title="설정" icon="sliders" href="/ko-KR/gateway/configuration">
     작업 지향 설정 가이드 + 전체 설정 참조.
   </Card>
 </CardGroup>
@@ -113,7 +113,7 @@ ssh -N -L 18789:127.0.0.1:18789 user@host
 게이트웨이 인증이 설정된 경우, 클라이언트는 SSH 터널을 통해서도 인증(`token`/`password`)을 보내야 합니다.
 </Warning>
 
-참조: [원격 게이트웨이](/gateway/remote), [인증](/gateway/authentication), [Tailscale](/gateway/tailscale).
+참조: [원격 게이트웨이](/ko-KR/gateway/remote), [인증](/ko-KR/gateway/authentication), [Tailscale](/ko-KR/gateway/tailscale).
 
 ## 감시 및 서비스 라이프사이클
 
@@ -180,7 +180,7 @@ OPENCLAW_CONFIG_PATH=~/.openclaw/a.json OPENCLAW_STATE_DIR=~/.openclaw-a opencla
 OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b openclaw gateway --port 19002
 ```
 
-참조: [여러 게이트웨이](/gateway/multiple-gateways).
+참조: [여러 게이트웨이](/ko-KR/gateway/multiple-gateways).
 
 ### Dev 프로필 빠른 경로
 
@@ -204,7 +204,7 @@ openclaw --dev status
 1. 즉각적인 수락 확인 (`status:"accepted"`)
 2. 최종 완료 응답 (`status:"ok"|"error"`), 중간에 스트리밍된 `agent` 이벤트 포함.
 
-전체 프로토콜 문서 참조: [게이트웨이 프로토콜](/gateway/protocol).
+전체 프로토콜 문서 참조: [게이트웨이 프로토콜](/ko-KR/gateway/protocol).
 
 ## 운영 점검
 
@@ -234,7 +234,7 @@ openclaw health
 | `Gateway start blocked: set gateway.mode=local`                | 원격 모드로 설정된 구성                |
 | `unauthorized` during connect                                  | 클라이언트와 게이트웨이 간의 인증 불일치 |
 
-전체 진단 단계는 [게이트웨이 문제 해결](/gateway/troubleshooting)을 참조하십시오.
+전체 진단 단계는 [게이트웨이 문제 해결](/ko-KR/gateway/troubleshooting)을 참조하십시오.
 
 ## 안전 보장
 
@@ -246,9 +246,9 @@ openclaw health
 
 관련 항목:
 
-- [문제 해결](/gateway/troubleshooting)
-- [백그라운드 프로세스](/gateway/background-process)
-- [설정](/gateway/configuration)
-- [건강](/gateway/health)
-- [의사](/gateway/doctor)
-- [인증](/gateway/authentication)
+- [문제 해결](/ko-KR/gateway/troubleshooting)
+- [백그라운드 프로세스](/ko-KR/gateway/background-process)
+- [설정](/ko-KR/gateway/configuration)
+- [건강](/ko-KR/gateway/health)
+- [의사](/ko-KR/gateway/doctor)
+- [인증](/ko-KR/gateway/authentication)

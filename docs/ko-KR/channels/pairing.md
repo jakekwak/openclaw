@@ -14,13 +14,13 @@ title: "페어링"
 1. **DM 페어링** (봇과 대화할 수 있는 사람)
 2. **노드 페어링** (게이트웨이 네트워크에 참가할 수 있는 장치/노드)
 
-보안 컨텍스트: [보안](/gateway/security)
+보안 컨텍스트: [보안](/ko-KR/gateway/security)
 
 ## 1) DM 페어링 (수신 채팅 접근)
 
 채널이 DM 정책 `pairing`으로 설정되어 있을 때, 알 수 없는 발신자는 짧은 코드를 받고 그들의 메시지는 당신이 승인할 때까지 **처리되지 않습니다**.
 
-기본 DM 정책은 여기에 문서화되어 있습니다: [보안](/gateway/security)
+기본 DM 정책은 여기에 문서화되어 있습니다: [보안](/ko-KR/gateway/security)
 
 페어링 코드:
 
@@ -88,13 +88,13 @@ openclaw devices reject <requestId>
 
 ## 관련 문서
 
-- 보안 모델 + 프롬프트 인젝션: [보안](/gateway/security)
-- 안전하게 업데이트 (doctor 실행): [업데이트](/install/updating)
+- 보안 모델 + 프롬프트 인젝션: [보안](/ko-KR/gateway/security)
+- 안전하게 업데이트 (doctor 실행): [업데이트](/ko-KR/install/updating)
 - 채널 설정:
-  - Telegram: [Telegram](/channels/telegram)
-  - WhatsApp: [WhatsApp](/channels/whatsapp)
-  - Signal: [Signal](/channels/signal)
-  - BlueBubbles (iMessage): [BlueBubbles](/channels/bluebubbles)
-  - iMessage (레거시): [iMessage](/channels/imessage)
-  - Discord: [Discord](/channels/discord)
-  - Slack: [Slack](/channels/slack)
+  - Telegram: [Telegram](/ko-KR/channels/telegram)
+  - WhatsApp: [WhatsApp](/ko-KR/channels/whatsapp)
+  - Signal: [Signal](/ko-KR/channels/signal)
+  - BlueBubbles (iMessage): [BlueBubbles](/ko-KR/channels/bluebubbles)
+  - iMessage (레거시): [iMessage](/ko-KR/channels/imessage)
+  - Discord: [Discord](/ko-KR/channels/discord)
+  - Slack: [Slack](/ko-KR/channels/slack)

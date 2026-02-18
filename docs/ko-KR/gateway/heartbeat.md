@@ -8,11 +8,11 @@ title: "Heartbeat"
 
 # Heartbeat (게이트웨이)
 
-> **Heartbeat vs Cron?** 각 사용 경우에 대한 지침은 [Cron vs Heartbeat](/automation/cron-vs-heartbeat)을 참조하세요.
+> **Heartbeat vs Cron?** 각 사용 경우에 대한 지침은 [Cron vs Heartbeat](/ko-KR/automation/cron-vs-heartbeat)을 참조하세요.
 
 Heartbeat는 메인 세션에서 **주기적인 에이전트 턴**을 실행하여 스팸 없이 주의를 기울일 필요가 있는 모든 것을 모델이 표면에 드러낼 수 있도록 합니다.
 
-문제 해결: [/automation/troubleshooting](/automation/troubleshooting)
+문제 해결: [/automation/troubleshooting](/ko-KR/automation/troubleshooting)
 
 ## 빠른 시작 (초보자)
 
@@ -54,7 +54,7 @@ Heartbeat는 메인 세션에서 **주기적인 에이전트 턴**을 실행하�
 기본 프롬프트는 의도적으로 폭넓게 구성되어 있습니다:
 
 - **배경 작업**: “미결 과제 고려하기”는 에이전트가 다음 작업 목록(메일, 일정, 알림, 대기 작업)을 검토하고 긴급한 사항을 표시하도록 유도합니다.
-- **인간 체크인**: “주간에 인간 확인”은 가끔 가벼운 "필요한 것 있습니까?" 메시지를 유도하되 로컬 시간대를 설정하여 야간 스팸을 피합니다 (자세한 내용은 [/concepts/timezone](/concepts/timezone)).
+- **인간 체크인**: “주간에 인간 확인”은 가끔 가벼운 "필요한 것 있습니까?" 메시지를 유도하되 로컬 시간대를 설정하여 야간 스팸을 피합니다 (자세한 내용은 [/concepts/timezone](/ko-KR/concepts/timezone)).
 
 Heartbeat가 특정 작업을 수행하도록 원한다면 (예: “Gmail PubSub 통계 확인” 또는 “게이트웨이 상태 검증”), `agents.defaults.heartbeat.prompt` (또는 `agents.list[].heartbeat.prompt`)를 사용자 정의 본문으로 설정합니다 (문자 그대로 전송).
 
@@ -187,8 +187,8 @@ Heartbeat 외부에서는, 메시지의 시작/끝에 있는 불필요한 `HEART
 - `includeReasoning`: 활성화된 경우, 사용 가능한 경우 별도의 `Reasoning:` 메시지를 전달 (동일한 형태 `/reasoning on`).
 - `session`: Heartbeat 실행을 위한 선택적 세션 키.
   - `main` (기본값): 에이전트 메인 세션.
-  - 명시적 세션 키 (`openclaw sessions --json`이나 [sessions CLI](/cli/sessions)에서 복사).
-  - 세션 키 형식: [Sessions](/concepts/session) 및 [Groups](/channels/groups) 참조.
+  - 명시적 세션 키 (`openclaw sessions --json`이나 [sessions CLI](/ko-KR/cli/sessions)에서 복사).
+  - 세션 키 형식: [Sessions](/ko-KR/concepts/session) 및 [Groups](/ko-KR/channels/groups) 참조.
 - `target`:
   - `last` (기본값): 마지막으로 사용된 외부 채널로 전달.
   - 명시적 채널: `whatsapp` / `telegram` / `discord` / `googlechat` / `slack` / `msteams` / `signal` / `imessage`.

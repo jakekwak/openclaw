@@ -27,7 +27,7 @@ title: "컨텍스트"
 - `/usage tokens` → 일반 응답에 대한 사용 후미를 추가합니다.
 - `/compact` → 오래된 히스토리를 요약하여 윈도우 공간을 확보합니다.
 
-참조: [슬래시 명령어](/tools/slash-commands), [토큰 사용 및 비용](/reference/token-use), [요약](/concepts/compaction).
+참조: [슬래시 명령어](/ko-KR/tools/slash-commands), [토큰 사용 및 비용](/ko-KR/reference/token-use), [요약](/ko-KR/concepts/compaction).
 
 ## 예제 출력
 
@@ -98,7 +98,7 @@ title: "컨텍스트"
 - 런타임 메타데이터 (호스트/OS/모델/생각).
 - **프로젝트 컨텍스트** 아래의 주입된 워크스페이스 부트스트랩 파일.
 
-전체 분석: [시스템 프롬프트](/concepts/system-prompt).
+전체 분석: [시스템 프롬프트](/ko-KR/concepts/system-prompt).
 
 ## 주입된 워크스페이스 파일 (프로젝트 컨텍스트)
 
@@ -139,7 +139,7 @@ title: "컨텍스트"
   - 일반 메시지에 있는 인라인 지시어는 메시지별 힌트로 작동합니다.
 - **인라인 단축키**(허용된 발신자만): 일반 메시지 내부의 특정 `/...` 토큰은 즉시 실행될 수 있으며(예: "hey /status"), 모델이 나머지 텍스트를 보기 전에 제거됩니다.
 
-세부 사항: [슬래시 명령어](/tools/slash-commands).
+세부 사항: [슬래시 명령어](/ko-KR/tools/slash-commands).
 
 ## 세션, 요약, 가지치기 (지속되는 것)
 
@@ -149,7 +149,7 @@ title: "컨텍스트"
 - **요약**은 텍스트 요약을 전사본에 지속시키며 최근 메시지를 온전히 유지합니다.
 - **가지치기**는 실행 시 _메모리 내_ 프롬프트에서 오래된 도구 결과를 제거하지만, 전사본을 다시 작성하지 않습니다.
 
-문서: [세션](/concepts/session), [요약](/concepts/compaction), [세션 가지치기](/concepts/session-pruning).
+문서: [세션](/ko-KR/concepts/session), [요약](/ko-KR/concepts/compaction), [세션 가지치기](/ko-KR/concepts/session-pruning).
 
 ## `/context`가 실제로 보고하는 것
 

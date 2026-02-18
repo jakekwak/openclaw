@@ -26,7 +26,7 @@ OpenClaw 는 **Pi** 에이전트를 위한 WhatsApp + Telegram + Discord + iMess
 
 ## 필요조건
 
-- OpenClaw 설치 및 온보딩 완료 — 아직 하지 않았다면 [시작하기](/start/getting-started)를 참조하세요
+- OpenClaw 설치 및 온보딩 완료 — 아직 하지 않았다면 [시작하기](/ko-KR/start/getting-started)를 참조하세요
 - 비서를 위한 두 번째 전화번호(SIM/eSIM/선불)
 
 ## 권장되는 두 전화 설정
@@ -79,8 +79,8 @@ OpenClaw 는 작업 공간 디렉토리에서 운영 지침과 "메모리"를 �
 openclaw setup
 ```
 
-전체 작업 공간 레이아웃 + 백업 가이드: [에이전트 작업공간](/concepts/agent-workspace)
-메모리 워크플로: [메모리](/concepts/memory)
+전체 작업 공간 레이아웃 + 백업 가이드: [에이전트 작업공간](/ko-KR/concepts/agent-workspace)
+메모리 워크플로: [메모리](/ko-KR/concepts/memory)
 
 선택 사항: `agents.defaults.workspace` 옵션으로 다른 작업 공간 선택(지원 `~`).
 
@@ -204,12 +204,12 @@ openclaw health --json   # 게이트웨이 상태 스냅샷(WS)
 
 ## 다음 단계
 
-- WebChat: [WebChat](/web/webchat)
-- 게이트웨이 운영: [게이트웨이 실행서](/gateway)
-- Cron + 기상: [Cron 작업](/automation/cron-jobs)
-- macOS 메뉴 바 동반 앱: [OpenClaw macOS 앱](/platforms/macos)
-- iOS 노드 앱: [iOS 앱](/platforms/ios)
-- Android 노드 앱: [Android 앱](/platforms/android)
-- Windows 상태: [Windows (WSL2)](/platforms/windows)
-- Linux 상태: [Linux 앱](/platforms/linux)
-- 보안: [보안](/gateway/security)
+- WebChat: [WebChat](/ko-KR/web/webchat)
+- 게이트웨이 운영: [게이트웨이 실행서](/ko-KR/gateway)
+- Cron + 기상: [Cron 작업](/ko-KR/automation/cron-jobs)
+- macOS 메뉴 바 동반 앱: [OpenClaw macOS 앱](/ko-KR/platforms/macos)
+- iOS 노드 앱: [iOS 앱](/ko-KR/platforms/ios)
+- Android 노드 앱: [Android 앱](/ko-KR/platforms/android)
+- Windows 상태: [Windows (WSL2)](/ko-KR/platforms/windows)
+- Linux 상태: [Linux 앱](/ko-KR/platforms/linux)
+- 보안: [보안](/ko-KR/gateway/security)

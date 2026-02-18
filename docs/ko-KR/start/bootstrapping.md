@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "에이전트의 작업공간 및 아이덴티티 파일을 초기화하는 과정"
 read_when:
@@ -32,6 +31,5 @@ sidebarTitle: "부트스트래핑"
 
 ## 관련 문서
 
-- macOS 앱 온보딩: [온보딩](/start/onboarding)
-- 작업공간 레이아웃: [에이전트 작업공간](/concepts/agent-workspace)
-```
+- macOS 앱 온보딩: [온보딩](/ko-KR/start/onboarding)
+- 작업공간 레이아웃: [에이전트 작업공간](/ko-KR/concepts/agent-workspace)

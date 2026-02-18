@@ -1,4 +1,3 @@
-```markdown
 ---
 title: "구성 참조"
 description: "완전한 필드별 참조를 위한 ~/.openclaw/openclaw.json"
@@ -6,7 +5,7 @@ description: "완전한 필드별 참조를 위한 ~/.openclaw/openclaw.json"
 
 # 구성 참조
 
-`~/.openclaw/openclaw.json` 에서 사용할 수 있는 모든 필드. 작업 지향 개요는 [구성](/gateway/configuration) 을 참조하세요.
+`~/.openclaw/openclaw.json` 에서 사용할 수 있는 모든 필드. 작업 지향 개요는 [구성](/ko-KR/gateway/configuration) 을 참조하세요.
 
 구성 형식은 **JSON5** (주석 + 후행 쉼표 허용) 입니다. 모든 필드는 선택 사항입니다 — OpenClaw 는 생략 시 안전한 기본값을 사용합니다.
 
@@ -155,7 +154,7 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
 - 봇 토큰: `channels.telegram.botToken` 또는 `channels.telegram.tokenFile`, 기본 계정의 경우 `TELEGRAM_BOT_TOKEN` 으로 대체합니다.
 - `configWrites: false` 는 Telegram 이 시작한 구성 쓰기를 차단합니다 (슈퍼그룹 ID 마이그레이션, `/config set|unset`).
 - Telegram 스트림 미리보기는 `sendMessage` + `editMessageText` 사용 (다이렉트 및 그룹 채팅에서 작동).
-- 재시도 정책: [Retry policy](/concepts/retry) 를 참조하세요.
+- 재시도 정책: [Retry policy](/ko-KR/concepts/retry) 를 참조하세요.
 
 ### Discord
 
@@ -231,7 +230,7 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
 - 길드 슬러그는 소문자며, 공백은 `-` 로 대체합니다. 채널 키에는 슬러그 이름을 사용하여 `#` 을 포함하지 마세요. 길드 ID 를 선호하세요.
 - 봇이 작성한 메시지는 기본적으로 무시됩니다. `allowBots: true` 를 통해 활성화할 수 있습니다 (여전히 자신이 보낸 메시지는 필터링됨).
 - `maxLinesPerMessage` (기본값 17)는 2000자 미만의 긴 메시지라도 분할합니다.
-- `channels.discord.ui.components.accentColor` 는 Discord 구성 요소의 강세 색상을 설정합니다.
+- `channels.discord.ui.components.accentColor` 는 Discord 컴포넌트 v2 컨테이너의 강조 색상을 설정합니다.
 
 **반응 알림 모드:** `off` (없음), `own` (봇의 메시지, 기본값), `all` (모든 메시지), `allowlist` (모든 메시지의 `guilds.<id>.users` 에서).
 
@@ -486,7 +485,7 @@ exec ssh -T gateway-host imsg "$@"
 
 #### 자체 대화 모드
 
-깨지기 쉬운 모드(자체 대화 모드)를 활성화하려면 자신의 번호를 `allowFrom` 에 포함합니다 (네이티브 @-언급을 무시하고, 텍스트 패턴에만 응답합니다):
+자체 대화 모드를 활성화하려면 자신의 번호를 `allowFrom` 에 포함합니다 (네이티브 @-언급을 무시하고, 텍스트 패턴에만 응답합니다):
 
 ```json5
 {
@@ -750,7 +749,7 @@ Z.AI GLM-4.x 모델은 `--thinking off` 를 설정하거나 `agents.defaults.mod
 }
 ```
 
-- `mode`: `default` 또는 `safeguard` (긴 기록을 위한 청크 요약). [Compaction](/concepts/compaction) 을 참조하세요.
+- `mode`: `default` 또는 `safeguard` (긴 기록을 위한 청크 요약). [Compaction](/ko-KR/concepts/compaction) 을 참조하세요.
 - `memoryFlush`: 자동 압축 전에 내구성 있는 메모리를 저장하기 위한 조용한 에이전트 턴. 워크스페이스가 읽기 전용일 때 건너뜁니다.
 
 ### `agents.defaults.contextPruning`
@@ -795,7 +794,7 @@ Z.AI GLM-4.x 모델은 `--thinking off` 를 설정하거나 `agents.defaults.mod
 
 </Accordion>
 
-자세한 행동은 [Session Pruning](/concepts/session-pruning) 을 참조하세요.
+자세한 행동은 [Session Pruning](/ko-KR/concepts/session-pruning) 을 참조하세요.
 
 ### 블록 스트리밍
 
@@ -817,7 +816,7 @@ Z.AI GLM-4.x 모델은 `--thinking off` 를 설정하거나 `agents.defaults.mod
 - 채널 재정의: `channels.<channel>.blockStreamingCoalesce` (및 계정별 변형). Signal/Slack/Discord/Google Chat 의 기본값 `minChars: 1500` 입니다.
 - `humanDelay`: 블록 응답 사이의 랜덤화된 휴지 시간. `natural` = 800–2500ms. 에이전트별 재정의: `agents.list[].humanDelay`.
 
-자세한 행동과 청크 세부사항은 [Streaming](/concepts/streaming) 을 참조하세요.
+자세한 행동과 청크 세부사항은 [Streaming](/ko-KR/concepts/streaming) 을 참조하세요.
 
 ### 입력 표시기
 
@@ -835,11 +834,11 @@ Z.AI GLM-4.x 모델은 `--thinking off` 를 설정하거나 `agents.defaults.mod
 - 기본값: 다이렉트 채팅/언급의 경우 `instant`, 언급되지 않은 그룹 채팅의 경우 `message`.
 - 세션별 재정의: `session.typingMode`, `session.typingIntervalSeconds`.
 
-자세한 내용은 [Typing Indicators](/concepts/typing-indicators) 를 참조하세요.
+자세한 내용은 [Typing Indicators](/ko-KR/concepts/typing-indicators) 를 참조하세요.
 
 ### `agents.defaults.sandbox`
 
-내장된 에이전트를 위한 선택적 **Docker 샌드박스 격리**. 전체 가이드는 [Sandboxing](/gateway/sandboxing) 을 참조하세요.
+내장된 에이전트를 위한 선택적 **Docker 샌드박스 격리**. 전체 가이드는 [Sandboxing](/ko-KR/gateway/sandboxing) 을 참조하세요.
 
 ```json5
 {
@@ -998,7 +997,7 @@ scripts/sandbox-browser-setup.sh   # 선택적 브라우저 이미지
 
 ## 다중 에이전트 라우팅
 
-하나의 게이트웨이 안에 여러 개의 고립된 에이전트를 실행하세요. [Multi-Agent](/concepts/multi-agent) 를 참조하세요.
+하나의 게이트웨이 안에 여러 개의 고립된 에이전트를 실행하세요. [Multi-Agent](/ko-KR/concepts/multi-agent) 를 참조하세요.
 
 ```json5
 {
@@ -1128,7 +1127,7 @@ scripts/sandbox-browser-setup.sh   # 선택적 브라우저 이미지
 
 </Accordion>
 
-자세한 우선 순위는 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools) 를 참조하세요.
+자세한 우선 순위는 [Multi-Agent Sandbox & Tools](/ko-KR/tools/multi-agent-sandbox-tools) 를 참조하세요.
 
 ---
 
@@ -1837,7 +1836,7 @@ Anthropic 호환, 내장 프로바이더. 단축키: `openclaw onboard --auth-ch
 
 <Accordion title="로컬 모델 (LM Studio)">
 
-[로컬 모델](/gateway/local-models) 을 참조하세요. 간단히: LM Studio Responses API 를 통해 MiniMax M2.1 을 심각한 하드웨어에서 실행하세요; 대체로 호스팅된 모델들을 병합하여 유지합니다.
+[로컬 모델](/ko-KR/gateway/local-models) 을 참조하세요. 간단히: LM Studio Responses API 를 통해 MiniMax M2.1 을 심각한 하드웨어에서 실행하세요; 대체로 호스팅된 모델들을 병합하여 유지합니다.
 
 </Accordion>
 
@@ -1899,7 +1898,7 @@ Anthropic 호환, 내장 프로바이더. 단축키: `openclaw onboard --auth-ch
 - **구성 변경 사항은 게이트웨이 재시작이 필요합니다.**
 - `allow`: 선택적 허용 목록 (목록에 있는 플러그인만 로드). `deny` 가 우선합니다.
 
-[Plugins](/tools/plugin) 을 참조하세요.
+[Plugins](/ko-KR/tools/plugin) 을 참조하세요.
 
 ---
 
@@ -1912,4 +1911,516 @@ Anthropic 호환, 내장 프로바이더. 단축키: `openclaw onboard --auth-ch
     evaluateEnabled: true,
     defaultProfile: "chrome",
     profiles: {
-      openclaw: { cdpPort: 18800
+      openclaw: { cdpPort: 18800, color: "#FF4500" },
+      work: { cdpPort: 18801, color: "#0066CC" },
+      remote: { cdpUrl: "http://10.0.0.42:9222", color: "#00AA00" },
+    },
+    color: "#FF4500",
+    // headless: false,
+    // noSandbox: false,
+    // executablePath: "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+    // attachOnly: false,
+  },
+}
+```
+
+- `evaluateEnabled: false` 는 `act:evaluate` 와 `wait --fn` 을 비활성화합니다.
+- 원격 프로필은 연결 전용입니다 (시작/중지/재설정 비활성화).
+- 자동 감지 순서: Chromium 기반 기본 브라우저 → Chrome → Brave → Edge → Chromium → Chrome Canary.
+- 제어 서비스: 루프백 전용 (포트는 `gateway.port` 에서 파생, 기본값 `18791`).
+
+---
+
+## UI
+
+```json5
+{
+  ui: {
+    seamColor: "#FF4500",
+    assistant: {
+      name: "OpenClaw",
+      avatar: "CB", // 이모지, 짧은 텍스트, 이미지 URL 또는 data URI
+    },
+  },
+}
+```
+
+- `seamColor`: 네이티브 앱 UI 크롬의 강조 색상 (Talk Mode 버블 색상 등).
+- `assistant`: Control UI 정체성 재정의. 활성 에이전트 정체성으로 대체됩니다.
+
+---
+
+## 게이트웨이
+
+```json5
+{
+  gateway: {
+    mode: "local", // local | remote
+    port: 18789,
+    bind: "loopback",
+    auth: {
+      mode: "token", // token | password | trusted-proxy
+      token: "your-token",
+      // password: "your-password", // or OPENCLAW_GATEWAY_PASSWORD
+      // trustedProxy: { userHeader: "x-forwarded-user" }, // for mode=trusted-proxy; see /gateway/trusted-proxy-auth
+      allowTailscale: true,
+      rateLimit: {
+        maxAttempts: 10,
+        windowMs: 60000,
+        lockoutMs: 300000,
+        exemptLoopback: true,
+      },
+    },
+    tailscale: {
+      mode: "off", // off | serve | funnel
+      resetOnExit: false,
+    },
+    controlUi: {
+      enabled: true,
+      basePath: "/openclaw",
+      // root: "dist/control-ui",
+      // allowInsecureAuth: false,
+      // dangerouslyDisableDeviceAuth: false,
+    },
+    remote: {
+      url: "ws://gateway.tailnet:18789",
+      transport: "ssh", // ssh | direct
+      token: "your-token",
+      // password: "your-password",
+    },
+    trustedProxies: ["10.0.0.1"],
+    tools: {
+      // Additional /tools/invoke HTTP denies
+      deny: ["browser"],
+      // Remove tools from the default HTTP deny list
+      allow: ["gateway"],
+    },
+  },
+}
+```
+
+<Accordion title="게이트웨이 필드 세부사항">
+
+- `mode`: `local` (게이트웨이 실행) 또는 `remote` (원격 게이트웨이에 연결). 게이트웨이는 `local` 이 아닌 경우 시작을 거부합니다.
+- `port`: WS + HTTP 용 단일 다중화 포트. 우선순위: `--port` > `OPENCLAW_GATEWAY_PORT` > `gateway.port` > `18789`.
+- `bind`: `auto`, `loopback` (기본값), `lan` (`0.0.0.0`), `tailnet` (Tailscale IP 전용) 또는 `custom`.
+- **인증**: 기본적으로 필수입니다. 비루프백 바인드는 공유 토큰/비밀번호가 필요합니다. 온보딩 마법사는 기본적으로 토큰을 생성합니다.
+- `auth.mode: "trusted-proxy"`: 인증을 인식하는 리버스 프록시에 인증을 위임하고 `gateway.trustedProxies` 의 ID 헤더를 신뢰합니다 ([Trusted Proxy Auth](/ko-KR/gateway/trusted-proxy-auth) 참조).
+- `auth.allowTailscale`: `true` 이면 Tailscale Serve ID 헤더가 인증을 충족합니다 (`tailscale whois` 를 통해 확인). `tailscale.mode = "serve"` 일 때 기본값은 `true` 입니다.
+- `auth.rateLimit`: 선택적 인증 실패 제한기. 클라이언트 IP 별 및 인증 범위별로 적용됩니다 (공유 비밀과 디바이스 토큰은 독립적으로 추적됩니다). 차단된 시도는 `429` + `Retry-After` 를 반환합니다.
+  - `auth.rateLimit.exemptLoopback` 은 기본값이 `true` 입니다; 의도적으로 localhost 트래픽도 속도 제한하려면 `false` 로 설정하세요 (테스트 설정 또는 엄격한 프록시 배포용).
+- `tailscale.mode`: `serve` (tailnet 전용, 루프백 바인드) 또는 `funnel` (공개, 인증 필요).
+- `remote.transport`: `ssh` (기본값) 또는 `direct` (ws/wss). `direct` 의 경우, `remote.url` 은 `ws://` 또는 `wss://` 여야 합니다.
+- `gateway.remote.token` 은 원격 CLI 호출 전용이며, 로컬 게이트웨이 인증을 활성화하지 않습니다.
+- `trustedProxies`: TLS 를 종료하는 리버스 프록시 IP. 제어하는 프록시만 나열하세요.
+- `gateway.tools.deny`: HTTP `POST /tools/invoke` 에 대해 차단되는 추가 도구 이름 (기본 거부 목록을 확장).
+- `gateway.tools.allow`: 기본 HTTP 거부 목록에서 도구 이름을 제거합니다.
+
+</Accordion>
+
+### OpenAI 호환 엔드포인트
+
+- Chat Completions: 기본적으로 비활성화. `gateway.http.endpoints.chatCompletions.enabled: true` 로 활성화합니다.
+- Responses API: `gateway.http.endpoints.responses.enabled`.
+- Responses URL 입력 강화:
+  - `gateway.http.endpoints.responses.maxUrlParts`
+  - `gateway.http.endpoints.responses.files.urlAllowlist`
+  - `gateway.http.endpoints.responses.images.urlAllowlist`
+
+### 다중 인스턴스 격리
+
+고유한 포트와 상태 디렉토리로 하나의 호스트에서 여러 게이트웨이를 실행합니다:
+
+```bash
+OPENCLAW_CONFIG_PATH=~/.openclaw/a.json \
+OPENCLAW_STATE_DIR=~/.openclaw-a \
+openclaw gateway --port 19001
+```
+
+편의 플래그: `--dev` (`~/.openclaw-dev` + 포트 `19001` 사용), `--profile <name>` (`~/.openclaw-<name>` 사용).
+
+[Multiple Gateways](/ko-KR/gateway/multiple-gateways) 를 참조하세요.
+
+---
+
+## 훅
+
+```json5
+{
+  hooks: {
+    enabled: true,
+    token: "shared-secret",
+    path: "/hooks",
+    maxBodyBytes: 262144,
+    defaultSessionKey: "hook:ingress",
+    allowRequestSessionKey: false,
+    allowedSessionKeyPrefixes: ["hook:"],
+    allowedAgentIds: ["hooks", "main"],
+    presets: ["gmail"],
+    transformsDir: "~/.openclaw/hooks/transforms",
+    mappings: [
+      {
+        match: { path: "gmail" },
+        action: "agent",
+        agentId: "hooks",
+        wakeMode: "now",
+        name: "Gmail",
+        sessionKey: "hook:gmail:{{messages[0].id}}",
+        messageTemplate: "From: {{messages[0].from}}\nSubject: {{messages[0].subject}}\n{{messages[0].snippet}}",
+        deliver: true,
+        channel: "last",
+        model: "openai/gpt-5.2-mini",
+      },
+    ],
+  },
+}
+```
+
+인증: `Authorization: Bearer <token>` 또는 `x-openclaw-token: <token>`.
+
+**엔드포인트:**
+
+- `POST /hooks/wake` → `{ text, mode?: "now"|"next-heartbeat" }`
+- `POST /hooks/agent` → `{ message, name?, agentId?, sessionKey?, wakeMode?, deliver?, channel?, to?, model?, thinking?, timeoutSeconds? }`
+  - 요청 페이로드의 `sessionKey` 는 `hooks.allowRequestSessionKey=true` (기본값: `false`) 인 경우에만 허용됩니다.
+- `POST /hooks/<name>` → `hooks.mappings` 를 통해 해결됩니다
+
+<Accordion title="매핑 세부사항">
+
+- `match.path` 는 `/hooks` 이후의 하위 경로를 매치합니다 (예: `/hooks/gmail` → `gmail`).
+- `match.source` 는 일반 경로에 대한 페이로드 필드를 매치합니다.
+- `{{messages[0].subject}}` 같은 템플릿은 페이로드에서 읽습니다.
+- `transform` 은 훅 액션을 반환하는 JS/TS 모듈을 가리킬 수 있습니다.
+  - `transform.module` 은 반드시 상대 경로여야 하며, `hooks.transformsDir` 내에 있어야 합니다 (절대 경로와 경로 탐색은 거부됩니다).
+- `agentId` 는 특정 에이전트로 라우팅합니다; 알 수 없는 ID 는 기본 에이전트로 대체됩니다.
+- `allowedAgentIds`: 명시적 라우팅을 제한합니다 (`*` 또는 생략 = 모두 허용, `[]` = 모두 거부).
+- `defaultSessionKey`: 명시적 `sessionKey` 없이 훅 에이전트 실행을 위한 선택적 고정 세션 키.
+- `allowRequestSessionKey`: `/hooks/agent` 호출자가 `sessionKey` 를 설정할 수 있도록 허용합니다 (기본값: `false`).
+- `allowedSessionKeyPrefixes`: 명시적 `sessionKey` 값 (요청 + 매핑) 에 대한 선택적 접두사 허용 목록, 예: `["hook:"]`.
+- `deliver: true` 는 최종 응답을 채널로 보냅니다; `channel` 은 기본적으로 `last` 입니다.
+- `model` 은 이 훅 실행에 대한 LLM 을 재정의합니다 (모델 카탈로그가 설정된 경우 허용되어야 함).
+
+</Accordion>
+
+### Gmail 통합
+
+```json5
+{
+  hooks: {
+    gmail: {
+      account: "openclaw@gmail.com",
+      topic: "projects/<project-id>/topics/gog-gmail-watch",
+      subscription: "gog-gmail-watch-push",
+      pushToken: "shared-push-token",
+      hookUrl: "http://127.0.0.1:18789/hooks/gmail",
+      includeBody: true,
+      maxBytes: 20000,
+      renewEveryMinutes: 720,
+      serve: { bind: "127.0.0.1", port: 8788, path: "/" },
+      tailscale: { mode: "funnel", path: "/gmail-pubsub" },
+      model: "openrouter/meta-llama/llama-3.3-70b-instruct:free",
+      thinking: "off",
+    },
+  },
+}
+```
+
+- 게이트웨이는 구성된 경우 부팅 시 자동으로 `gog gmail watch serve` 를 시작합니다. 비활성화하려면 `OPENCLAW_SKIP_GMAIL_WATCHER=1` 을 설정하세요.
+- 게이트웨이와 함께 별도의 `gog gmail watch serve` 를 실행하지 마세요.
+
+---
+
+## Canvas 호스트
+
+```json5
+{
+  canvasHost: {
+    root: "~/.openclaw/workspace/canvas",
+    liveReload: true,
+    // enabled: false, // or OPENCLAW_SKIP_CANVAS_HOST=1
+  },
+}
+```
+
+- 게이트웨이 포트 아래에서 에이전트가 편집 가능한 HTML/CSS/JS 와 A2UI 를 HTTP 로 제공합니다:
+  - `http://<gateway-host>:<gateway.port>/__openclaw__/canvas/`
+  - `http://<gateway-host>:<gateway.port>/__openclaw__/a2ui/`
+- 로컬 전용: `gateway.bind: "loopback"` (기본값) 을 유지하세요.
+- 비루프백 바인드: canvas 라우트에는 게이트웨이 인증 (토큰/비밀번호/trusted-proxy) 이 필요하며, 다른 게이트웨이 HTTP 표면과 동일합니다.
+- Node WebView 는 일반적으로 인증 헤더를 보내지 않습니다; 노드가 페어링되고 연결된 후, 게이트웨이는 개인 IP 폴백을 허용하여 노드가 URL 에 비밀을 노출하지 않고 canvas/A2UI 를 로드할 수 있도록 합니다.
+- 제공된 HTML 에 라이브 리로드 클라이언트를 삽입합니다.
+- 비어있을 때 시작 `index.html` 을 자동으로 생성합니다.
+- `/__openclaw__/a2ui/` 에서 A2UI 도 제공합니다.
+- 변경 사항은 게이트웨이 재시작이 필요합니다.
+- 대규모 디렉토리 또는 `EMFILE` 오류의 경우 라이브 리로드를 비활성화하세요.
+
+---
+
+## 디스커버리
+
+### mDNS (Bonjour)
+
+```json5
+{
+  discovery: {
+    mdns: {
+      mode: "minimal", // minimal | full | off
+    },
+  },
+}
+```
+
+- `minimal` (기본값): TXT 레코드에서 `cliPath` + `sshPort` 를 생략합니다.
+- `full`: `cliPath` + `sshPort` 를 포함합니다.
+- 호스트 이름은 기본적으로 `openclaw` 입니다. `OPENCLAW_MDNS_HOSTNAME` 으로 재정의하세요.
+
+### 와이드 에어리어 (DNS-SD)
+
+```json5
+{
+  discovery: {
+    wideArea: { enabled: true },
+  },
+}
+```
+
+`~/.openclaw/dns/` 아래에 유니캐스트 DNS-SD 존을 작성합니다. 네트워크 간 디스커버리를 위해 DNS 서버 (CoreDNS 권장) + Tailscale 스플릿 DNS 와 페어링하세요.
+
+설정: `openclaw dns setup --apply`.
+
+---
+
+## 환경
+
+### `env` (인라인 환경 변수)
+
+```json5
+{
+  env: {
+    OPENROUTER_API_KEY: "sk-or-...",
+    vars: {
+      GROQ_API_KEY: "gsk-...",
+    },
+    shellEnv: {
+      enabled: true,
+      timeoutMs: 15000,
+    },
+  },
+}
+```
+
+- 인라인 환경 변수는 프로세스 환경에 키가 없는 경우에만 적용됩니다.
+- `.env` 파일: CWD `.env` + `~/.openclaw/.env` (기존 변수를 재정의하지 않음).
+- `shellEnv`: 로그인 셸 프로필에서 누락된 예상 키를 가져옵니다.
+- 전체 우선순위는 [Environment](/ko-KR/help/environment) 를 참조하세요.
+
+### 환경 변수 대체
+
+구성 문자열에서 `${VAR_NAME}` 으로 환경 변수를 참조합니다:
+
+```json5
+{
+  gateway: {
+    auth: { token: "${OPENCLAW_GATEWAY_TOKEN}" },
+  },
+}
+```
+
+- 대문자 이름만 매치됩니다: `[A-Z_][A-Z0-9_]*`.
+- 누락되거나 비어있는 변수는 구성 로드 시 오류를 발생시킵니다.
+- 리터럴 `${VAR}` 을 위해 `$${VAR}` 로 이스케이프합니다.
+- `$include` 와 함께 작동합니다.
+
+---
+
+## 인증 저장소
+
+```json5
+{
+  auth: {
+    profiles: {
+      "anthropic:me@example.com": { provider: "anthropic", mode: "oauth", email: "me@example.com" },
+      "anthropic:work": { provider: "anthropic", mode: "api_key" },
+    },
+    order: {
+      anthropic: ["anthropic:me@example.com", "anthropic:work"],
+    },
+  },
+}
+```
+
+- 에이전트별 인증 프로필은 `<agentDir>/auth-profiles.json` 에 저장됩니다.
+- `~/.openclaw/credentials/oauth.json` 에서 레거시 OAuth 가져오기.
+- [OAuth](/ko-KR/concepts/oauth) 를 참조하세요.
+
+---
+
+## 로깅
+
+```json5
+{
+  logging: {
+    level: "info",
+    file: "/tmp/openclaw/openclaw.log",
+    consoleLevel: "info",
+    consoleStyle: "pretty", // pretty | compact | json
+    redactSensitive: "tools", // off | tools
+    redactPatterns: ["\\bTOKEN\\b\\s*[=:]\\s*([\"']?)([^\\s\"']+)\\1"],
+  },
+}
+```
+
+- 기본 로그 파일: `/tmp/openclaw/openclaw-YYYY-MM-DD.log`.
+- 안정적인 경로를 위해 `logging.file` 을 설정하세요.
+- `--verbose` 사용 시 `consoleLevel` 이 `debug` 로 올라갑니다.
+
+---
+
+## 마법사
+
+CLI 마법사 (`onboard`, `configure`, `doctor`) 가 작성한 메타데이터:
+
+```json5
+{
+  wizard: {
+    lastRunAt: "2026-01-01T00:00:00.000Z",
+    lastRunVersion: "2026.1.4",
+    lastRunCommit: "abc1234",
+    lastRunCommand: "configure",
+    lastRunMode: "local",
+  },
+}
+```
+
+---
+
+## 정체성
+
+```json5
+{
+  agents: {
+    list: [
+      {
+        id: "main",
+        identity: {
+          name: "Samantha",
+          theme: "helpful sloth",
+          emoji: "🦥",
+          avatar: "avatars/samantha.png",
+        },
+      },
+    ],
+  },
+}
+```
+
+macOS 온보딩 어시스턴트가 작성합니다. 기본값을 유도합니다:
+
+- `identity.emoji` 에서 `messages.ackReaction` (대체: 👀)
+- `identity.name`/`identity.emoji` 에서 `mentionPatterns`
+- `avatar` 허용: 워크스페이스 상대 경로, `http(s)` URL 또는 `data:` URI
+
+---
+
+## 브리지 (레거시, 제거됨)
+
+현재 빌드에는 TCP 브리지가 포함되어 있지 않습니다. 노드는 게이트웨이 WebSocket 을 통해 연결됩니다. `bridge.*` 키는 더 이상 구성 스키마의 일부가 아닙니다 (제거될 때까지 검증 실패; `openclaw doctor --fix` 로 알 수 없는 키를 제거할 수 있습니다).
+
+<Accordion title="레거시 브리지 구성 (역사적 참고)">
+
+```json
+{
+  "bridge": {
+    "enabled": true,
+    "port": 18790,
+    "bind": "tailnet",
+    "tls": {
+      "enabled": true,
+      "autoGenerate": true
+    }
+  }
+}
+```
+
+</Accordion>
+
+---
+
+## Cron
+
+```json5
+{
+  cron: {
+    enabled: true,
+    maxConcurrentRuns: 2,
+    webhook: "https://example.invalid/legacy", // 저장된 notify:true 작업을 위한 사용 중단된 대체
+    webhookToken: "replace-with-dedicated-token", // 아웃바운드 웹훅 인증을 위한 선택적 Bearer 토큰
+    sessionRetention: "24h", // 지속시간 문자열 또는 false
+  },
+}
+```
+
+- `sessionRetention`: 완료된 cron 세션을 정리하기 전에 유지할 기간. 기본값: `24h`.
+- `webhookToken`: cron 웹훅 POST 전달 (`delivery.mode = "webhook"`) 에 사용되는 Bearer 토큰, 생략 시 인증 헤더가 전송되지 않습니다.
+- `webhook`: 사용 중단된 레거시 대체 웹훅 URL (http/https), `notify: true` 가 여전히 있는 저장된 작업에만 사용됩니다.
+
+[Cron Jobs](/ko-KR/automation/cron-jobs) 를 참조하세요.
+
+---
+
+## 미디어 모델 템플릿 변수
+
+`tools.media.*.models[].args` 에서 확장되는 템플릿 플레이스홀더:
+
+| 변수               | 설명                                       |
+| ------------------ | ------------------------------------------ |
+| `{{Body}}`         | 전체 인바운드 메시지 본문                   |
+| `{{RawBody}}`      | 원시 본문 (기록/발신자 래퍼 없음)           |
+| `{{BodyStripped}}` | 그룹 언급이 제거된 본문                     |
+| `{{From}}`         | 발신자 식별자                               |
+| `{{To}}`           | 수신자 식별자                               |
+| `{{MessageSid}}`   | 채널 메시지 ID                              |
+| `{{SessionId}}`    | 현재 세션 UUID                              |
+| `{{IsNewSession}}` | 새 세션 생성 시 `"true"`                    |
+| `{{MediaUrl}}`     | 인바운드 미디어 의사 URL                    |
+| `{{MediaPath}}`    | 로컬 미디어 경로                            |
+| `{{MediaType}}`    | 미디어 유형 (image/audio/document/...)      |
+| `{{Transcript}}`   | 오디오 트랜스크립트                         |
+| `{{Prompt}}`       | CLI 항목에 대한 해결된 미디어 프롬프트       |
+| `{{MaxChars}}`     | CLI 항목에 대한 해결된 최대 출력 문자 수     |
+| `{{ChatType}}`     | `"direct"` 또는 `"group"`                   |
+| `{{GroupSubject}}` | 그룹 주제 (최선의 노력)                     |
+| `{{GroupMembers}}` | 그룹 멤버 미리보기 (최선의 노력)            |
+| `{{SenderName}}`   | 발신자 표시 이름 (최선의 노력)              |
+| `{{SenderE164}}`   | 발신자 전화번호 (최선의 노력)               |
+| `{{Provider}}`     | 프로바이더 힌트 (whatsapp, telegram, discord 등) |
+
+---
+
+## 구성 인클루드 (`$include`)
+
+구성을 여러 파일로 분할합니다:
+
+```json5
+// ~/.openclaw/openclaw.json
+{
+  gateway: { port: 18789 },
+  agents: { $include: "./agents.json5" },
+  broadcast: {
+    $include: ["./clients/mueller.json5", "./clients/schmidt.json5"],
+  },
+}
+```
+
+**병합 동작:**
+
+- 단일 파일: 포함하는 객체를 대체합니다.
+- 파일 배열: 순서대로 깊은 병합 (이후 것이 이전 것을 재정의).
+- 형제 키: 인클루드 후 병합 (인클루드된 값을 재정의).
+- 중첩 인클루드: 최대 10 레벨 깊이.
+- 경로: 상대 (인클루드하는 파일 기준), 절대 또는 `../` 부모 참조.
+- 오류: 누락된 파일, 파싱 오류 및 순환 인클루드에 대한 명확한 메시지.
+
+---
+
+_관련: [구성](/ko-KR/gateway/configuration) · [구성 예제](/ko-KR/gateway/configuration-examples) · [Doctor](/ko-KR/gateway/doctor)_

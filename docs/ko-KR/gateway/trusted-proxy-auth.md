@@ -1,4 +1,3 @@
-```yaml
 ---
 summary: "게이트웨이 인증을 신뢰할 수 있는 리버스 프록시(Pomerium, Caddy, nginx + OAuth)로 위임"
 read_when:
@@ -262,8 +261,7 @@ location / {
 
 ## 관련 자료
 
-- [보안](/gateway/security) — 전체 보안 가이드
-- [구성](/gateway/configuration) — 구성 참조
-- [원격 액세스](/gateway/remote) — 다른 원격 액세스 패턴
-- [Tailscale](/gateway/tailscale) — tailnet 전용 액세스에 대한 더 간단한 대안
-```
+- [보안](/ko-KR/gateway/security) — 전체 보안 가이드
+- [구성](/ko-KR/gateway/configuration) — 구성 참조
+- [원격 액세스](/ko-KR/gateway/remote) — 다른 원격 액세스 패턴
+- [Tailscale](/ko-KR/gateway/tailscale) — tailnet 전용 액세스에 대한 더 간단한 대안

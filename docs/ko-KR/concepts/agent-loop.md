@@ -44,7 +44,7 @@ OpenClaw에서는 루프가 세션당 단일 직렬 실행으로, 모델이 사�
 - 실행은 세션 키(세션 경로)별로 직렬화되며, 선택적으로 글로벌 경로를 통해 직렬화됩니다.
 - 이는 도구/세션 경합을 방지하고 세션 기록을 일관되게 유지합니다.
 - 메시징 채널은 이 경로 시스템에 피드할 수 있는 큐 모드(수집/조정/후속)를 선택할 수 있습니다.
-  [Command Queue](/concepts/queue)를 참조하세요.
+  [Command Queue](/ko-KR/concepts/queue)를 참조하세요.
 
 ## 세션 + 작업 공간 준비
 
@@ -57,7 +57,7 @@ OpenClaw에서는 루프가 세션당 단일 직렬 실행으로, 모델이 사�
 
 - 시스템 프롬프트는 OpenClaw의 기본 프롬프트, 스킬 프롬프트, 부트스트랩 컨텍스트, 실행당 오버라이드로 구성됩니다.
 - 모델별 제한 및 압축 예약 토큰이 강제 적용됩니다.
-- 모델이 보는 것을 확인하려면 [System prompt](/concepts/system-prompt)를 참조하세요.
+- 모델이 보는 것을 확인하려면 [System prompt](/ko-KR/concepts/system-prompt)를 참조하세요.
 
 ## 후크 포인트 (가로챌 수 있는 지점)
 
@@ -72,7 +72,7 @@ OpenClaw에는 두 가지 후크 시스템이 있습니다:
   부트스트랩 컨텍스트 파일을 추가/제거하는 데 사용하세요.
 - **명령 후크**: `/new`, `/reset`, `/stop`, 및 기타 명령 이벤트 (후크 문서 참조).
 
-설정 및 예시는 [Hooks](/automation/hooks)를 참조하세요.
+설정 및 예시는 [Hooks](/ko-KR/automation/hooks)를 참조하세요.
 
 ### 플러그인 후크 (에이전트+게이트웨이 라이프사이클)
 
@@ -89,14 +89,14 @@ OpenClaw에는 두 가지 후크 시스템이 있습니다:
 - **`session_start` / `session_end`**: 세션 라이프사이클 경계.
 - **`gateway_start` / `gateway_stop`**: 게이트웨이 라이프사이클 이벤트.
 
-후크 API 및 등록 세부 정보는 [Plugins](/tools/plugin#plugin-hooks)를 참조하세요.
+후크 API 및 등록 세부 정보는 [Plugins](/ko-KR/tools/plugin#plugin-hooks)를 참조하세요.
 
 ## 스트리밍 + 부분 응답
 
 - 어시스턴트 델타는 pi-agent-core에서 스트리밍되며 `assistant` 이벤트로 출력됩니다.
 - 블록 스트리밍은 `text_end` 또는 `message_end`에서 부분 응답을 출력할 수 있습니다.
 - 추론 스트리밍은 별도의 스트림 또는 블록 응답으로 출력될 수 있습니다.
-- 조각 및 블록 응답 동작에 대해서는 [Streaming](/concepts/streaming)을 참조하세요.
+- 조각 및 블록 응답 동작에 대해서는 [Streaming](/ko-KR/concepts/streaming)을 참조하세요.
 
 ## 도구 실행 + 메시징 도구
 
@@ -119,7 +119,7 @@ OpenClaw에는 두 가지 후크 시스템이 있습니다:
 
 - 자동 압축은 `compaction` 스트림 이벤트를 발생시키고 재시도를 트리거할 수 있습니다.
 - 재시도 시, 메모리 내 버퍼 및 도구 요약이 중복 출력 방지를 위해 리셋됩니다.
-- 압축 파이프라인에 대해서는 [Compaction](/concepts/compaction)을 참조하세요.
+- 압축 파이프라인에 대해서는 [Compaction](/ko-KR/concepts/compaction)을 참조하세요.
 
 ## 이벤트 스트림 (현재)
 

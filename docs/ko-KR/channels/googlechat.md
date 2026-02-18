@@ -248,6 +248,6 @@ openclaw channels status
 
 관련 문서:
 
-- [게이트웨이 구성](/gateway/configuration)
-- [보안](/gateway/security)
-- [리액션](/tools/reactions)
+- [게이트웨이 구성](/ko-KR/gateway/configuration)
+- [보안](/ko-KR/gateway/security)
+- [리액션](/ko-KR/tools/reactions)

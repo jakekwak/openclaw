@@ -9,9 +9,9 @@ title: "노드"
 
 # 노드
 
-**노드**는 게이트웨이 **웹소켓** (운영자와 동일한 포트)에 `role: "node"`로 연결하고 `node.invoke`를 통해 명령어 인터페이스 (`canvas.*`, `camera.*`, `system.*` 등)를 노출하는 동반 장치 (macOS/iOS/Android/헤드리스)입니다. 프로토콜 세부사항: [게이트웨이 프로토콜](/gateway/protocol).
+**노드**는 게이트웨이 **웹소켓** (운영자와 동일한 포트)에 `role: "node"`로 연결하고 `node.invoke`를 통해 명령어 인터페이스 (`canvas.*`, `camera.*`, `system.*` 등)를 노출하는 동반 장치 (macOS/iOS/Android/헤드리스)입니다. 프로토콜 세부사항: [게이트웨이 프로토콜](/ko-KR/gateway/protocol).
 
-이전 전송 프로토콜: [브리지 프로토콜](/gateway/bridge-protocol) (TCP JSONL; 현재 노드에서는 사용 안 함/폐기).
+이전 전송 프로토콜: [브리지 프로토콜](/ko-KR/gateway/bridge-protocol) (TCP JSONL; 현재 노드에서는 사용 안 함/폐기).
 
 macOS는 **노드 모드**로 실행할 수도 있습니다: 상태 표시줄 앱은 게이트웨이의 WS 서버에 연결하고 로컬 캔버스/카메라 명령어를 노드로서 노출합니다 (따라서 `openclaw nodes …`가 이 Mac에 대해 작동함).
 
@@ -19,7 +19,7 @@ macOS는 **노드 모드**로 실행할 수도 있습니다: 상태 표시줄 �
 
 - 노드는 **주변 장치**이며, 게이트웨이가 아닙니다. 게이트웨이 서비스는 실행하지 않습니다.
 - Telegram/WhatsApp/등 메시지는 **게이트웨이**에 도착하며, 노드에 도착하지 않습니다.
-- 문제 해결 안내서: [/nodes/troubleshooting](/nodes/troubleshooting)
+- 문제 해결 안내서: [/nodes/troubleshooting](/ko-KR/nodes/troubleshooting)
 
 ## 페어링 + 상태
 
@@ -131,9 +131,9 @@ openclaw config set tools.exec.node "<id-or-name>"
 
 관련 문서:
 
-- [노드 호스트 CLI](/cli/node)
-- [실행 도구](/tools/exec)
-- [실행 승인](/tools/exec-approvals)
+- [노드 호스트 CLI](/ko-KR/cli/node)
+- [실행 도구](/ko-KR/tools/exec)
+- [실행 승인](/ko-KR/tools/exec-approvals)
 
 ## 명령어 호출
 
@@ -319,7 +319,7 @@ openclaw node run --host <gateway-host> --port 18789
 - 여전히 페어링이 필요합니다 (게이트웨이는 노드 승인 프롬프트를 표시할 것입니다).
 - 노드 호스트는 `~/.openclaw/node.json`에 노드 ID, 토큰, 표시 이름, 게이트웨이 연결 정보를 저장합니다.
 - 실행 승인은 `~/.openclaw/exec-approvals.json`를 통해 로컬에서 적용됩니다
-  (참조 [실행 승인](/tools/exec-approvals)).
+  (참조 [실행 승인](/ko-KR/tools/exec-approvals)).
 - macOS에서 헤드리스 노드 호스트는 동반 앱 실행 호스트가 도달 가능한 경우 이를 선호하며, 앱이 사용 불가능할 땐 로컬 실행으로 대체합니다. `OPENCLAW_NODE_EXEC_HOST=app`을 설정하여 앱 필요를 지정하거나, `OPENCLAW_NODE_EXEC_FALLBACK=0`으로 대체 기능을 비활성화하십시오.
 - 게이트웨이 WS가 TLS를 사용하는 경우 `--tls` / `--tls-fingerprint`를 추가하십시오.
 

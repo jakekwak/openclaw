@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw CLI의 스크립트를 통한 온보딩 및 에이전트 설정"
 read_when:
@@ -153,7 +152,6 @@ openclaw agents add work \
 
 ## 관련 문서
 
-- 온보딩 허브: [온보딩 마법사 (CLI)](/start/wizard)
-- 전체 참조: [CLI 온보딩 참조](/start/wizard-cli-reference)
-- 명령어 참조: [`openclaw onboard`](/cli/onboard)
-```
+- 온보딩 허브: [온보딩 마법사 (CLI)](/ko-KR/start/wizard)
+- 전체 참조: [CLI 온보딩 참조](/ko-KR/start/wizard-cli-reference)
+- 명령어 참조: [`openclaw onboard`](/ko-KR/cli/onboard)

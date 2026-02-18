@@ -219,7 +219,7 @@ OpenClaw는 여러 이름 있는 프로파일 (라우팅 설정)을 지원합니
 
 OpenClaw는 로컬 CDP 릴레이 + Chrome 확장을 통해 **기존 Chrome 탭**을 제어할 수도 있습니다 (별도의 "openclaw" Chrome 인스턴스 아님).
 
-전체 가이드: [Chrome 확장](/tools/chrome-extension)
+전체 가이드: [Chrome 확장](/ko-KR/tools/chrome-extension)
 
 흐름:
 
@@ -338,7 +338,7 @@ docker compose run --rm openclaw-cli \
   node /app/node_modules/playwright-core/cli.js install chromium
 ```
 
-브라우저 다운로드를 영구 저장하려면, `PLAYWRIGHT_BROWSERS_PATH`를 설정하고 (예: `/home/node/.cache/ms-playwright`) `/home/node`가 `OPENCLAW_HOME_VOLUME` 또는 바인드 마운트를 통해 영구 저장되는지 확인하십시오. [Docker](/install/docker)를 참조하십시오.
+브라우저 다운로드를 영구 저장하려면, `PLAYWRIGHT_BROWSERS_PATH`를 설정하고 (예: `/home/node/.cache/ms-playwright`) `/home/node`가 `OPENCLAW_HOME_VOLUME` 또는 바인드 마운트를 통해 영구 저장되는지 확인하십시오. [Docker](/ko-KR/install/docker)를 참조하십시오.
 
 ## 작동 방식 (내부)
 
@@ -446,7 +446,7 @@ docker compose run --rm openclaw-cli \
   - `--format ai` (Playwright가 설치되었을 때 기본값): 숫자 참조를 포함한 AI 스냅샷을 반환합니다 (`aria-ref="<n>"`).
   - `--format aria`: 접근성 트리 (참조 없음; 검사 전용)를 반환합니다.
   - `--efficient` (또는 `--mode efficient`): compact role snapshot preset (interactive + compact + depth + lower maxChars).
-  - 설정 기본값 (도구/CLI 전용): `browser.snapshotDefaults.mode: "efficient"`을 설정하여 호출자가 모드를 전달하지 않을 때 효율적인 스냅샷을 사용할 수 있습니다 (참조 [Gateway 설정](/gateway/configuration#browser-openclaw-managed-browser)).
+  - 설정 기본값 (도구/CLI 전용): `browser.snapshotDefaults.mode: "efficient"`을 설정하여 호출자가 모드를 전달하지 않을 때 효율적인 스냅샷을 사용할 수 있습니다 (참조 [Gateway 설정](/ko-KR/gateway/configuration#browser-openclaw-managed-browser)).
   - 역할 스냅샷 옵션 (`--interactive`, `--compact`, `--depth`, `--selector`)은 `ref=e12` 같은 참조를 가진 역할 기반 스냅샷을 강제 실행합니다.
   - `--frame "<iframe selector>"`는 역할 스냅샷을 iframe으로 범위 지정합니다 (역할 참조 `e12`와 함께 사용).
   - `--interactive`는 평평하고 **상호작용 가능한 요소의** 쉽게 선택할 수 있는 목록을 출력합니다 (동작에 가장 적합).
@@ -548,14 +548,14 @@ JSON에서의 역할 스냅샷은 `refs` 및 작은 `stats` 블록 (lines/chars/
 - openclaw 브라우저 프로파일은 로그인 세션을 포함할 수 있으므로 민감하게 취급해야 합니다.
 - `browser act kind=evaluate` / `openclaw browser evaluate`와 `wait --fn`
   페이지 컨텍스트에서 임의의 JavaScript를 실행합니다. 프롬프트 인젝션이 이를 조작할 수 있습니다. 필요하지 않은 경우 `browser.evaluateEnabled=false`로 비활성화하십시오.
-- 로그인 및 봇 방지 메모 (X/Twitter 등)에 대해서는 [브라우저 로그인 + X/Twitter 게시물](/tools/browser-login)을 참조하십시오.
+- 로그인 및 봇 방지 메모 (X/Twitter 등)에 대해서는 [브라우저 로그인 + X/Twitter 게시물](/ko-KR/tools/browser-login)을 참조하십시오.
 - 게이트웨이/노드 호스트는 사설 (로컬 루프백 또는 tailnet 전용)로 유지하십시오.
 - 원격 CDP 엔드포인트는 강력합니다; 터널링 및 보호하세요.
 
 ## 문제 해결
 
 Linux 전용 문제 (특히 스냅 Chromium) 관련하여,
-[브라우저 문제 해결](/tools/browser-linux-troubleshooting)을 참조하십시오.
+[브라우저 문제 해결](/ko-KR/tools/browser-linux-troubleshooting)을 참조하십시오.
 
 ## 에이전트 도구 및 제어 방법
 

@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "Together AI 설정 (인증 + 모델 선택)"
 read_when:
@@ -62,4 +61,3 @@ Together AI는 다양한 인기 오픈 소스 모델에 대한 접근을 제공�
 - **Kimi K2 Instruct** - 262K 컨텍스트 창을 가진 고성능 모델
 
 모든 모델은 표준 채팅 완료를 지원하며 OpenAI API 호환됩니다.
-```

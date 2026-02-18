@@ -10,13 +10,13 @@ title: "Discord"
 Status: 공식 Discord 게이트웨이를 통해 다이렉트 메시지와 길드 채널을 사용할 준비가 완료되었습니다.
 
 <CardGroup cols={3}>
-  <Card title="Pairing" icon="link" href="/channels/pairing">
+  <Card title="Pairing" icon="link" href="/ko-KR/channels/pairing">
     Discord 다이렉트 메시지는 기본적으로 페어링 모드입니다.
   </Card>
-  <Card title="Slash commands" icon="terminal" href="/tools/slash-commands">
+  <Card title="Slash commands" icon="terminal" href="/ko-KR/tools/slash-commands">
     네이티브 명령어 동작 및 명령어 카탈로그.
   </Card>
-  <Card title="Channel troubleshooting" icon="wrench" href="/channels/troubleshooting">
+  <Card title="Channel troubleshooting" icon="wrench" href="/ko-KR/channels/troubleshooting">
     교차 채널 진단 및 수리 흐름.
   </Card>
 </CardGroup>
@@ -336,7 +336,7 @@ Discord 길드 멤버를 역할 ID에 따라 다른 에이전트로 라우팅하
 - 네이티브 명령어 인증은 일반 메시지 처리와 동일하게 Discord 허용 목록/정책을 사용합니다.
 - 명령어는 Discord UI에 명단이 없는 사용자를 위해 표시될 수 있지만, 실행은 여전히 OpenClaw 인증을 강제하고 "승인되지 않았습니다"라는 응답을 반환합니다.
 
-명령어 카탈로그 및 동작을 보려면 [Slash commands](/tools/slash-commands)를 참고하세요.
+명령어 카탈로그 및 동작을 보려면 [Slash commands](/ko-KR/tools/slash-commands)를 참고하세요.
 
 ## Feature details
 
@@ -552,7 +552,7 @@ Discord 길드 멤버를 역할 ID에 따라 다른 에이전트로 라우팅하
 
     승인 실패 시 알 수 없는 승인 ID로 오류가 발생하면, 승인자 목록 및 기능 활성화를 확인하세요.
 
-    관련 문서: [Exec approvals](/tools/exec-approvals)
+    관련 문서: [Exec approvals](/ko-KR/tools/exec-approvals)
 
   </Accordion>
 </AccordionGroup>
@@ -683,7 +683,7 @@ openclaw logs --follow
 
 Primary reference:
 
-- [Configuration reference - Discord](/gateway/configuration-reference#discord)
+- [Configuration reference - Discord](/ko-KR/gateway/configuration-reference#discord)
 
 High-signal Discord fields:
 
@@ -706,7 +706,7 @@ High-signal Discord fields:
 
 ## Related
 
-- [Pairing](/channels/pairing)
-- [Channel routing](/channels/channel-routing)
-- [Troubleshooting](/channels/troubleshooting)
-- [Slash commands](/tools/slash-commands)
+- [Pairing](/ko-KR/channels/pairing)
+- [Channel routing](/ko-KR/channels/channel-routing)
+- [Troubleshooting](/ko-KR/channels/troubleshooting)
+- [Slash commands](/ko-KR/tools/slash-commands)

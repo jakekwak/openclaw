@@ -33,7 +33,7 @@ You’ll see:
 - `/status` showing `🧹 Compactions: <count>`
 
 Before compaction, OpenClaw can run a **silent memory flush** turn to store
-durable notes to disk. See [Memory](/concepts/memory) for details and config.
+durable notes to disk. See [Memory](/ko-KR/concepts/memory) for details and config.
 
 ## Manual compaction
 
@@ -52,7 +52,7 @@ Context window is model-specific. OpenClaw uses the model definition from the co
 - **Compaction**: summarises and **persists** in JSONL.
 - **Session pruning**: trims old **tool results** only, **in-memory**, per request.
 
-See [/concepts/session-pruning](/concepts/session-pruning) for pruning details.
+See [/concepts/session-pruning](/ko-KR/concepts/session-pruning) for pruning details.
 
 ## Tips
 

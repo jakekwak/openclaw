@@ -1,4 +1,3 @@
-```markdown
 ---
 title: "Cloudflare AI 게이트웨이"
 summary: "Cloudflare AI 게이트웨이 설정 (인증 + 모델 선택)"
@@ -70,4 +69,3 @@ Cloudflare에서 게이트웨이 인증을 활성화한 경우, `cf-aig-authoriz
 ## 환경 관련 주의사항
 
 게이트웨이가 데몬으로 실행되는 경우 (launchd/systemd), `CLOUDFLARE_AI_GATEWAY_API_KEY`가 해당 프로세스에 제공되는지 확인하세요 (예를 들어, `~/.openclaw/.env` 또는 `env.shellEnv`를 통해 설정).
-```

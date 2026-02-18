@@ -351,8 +351,8 @@ echo 'wireless-power off' | sudo tee -a /etc/network/interfaces
 
 ## See Also
 
-- [Linux guide](/platforms/linux) — general Linux setup
-- [DigitalOcean guide](/platforms/digitalocean) — cloud alternative
-- [Hetzner guide](/install/hetzner) — Docker setup
-- [Tailscale](/gateway/tailscale) — remote access
-- [Nodes](/nodes) — pair your laptop/phone with the Pi gateway
+- [Linux guide](/ko-KR/platforms/linux) — general Linux setup
+- [DigitalOcean guide](/ko-KR/platforms/digitalocean) — cloud alternative
+- [Hetzner guide](/ko-KR/install/hetzner) — Docker setup
+- [Tailscale](/ko-KR/gateway/tailscale) — remote access
+- [Nodes](/ko-KR/nodes) — pair your laptop/phone with the Pi gateway

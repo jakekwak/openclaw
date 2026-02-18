@@ -245,6 +245,6 @@ ollama serve
 
 ## 관련 문서
 
-- [Model Providers](/concepts/model-providers) - 모든 프로바이더 개요
-- [Model Selection](/concepts/models) - 모델 선택 방법
-- [Configuration](/gateway/configuration) - 전체 구성 참조
+- [Model Providers](/ko-KR/concepts/model-providers) - 모든 프로바이더 개요
+- [Model Selection](/ko-KR/concepts/models) - 모델 선택 방법
+- [Configuration](/ko-KR/gateway/configuration) - 전체 구성 참조

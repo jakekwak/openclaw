@@ -18,7 +18,7 @@ Venice is our recommended Venice AI setup for privacy-first inference with an op
 - Default: `venice/llama-3.3-70b`
 - Best overall: `venice/claude-opus-45` (Opus remains the strongest)
 
-See [Venice AI](/providers/venice).
+See [Venice AI](/ko-KR/providers/venice).
 
 ## Quick start (two steps)
 
@@ -33,20 +33,20 @@ See [Venice AI](/providers/venice).
 
 ## Supported providers (starter set)
 
-- [OpenAI (API + Codex)](/providers/openai)
-- [Anthropic (API + Claude Code CLI)](/providers/anthropic)
-- [OpenRouter](/providers/openrouter)
-- [Vercel AI Gateway](/providers/vercel-ai-gateway)
-- [Cloudflare AI Gateway](/providers/cloudflare-ai-gateway)
-- [Moonshot AI (Kimi + Kimi Coding)](/providers/moonshot)
-- [Synthetic](/providers/synthetic)
-- [OpenCode Zen](/providers/opencode)
-- [Z.AI](/providers/zai)
-- [GLM models](/providers/glm)
-- [MiniMax](/providers/minimax)
-- [Venice (Venice AI)](/providers/venice)
-- [Amazon Bedrock](/providers/bedrock)
-- [Qianfan](/providers/qianfan)
+- [OpenAI (API + Codex)](/ko-KR/providers/openai)
+- [Anthropic (API + Claude Code CLI)](/ko-KR/providers/anthropic)
+- [OpenRouter](/ko-KR/providers/openrouter)
+- [Vercel AI Gateway](/ko-KR/providers/vercel-ai-gateway)
+- [Cloudflare AI Gateway](/ko-KR/providers/cloudflare-ai-gateway)
+- [Moonshot AI (Kimi + Kimi Coding)](/ko-KR/providers/moonshot)
+- [Synthetic](/ko-KR/providers/synthetic)
+- [OpenCode Zen](/ko-KR/providers/opencode)
+- [Z.AI](/ko-KR/providers/zai)
+- [GLM models](/ko-KR/providers/glm)
+- [MiniMax](/ko-KR/providers/minimax)
+- [Venice (Venice AI)](/ko-KR/providers/venice)
+- [Amazon Bedrock](/ko-KR/providers/bedrock)
+- [Qianfan](/ko-KR/providers/qianfan)
 
 For the full provider catalog (xAI, Groq, Mistral, etc.) and advanced configuration,
-see [Model providers](/concepts/model-providers).
+see [Model providers](/ko-KR/concepts/model-providers).

@@ -310,7 +310,7 @@ Option B:
 
 ## Related docs
 
-- [Exec tool](/tools/exec)
-- [Exec approvals](/tools/exec-approvals)
-- [Nodes](/nodes)
-- [Elevated mode](/tools/elevated)
+- [Exec tool](/ko-KR/tools/exec)
+- [Exec approvals](/ko-KR/tools/exec-approvals)
+- [Nodes](/ko-KR/nodes)
+- [Elevated mode](/ko-KR/tools/elevated)

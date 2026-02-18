@@ -1,4 +1,3 @@
-```markdown
 # OpenClaw 위협 모델 v1.0
 
 ## MITRE ATLAS 프레임워크
@@ -602,4 +601,3 @@ T-EXEC-002 → T-EXFIL-001 → 외부 유출
 ---
 
 _이 위협 모델은 살아있는 문서입니다. 보안 문제는 security@openclaw.ai로 신고하세요._
-```

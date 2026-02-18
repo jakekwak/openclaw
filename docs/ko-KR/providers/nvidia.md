@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw에서 NVIDIA의 OpenAI 호환 API 사용"
 read_when:
@@ -54,4 +53,3 @@ openclaw models set nvidia/nvidia/llama-3.1-nemotron-70b-instruct
 
 - OpenAI 호환 `/v1` 엔드포인트; NVIDIA NGC에서 API 키를 사용하세요.
 - `NVIDIA_API_KEY`가 설정되면 프로바이더가 자동으로 활성화됩니다; 고정 기본값을 사용합니다 (131,072-토큰 컨텍스트 윈도우, 최대 4,096 토큰).
-```

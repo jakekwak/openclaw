@@ -12,8 +12,8 @@ DNS helpers for wide-area discovery (Tailscale + CoreDNS). Currently focused on 
 
 Related:
 
-- Gateway discovery: [Discovery](/gateway/discovery)
-- Wide-area discovery config: [Configuration](/gateway/configuration)
+- Gateway discovery: [Discovery](/ko-KR/gateway/discovery)
+- Wide-area discovery config: [Configuration](/ko-KR/gateway/configuration)
 
 ## Setup
 

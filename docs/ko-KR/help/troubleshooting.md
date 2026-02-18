@@ -81,9 +81,9 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#no-replies](/gateway/troubleshooting#no-replies)
-    - [/channels/troubleshooting](/channels/troubleshooting)
-    - [/channels/pairing](/channels/pairing)
+    - [/gateway/troubleshooting#no-replies](/ko-KR/gateway/troubleshooting#no-replies)
+    - [/channels/troubleshooting](/ko-KR/channels/troubleshooting)
+    - [/channels/pairing](/ko-KR/channels/pairing)
 
   </Accordion>
 
@@ -110,9 +110,9 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#dashboard-control-ui-connectivity](/gateway/troubleshooting#dashboard-control-ui-connectivity)
-    - [/web/control-ui](/web/control-ui)
-    - [/gateway/authentication](/gateway/authentication)
+    - [/gateway/troubleshooting#dashboard-control-ui-connectivity](/ko-KR/gateway/troubleshooting#dashboard-control-ui-connectivity)
+    - [/web/control-ui](/ko-KR/web/control-ui)
+    - [/gateway/authentication](/ko-KR/gateway/authentication)
 
   </Accordion>
 
@@ -139,9 +139,9 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#gateway-service-not-running](/gateway/troubleshooting#gateway-service-not-running)
-    - [/gateway/background-process](/gateway/background-process)
-    - [/gateway/configuration](/gateway/configuration)
+    - [/gateway/troubleshooting#gateway-service-not-running](/ko-KR/gateway/troubleshooting#gateway-service-not-running)
+    - [/gateway/background-process](/ko-KR/gateway/background-process)
+    - [/gateway/configuration](/ko-KR/gateway/configuration)
 
   </Accordion>
 
@@ -168,8 +168,8 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#channel-connected-messages-not-flowing](/gateway/troubleshooting#channel-connected-messages-not-flowing)
-    - [/channels/troubleshooting](/channels/troubleshooting)
+    - [/gateway/troubleshooting#channel-connected-messages-not-flowing](/ko-KR/gateway/troubleshooting#channel-connected-messages-not-flowing)
+    - [/channels/troubleshooting](/ko-KR/channels/troubleshooting)
 
   </Accordion>
 
@@ -198,9 +198,9 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#cron-and-heartbeat-delivery](/gateway/troubleshooting#cron-and-heartbeat-delivery)
-    - [/automation/troubleshooting](/automation/troubleshooting)
-    - [/gateway/heartbeat](/gateway/heartbeat)
+    - [/gateway/troubleshooting#cron-and-heartbeat-delivery](/ko-KR/gateway/troubleshooting#cron-and-heartbeat-delivery)
+    - [/automation/troubleshooting](/ko-KR/automation/troubleshooting)
+    - [/gateway/heartbeat](/ko-KR/gateway/heartbeat)
 
   </Accordion>
 
@@ -228,9 +228,9 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#node-paired-tool-fails](/gateway/troubleshooting#node-paired-tool-fails)
-    - [/nodes/troubleshooting](/nodes/troubleshooting)
-    - [/tools/exec-approvals](/tools/exec-approvals)
+    - [/gateway/troubleshooting#node-paired-tool-fails](/ko-KR/gateway/troubleshooting#node-paired-tool-fails)
+    - [/nodes/troubleshooting](/ko-KR/nodes/troubleshooting)
+    - [/tools/exec-approvals](/ko-KR/tools/exec-approvals)
 
   </Accordion>
 
@@ -257,9 +257,9 @@ flowchart TD
 
     심층 페이지:
 
-    - [/gateway/troubleshooting#browser-tool-fails](/gateway/troubleshooting#browser-tool-fails)
-    - [/tools/browser-linux-troubleshooting](/tools/browser-linux-troubleshooting)
-    - [/tools/chrome-extension](/tools/chrome-extension)
+    - [/gateway/troubleshooting#browser-tool-fails](/ko-KR/gateway/troubleshooting#browser-tool-fails)
+    - [/tools/browser-linux-troubleshooting](/ko-KR/tools/browser-linux-troubleshooting)
+    - [/tools/chrome-extension](/ko-KR/tools/chrome-extension)
 
   </Accordion>
 </AccordionGroup>

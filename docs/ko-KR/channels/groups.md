@@ -64,7 +64,7 @@ otherwise -> reply
 - **다이렉트 메시지**: 전체 도구 (호스트)
 - **그룹**: 샌드박스 격리 + 도구 제한 (Docker)
 
-> 전혀 다른 작업 공간/페르소나가 필요하다면 (“개인”과 “공공”이 절대 혼합되지 않아야 함), 두 번째 에이전트 + 바인딩을 사용하세요. [Multi-Agent Routing](/concepts/multi-agent)을 참조하십시오.
+> 전혀 다른 작업 공간/페르소나가 필요하다면 (“개인”과 “공공”이 절대 혼합되지 않아야 함), 두 번째 에이전트 + 바인딩을 사용하세요. [Multi-Agent Routing](/ko-KR/concepts/multi-agent)을 참조하십시오.
 
 예제 (호스트에서의 다이렉트 메시지, 제한 도구 및 메시징 전용으로 샌드박스된 그룹):
 
@@ -115,9 +115,9 @@ otherwise -> reply
 
 관련 항목:
 
-- 구성 키 및 기본값: [게이트웨이 구성](/gateway/configuration#agentsdefaultssandbox)
-- 도구가 차단된 이유 디버깅: [샌드박스 vs 도구 정책 vs 상승된 권한](/gateway/sandbox-vs-tool-policy-vs-elevated)
-- 바인드 마운트 세부사항: [샌드박스 격리](/gateway/sandboxing#custom-bind-mounts)
+- 구성 키 및 기본값: [게이트웨이 구성](/ko-KR/gateway/configuration#agentsdefaultssandbox)
+- 도구가 차단된 이유 디버깅: [샌드박스 vs 도구 정책 vs 상승된 권한](/ko-KR/gateway/sandbox-vs-tool-policy-vs-elevated)
+- 바인드 마운트 세부사항: [샌드박스 격리](/ko-KR/gateway/sandboxing#custom-bind-mounts)
 
 ## 디스플레이 레이블
 
@@ -370,4 +370,4 @@ otherwise -> reply
 
 ## WhatsApp 특성
 
-WhatsApp 전용 동작 (히스토리 주입, 멘션 처리 세부사항)에 대해서는 [그룹 메시지](/channels/group-messages)를 참조하십시오.
+WhatsApp 전용 동작 (히스토리 주입, 멘션 처리 세부사항)에 대해서는 [그룹 메시지](/ko-KR/channels/group-messages)를 참조하십시오.

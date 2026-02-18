@@ -12,8 +12,8 @@ Manage chat channel accounts and their runtime status on the Gateway.
 
 Related docs:
 
-- Channel guides: [Channels](/channels/index)
-- Gateway configuration: [Configuration](/gateway/configuration)
+- Channel guides: [Channels](/ko-KR/channels/index)
+- Gateway configuration: [Configuration](/ko-KR/gateway/configuration)
 
 ## Common commands
 

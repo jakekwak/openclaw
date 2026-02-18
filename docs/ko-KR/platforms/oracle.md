@@ -296,8 +296,8 @@ tar -czvf openclaw-backup.tar.gz ~/.openclaw ~/.openclaw/workspace
 
 ## 참조
 
-- [Gateway remote access](/gateway/remote) — 다른 원격 접근 패턴
-- [Tailscale integration](/gateway/tailscale) — 전체 Tailscale 문서
-- [Gateway configuration](/gateway/configuration) — 모든 설정 옵션
-- [DigitalOcean guide](/platforms/digitalocean) — 유료 + 쉬운 가입을 원하는 경우
-- [Hetzner guide](/install/hetzner) — 도커 기반 대안
+- [Gateway remote access](/ko-KR/gateway/remote) — 다른 원격 접근 패턴
+- [Tailscale integration](/ko-KR/gateway/tailscale) — 전체 Tailscale 문서
+- [Gateway configuration](/ko-KR/gateway/configuration) — 모든 설정 옵션
+- [DigitalOcean guide](/ko-KR/platforms/digitalocean) — 유료 + 쉬운 가입을 원하는 경우
+- [Hetzner guide](/ko-KR/install/hetzner) — 도커 기반 대안

@@ -12,8 +12,8 @@ title: "hooks"
 
 관련 문서:
 
-- Hooks: [Hooks](/automation/hooks)
-- Plugin hooks: [Plugins](/tools/plugin#plugin-hooks)
+- Hooks: [Hooks](/ko-KR/automation/hooks)
+- Plugin hooks: [Plugins](/ko-KR/tools/plugin#plugin-hooks)
 
 ## 모든 훅 나열하기
 
@@ -251,7 +251,7 @@ openclaw hooks enable session-memory
 
 **출력:** `~/.openclaw/workspace/memory/YYYY-MM-DD-slug.md`
 
-**참조:** [session-memory 문서](/automation/hooks#session-memory)
+**참조:** [session-memory 문서](/ko-KR/automation/hooks#session-memory)
 
 ### bootstrap-extra-files
 
@@ -263,7 +263,7 @@ openclaw hooks enable session-memory
 openclaw hooks enable bootstrap-extra-files
 ```
 
-**참조:** [bootstrap-extra-files 문서](/automation/hooks#bootstrap-extra-files)
+**참조:** [bootstrap-extra-files 문서](/ko-KR/automation/hooks#bootstrap-extra-files)
 
 ### command-logger
 
@@ -290,7 +290,7 @@ cat ~/.openclaw/logs/commands.log | jq .
 grep '"action":"new"' ~/.openclaw/logs/commands.log | jq .
 ```
 
-**참조:** [command-logger 문서](/automation/hooks#command-logger)
+**참조:** [command-logger 문서](/ko-KR/automation/hooks#command-logger)
 
 ### boot-md
 
@@ -304,4 +304,4 @@ grep '"action":"new"' ~/.openclaw/logs/commands.log | jq .
 openclaw hooks enable boot-md
 ```
 
-**참조:** [boot-md 문서](/automation/hooks#boot-md)
+**참조:** [boot-md 문서](/ko-KR/automation/hooks#boot-md)

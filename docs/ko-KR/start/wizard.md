@@ -16,7 +16,7 @@ openclaw onboard
 ```
 
 <Info>
-가장 빠른 첫 번째 채팅: 제어 UI 열기 (채널 설정 불필요). `openclaw dashboard`를 실행하여 브라우저에서 채팅합니다. 문서: [대시보드](/web/dashboard).
+가장 빠른 첫 번째 채팅: 제어 UI 열기 (채널 설정 불필요). `openclaw dashboard`를 실행하여 브라우저에서 채팅합니다. 문서: [대시보드](/ko-KR/web/dashboard).
 </Info>
 
 나중에 재설정을 위해:
@@ -31,7 +31,7 @@ openclaw agents add <name>
 </Note>
 
 <Tip>
-권장 사항: Brave Search API 키를 설정하여 에이전트가 `web_search`를 사용할 수 있도록 하십시오 (`web_fetch`는 키 없이 작동합니다). 가장 쉬운 경로: `openclaw configure --section web`을 사용하여 `tools.web.search.apiKey`를 저장합니다. 문서: [웹 도구](/tools/web).
+권장 사항: Brave Search API 키를 설정하여 에이전트가 `web_search`를 사용할 수 있도록 하십시오 (`web_fetch`는 키 없이 작동합니다). 가장 쉬운 경로: `openclaw configure --section web`을 사용하여 `tools.web.search.apiKey`를 저장합니다. 문서: [웹 도구](/ko-KR/tools/web).
 </Tip>
 
 ## 빠른 시작 대 고급
@@ -89,11 +89,11 @@ openclaw agents add <name>
 
 ## 전체 참조
 
-단계별 세부 사항, 비대화형 스크립팅, Signal 설정, RPC API, 및 마법사가 작성하는 구성 필드의 전체 목록에 대한 자세한 내용은 [마법사 참조](/reference/wizard)를 참조하십시오.
+단계별 세부 사항, 비대화형 스크립팅, Signal 설정, RPC API, 및 마법사가 작성하는 구성 필드의 전체 목록에 대한 자세한 내용은 [마법사 참조](/ko-KR/reference/wizard)를 참조하십시오.
 
 ## 관련 문서
 
-- CLI 명령 참조: [`openclaw onboard`](/cli/onboard)
-- 온보딩 개요: [온보딩 개요](/start/onboarding-overview)
-- macOS 앱 온보딩: [온보딩](/start/onboarding)
-- 에이전트 첫 실행 의식: [에이전트 부트스트래핑](/start/bootstrapping)
+- CLI 명령 참조: [`openclaw onboard`](/ko-KR/cli/onboard)
+- 온보딩 개요: [온보딩 개요](/ko-KR/start/onboarding-overview)
+- macOS 앱 온보딩: [온보딩](/ko-KR/start/onboarding)
+- 에이전트 첫 실행 의식: [에이전트 부트스트래핑](/ko-KR/start/bootstrapping)

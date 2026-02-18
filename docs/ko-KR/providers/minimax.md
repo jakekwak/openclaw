@@ -173,7 +173,7 @@ CLI를 통해 구성:
 - 코딩 계획 사용 API: `https://api.minimaxi.com/v1/api/openplatform/coding_plan/remains` (코딩 계획 키 필요).
 - 정확한 비용 추적이 필요하면 `models.json`의 가격 값을 업데이트하십시오.
 - MiniMax 코딩 계획에 대한 추천 링크 (10% 할인): [https://platform.minimax.io/subscribe/coding-plan?code=DbXJTRClnb&source=link](https://platform.minimax.io/subscribe/coding-plan?code=DbXJTRClnb&source=link)
-- 공급자 규칙에 대한 내용은 [/concepts/model-providers](/concepts/model-providers)를 참조하세요.
+- 공급자 규칙에 대한 내용은 [/concepts/model-providers](/ko-KR/concepts/model-providers)를 참조하세요.
 - `openclaw models list` 및 `openclaw models set minimax/MiniMax-M2.1`를 사용하여 전환.
 
 ## 문제 해결

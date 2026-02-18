@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw에서 많은 모델에 접근할 수 있는 Qianfan의 통합 API 사용"
 read_when:
@@ -32,8 +31,7 @@ openclaw onboard --auth-choice qianfan-api-key
 
 ## 관련 문서
 
-- [OpenClaw 설정](/gateway/configuration)
-- [모델 프로바이더](/concepts/model-providers)
-- [에이전트 설정](/concepts/agent)
+- [OpenClaw 설정](/ko-KR/gateway/configuration)
+- [모델 프로바이더](/ko-KR/concepts/model-providers)
+- [에이전트 설정](/ko-KR/concepts/agent)
 - [Qianfan API 문서](https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb)
-```

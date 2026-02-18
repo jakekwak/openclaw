@@ -177,13 +177,13 @@ macOS 앱이 **원격** 모드로 실행될 때 로컬 UI 컴포넌트가 원격
 - **원격 포트:** 원격 호스트의 동일한 게이트웨이 포트
 - **동작:** 임의의 로컬 포트 없음; 앱은 기존의 건강한 터널을 재사용하거나 필요 시 재시작합니다.
 - **SSH 형식:** `ssh -N -L <local>:127.0.0.1:<remote>` BatchMode + ExitOnForwardFailure + keepalive 옵션 포함
-- **IP 보고:** SSH 터널은 루프백을 사용하므로 게이트웨이는 노드 IP를 `127.0.0.1`로 봅니다. 실제 클라이언트 IP가 표시되기를 원한다면 **Direct (ws/wss)** 전송을 사용하십시오 ([macOS 원격 접속](/platforms/mac/remote) 참조).
+- **IP 보고:** SSH 터널은 루프백을 사용하므로 게이트웨이는 노드 IP를 `127.0.0.1`로 봅니다. 실제 클라이언트 IP가 표시되기를 원한다면 **Direct (ws/wss)** 전송을 사용하십시오 ([macOS 원격 접속](/ko-KR/platforms/mac/remote) 참조).
 
-설정 단계는 [macOS 원격 접속](/platforms/mac/remote)을 참조하십시오. 프로토콜 세부 사항은 [게이트웨이 프로토콜](/gateway/protocol)을 참조하십시오.
+설정 단계는 [macOS 원격 접속](/ko-KR/platforms/mac/remote)을 참조하십시오. 프로토콜 세부 사항은 [게이트웨이 프로토콜](/ko-KR/gateway/protocol)을 참조하십시오.
 
 ## 관련 문서
 
-- [게이트웨이 런북](/gateway)
-- [게이트웨이 (macOS)](/platforms/mac/bundled-gateway)
-- [macOS 권한](/platforms/mac/permissions)
-- [Canvas](/platforms/mac/canvas)
+- [게이트웨이 런북](/ko-KR/gateway)
+- [게이트웨이 (macOS)](/ko-KR/platforms/mac/bundled-gateway)
+- [macOS 권한](/ko-KR/platforms/mac/permissions)
+- [Canvas](/ko-KR/platforms/mac/canvas)

@@ -118,7 +118,7 @@ openclaw.invoke --tool llm-task --action json --args-json '{
 }'
 ```
 
-자세한 내용과 구성 옵션은 [LLM Task](/tools/llm-task) 참조하십시오.
+자세한 내용과 구성 옵션은 [LLM Task](/ko-KR/tools/llm-task) 참조하십시오.
 
 ## Workflow files (.lobster)
 
@@ -310,7 +310,7 @@ Lobster는 세 가지 상태 중 하나로 JSON 봉투를 반환합니다:
 
 ## OpenProse
 
-OpenProse는 Lobster와 잘 어울립니다: `/prose`를 사용하여 다중 에이전트 준비를 조율한 다음, 결정론적 승인을 위한 Lobster 파이프라인을 실행하세요. Prose 프로그램이 Lobster를 필요로 한다면, `tools.subagents.tools`를 통해 하위 에이전트에 대해 `lobster` 도구를 허용하세요. 자세한 내용은 [OpenProse](/prose)를 참조하십시오.
+OpenProse는 Lobster와 잘 어울립니다: `/prose`를 사용하여 다중 에이전트 준비를 조율한 다음, 결정론적 승인을 위한 Lobster 파이프라인을 실행하세요. Prose 프로그램이 Lobster를 필요로 한다면, `tools.subagents.tools`를 통해 하위 에이전트에 대해 `lobster` 도구를 허용하세요. 자세한 내용은 [OpenProse](/ko-KR/prose)를 참조하십시오.
 
 ## Safety
 
@@ -328,8 +328,8 @@ OpenProse는 Lobster와 잘 어울립니다: `/prose`를 사용하여 다중 에
 
 ## Learn more
 
-- [플러그인](/tools/plugin)
-- [플러그인 도구 제작](/plugins/agent-tools)
+- [플러그인](/ko-KR/tools/plugin)
+- [플러그인 도구 제작](/ko-KR/plugins/agent-tools)
 
 ## Case study: community workflows
 

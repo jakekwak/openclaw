@@ -12,9 +12,9 @@ title: "nodes"
 
 관련 항목:
 
-- 노드 개요: [Nodes](/nodes)
-- 카메라: [Camera nodes](/nodes/camera)
-- 이미지: [Image nodes](/nodes/images)
+- 노드 개요: [Nodes](/ko-KR/nodes)
+- 카메라: [Camera nodes](/ko-KR/nodes/camera)
+- 이미지: [Image nodes](/ko-KR/nodes/images)
 
 일반 옵션:
 

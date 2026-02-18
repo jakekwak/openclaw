@@ -25,7 +25,7 @@ openclaw plugins install @openclaw/twitch
 openclaw plugins install ./extensions/twitch
 ```
 
-자세한 내용: [플러그인](/tools/plugin)
+자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 빠른 설정(초보자)
 
@@ -146,7 +146,7 @@ OPENCLAW_TWITCH_ACCESS_TOKEN=oauth:abc123...
 
 ## 다중 계정 지원
 
-각 계정별 토큰으로 `channels.twitch.accounts`를 사용하세요. 공유 패턴에 대한 자세한 내용은 [`gateway/configuration`](/gateway/configuration)를 참조하세요.
+각 계정별 토큰으로 `channels.twitch.accounts`를 사용하세요. 공유 패턴에 대한 자세한 내용은 [`gateway/configuration`](/ko-KR/gateway/configuration)를 참조하세요.
 
 예시 (두 채널에 하나의 봇 계정):
 

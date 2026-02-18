@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw 게이트웨이를 GCP Compute Engine VM (Docker)에서 24/7 실행(내구성 상태 함께)"
 read_when:
@@ -33,7 +32,7 @@ The Gateway can be accessed via:
 
 This guide uses Debian on GCP Compute Engine.
 Ubuntu also works; map packages accordingly.
-For the generic Docker flow, see [Docker](/install/docker).
+For the generic Docker flow, see [Docker](/ko-KR/install/docker).
 
 ---
 
@@ -496,8 +495,7 @@ See [https://cloud.google.com/iam/docs/understanding-roles](https://cloud.google
 
 ## Next steps
 
-- Set up messaging channels: [Channels](/channels)
-- Pair local devices as nodes: [Nodes](/nodes)
-- Configure the Gateway: [Gateway configuration](/gateway/configuration)
+- Set up messaging channels: [Channels](/ko-KR/channels)
+- Pair local devices as nodes: [Nodes](/ko-KR/nodes)
+- Configure the Gateway: [Gateway configuration](/ko-KR/gateway/configuration)
 
-```

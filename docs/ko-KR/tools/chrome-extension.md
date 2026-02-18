@@ -173,6 +173,6 @@ Recommendations:
 
 Related:
 
-- Browser tool overview: [Browser](/tools/browser)
-- Security audit: [Security](/gateway/security)
-- Tailscale setup: [Tailscale](/gateway/tailscale)
+- Browser tool overview: [Browser](/ko-KR/tools/browser)
+- Security audit: [Security](/ko-KR/gateway/security)
+- Tailscale setup: [Tailscale](/ko-KR/gateway/tailscale)

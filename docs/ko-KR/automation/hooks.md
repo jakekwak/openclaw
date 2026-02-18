@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "후크: 명령어와 라이프사이클 이벤트에 대한 이벤트 기반 자동화"
 read_when:
@@ -16,9 +15,9 @@ title: "후크"
 후크는 특정 상황에서 실행되도록 설계된 작은 스크립트입니다. 두 가지 종류가 있습니다:
 
 - **후크** (이 페이지): 에이전트 이벤트가 발생할 때, 예를 들면 `/new`, `/reset`, `/stop` 또는 라이프사이클 이벤트 발생 시 게이트웨이 내부에서 실행됩니다.
-- **웹후크**: 외부 HTTP 웹후크로 다른 시스템이 OpenClaw에서 작업을 트리거할 수 있도록 합니다. [Webhook Hooks](/automation/webhook)를 참조하거나 Gmail 헬퍼 명령어 용으로 `openclaw webhooks`를 사용할 수 있습니다.
+- **웹후크**: 외부 HTTP 웹후크로 다른 시스템이 OpenClaw에서 작업을 트리거할 수 있도록 합니다. [Webhook Hooks](/ko-KR/automation/webhook)를 참조하거나 Gmail 헬퍼 명령어 용으로 `openclaw webhooks`를 사용할 수 있습니다.
 
-후크는 또한 플러그인 내에 번들로 포함될 수 있습니다; [플러그인](/tools/plugin#plugin-hooks)을 참조하세요.
+후크는 또한 플러그인 내에 번들로 포함될 수 있습니다; [플러그인](/ko-KR/tools/plugin#plugin-hooks)을 참조하세요.
 
 일반적인 용도:
 
@@ -247,7 +246,7 @@ export default myHandler;
 
 이 후크는 이벤트 스트림 리스너가 아니며, 플러그인이 OpenClaw가 저장하기 전에 도구 결과를 동기적으로 조정할 수 있도록 합니다.
 
-- **`tool_result_persist`**: 세션 전사에 도구 결과가 기록되기 전에 도구 결과 변환. 동기적이어야 하며, 업데이트된 도구 결과 페이로드를 반환하거나 `undefined`를 반환하여 그대로 유지할 수 있습니다. [에이전트 루프](/concepts/agent-loop)를 참조하세요.
+- **`tool_result_persist`**: 세션 전사에 도구 결과가 기록되기 전에 도구 결과 변환. 동기적이어야 하며, 업데이트된 도구 결과 페이로드를 반환하거나 `undefined`를 반환하여 그대로 유지할 수 있습니다. [에이전트 루프](/ko-KR/concepts/agent-loop)를 참조하세요.
 
 ### 향후 이벤트
 
@@ -921,8 +920,7 @@ node -e "import('./path/to/handler.ts').then(console.log)"
 
 ## 추가 참고 자료
 
-- [CLI 참조: 후크](/cli/hooks)
+- [CLI 참조: 후크](/ko-KR/cli/hooks)
 - [번들 후크 README](https://github.com/openclaw/openclaw/tree/main/src/hooks/bundled)
-- [Webhook Hooks](/automation/webhook)
-- [구성](/gateway/configuration#hooks)
-```
+- [Webhook Hooks](/ko-KR/automation/webhook)
+- [구성](/ko-KR/gateway/configuration#hooks)

@@ -95,7 +95,7 @@ title: "오디오 및 음성 노트"
 
 - 프로바이더 인증은 표준 모델 인증 순서를 따릅니다 (인증 프로파일, 환경 변수, `models.providers.*.apiKey`).
 - `provider: "deepgram"`을 사용할 때 Deepgram은 `DEEPGRAM_API_KEY`를 사용합니다.
-- Deepgram 설정 세부 사항: [Deepgram (audio transcription)](/providers/deepgram).
+- Deepgram 설정 세부 사항: [Deepgram (audio transcription)](/ko-KR/providers/deepgram).
 - 오디오 프로바이더는 `tools.media.audio`를 통해 `baseUrl`, `headers`, `providerOptions`를 재정의할 수 있습니다.
 - 기본 크기 제한은 20MB (`tools.media.audio.maxBytes`)입니다. 크기 초과 오디오 파일은 해당 모델에서 건너뛰고 다음 항목이 시도됩니다.
 - 오디오에 대한 기본 `maxChars`는 **설정되지 않음** (전체 전사). 출력이 잘리도록 `tools.media.audio.maxChars` 또는 항목별 `maxChars`를 설정하십시오.

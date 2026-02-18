@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw 플러그인/확장: 디바이스 검색, 설정 및 안전성"
 read_when:
@@ -33,25 +32,25 @@ Npm 사양은 **레지스트리 전용**입니다 (패키지 이름 + 선택적 
 
 3. 게이트웨이를 재시작한 다음 `plugins.entries.<id>.config`에서 구성합니다.
 
-구체적인 플러그인 예시는 [Voice Call](/plugins/voice-call)을 참조하세요.
+구체적인 플러그인 예시는 [Voice Call](/ko-KR/plugins/voice-call)을 참조하세요.
 
 ## 사용 가능한 공식 플러그인
 
 - Microsoft Teams는 2026.1.15부터 플러그인으로만 제공됩니다. Teams를 사용한다면 `@openclaw/msteams`를 설치하세요.
 - Memory (Core) — 번들 메모리 검색 플러그인 (`plugins.slots.memory`를 통해 기본 활성화)
 - Memory (LanceDB) — 번들 장기 메모리 플러그인 (자동 회수/캡처; `plugins.slots.memory = "memory-lancedb"`로 설정)
-- [Voice Call](/plugins/voice-call) — `@openclaw/voice-call`
-- [Zalo Personal](/plugins/zalouser) — `@openclaw/zalouser`
-- [Matrix](/channels/matrix) — `@openclaw/matrix`
-- [Nostr](/channels/nostr) — `@openclaw/nostr`
-- [Zalo](/channels/zalo) — `@openclaw/zalo`
-- [Microsoft Teams](/channels/msteams) — `@openclaw/msteams`
+- [Voice Call](/ko-KR/plugins/voice-call) — `@openclaw/voice-call`
+- [Zalo Personal](/ko-KR/plugins/zalouser) — `@openclaw/zalouser`
+- [Matrix](/ko-KR/channels/matrix) — `@openclaw/matrix`
+- [Nostr](/ko-KR/channels/nostr) — `@openclaw/nostr`
+- [Zalo](/ko-KR/channels/zalo) — `@openclaw/zalo`
+- [Microsoft Teams](/ko-KR/channels/msteams) — `@openclaw/msteams`
 - Google Antigravity OAuth (프로바이더 인증) — `google-antigravity-auth`로 번들화 (기본 비활성화)
 - Gemini CLI OAuth (프로바이더 인증) — `google-gemini-cli-auth`로 번들화 (기본 비활성화)
 - Qwen OAuth (프로바이더 인증) — `qwen-portal-auth`로 번들화 (기본 비활성화)
 - Copilot Proxy (프로바이더 인증) — 로컬 VS Code Copilot Proxy 브릿지; 내장 `github-copilot` 디바이스 로그인과 다름 (번들, 기본 비활성화)
 
-OpenClaw 플러그인은 **jiti를 통해** 런타임에 로드되는 **TypeScript 모듈**입니다. **설정 검증은 플러그인 코드를 실행하지 않습니다**; 대신 플러그인 매니페스트와 JSON 스키마를 사용합니다. [Plugin manifest](/plugins/manifest)를 참조하세요.
+OpenClaw 플러그인은 **jiti를 통해** 런타임에 로드되는 **TypeScript 모듈**입니다. **설정 검증은 플러그인 코드를 실행하지 않습니다**; 대신 플러그인 매니페스트와 JSON 스키마를 사용합니다. [Plugin manifest](/ko-KR/plugins/manifest)를 참조하세요.
 
 플러그인은 다음을 등록할 수 있습니다:
 
@@ -64,7 +63,7 @@ OpenClaw 플러그인은 **jiti를 통해** 런타임에 로드되는 **TypeScri
 - **스킬** (플러그인 매니페스트 내 `skills` 디렉터리를 나열하여)
 - **자동 응답 명령어** (AI 에이전트를 호출하지 않고 실행됨)
 
-플러그인은 게이트웨이와 **동일한 프로세스 내**에서 실행되므로 신뢰할 수 있는 코드로 취급해야 합니다. 도구 작성 가이드: [Plugin agent tools](/plugins/agent-tools).
+플러그인은 게이트웨이와 **동일한 프로세스 내**에서 실행되므로 신뢰할 수 있는 코드로 취급해야 합니다. 도구 작성 가이드: [Plugin agent tools](/ko-KR/plugins/agent-tools).
 
 ## 런타임 도우미
 
@@ -483,7 +482,7 @@ export default function (api) {
 
 ### 에이전트 도구
 
-전용 가이드를 참조하세요: [Plugin agent tools](/plugins/agent-tools).
+전용 가이드를 참조하세요: [Plugin agent tools](/ko-KR/plugins/agent-tools).
 
 ### 게이트웨이 RPC 메소드 등록하기
 
@@ -618,7 +617,7 @@ export default function (api) {
 - 설정 (twilio): `provider: "twilio"` + `twilio.accountSid/authToken/from` (선택적 `statusCallbackUrl`, `twimlUrl`)
 - 설정 (dev): `provider: "log"` (네트워크 없음)
 
-설정 및 사용법에 대한 자세한 내용은 [Voice Call](/plugins/voice-call) 및 `extensions/voice-call/README.md`를 참조하십시오.
+설정 및 사용법에 대한 자세한 내용은 [Voice Call](/ko-KR/plugins/voice-call) 및 `extensions/voice-call/README.md`를 참조하십시오.
 
 ## 안전성 주의사항
 
@@ -634,4 +633,3 @@ export default function (api) {
 
 - 리포 내 플러그인은 `src/**` 아래 Vitest 테스트를 유지할 수 있습니다 (예: `src/plugins/voice-call.plugin.test.ts`).
 - 별도로 게시된 플러그인은 자체 CI (lint/build/test)를 실행하고 `openclaw.extensions`가 빌드된 엔트리 포인트 (`dist/index.js`)를 가리키는지를 검증해야 합니다.
-```

@@ -11,8 +11,8 @@ Manage isolated agents (workspaces + auth + routing).
 
 Related:
 
-- Multi-agent routing: [Multi-Agent Routing](/concepts/multi-agent)
-- Agent workspace: [Agent workspace](/concepts/agent-workspace)
+- Multi-agent routing: [Multi-Agent Routing](/ko-KR/concepts/multi-agent)
+- Agent workspace: [Agent workspace](/ko-KR/concepts/agent-workspace)
 
 ## Examples
 

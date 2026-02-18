@@ -75,7 +75,7 @@ Anthropic API 키 인증을 사용할 때, OpenClaw는 모든 Anthropic 모델�
 
 새로운 `cacheRetention` 매개변수로의 마이그레이션을 권장합니다.
 
-OpenClaw에는 Anthropic API 요청을 위한 `extended-cache-ttl-2025-04-11` 베타 플래그가 포함되어 있습니다. 제공자 헤더를 재정의할 경우 이를 유지하세요(자세한 내용은 [/gateway/configuration](/gateway/configuration) 참조).
+OpenClaw에는 Anthropic API 요청을 위한 `extended-cache-ttl-2025-04-11` 베타 플래그가 포함되어 있습니다. 제공자 헤더를 재정의할 경우 이를 유지하세요(자세한 내용은 [/gateway/configuration](/ko-KR/gateway/configuration) 참조).
 
 ## Option B: Claude 설정 토큰
 
@@ -119,8 +119,8 @@ openclaw onboard --auth-choice setup-token
 ## 주의사항
 
 - `claude setup-token`으로 설정 토큰을 생성하고 붙여넣거나, 게이트웨이 호스트에서 `openclaw models auth setup-token`을 실행하세요.
-- Claude 구독에서 “OAuth token refresh failed …” 메시지가 표시되면, 설정 토큰으로 다시 인증하세요. [/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription](/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription)를 참조하세요.
-- 인증 세부사항 및 재사용 규칙은 [/concepts/oauth](/concepts/oauth)에 있습니다.
+- Claude 구독에서 “OAuth token refresh failed …” 메시지가 표시되면, 설정 토큰으로 다시 인증하세요. [/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription](/ko-KR/gateway/troubleshooting#oauth-token-refresh-failed-anthropic-claude-subscription)를 참조하세요.
+- 인증 세부사항 및 재사용 규칙은 [/concepts/oauth](/ko-KR/concepts/oauth)에 있습니다.
 
 ## 문제 해결
 
@@ -144,4 +144,4 @@ openclaw onboard --auth-choice setup-token
 - `openclaw models status --json`에서 `auth.unusableProfiles`을 확인하세요.
 - 다른 Anthropic 프로파일을 추가하거나 쿨다운을 기다리세요.
 
-추가 정보: [/gateway/troubleshooting](/gateway/troubleshooting) 및 [/help/faq](/help/faq).
+추가 정보: [/gateway/troubleshooting](/ko-KR/gateway/troubleshooting) 및 [/help/faq](/ko-KR/help/faq).

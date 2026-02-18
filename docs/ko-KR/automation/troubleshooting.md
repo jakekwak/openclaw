@@ -116,7 +116,7 @@ openclaw logs --follow
 
 관련 문서:
 
-- [/automation/cron-jobs](/automation/cron-jobs)
-- [/gateway/heartbeat](/gateway/heartbeat)
-- [/automation/cron-vs-heartbeat](/automation/cron-vs-heartbeat)
-- [/concepts/timezone](/concepts/timezone)
+- [/automation/cron-jobs](/ko-KR/automation/cron-jobs)
+- [/gateway/heartbeat](/ko-KR/gateway/heartbeat)
+- [/automation/cron-vs-heartbeat](/ko-KR/automation/cron-vs-heartbeat)
+- [/concepts/timezone](/ko-KR/concepts/timezone)

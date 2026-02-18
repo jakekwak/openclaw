@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "SSH 터널 (게이트웨이 WS)과 tailnets을 사용한 원격 액세스"
 read_when:
@@ -29,7 +28,7 @@ title: "원격 액세스"
 
 - **최고의 UX:** `gateway.bind: "loopback"`을 유지하고 **Tailscale Serve**를 사용하여 제어 UI를 제공합니다.
 - **대체 옵션:** 액세스가 필요한 모든 머신에서 루프백 + SSH 터널을 유지합니다.
-- **예시:** [exe.dev](/install/exe-dev) (쉬운 VM) 또는 [Hetzner](/install/hetzner) (생산용 VPS).
+- **예시:** [exe.dev](/ko-KR/install/exe-dev) (쉬운 VM) 또는 [Hetzner](/ko-KR/install/hetzner) (생산용 VPS).
 
 자주 잠에 드는 노트북에도 에이전트를 항상 켜 두고 싶을 때 이상적입니다.
 
@@ -40,7 +39,7 @@ title: "원격 액세스"
 - macOS 앱의 **원격 SSH** 모드(Settings → General → “OpenClaw 실행”)를 사용하세요.
 - 앱이 터널을 열고 관리하므로, WebChat + 상태 검사가 "그냥 작동합니다."
 
-절차서: [macOS 원격 액세스](/platforms/mac/remote).
+절차서: [macOS 원격 액세스](/ko-KR/platforms/mac/remote).
 
 ### 3) 노트북이 게이트웨이를 실행하고, 다른 머신에서 원격 액세스
 
@@ -49,7 +48,7 @@ title: "원격 액세스"
 - 다른 머신에서 노트북으로 SSH 터널을 생성하거나,
 - 제어 UI를 Tailscale Serve로 제공하고 게이트웨이를 루프백 전용으로 유지합니다.
 
-가이드: [Tailscale](/gateway/tailscale) 및 [웹 개요](/web).
+가이드: [Tailscale](/ko-KR/gateway/tailscale) 및 [웹 개요](/ko-KR/web).
 
 ## 명령 흐름 (어디서 무엇이 실행되는지)
 
@@ -64,7 +63,7 @@ title: "원격 액세스"
 
 주의사항:
 
-- **노드는 게이트웨이 서비스를 실행하지 않습니다.** 의도적으로 격리된 프로파일을 실행하지 않는 한, 각 호스트 당 하나의 게이트웨이만 실행해야 합니다 ([여러 게이트웨이](/gateway/multiple-gateways) 참조).
+- **노드는 게이트웨이 서비스를 실행하지 않습니다.** 의도적으로 격리된 프로파일을 실행하지 않는 한, 각 호스트 당 하나의 게이트웨이만 실행해야 합니다 ([여러 게이트웨이](/ko-KR/gateway/multiple-gateways) 참조).
 - macOS 앱의 "노드 모드"는 단지 게이트웨이 웹소켓을 통한 노드 클라이언트입니다.
 
 ## SSH 터널 (CLI + 도구)
@@ -112,7 +111,7 @@ WebChat은 더 이상 별도의 HTTP 포트를 사용하지 않습니다. SwiftU
 
 macOS 메뉴 바 앱은 동일한 설정을 처음부터 끝까지 수행할 수 있습니다 (원격 상태 검사, WebChat 및 Voice Wake 전달).
 
-절차서: [macOS 원격 액세스](/platforms/mac/remote).
+절차서: [macOS 원격 액세스](/ko-KR/platforms/mac/remote).
 
 ## 보안 규칙 (원격/VPN)
 
@@ -126,5 +125,4 @@ macOS 메뉴 바 앱은 동일한 설정을 처음부터 끝까지 수행할 수
   토큰/비밀번호를 원하면 이를 'false'로 설정하세요.
 - 브라우저 제어는 운영자 접근처럼 다루십시오: tailnet 전용 + 의도적인 노드 페어링.
 
-자세히 알아보기: [보안](/gateway/security).
-```
+자세히 알아보기: [보안](/ko-KR/gateway/security).

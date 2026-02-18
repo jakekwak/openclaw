@@ -105,8 +105,8 @@ openclaw logs --follow
 
 관련 항목:
 
-- [/nodes/index](/nodes/index)
-- [/nodes/camera](/nodes/camera)
-- [/nodes/location-command](/nodes/location-command)
-- [/tools/exec-approvals](/tools/exec-approvals)
-- [/gateway/pairing](/gateway/pairing)
+- [/nodes/index](/ko-KR/nodes/index)
+- [/nodes/camera](/ko-KR/nodes/camera)
+- [/nodes/location-command](/ko-KR/nodes/location-command)
+- [/tools/exec-approvals](/ko-KR/tools/exec-approvals)
+- [/gateway/pairing](/ko-KR/gateway/pairing)

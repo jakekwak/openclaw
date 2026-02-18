@@ -1,4 +1,3 @@
-```yaml
 ---
 summary: "에이전트별 샌드박스 + 도구 제한, 우선순위 및 예제"
 title: 다중 에이전트 샌드박스 & 도구
@@ -32,8 +31,8 @@ status: active
 자격 증명은 에이전트 간에 공유되지 않습니다. 절대로 `agentDir`를 여러 에이전트에 걸쳐 재사용하지 마세요.
 자격 증명을 공유하려면 `auth-profiles.json`을 다른 에이전트의 `agentDir`에 복사하십시오.
 
-런타임에서 샌드박스 격리가 어떻게 동작하는지에 대해서는 [샌드박스 격리](/gateway/sandboxing)를 참조하세요.
-"왜 차단되었는지"에 대해 디버그하려면 [샌드박스 vs 도구 정책 vs 고급](/gateway/sandbox-vs-tool-policy-vs-elevated) 및 `openclaw sandbox explain`을 참조하세요.
+런타임에서 샌드박스 격리가 어떻게 동작하는지에 대해서는 [샌드박스 격리](/ko-KR/gateway/sandboxing)를 참조하세요.
+"왜 차단되었는지"에 대해 디버그하려면 [샌드박스 vs 도구 정책 vs 고급](/ko-KR/gateway/sandbox-vs-tool-policy-vs-elevated) 및 `openclaw sandbox explain`을 참조하세요.
 
 ---
 
@@ -392,7 +391,6 @@ agents.list[].sandbox.prune.* > agents.defaults.sandbox.prune.*
 
 ## 추가 자료
 
-- [다중 에이전트 라우팅](/concepts/multi-agent)
-- [샌드박스 설정](/gateway/configuration#agentsdefaults-sandbox)
-- [세션 관리](/concepts/session)
-```
+- [다중 에이전트 라우팅](/ko-KR/concepts/multi-agent)
+- [샌드박스 설정](/ko-KR/gateway/configuration#agentsdefaults-sandbox)
+- [세션 관리](/ko-KR/concepts/session)

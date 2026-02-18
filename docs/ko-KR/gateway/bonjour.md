@@ -160,5 +160,5 @@ Bonjour/DNS‑SD는 종종 서비스 인스턴스 이름의 바이트를 소수 
 
 ## 관련 문서
 
-- 디스커버리 정책 및 전송 선택: [디바이스 검색](/gateway/discovery)
-- 노드 연결 + 승인: [게이트웨이 연결](/gateway/pairing)
+- 디스커버리 정책 및 전송 선택: [디바이스 검색](/ko-KR/gateway/discovery)
+- 노드 연결 + 승인: [게이트웨이 연결](/ko-KR/gateway/pairing)

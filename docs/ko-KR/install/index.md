@@ -9,11 +9,11 @@ title: "설치하기"
 
 # Install
 
-[시작하기](/start/getting-started)를 이미 완료하셨나요? 그렇다면 준비가 완료되었습니다. 이 페이지는 대체 설치 방법, 플랫폼별 지침 및 유지보수를 위한 것입니다.
+[시작하기](/ko-KR/start/getting-started)를 이미 완료하셨나요? 그렇다면 준비가 완료되었습니다. 이 페이지는 대체 설치 방법, 플랫폼별 지침 및 유지보수를 위한 것입니다.
 
 ## 시스템 요구 사항
 
-- **[Node 22+](/install/node)** ([설치 방법](#install-methods) 스크립트에 의해 설치 가능)
+- **[Node 22+](/ko-KR/install/node)** ([설치 방법](#install-methods) 스크립트에 의해 설치 가능)
 - macOS, Linux 또는 Windows
 - 소스에서 빌드할 경우에만 `pnpm`
 
@@ -61,7 +61,7 @@ Windows에서 OpenClaw를 실행하려면 [WSL2](https://learn.microsoft.com/en-
       </Tab>
     </Tabs>
 
-    모든 플래그, 환경 변수 및 CI/자동화 옵션에 대한 자세한 내용은 [Installer internals](/install/installer)를 참조하세요.
+    모든 플래그, 환경 변수 및 CI/자동화 옵션에 대한 자세한 내용은 [Installer internals](/ko-KR/install/installer)를 참조하세요.
 
   </Accordion>
 
@@ -131,7 +131,7 @@ Windows에서 OpenClaw를 실행하려면 [WSL2](https://learn.microsoft.com/en-
       </Step>
     </Steps>
 
-    더 깊은 개발 워크플로우는 [Setup](/start/setup)를 참조하십시오.
+    더 깊은 개발 워크플로우는 [Setup](/ko-KR/start/setup)를 참조하십시오.
 
   </Accordion>
 </AccordionGroup>
@@ -139,19 +139,19 @@ Windows에서 OpenClaw를 실행하려면 [WSL2](https://learn.microsoft.com/en-
 ## 다른 설치 방법
 
 <CardGroup cols={2}>
-  <Card title="Docker" href="/install/docker" icon="container">
+  <Card title="Docker" href="/ko-KR/install/docker" icon="container">
     컨테이너화된 배포 또는 헤드리스 배포.
   </Card>
-  <Card title="Podman" href="/install/podman" icon="container">
+  <Card title="Podman" href="/ko-KR/install/podman" icon="container">
     루트리스 컨테이너: `setup-podman.sh`를 한 번 실행한 후 시작 스크립트를 실행하세요.
   </Card>
-  <Card title="Nix" href="/install/nix" icon="snowflake">
+  <Card title="Nix" href="/ko-KR/install/nix" icon="snowflake">
     Nix를 통한 선언적 설치.
   </Card>
-  <Card title="Ansible" href="/install/ansible" icon="server">
+  <Card title="Ansible" href="/ko-KR/install/ansible" icon="server">
     자동화된 플릿 프로비저닝.
   </Card>
-  <Card title="Bun" href="/install/bun" icon="zap">
+  <Card title="Bun" href="/ko-KR/install/bun" icon="zap">
     Bun 런타임을 통한 CLI 전용 사용.
   </Card>
 </CardGroup>
@@ -172,7 +172,7 @@ openclaw dashboard      # 브라우저 UI 열기
 - `OPENCLAW_STATE_DIR` 가변 상태 위치
 - `OPENCLAW_CONFIG_PATH` 구성 파일 위치
 
-우선순위 및 자세한 내용에 대해 [Environment vars](/help/environment)를 참조하세요.
+우선순위 및 자세한 내용에 대해 [Environment vars](/ko-KR/help/environment)를 참조하세요.
 
 ## 문제 해결: `openclaw`를 찾을 수 없음
 
@@ -202,13 +202,13 @@ Windows에서는 `npm prefix -g`의 출력을 PATH에 추가하세요.
 ## 업데이트 / 제거
 
 <CardGroup cols={3}>
-  <Card title="업데이트" href="/install/updating" icon="refresh-cw">
+  <Card title="업데이트" href="/ko-KR/install/updating" icon="refresh-cw">
     OpenClaw를 최신 상태로 유지합니다.
   </Card>
-  <Card title="마이그레이션" href="/install/migrating" icon="arrow-right">
+  <Card title="마이그레이션" href="/ko-KR/install/migrating" icon="arrow-right">
     새 머신으로 이동합니다.
   </Card>
-  <Card title="제거" href="/install/uninstall" icon="trash-2">
+  <Card title="제거" href="/ko-KR/install/uninstall" icon="trash-2">
     OpenClaw를 완전히 제거합니다.
   </Card>
 </CardGroup>

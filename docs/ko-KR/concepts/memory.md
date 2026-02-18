@@ -23,7 +23,7 @@ OpenClaw 메모리는 **에이전트 작업 공간의 순수한 Markdown**입니
   - 큐레이션된 장기 메모리.
   - **주요 개인 세션에서만 로드** (그룹 상황에서는 절대 아님).
 
-이 파일들은 작업 공간 (`agents.defaults.workspace`, 기본 `~/.openclaw/workspace`) 내에 위치합니다. 전체 레이아웃은 [Agent workspace](/concepts/agent-workspace)에서 확인하세요.
+이 파일들은 작업 공간 (`agents.defaults.workspace`, 기본 `~/.openclaw/workspace`) 내에 위치합니다. 전체 레이아웃은 [Agent workspace](/ko-KR/concepts/agent-workspace)에서 확인하세요.
 
 ## 메모리를 쓸 때
 
@@ -65,7 +65,7 @@ OpenClaw 메모리는 **에이전트 작업 공간의 순수한 Markdown**입니
 - **압축 주기당 한 번의 플러시** (`sessions.json`에서 추적됨).
 - **작업 공간은 쓰기가 가능해야 함**: 세션이 `workspaceAccess: "ro"` 또는 `"none"`으로 샌드박스 격리로 실행되면 플러시는 건너뛰어집니다.
 
-전체 압축 생명 주기에 대한 내용은 [Session management + compaction](/reference/session-management-compaction)을 참조하세요.
+전체 압축 생명 주기에 대한 내용은 [Session management + compaction](/ko-KR/reference/session-management-compaction)을 참조하세요.
 
 ## 벡터 메모리 검색
 
@@ -138,7 +138,7 @@ OpenClaw는 `MEMORY.md`와 `memory/*.md`에 대해 작은 벡터 인덱스를 �
 - `sessions`: 세션 JSONL 인덱싱을 선택 (`enabled`, `retentionDays`, `exportDir`).
 - `update`: 갱신 주기 및 유지 보수 실행을 제어합니다: (`interval`, `debounceMs`, `onBoot`, `waitForBootSync`, `embedInterval`, `commandTimeoutMs`, `updateTimeoutMs`, `embedTimeoutMs`).
 - `limits`: 회상 페이로드 클램프 (`maxResults`, `maxSnippetChars`, `maxInjectedChars`, `timeoutMs`).
-- `scope`: [`session.sendPolicy`](/gateway/configuration#session)와 동일한 스키마. 기본 DM 전용 (`deny` 모두, `allow` 직접 채팅); 그룹/채널에서 QMD 히트를 노출하려면 이를 완화합니다.
+- `scope`: [`session.sendPolicy`](/ko-KR/gateway/configuration#session)와 동일한 스키마. 기본 DM 전용 (`deny` 모두, `allow` 직접 채팅); 그룹/채널에서 QMD 히트를 노출하려면 이를 완화합니다.
   - `match.keyPrefix`는 **일반화된** 세션 키를 매칭합니다 (소문자, `agent:<id>:` 삭제). 예: `discord:channel:`.
   - `match.rawKeyPrefix`는 **원본** 세션 키를 매칭합니다 (소문자 포함). 예: `agent:main:discord:`.
   - 레거시: `match.keyPrefix: "agent:..."`는 여전히 원본 키 접두사로 처리되지만, 명확성을 위해 `rawKeyPrefix`를 선호하십시오.

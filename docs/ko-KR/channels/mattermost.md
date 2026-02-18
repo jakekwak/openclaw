@@ -31,7 +31,7 @@ openclaw plugins install ./extensions/mattermost
 Mattermost를 설정/온보딩하는 동안 선택하고 git 체크아웃이 감지되면,
 OpenClaw가 자동으로 로컬 설치 경로를 제공합니다.
 
-자세한 내용: [플러그인](/tools/plugin)
+자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 빠른 설정
 

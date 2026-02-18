@@ -356,7 +356,7 @@ OPENCLAW_LIVE_CLI_BACKEND=1 \
 - 실제 게이트웨이 + 에이전트 루프를 통한 모의 도구 호출 (`src/gateway/gateway.tool-calling.mock-openai.test.ts`).
 - 서버 엔드-투-엔드 마법사 흐름이 세션 배선 및 구성 효과를 검증 (`src/gateway/gateway.wizard.e2e.test.ts`).
 
-스킬에 아직 부족한 점 (참조: [스킬](/tools/skills)):
+스킬에 아직 부족한 점 (참조: [스킬](/ko-KR/tools/skills)):
 
 - **결정:** 프로필에서 스킬이 열거될 때 에이전트가 올바른 스킬을 선택합니까 (또는 관련 없는 것을 피합니까)?
 - **준수:** 에이전트가 사용 전에 `SKILL.md`를 읽고 요구된 단계/인수를 따릅니까?

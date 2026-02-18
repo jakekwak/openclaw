@@ -9,7 +9,7 @@ title: "문제 해결"
 # 게이트웨이 문제 해결
 
 이 페이지는 심층적인 런북입니다.
-빠른 조치를 원하시면 [/help/troubleshooting](/help/troubleshooting)에서 시작하세요.
+빠른 조치를 원하시면 [/help/troubleshooting](/ko-KR/help/troubleshooting)에서 시작하세요.
 
 ## 명령어 순서
 
@@ -55,9 +55,9 @@ openclaw logs --follow
 
 관련 항목:
 
-- [/channels/troubleshooting](/channels/troubleshooting)
-- [/channels/pairing](/channels/pairing)
-- [/channels/groups](/channels/groups)
+- [/channels/troubleshooting](/ko-KR/channels/troubleshooting)
+- [/channels/pairing](/ko-KR/channels/pairing)
+- [/channels/groups](/ko-KR/channels/groups)
 
 ## 대시보드 컨트롤 UI 연결
 
@@ -85,9 +85,9 @@ openclaw gateway status --json
 
 관련 항목:
 
-- [/web/control-ui](/web/control-ui)
-- [/gateway/authentication](/gateway/authentication)
-- [/gateway/remote](/gateway/remote)
+- [/web/control-ui](/ko-KR/web/control-ui)
+- [/gateway/authentication](/ko-KR/gateway/authentication)
+- [/gateway/remote](/ko-KR/gateway/remote)
 
 ## 게이트웨이 서비스가 작동하지 않음
 
@@ -115,9 +115,9 @@ openclaw gateway status --deep
 
 관련 항목:
 
-- [/gateway/background-process](/gateway/background-process)
-- [/gateway/configuration](/gateway/configuration)
-- [/gateway/doctor](/gateway/doctor)
+- [/gateway/background-process](/ko-KR/gateway/background-process)
+- [/gateway/configuration](/ko-KR/gateway/configuration)
+- [/gateway/doctor](/ko-KR/gateway/doctor)
 
 ## 채널 연결 메시지가 흐르지 않음
 
@@ -145,10 +145,10 @@ openclaw config get channels
 
 관련 항목:
 
-- [/channels/troubleshooting](/channels/troubleshooting)
-- [/channels/whatsapp](/channels/whatsapp)
-- [/channels/telegram](/channels/telegram)
-- [/channels/discord](/channels/discord)
+- [/channels/troubleshooting](/ko-KR/channels/troubleshooting)
+- [/channels/whatsapp](/ko-KR/channels/whatsapp)
+- [/channels/telegram](/ko-KR/channels/telegram)
+- [/channels/discord](/ko-KR/channels/discord)
 
 ## 크론 및 하트비트 전달
 
@@ -177,9 +177,9 @@ openclaw logs --follow
 
 관련 항목:
 
-- [/automation/troubleshooting](/automation/troubleshooting)
-- [/automation/cron-jobs](/automation/cron-jobs)
-- [/gateway/heartbeat](/gateway/heartbeat)
+- [/automation/troubleshooting](/ko-KR/automation/troubleshooting)
+- [/automation/cron-jobs](/ko-KR/automation/cron-jobs)
+- [/gateway/heartbeat](/ko-KR/gateway/heartbeat)
 
 ## 노드 페어링 도구 실패
 
@@ -208,9 +208,9 @@ openclaw status
 
 관련 항목:
 
-- [/nodes/troubleshooting](/nodes/troubleshooting)
-- [/nodes/index](/nodes/index)
-- [/tools/exec-approvals](/tools/exec-approvals)
+- [/nodes/troubleshooting](/ko-KR/nodes/troubleshooting)
+- [/nodes/index](/ko-KR/nodes/index)
+- [/tools/exec-approvals](/ko-KR/tools/exec-approvals)
 
 ## 브라우저 도구 실패
 
@@ -239,9 +239,9 @@ openclaw doctor
 
 관련 항목:
 
-- [/tools/browser-linux-troubleshooting](/tools/browser-linux-troubleshooting)
-- [/tools/chrome-extension](/tools/chrome-extension)
-- [/tools/browser](/tools/browser)
+- [/tools/browser-linux-troubleshooting](/ko-KR/tools/browser-linux-troubleshooting)
+- [/tools/chrome-extension](/ko-KR/tools/chrome-extension)
+- [/tools/browser](/ko-KR/tools/browser)
 
 ## 업그레이드 후 무언가 갑자기 중단되었음
 
@@ -313,6 +313,6 @@ openclaw gateway restart
 
 관련 항목:
 
-- [/gateway/pairing](/gateway/pairing)
-- [/gateway/authentication](/gateway/authentication)
-- [/gateway/background-process](/gateway/background-process)
+- [/gateway/pairing](/ko-KR/gateway/pairing)
+- [/gateway/authentication](/ko-KR/gateway/authentication)
+- [/gateway/background-process](/ko-KR/gateway/background-process)

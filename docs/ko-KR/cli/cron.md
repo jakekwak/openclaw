@@ -12,7 +12,7 @@ title: "cron"
 
 관련 항목:
 
-- Cron jobs: [Cron jobs](/automation/cron-jobs)
+- Cron jobs: [Cron jobs](/ko-KR/automation/cron-jobs)
 
 Tip: 전체 명령어 표면을 확인하려면 `openclaw cron --help`를 실행하세요.
 

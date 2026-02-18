@@ -12,8 +12,8 @@ title: "memory"
 
 연관:
 
-- 메모리 개념: [Memory](/concepts/memory)
-- 플러그인: [Plugins](/tools/plugin)
+- 메모리 개념: [Memory](/ko-KR/concepts/memory)
+- 플러그인: [Plugins](/ko-KR/tools/plugin)
 
 ## Examples
 

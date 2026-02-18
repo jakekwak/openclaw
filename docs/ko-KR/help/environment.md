@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw 가 환경 변수를 불러오는 위치와 우선순위"
 read_when:
@@ -73,7 +72,7 @@ OpenClaw는 여러 소스에서 환경 변수를 가져옵니다. **기존 값�
 }
 ```
 
-자세한 내용은 [Configuration: Env var substitution](/gateway/configuration#env-var-substitution-in-config)을 참조하십시오.
+자세한 내용은 [Configuration: Env var substitution](/ko-KR/gateway/configuration#env-var-substitution-in-config)을 참조하십시오.
 
 ## 경로 관련 환경 변수
 
@@ -103,7 +102,6 @@ OpenClaw는 여러 소스에서 환경 변수를 가져옵니다. **기존 값�
 
 ## 관련 항목
 
-- [게이트웨이 구성](/gateway/configuration)
-- [FAQ: 환경 변수 및 .env 로딩](/help/faq#env-vars-and-env-loading)
-- [모델 개요](/concepts/models)
-```
+- [게이트웨이 구성](/ko-KR/gateway/configuration)
+- [FAQ: 환경 변수 및 .env 로딩](/ko-KR/help/faq#env-vars-and-env-loading)
+- [모델 개요](/ko-KR/concepts/models)

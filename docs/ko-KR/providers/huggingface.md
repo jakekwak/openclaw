@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "Hugging Face 추론 설정 (인증 + 모델 선택)"
 read_when:
@@ -206,5 +205,4 @@ Hugging Face API 키를 구성할 때 (온보딩, `HUGGINGFACE_HUB_TOKEN`, 또�
     },
   },
 }
-```
 ```

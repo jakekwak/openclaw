@@ -51,7 +51,7 @@ OpenClaw는 **하나의 다이렉트 챗 세션을 에이전트 별로** 기본�
 - 기본값은 `dmScope: "main"`으로, 연속성을 위해 모든 다이렉트 메시지가 메인 세션을 공유합니다. 이는 단일 사용자 설정에 적합합니다.
 - 동일한 채널에서 여러 계정 수신함을 사용하는 경우 `per-account-channel-peer`를 선호합니다.
 - 동일한 사람이 여러 채널에서 연락하는 경우, `session.identityLinks`를 사용하여 그들의 다이렉트 메시지 세션을 하나의 정규화된 신원으로 결합하세요.
-- `openclaw security audit`로 다이렉트 메시지 설정을 확인할 수 있습니다 (참조: [security](/cli/security)).
+- `openclaw security audit`로 다이렉트 메시지 설정을 확인할 수 있습니다 (참조: [security](/ko-KR/cli/security)).
 
 ## 게이트웨이는 신뢰할 수 있는 소스입니다
 
@@ -73,11 +73,11 @@ OpenClaw는 **하나의 다이렉트 챗 세션을 에이전트 별로** 기본�
 ## 세션 가지치기
 
 OpenClaw는 기본적으로 LLM 호출 직전에 **이전 도구 결과**를 메모리 컨텍스트에서 제거합니다.
-이는 JSONL 기록을 다시 쓰지 않습니다. [/concepts/session-pruning](/concepts/session-pruning)를 참조하세요.
+이는 JSONL 기록을 다시 쓰지 않습니다. [/concepts/session-pruning](/ko-KR/concepts/session-pruning)를 참조하세요.
 
 ## 사전 압축 메모리 플러시
 
-세션이 자동 압축에 가까워질 때, OpenClaw는 모델에게 디스크에 영구적인 노트를 쓰도록 상기시키는 **조용한 메모리 플러시** 턴을 실행할 수 있습니다. 이는 작업 공간이 쓰기 가능한 경우에만 실행됩니다. [메모리](/concepts/memory) 및 [압축](/concepts/compaction)를 참조하세요.
+세션이 자동 압축에 가까워질 때, OpenClaw는 모델에게 디스크에 영구적인 노트를 쓰도록 상기시키는 **조용한 메모리 플러시** 턴을 실행할 수 있습니다. 이는 작업 공간이 쓰기 가능한 경우에만 실행됩니다. [메모리](/ko-KR/concepts/memory) 및 [압축](/ko-KR/concepts/compaction)를 참조하세요.
 
 ## 전송 → 세션 키 매핑
 
@@ -177,7 +177,7 @@ OpenClaw는 기본적으로 LLM 호출 직전에 **이전 도구 결과**를 메
 - /상태`를 채팅에서 독립된 메시지로 보내 에이전트가 도달 가능한지, 세션 컨텍스트가 얼마나 사용 중인지, 현재 생각/상세 설명 토글, 그리고 WhatsApp 웹 인증 정보가 마지막으로 새로고침된 시기를 확인할 수 있습니다 (재링크 필요를 발견하는 데 도움됩니다).
 - `/context list` 또는 `/context detail`을 보내 시스템 프롬프트 및 삽입된 작업 공간 파일에 무엇이 있는지 (그리고 가장 큰 컨텍스트 기여자) 확인할 수 있습니다.
 - `/stop`을 독립된 메시지로 보내 현재 실행을 중단하고, 해당 세션에 대해 대기중인 후속 작업들을 지우며, 거기에서 파생된 모든 하위 에이전트 실행을 중단합니다 (응답에는 중단된 수가 포함).
-- `/compact` (선택적 지침)를 독립된 메시지로 보내 이전 컨텍스트를 요약하고 창 공간을 확보하세요. [/concepts/compaction](/concepts/compaction)을 참조하세요.
+- `/compact` (선택적 지침)를 독립된 메시지로 보내 이전 컨텍스트를 요약하고 창 공간을 확보하세요. [/concepts/compaction](/ko-KR/concepts/compaction)을 참조하세요.
 - JSONL 전사를 직접 열어 전체 턴을 검토할 수 있습니다.
 
 ## 팁

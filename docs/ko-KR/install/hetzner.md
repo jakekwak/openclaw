@@ -32,7 +32,7 @@ Hetzner 가격은 변화할 수 있으므로, 가장 작은 Debian/Ubuntu VPS를
 
 이 가이드는 Hetzner에서 Ubuntu 또는 Debian을 가정합니다.  
 다른 Linux VPS를 사용하는 경우, 패키지를 맞춰서 맵핑하십시오.
-일반적인 Docker 흐름에 대해서는 [Docker](/install/docker) 를 참조하십시오.
+일반적인 Docker 흐름에 대해서는 [Docker](/ko-KR/install/docker) 를 참조하십시오.
 
 ---
 

@@ -34,5 +34,5 @@ Copy/paste from logs or chat IDs often includes prefixes and whitespace. Normali
 
 ## Related docs
 
-- [Group Chats](/channels/groups)
-- [Telegram Provider](/channels/telegram)
+- [Group Chats](/ko-KR/channels/groups)
+- [Telegram Provider](/ko-KR/channels/telegram)

@@ -38,7 +38,7 @@ title: "WebChat"
 
 ## 구성 참조 (WebChat)
 
-전체 구성: [Configuration](/gateway/configuration)
+전체 구성: [Configuration](/ko-KR/gateway/configuration)
 
 채널 옵션:
 
@@ -48,6 +48,6 @@ title: "WebChat"
 
 - `gateway.port`, `gateway.bind`: WebSocket 호스트/포트.
 - `gateway.auth.mode`, `gateway.auth.token`, `gateway.auth.password`: WebSocket 인증 (토큰/비밀번호).
-- `gateway.auth.mode: "trusted-proxy"`: 브라우저 클라이언트를 위한 역 프록시 인증 (자세한 내용은 [Trusted Proxy Auth](/gateway/trusted-proxy-auth) 참조).
+- `gateway.auth.mode: "trusted-proxy"`: 브라우저 클라이언트를 위한 역 프록시 인증 (자세한 내용은 [Trusted Proxy Auth](/ko-KR/gateway/trusted-proxy-auth) 참조).
 - `gateway.remote.url`, `gateway.remote.token`, `gateway.remote.password`: 원격 게이트웨이 대상.
 - `session.*`: 세션 저장소 및 주요 키 기본값.

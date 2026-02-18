@@ -16,25 +16,25 @@ Windows용 기본 동반 앱도 계획 중이며, 게이트웨이는 WSL2를 통
 
 ## Choose your OS
 
-- macOS: [macOS](/platforms/macos)
-- iOS: [iOS](/platforms/ios)
-- Android: [Android](/platforms/android)
-- Windows: [Windows](/platforms/windows)
-- Linux: [Linux](/platforms/linux)
+- macOS: [macOS](/ko-KR/platforms/macos)
+- iOS: [iOS](/ko-KR/platforms/ios)
+- Android: [Android](/ko-KR/platforms/android)
+- Windows: [Windows](/ko-KR/platforms/windows)
+- Linux: [Linux](/ko-KR/platforms/linux)
 
 ## VPS & hosting
 
-- VPS hub: [VPS hosting](/vps)
-- Fly.io: [Fly.io](/install/fly)
-- Hetzner (Docker): [Hetzner](/install/hetzner)
-- GCP (Compute Engine): [GCP](/install/gcp)
-- exe.dev (VM + HTTPS proxy): [exe.dev](/install/exe-dev)
+- VPS hub: [VPS hosting](/ko-KR/vps)
+- Fly.io: [Fly.io](/ko-KR/install/fly)
+- Hetzner (Docker): [Hetzner](/ko-KR/install/hetzner)
+- GCP (Compute Engine): [GCP](/ko-KR/install/gcp)
+- exe.dev (VM + HTTPS proxy): [exe.dev](/ko-KR/install/exe-dev)
 
 ## Common links
 
-- Install guide: [Getting Started](/start/getting-started)
-- Gateway runbook: [Gateway](/gateway)
-- Gateway configuration: [Configuration](/gateway/configuration)
+- Install guide: [Getting Started](/ko-KR/start/getting-started)
+- Gateway runbook: [Gateway](/ko-KR/gateway)
+- Gateway configuration: [Configuration](/ko-KR/gateway/configuration)
 - Service status: `openclaw gateway status`
 
 ## Gateway service install (CLI)

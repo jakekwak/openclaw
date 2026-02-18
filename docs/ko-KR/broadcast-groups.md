@@ -437,6 +437,6 @@ Planned features:
 
 ## See Also
 
-- [Multi-Agent Configuration](/multi-agent-sandbox-tools)
-- [Routing Configuration](/concepts/channel-routing)
-- [Session Management](/concepts/sessions)
+- [Multi-Agent Configuration](/ko-KR/multi-agent-sandbox-tools)
+- [Routing Configuration](/ko-KR/concepts/channel-routing)
+- [Session Management](/ko-KR/concepts/sessions)

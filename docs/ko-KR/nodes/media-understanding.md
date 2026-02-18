@@ -186,7 +186,7 @@ CLI 항목의 경우, **`capabilities`를 명시적으로 설정**하여 놀라�
 
 - `openai/gpt-4o-mini-transcribe`, `groq/whisper-large-v3-turbo`, 또는 `deepgram/nova-3`.
 - CLI 폴백: `whisper-cli` (whisper-cpp) 또는 `whisper`.
-- Deepgram 설정: [Deepgram (오디오 전사)](/providers/deepgram).
+- Deepgram 설정: [Deepgram (오디오 전사)](/ko-KR/providers/deepgram).
 
 **비디오**
 
@@ -369,5 +369,5 @@ CLI 항목의 경우, **`capabilities`를 명시적으로 설정**하여 놀라�
 
 ## 관련 문서
 
-- [설정](/gateway/configuration)
-- [이미지 & 미디어 지원](/nodes/images)
+- [설정](/ko-KR/gateway/configuration)
+- [이미지 & 미디어 지원](/ko-KR/nodes/images)

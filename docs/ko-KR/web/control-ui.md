@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "브라우저 기반의 게이트웨이 제어 UI (채팅, 노드, 설정)"
 read_when:
@@ -47,7 +46,7 @@ openclaw devices list
 openclaw devices approve <requestId>
 ```
 
-승인이 되면, 해당 디바이스는 기억되며 `openclaw devices revoke --device <id> --role <role>` 명령어로 취소할 때까지 재승인이 필요하지 않습니다. 토큰 순환 및 취소에 대한 자세한 내용은 [Devices CLI](/cli/devices)를 참조하세요.
+승인이 되면, 해당 디바이스는 기억되며 `openclaw devices revoke --device <id> --role <role>` 명령어로 취소할 때까지 재승인이 필요하지 않습니다. 토큰 순환 및 취소에 대한 자세한 내용은 [Devices CLI](/ko-KR/cli/devices)를 참조하세요.
 
 **주의사항:**
 
@@ -148,7 +147,7 @@ UI 설정에 토큰을 붙여넣으십시오 (전송된 값: `connect.params.aut
 
 이는 Control UI의 장치 ID + 페어링을 비활성화합니다 (HTTPS에서도). 네트워크를 신뢰할 때만 사용하십시오.
 
-HTTPS 설정 안내는 [Tailscale](/gateway/tailscale) 문서를 참조하세요.
+HTTPS 설정 안내는 [Tailscale](/ko-KR/gateway/tailscale) 문서를 참조하세요.
 
 ## UI 빌드
 
@@ -211,5 +210,4 @@ http://localhost:5173/?gatewayUrl=wss://<gateway-host>:18789&token=<gateway-toke
 }
 ```
 
-원격 접속 설정 상세: [Remote access](/gateway/remote).
-```
+원격 접속 설정 상세: [Remote access](/ko-KR/gateway/remote).

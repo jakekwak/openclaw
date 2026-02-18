@@ -18,14 +18,14 @@ Native Windows companion apps are planned.
 
 ## Install (WSL2)
 
-- [Getting Started](/start/getting-started) (use inside WSL)
-- [Install & updates](/install/updating)
+- [Getting Started](/ko-KR/start/getting-started) (use inside WSL)
+- [Install & updates](/ko-KR/install/updating)
 - Official WSL2 guide (Microsoft): [https://learn.microsoft.com/windows/wsl/install](https://learn.microsoft.com/windows/wsl/install)
 
 ## Gateway
 
-- [Gateway runbook](/gateway)
-- [Configuration](/gateway/configuration)
+- [Gateway runbook](/ko-KR/gateway)
+- [Configuration](/ko-KR/gateway/configuration)
 
 ## Gateway service install (CLI)
 
@@ -151,7 +151,7 @@ pnpm build
 openclaw onboard
 ```
 
-Full guide: [Getting Started](/start/getting-started)
+Full guide: [Getting Started](/ko-KR/start/getting-started)
 
 ## Windows companion app
 

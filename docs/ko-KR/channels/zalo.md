@@ -15,7 +15,7 @@ Zalo는 플러그인으로 제공되며 기본 설치에 포함되어 있지 않
 
 - CLI를 통해 설치: `openclaw plugins install @openclaw/zalo`
 - 또는 온보딩 중에 **Zalo**를 선택하고 설치 프롬프트를 확인
-- 세부 사항: [플러그인](/tools/plugin)
+- 세부 사항: [플러그인](/ko-KR/tools/plugin)
 
 ## 빠른 설정 (초보자용)
 
@@ -103,7 +103,7 @@ Zalo는 베트남을 중심으로 한 메시징 앱입니다; 그 Bot API는 게
 - 승인 방법:
   - `openclaw pairing list zalo`
   - `openclaw pairing approve zalo <CODE>`
-- 페어링은 기본 토큰 교환 방식입니다. 세부 정보: [페어링](/channels/pairing)
+- 페어링은 기본 토큰 교환 방식입니다. 세부 정보: [페어링](/ko-KR/channels/pairing)
 - `channels.zalo.allowFrom`은 숫자 사용자 ID를 허용합니다 (사용자 이름 조회 불가능).
 
 ## 롱 폴링 vs 웹훅
@@ -159,7 +159,7 @@ Zalo는 베트남을 중심으로 한 메시징 앱입니다; 그 Bot API는 게
 
 ## 설정 참조 (Zalo)
 
-전체 구성: [구성](/gateway/configuration)
+전체 구성: [구성](/ko-KR/gateway/configuration)
 
 프로바이더 옵션:
 

@@ -9,7 +9,7 @@ title: "iMessage"
 # iMessage (legacy: imsg)
 
 <Warning>
-신규 iMessage 배포에는 <a href="/channels/bluebubbles">BlueBubbles</a>를 사용하세요.
+신규 iMessage 배포에는 <a href="/ko-KR/channels/bluebubbles">BlueBubbles</a>를 사용하세요.
 
 `imsg` 통합은 구식이며, 향후 릴리스에서 제거될 수 있습니다.
 </Warning>
@@ -17,13 +17,13 @@ title: "iMessage"
 상태: 전통적인 외부 CLI 통합. 게이트웨이는 `imsg rpc`를 스폰하며 stdio 상에서 JSON-RPC 를 통해 통신합니다 (별도의 데몬/포트 없음).
 
 <CardGroup cols={3}>
-  <Card title="BlueBubbles (추천)" icon="message-circle" href="/channels/bluebubbles">
+  <Card title="BlueBubbles (추천)" icon="message-circle" href="/ko-KR/channels/bluebubbles">
     신규 설정에 추천되는 iMessage 경로.
   </Card>
-  <Card title="페어링" icon="link" href="/channels/pairing">
+  <Card title="페어링" icon="link" href="/ko-KR/channels/pairing">
     iMessage 다이렉트 메시지는 디폴트로 페어링 모드를 사용합니다.
   </Card>
-  <Card title="설정 참조" icon="settings" href="/gateway/configuration-reference#imessage">
+  <Card title="설정 참조" icon="settings" href="/ko-KR/gateway/configuration-reference#imessage">
     전체 iMessage 필드 참조.
   </Card>
 </CardGroup>
@@ -345,7 +345,7 @@ imsg send <handle> "test"
 
 ## 설정 참조 포인터
 
-- [설정 참조 - iMessage](/gateway/configuration-reference#imessage)
-- [게이트웨이 설정](/gateway/configuration)
-- [페어링](/channels/pairing)
-- [BlueBubbles](/channels/bluebubbles)
+- [설정 참조 - iMessage](/ko-KR/gateway/configuration-reference#imessage)
+- [게이트웨이 설정](/ko-KR/gateway/configuration)
+- [페어링](/ko-KR/channels/pairing)
+- [BlueBubbles](/ko-KR/channels/bluebubbles)

@@ -15,9 +15,9 @@ OpenClaw는 하나의 에이전트 워크스페이스 디렉토리(`agents.defau
 
 권장: `openclaw setup`를 사용하여 누락된 경우 `~/.openclaw/openclaw.json`을 생성하고 워크스페이스 파일을 초기화합니다.
 
-전체 워크스페이스 레이아웃 + 백업 가이드: [에이전트 워크스페이스](/concepts/agent-workspace)
+전체 워크스페이스 레이아웃 + 백업 가이드: [에이전트 워크스페이스](/ko-KR/concepts/agent-workspace)
 
-`agents.defaults.sandbox`가 활성화된 경우, 비주요 세션은 `agents.defaults.sandbox.workspaceRoot` 아래의 세션 별 워크스페이스로 이 값을 재정의할 수 있습니다 (참조 [게이트웨이 구성](/gateway/configuration)).
+`agents.defaults.sandbox`가 활성화된 경우, 비주요 세션은 `agents.defaults.sandbox.workspaceRoot` 아래의 세션 별 워크스페이스로 이 값을 재정의할 수 있습니다 (참조 [게이트웨이 구성](/ko-KR/gateway/configuration)).
 
 ## Bootstrap files (injected)
 
@@ -56,7 +56,7 @@ OpenClaw는 세 곳에서 스킬을 로드합니다 (이름 충돌 시 워크스
 - 관리형/지역: `~/.openclaw/skills`
 - 워크스페이스: `<workspace>/skills`
 
-스킬은 설정/환경 변수에 의해 제한될 수 있습니다 (참조 `skills` [게이트웨이 구성](/gateway/configuration)).
+스킬은 설정/환경 변수에 의해 제한될 수 있습니다 (참조 `skills` [게이트웨이 구성](/ko-KR/gateway/configuration)).
 
 ## pi-mono integration
 
@@ -78,14 +78,14 @@ OpenClaw는 pi-mono 코드베이스의 일부(모델/도구)를 재사용하지�
 
 큐 모드가 `steer`일 때, 들어오는 메시지는 현재 실행에 주입됩니다. 큐는 **각 도구 호출 후** 검사됩니다; 대기 중인 메시지가 있는 경우, 현재 보조 메시지의 나머지 도구 호출은 건너뛰어 ("대기 중인 사용자 메시지로 인해 건너뜀."이라는 오류 도구 결과와 함께), 다음 보조 응답 전까지 대기 중인 사용자 메시지가 주입됩니다.
 
-큐 모드가 `followup` 또는 `collect`일 때, 들어오는 메시지는 현재 턴이 종료될 때까지 보류된 다음, 대기 중인 페이로드와 함께 새 에이전트 턴이 시작됩니다. 모드 + 디바운스/캡 동작에 대해 [큐](/concepts/queue)를 참조하세요.
+큐 모드가 `followup` 또는 `collect`일 때, 들어오는 메시지는 현재 턴이 종료될 때까지 보류된 다음, 대기 중인 페이로드와 함께 새 에이전트 턴이 시작됩니다. 모드 + 디바운스/캡 동작에 대해 [큐](/ko-KR/concepts/queue)를 참조하세요.
 
 블록 스트리밍은 완료된 보조 블록을 완료되자마자 보냅니다; 기본값으로는 **꺼져 있습니다** (`agents.defaults.blockStreamingDefault: "off"`).
 경계를 `agents.defaults.blockStreamingBreak`를 통해 조정합니다 (`text_end` vs `message_end`; 기본값은 text_end).
 소프트 블록 청킹은 `agents.defaults.blockStreamingChunk`를 통해 제어합니다 (기본값은 800–1200 자; 단락 구분을 우선으로 하고, 그 다음 줄바꿈; 마지막으로 문장).
 스트리밍된 청크를 `agents.defaults.blockStreamingCoalesce`로 결합하여 단일 라인 스팸을 줄입니다 (보내기 전 유휴 기반 병합). Telegram이 아닌 채널은 블록 응답을 활성화하려면 명시적으로 `*.blockStreaming: true`가 필요합니다.
 이용 가능한 경우 도구 시작 시 자세한 도구 요약이 제공됩니다 (디바운스 없음); Control UI는 에이전트 이벤트를 통해 도구 출력을 스트리밍합니다.
-더 많은 세부사항: [Streaming + chunking](/concepts/streaming).
+더 많은 세부사항: [Streaming + chunking](/ko-KR/concepts/streaming).
 
 ## Model refs
 
@@ -104,4 +104,4 @@ OpenClaw는 pi-mono 코드베이스의 일부(모델/도구)를 재사용하지�
 
 ---
 
-_Next: [Group Chats](/channels/group-messages)_ 🦞
+_Next: [Group Chats](/ko-KR/channels/group-messages)_ 🦞

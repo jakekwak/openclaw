@@ -10,13 +10,13 @@ title: "WhatsApp"
 상태: WhatsApp Web (Baileys)을 통해 프로덕션 준비 완료. 게이트웨이가 연결된 세션을 소유합니다.
 
 <CardGroup cols={3}>
-  <Card title="Pairing" icon="link" href="/channels/pairing">
+  <Card title="Pairing" icon="link" href="/ko-KR/channels/pairing">
     기본 다이렉트 메시지 정책은 미확인 발신자에 대한 페어링입니다.
   </Card>
-  <Card title="채널 문제 해결" icon="wrench" href="/channels/troubleshooting">
+  <Card title="채널 문제 해결" icon="wrench" href="/ko-KR/channels/troubleshooting">
     크로스 채널 진단 및 복구 가이드.
   </Card>
-  <Card title="게이트웨이 구성" icon="settings" href="/gateway/configuration">
+  <Card title="게이트웨이 구성" icon="settings" href="/ko-KR/gateway/configuration">
     전체 채널 구성 패턴 및 예.
   </Card>
 </CardGroup>
@@ -419,7 +419,7 @@ WhatsApp은 수신 시 `channels.whatsapp.ackReaction`을 통해 즉각적인 �
 
 주요 참조:
 
-- [구성 참조 - WhatsApp](/gateway/configuration-reference#whatsapp)
+- [구성 참조 - WhatsApp](/ko-KR/gateway/configuration-reference#whatsapp)
 
 높은 신호의 WhatsApp 필드:
 
@@ -431,6 +431,6 @@ WhatsApp은 수신 시 `channels.whatsapp.ackReaction`을 통해 즉각적인 �
 
 ## 관련 문서
 
-- [Pairing](/channels/pairing)
-- [채널 라우팅](/channels/channel-routing)
-- [문제 해결](/channels/troubleshooting)
+- [Pairing](/ko-KR/channels/pairing)
+- [채널 라우팅](/ko-KR/channels/channel-routing)
+- [문제 해결](/ko-KR/channels/troubleshooting)

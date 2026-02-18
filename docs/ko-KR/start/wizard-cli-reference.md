@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "CLI 온보딩 흐름, 인증/모델 설정, 출력 및 내부 작동에 대한 완전한 참고 자료"
 read_when:
@@ -11,7 +10,7 @@ sidebarTitle: "CLI 참고 자료"
 # CLI 온보딩 참고 자료
 
 이 페이지는 `openclaw onboard`에 대한 전체 참고 자료입니다.
-간단한 가이드는 [온보딩 마법사 (CLI)](/start/wizard)를 참조하세요.
+간단한 가이드는 [온보딩 마법사 (CLI)](/ko-KR/start/wizard)를 참조하세요.
 
 ## 마법사가 하는 일
 
@@ -46,7 +45,7 @@ sidebarTitle: "CLI 참고 자료"
   <Step title="작업 공간">
     - 기본 `~/.openclaw/workspace` (구성 가능).
     - 첫 실행 부트스트랩 의식에 필요한 작업 공간 파일을 시드합니다.
-    - 작업 공간 레이아웃: [에이전트 작업 공간](/concepts/agent-workspace).
+    - 작업 공간 레이아웃: [에이전트 작업 공간](/ko-KR/concepts/agent-workspace).
   </Step>
   <Step title="게이트웨이">
     - 포트, 바인드, 인증 모드 및 Tailscale 노출을 묻습니다.
@@ -55,14 +54,14 @@ sidebarTitle: "CLI 참고 자료"
     - 비 루프백 바인드는 여전히 인증이 필요합니다.
   </Step>
   <Step title="채널">
-    - [WhatsApp](/channels/whatsapp): 선택적 QR 로그인
-    - [Telegram](/channels/telegram): 봇 토큰
-    - [Discord](/channels/discord): 봇 토큰
-    - [Google Chat](/channels/googlechat): 서비스 계정 JSON + 웹훅 대상
-    - [Mattermost](/channels/mattermost) 플러그인: 봇 토큰 + 기본 URL
-    - [Signal](/channels/signal): 선택적 `signal-cli` 설치 + 계정 설정
-    - [BlueBubbles](/channels/bluebubbles): iMessage에 권장; 서버 URL + 비밀번호 + 웹훅
-    - [iMessage](/channels/imessage): 레거시 `imsg` CLI 경로 + DB 접근
+    - [WhatsApp](/ko-KR/channels/whatsapp): 선택적 QR 로그인
+    - [Telegram](/ko-KR/channels/telegram): 봇 토큰
+    - [Discord](/ko-KR/channels/discord): 봇 토큰
+    - [Google Chat](/ko-KR/channels/googlechat): 서비스 계정 JSON + 웹훅 대상
+    - [Mattermost](/ko-KR/channels/mattermost) 플러그인: 봇 토큰 + 기본 URL
+    - [Signal](/ko-KR/channels/signal): 선택적 `signal-cli` 설치 + 계정 설정
+    - [BlueBubbles](/ko-KR/channels/bluebubbles): iMessage에 권장; 서버 URL + 비밀번호 + 웹훅
+    - [iMessage](/ko-KR/channels/imessage): 레거시 `imsg` CLI 경로 + DB 접근
     - 다이렉트 메시지 보안: 기본 설정은 페어링입니다. 첫 번째 다이렉트 메시지는 코드를 보내고, `openclaw pairing approve <channel> <code>`로 승인하거나 허용 목록을 사용합니다.
   </Step>
   <Step title="데몬 설치">
@@ -156,23 +155,23 @@ Control UI 자산이 없으면, 마법사는 이를 빌드하려고 시도합니
   </Accordion>
   <Accordion title="Vercel AI Gateway">
     `AI_GATEWAY_API_KEY`를 요청합니다.
-    자세한 내용: [Vercel AI Gateway](/providers/vercel-ai-gateway).
+    자세한 내용: [Vercel AI Gateway](/ko-KR/providers/vercel-ai-gateway).
   </Accordion>
   <Accordion title="Cloudflare AI Gateway">
     계정 ID, 게이트웨이 ID, `CLOUDFLARE_AI_GATEWAY_API_KEY`를 요청합니다.
-    자세한 내용: [Cloudflare AI Gateway](/providers/cloudflare-ai-gateway).
+    자세한 내용: [Cloudflare AI Gateway](/ko-KR/providers/cloudflare-ai-gateway).
   </Accordion>
   <Accordion title="MiniMax M2.1">
     구성이 자동으로 작성됩니다.
-    자세한 내용: [MiniMax](/providers/minimax).
+    자세한 내용: [MiniMax](/ko-KR/providers/minimax).
   </Accordion>
   <Accordion title="Synthetic (Anthropic-compatible)">
     `SYNTHETIC_API_KEY`를 요청합니다.
-    자세한 내용: [Synthetic](/providers/synthetic).
+    자세한 내용: [Synthetic](/ko-KR/providers/synthetic).
   </Accordion>
   <Accordion title="Moonshot 및 Kimi Coding">
     Moonshot (Kimi K2) 및 Kimi Coding 구성은 자동으로 작성됩니다.
-    자세한 내용: [Moonshot AI (Kimi + Kimi Coding)](/providers/moonshot).
+    자세한 내용: [Moonshot AI (Kimi + Kimi Coding)](/ko-KR/providers/moonshot).
   </Accordion>
   <Accordion title="Custom provider">
     OpenAI 호환 및 Anthropic 호환 엔드포인트와 작동합니다.
@@ -252,7 +251,6 @@ Signal 설정 동작:
 
 ## 관련 문서
 
-- 온보딩 허브: [온보딩 마법사 (CLI)](/start/wizard)
-- 자동화 및 스크립트: [CLI 자동화](/start/wizard-cli-automation)
-- 명령어 참고 자료: [`openclaw onboard`](/cli/onboard)
-```
+- 온보딩 허브: [온보딩 마법사 (CLI)](/ko-KR/start/wizard)
+- 자동화 및 스크립트: [CLI 자동화](/ko-KR/start/wizard-cli-automation)
+- 명령어 참고 자료: [`openclaw onboard`](/ko-KR/cli/onboard)

@@ -149,7 +149,7 @@ title: "웹훅"
 - `hooks.allowRequestSessionKey`는 `/hooks/agent` 페이로드가 `sessionKey`를 설정할 수 있는지를 제어 (기본값: `false`).
 - `hooks.allowedSessionKeyPrefixes`는 요청 페이로드 및 매핑에서 명시적인 `sessionKey` 값을 선택적으로 제한합니다.
 - `allowUnsafeExternalContent: true`는 해당 웹훅에 대해 외부 콘텐츠 안전 래퍼를 비활성화합니다 (위험함; 신뢰할 수 있는 내부 소스에만 해당).
-- `openclaw webhooks gmail setup`은 `openclaw webhooks gmail run`에 대한 `hooks.gmail` 구성을 작성합니다. [Gmail Pub/Sub](/automation/gmail-pubsub)에서 전체 Gmail 감시 흐름을 확인하세요.
+- `openclaw webhooks gmail setup`은 `openclaw webhooks gmail run`에 대한 `hooks.gmail` 구성을 작성합니다. [Gmail Pub/Sub](/ko-KR/automation/gmail-pubsub)에서 전체 Gmail 감시 흐름을 확인하세요.
 
 ## 응답
 

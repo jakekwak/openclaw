@@ -62,7 +62,7 @@ openclaw update --channel stable
 
 단발성 설치 태그/버전을 위해 `--tag <dist-tag|version>` 사용.
 
-[개발 채널](/install/development-channels)에서 채널 의미와 릴리즈 노트를 참조하세요.
+[개발 채널](/ko-KR/install/development-channels)에서 채널 의미와 릴리즈 노트를 참조하세요.
 
 참고: npm 설치 시, 게이트웨이는 시작 시 업데이트 힌트를 로깅합니다 (현재 채널 태그를 확인). `update.checkOnStart: false`로 비활성화하세요.
 
@@ -149,7 +149,7 @@ Doctor는 "안전한 업데이트" 명령어입니다. 의도적으로 지루합
 - 오래된 게이트웨이 서비스를 현재 OpenClaw 서비스로 감지 및 마이그레이션합니다 (launchd/systemd; 레거시 schtasks).
 - Linux에서 시스템 사용자 지속 상태를 확인하여 게이트웨이가 로그아웃 후에도 살아남도록 합니다.
 
-자세한 내용: [Doctor](/gateway/doctor)
+자세한 내용: [Doctor](/ko-KR/gateway/doctor)
 
 ## 게이트웨이 시작/중지/재시작
 
@@ -170,7 +170,7 @@ openclaw logs --follow
 - Windows (WSL2): `systemctl --user restart openclaw-gateway[-<profile>].service`
   - `launchctl`/`systemctl`은 서비스가 설치된 경우에만 작동; 그렇지 않으면 `openclaw gateway install` 실행.
 
-런북과 정확한 서비스 레이블: [Gateway runbook](/gateway)
+런북과 정확한 서비스 레이블: [Gateway runbook](/ko-KR/gateway)
 
 ## 롤백 / 고정 (문제가 발생했을 때)
 
@@ -222,5 +222,5 @@ git pull
 ## 해결할 수 없는 경우
 
 - `openclaw doctor`를 다시 실행하고 출력을 주의 깊게 읽으세요 (종종 해결 방법을 알려줍니다).
-- 확인: [문제 해결](/gateway/troubleshooting)
+- 확인: [문제 해결](/ko-KR/gateway/troubleshooting)
 - Discord에 문의하세요: [https://discord.gg/clawd](https://discord.gg/clawd)

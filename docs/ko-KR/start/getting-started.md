@@ -13,7 +13,7 @@ title: "시작하기"
 <Info>
 가장 빠른 채팅: 제어 UI를 열고 (채널 설정 필요 없음) `openclaw dashboard`를 실행하여
 브라우저에서 채팅하거나, 게이트웨이 호스트에서 `http://127.0.0.1:18789/`를 엽니다.
-문서: [Dashboard](/web/dashboard) 및 [Control UI](/web/control-ui).
+문서: [Dashboard](/ko-KR/web/dashboard) 및 [Control UI](/ko-KR/web/control-ui).
 </Info>
 
 ## 필요조건
@@ -47,7 +47,7 @@ Node 버전이 확실하지 않다면 `node --version`을 사용하여 확인하
     </Tabs>
 
     <Note>
-    다른 설치 방법 및 요구 사항: [설치](/install).
+    다른 설치 방법 및 요구 사항: [설치](/ko-KR/install).
     </Note>
 
   </Step>
@@ -57,7 +57,7 @@ Node 버전이 확실하지 않다면 `node --version`을 사용하여 확인하
     ```
 
     마법사는 인증, 게이트웨이 설정 및 선택적 채널을 구성합니다.
-    자세한 내용은 [온보딩 마법사](/start/wizard)를 참조하세요.
+    자세한 내용은 [온보딩 마법사](/ko-KR/start/wizard)를 참조하세요.
 
   </Step>
   <Step title="게이트웨이 확인">
@@ -108,15 +108,15 @@ OpenClaw를 서비스 계정으로 실행하거나 사용자 지정 구성/상�
 - `OPENCLAW_STATE_DIR`은 상태 디렉토리를 재정의합니다.
 - `OPENCLAW_CONFIG_PATH`는 구성 파일 경로를 재정의합니다.
 
-전체 환경 변수 참조: [환경 변수](/help/environment).
+전체 환경 변수 참조: [환경 변수](/ko-KR/help/environment).
 
 ## 더 깊이 알아보기
 
 <Columns>
-  <Card title="온보딩 마법사 (상세)" href="/start/wizard">
+  <Card title="온보딩 마법사 (상세)" href="/ko-KR/start/wizard">
     전체 CLI 마법사 참조 및 고급 옵션.
   </Card>
-  <Card title="macOS 앱 온보딩" href="/start/onboarding">
+  <Card title="macOS 앱 온보딩" href="/ko-KR/start/onboarding">
     macOS 앱의 첫 실행 흐름.
   </Card>
 </Columns>
@@ -129,6 +129,6 @@ OpenClaw를 서비스 계정으로 실행하거나 사용자 지정 구성/상�
 
 ## 다음 단계
 
-- 다이렉트 메시지 안전성 및 승인: [페어링](/channels/pairing)
-- 더 많은 채널 연결: [채널](/channels)
-- 고급 워크플로 및 소스에서: [설정](/start/setup)
+- 다이렉트 메시지 안전성 및 승인: [페어링](/ko-KR/channels/pairing)
+- 더 많은 채널 연결: [채널](/ko-KR/channels)
+- 고급 워크플로 및 소스에서: [설정](/ko-KR/start/setup)

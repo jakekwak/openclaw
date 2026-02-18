@@ -43,7 +43,7 @@ title: "게이트웨이 아키텍처"
 
 프로토콜 세부사항:
 
-- [게이트웨이 프로토콜](/gateway/protocol)
+- [게이트웨이 프로토콜](/ko-KR/gateway/protocol)
 
 ### WebChat
 
@@ -90,8 +90,8 @@ sequenceDiagram
 - **비로컬** 연결은 `connect.challenge` 논스를 서명해야 하며 명시적인 승인이 필요합니다.
 - 게이트웨이 인증 (`gateway.auth.*`)은 **모든** 연결에 적용됩니다, 로컬이든 원격이든 간에.
 
-자세한 내용: [게이트웨이 프로토콜](/gateway/protocol), [페어링](/channels/pairing),
-[보안](/gateway/security).
+자세한 내용: [게이트웨이 프로토콜](/ko-KR/gateway/protocol), [페어링](/ko-KR/channels/pairing),
+[보안](/ko-KR/gateway/security).
 
 ## 프로토콜 타이핑 및 코드 생성
 

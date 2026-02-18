@@ -27,7 +27,7 @@ openclaw plugins install ./extensions/nextcloud-talk
 
 구성/온보딩 중 Nextcloud Talk를 선택하고 깃 체크아웃이 감지되면, OpenClaw는 로컬 설치 경로를 자동으로 제공합니다.
 
-자세한 내용: [플러그인](/tools/plugin)
+자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 간단한 설정(초보자용)
 
@@ -107,7 +107,7 @@ openclaw plugins install ./extensions/nextcloud-talk
 
 ## 구성 참조(Nextcloud Talk)
 
-전체 구성: [구성](/gateway/configuration)
+전체 구성: [구성](/ko-KR/gateway/configuration)
 
 프로바이더 옵션:
 

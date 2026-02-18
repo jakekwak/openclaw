@@ -70,7 +70,7 @@ OpenClaw는 **메시지가 온 채널로** 응답을 라우팅합니다. 모델�
 }
 ```
 
-참조: [Broadcast Groups](/channels/broadcast-groups).
+참조: [Broadcast Groups](/ko-KR/channels/broadcast-groups).
 
 ## 구성 개요
 

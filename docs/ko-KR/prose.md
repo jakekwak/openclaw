@@ -31,7 +31,7 @@ Restart the Gateway after enabling the plugin.
 
 Dev/local checkout: `openclaw plugins install ./extensions/open-prose`
 
-Related docs: [Plugins](/plugin), [Plugin manifest](/plugins/manifest), [Skills](/tools/skills).
+Related docs: [Plugins](/ko-KR/plugin), [Plugin manifest](/ko-KR/plugins/manifest), [Skills](/ko-KR/tools/skills).
 
 ## Slash command
 
@@ -125,10 +125,10 @@ OpenProse programs map to OpenClaw primitives:
 | File read/write           | `read` / `write` |
 | Web fetch                 | `web_fetch`      |
 
-If your tool allowlist blocks these tools, OpenProse programs will fail. See [Skills config](/tools/skills-config).
+If your tool allowlist blocks these tools, OpenProse programs will fail. See [Skills config](/ko-KR/tools/skills-config).
 
 ## Security + approvals
 
 Treat `.prose` files like code. Review before running. Use OpenClaw tool allowlists and approval gates to control side effects.
 
-For deterministic, approval-gated workflows, compare with [Lobster](/tools/lobster).
+For deterministic, approval-gated workflows, compare with [Lobster](/ko-KR/tools/lobster).

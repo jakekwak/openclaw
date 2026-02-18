@@ -14,7 +14,7 @@ OpenClaw는 두 가지 경량 웹 도구를 제공합니다:
 - `web_search` — Brave Search API(기본) 또는 Perplexity Sonar(직접 또는 OpenRouter를 통해)를 통해 웹 검색.
 - `web_fetch` — HTTP 가져오기 + 읽을 수 있는 추출 (HTML → markdown/텍스트).
 
-이들은 **브라우저 자동화가 아닙니다**. JS가 많은 사이트나 로그인이 필요한 경우 [브라우저 도구](/tools/browser)를 사용하세요.
+이들은 **브라우저 자동화가 아닙니다**. JS가 많은 사이트나 로그인이 필요한 경우 [브라우저 도구](/ko-KR/tools/browser)를 사용하세요.
 
 ## 작동 방식
 
@@ -32,7 +32,7 @@ OpenClaw는 두 가지 경량 웹 도구를 제공합니다:
 | **Brave** (default) | 빠른 속도, 구조화된 결과, 무료 단계 제공       | 전통적인 검색 결과                       | `BRAVE_API_KEY`                              |
 | **Perplexity**      | AI 합성 답변, 인용, 실시간                    | Perplexity 또는 OpenRouter 접근 필요      | `OPENROUTER_API_KEY` 또는 `PERPLEXITY_API_KEY`|
 
-[Brave Search 설정](/brave-search) 및 [Perplexity Sonar](/perplexity)을 통해 프로바이더별 세부정보를 확인하세요.
+[Brave Search 설정](/ko-KR/brave-search) 및 [Perplexity Sonar](/ko-KR/perplexity)을 통해 프로바이더별 세부정보를 확인하세요.
 
 구성에서 프로바이더를 설정하세요:
 
@@ -79,7 +79,7 @@ Brave는 무료 단계와 유료 플랜을 제공합니다. Brave API 포털에�
 
 **추천:** `openclaw configure --section web`을 실행합니다. 이는 `tools.web.search.apiKey` 아래 `~/.openclaw/openclaw.json`에 키를 저장합니다.
 
-**환경 대안:** 게이트웨이 프로세스 환경에 `BRAVE_API_KEY`를 설정하세요. 게이트웨이 설치의 경우 `~/.openclaw/.env`(또는 서비스 환경)에 입력합니다. [환경 변수](/help/faq#how-does-openclaw-load-environment-variables)를 참조하세요.
+**환경 대안:** 게이트웨이 프로세스 환경에 `BRAVE_API_KEY`를 설정하세요. 게이트웨이 설치의 경우 `~/.openclaw/.env`(또는 서비스 환경)에 입력합니다. [환경 변수](/ko-KR/help/faq#how-does-openclaw-load-environment-variables)를 참조하세요.
 
 ## Perplexity 사용(직접 또는 OpenRouter를 통해)
 
@@ -250,7 +250,7 @@ URL을 가져와 읽을 수 있는 콘텐츠를 추출합니다.
 - `maxChars`는 `tools.web.fetch.maxCharsCap`에 고정됩니다.
 - `web_fetch`는 다운받은 응답 본문 크기를 `tools.web.fetch.maxResponseBytes`으로 제한한 후 구문 분석합니다; 과도한 응답은 잘리고 경고를 포함합니다.
 - `web_fetch`는 최선의 시도로 추출하며, 일부 사이트는 브라우저 도구가 필요할 수 있습니다.
-- [Firecrawl](/tools/firecrawl)에서 키 설정 및 서비스 세부 사항을 확인하세요.
+- [Firecrawl](/ko-KR/tools/firecrawl)에서 키 설정 및 서비스 세부 사항을 확인하세요.
 - 응답은 반복적인 요청 감소를 위해 캐시됩니다(기본 15분).
 - 도구 프로필/허용 목록을 사용하는 경우 `web_search`/`web_fetch` 또는 `group:web`을 추가하세요.
 - Brave 키가 없으면, `web_search`는 간단한 설정 힌트를 적은 설명서 링크와 함께 반환합니다.

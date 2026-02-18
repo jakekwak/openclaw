@@ -9,7 +9,7 @@ title: "구성 예제"
 
 # 구성 예제
 
-아래의 예제는 현재 구성 스키마와 일치합니다. 자세한 참조와 필드별 노트는 [Configuration](/gateway/configuration)을 참조하세요.
+아래의 예제는 현재 구성 스키마와 일치합니다. 자세한 참조와 필드별 노트는 [Configuration](/ko-KR/gateway/configuration)을 참조하세요.
 
 ## 시작하기
 
@@ -622,4 +622,4 @@ title: "구성 예제"
 - `dmPolicy: "open"`으로 설정하면, 일치하는 `allowFrom` 목록에 `"*"`이 포함되어야 합니다.
 - 프로바이더 ID는 다릅니다(전화번호, 사용자 ID, 채널 ID). 형식을 확인하려면 프로바이더 문서를 참조하세요.
 - 나중에 추가할 수 있는 선택적 섹션: `web`, `browser`, `ui`, `discovery`, `canvasHost`, `talk`, `signal`, `imessage`.
-- 더 깊은 설정 노트는 [Providers](/channels/whatsapp) 및 [Troubleshooting](/gateway/troubleshooting)를 참조하세요.
+- 더 깊은 설정 노트는 [Providers](/ko-KR/channels/whatsapp) 및 [Troubleshooting](/ko-KR/gateway/troubleshooting)를 참조하세요.

@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "signal-cli (JSON-RPC + SSE)를 통한 Signal 지원, 설정 경로 및 번호 모델"
 read_when:
@@ -100,7 +99,7 @@ Example:
 }
 ```
 
-멀티 계정 지원: 각 계정별 설정과 선택적 `name`을 사용하여 `channels.signal.accounts`를 사용하세요. 공유 패턴에 대한 내용은 [`gateway/configuration`](/gateway/configuration#telegramaccounts--discordaccounts--slackaccounts--signalaccounts--imessageaccounts)을 참조하십시오.
+멀티 계정 지원: 각 계정별 설정과 선택적 `name`을 사용하여 `channels.signal.accounts`를 사용하세요. 공유 패턴에 대한 내용은 [`gateway/configuration`](/ko-KR/gateway/configuration#telegramaccounts--discordaccounts--slackaccounts--signalaccounts--imessageaccounts)을 참조하십시오.
 
 ## Setup path B: register dedicated bot number (SMS, Linux)
 
@@ -188,7 +187,7 @@ DMs:
 - 다음을 통해 승인:
   - `openclaw pairing list signal`
   - `openclaw pairing approve signal <CODE>`
-- 페어링은 Signal 다이렉트 메시지의 기본 토큰 교환입니다. 자세한 내용: [Pairing](/channels/pairing)
+- 페어링은 Signal 다이렉트 메시지의 기본 토큰 교환입니다. 자세한 내용: [Pairing](/ko-KR/channels/pairing)
 - UUID 전용 발신자 (`sourceUuid`에서)는 `channels.signal.allowFrom`에 `uuid:<id>`로 저장됩니다.
 
 Groups:
@@ -281,7 +280,7 @@ pgrep -af signal-cli
 grep -i "signal" "/tmp/openclaw/openclaw-$(date +%Y-%m-%d).log" | tail -20
 ```
 
-문제해결 흐름: [/channels/troubleshooting](/channels/troubleshooting).
+문제해결 흐름: [/channels/troubleshooting](/ko-KR/channels/troubleshooting).
 
 ## Security notes
 
@@ -292,7 +291,7 @@ grep -i "signal" "/tmp/openclaw/openclaw-$(date +%Y-%m-%d).log" | tail -20
 
 ## Configuration reference (Signal)
 
-전체 구성: [Configuration](/gateway/configuration)
+전체 구성: [Configuration](/ko-KR/gateway/configuration)
 
 프로바이더 옵션:
 
@@ -322,4 +321,3 @@ grep -i "signal" "/tmp/openclaw/openclaw-$(date +%Y-%m-%d).log" | tail -20
 - `agents.list[].groupChat.mentionPatterns` (Signal은 네이티브 멘션을 지원하지 않음).
 - `messages.groupChat.mentionPatterns` (글로벌 백업).
 - `messages.responsePrefix`.
-```

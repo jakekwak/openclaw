@@ -14,7 +14,7 @@ When a site requires login, **sign in manually** in the **host** browser profile
 
 Do **not** give the model your credentials. Automated logins often trigger anti‑bot defenses and can lock the account.
 
-Back to the main browser docs: [Browser](/tools/browser).
+Back to the main browser docs: [Browser](/ko-KR/tools/browser).
 
 ## Which Chrome profile is used?
 

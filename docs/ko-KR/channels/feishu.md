@@ -523,7 +523,7 @@ Feishu는 스트리밍 답장을 인터랙티브 카드로 지원합니다. 활�
 
 ## 설정 참조
 
-전체 설정: [게이트웨이 설정](/gateway/configuration)
+전체 설정: [게이트웨이 설정](/ko-KR/gateway/configuration)
 
 주요 옵션:
 

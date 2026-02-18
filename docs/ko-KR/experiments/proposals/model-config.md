@@ -10,9 +10,9 @@ title: "Model Config Exploration"
 This document captures **ideas** for future model configuration. It is not a
 shipping spec. For current behavior, see:
 
-- [Models](/concepts/models)
-- [Model failover](/concepts/model-failover)
-- [OAuth + profiles](/concepts/oauth)
+- [Models](/ko-KR/concepts/models)
+- [Model failover](/ko-KR/concepts/model-failover)
+- [OAuth + profiles](/ko-KR/concepts/oauth)
 
 ## Motivation
 

@@ -29,7 +29,7 @@ openclaw plugins install ./extensions/matrix
 
 구성/온보딩 중에 Matrix를 선택하고 git 체크아웃이 감지되면, OpenClaw는 자동으로 로컬 설치 경로를 제공합니다.
 
-자세한 내용: [플러그인](/tools/plugin)
+자세한 내용: [플러그인](/ko-KR/tools/plugin)
 
 ## 설정
 
@@ -124,7 +124,7 @@ Element(또는 다른 클라이언트)를 열고 신뢰를 확립하기 위해 �
 
 ## 멀티 계정
 
-멀티 계정 지원: `channels.matrix.accounts`를 사용하여 계정별 자격 증명 및 선택적 `name`을 제공합니다. 공유 패턴에 대한 내용은 [gateway/configuration](/gateway/configuration#telegramaccounts--discordaccounts--slackaccounts--signalaccounts--imessageaccounts)에서 확인하십시오.
+멀티 계정 지원: `channels.matrix.accounts`를 사용하여 계정별 자격 증명 및 선택적 `name`을 제공합니다. 공유 패턴에 대한 내용은 [gateway/configuration](/ko-KR/gateway/configuration#telegramaccounts--discordaccounts--slackaccounts--signalaccounts--imessageaccounts)에서 확인하십시오.
 
 각 계정은 모든 홈 서버에서 별도의 Matrix 사용자로 실행됩니다. 계정별 구성은 최상위 `channels.matrix` 설정을 상속하며, 모든 옵션 (DM 정책, 그룹, 암호화 등)을 재정의할 수 있습니다.
 
@@ -252,11 +252,11 @@ openclaw pairing list matrix
 - DM이 무시됨: 발신자가 `channels.matrix.dm.policy="pairing"`일 때 승인 대기 중.
 - 암호화된 방 실패: 암호화 지원 또는 암호화 설정 불일치.
 
-분류 흐름: [/channels/troubleshooting](/channels/troubleshooting)에서 확인하십시오.
+분류 흐름: [/channels/troubleshooting](/ko-KR/channels/troubleshooting)에서 확인하십시오.
 
 ## 구성 참조 (Matrix)
 
-전체 구성: [구성](/gateway/configuration)
+전체 구성: [구성](/ko-KR/gateway/configuration)
 
 프로바이더 옵션:
 

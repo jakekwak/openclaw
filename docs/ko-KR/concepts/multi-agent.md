@@ -25,11 +25,11 @@ status: active
 
 주 에이전트 자격 증명은 자동으로 공유되지 **않습니다**. `agentDir`을 에이전트 간에 재사용하지 마십시오 (인증/세션 충돌을 유발할 수 있습니다). 자격 증명을 공유하려면, 다른 에이전트의 `agentDir`에 `auth-profiles.json`을 복사하십시오.
 
-스킬은 각 워크스페이스의 `skills/` 폴더를 통해 에이전트별로 가능하며, 공통 스킬은 `~/.openclaw/skills`에서 이용할 수 있습니다. [스킬: 에이전트별 vs 공통](/tools/skills#per-agent-vs-shared-skills)을 참조하십시오.
+스킬은 각 워크스페이스의 `skills/` 폴더를 통해 에이전트별로 가능하며, 공통 스킬은 `~/.openclaw/skills`에서 이용할 수 있습니다. [스킬: 에이전트별 vs 공통](/ko-KR/tools/skills#per-agent-vs-shared-skills)을 참조하십시오.
 
 게이트웨이는 **하나의 에이전트**(기본값) 또는 **여러 에이전트**를 나란히 호스팅할 수 있습니다.
 
-**워크스페이스 주의사항:** 각 에이전트의 워크스페이스는 **기본 현재 작업 디렉토리(cwd)**이며, 고정된 샌드박스가 아닙니다. 상대 경로는 워크스페이스 내부에서 해결되지만, 절대 경로는 샌드박스 격리가 활성화되지 않은 한 다른 호스트 위치에 도달할 수 있습니다. [샌드박스 격리](/gateway/sandboxing)를 참조하십시오.
+**워크스페이스 주의사항:** 각 에이전트의 워크스페이스는 **기본 현재 작업 디렉토리(cwd)**이며, 고정된 샌드박스가 아닙니다. 상대 경로는 워크스페이스 내부에서 해결되지만, 절대 경로는 샌드박스 격리가 활성화되지 않은 한 다른 호스트 위치에 도달할 수 있습니다. [샌드박스 격리](/ko-KR/gateway/sandboxing)를 참조하십시오.
 
 ## 경로 (빠른 맵)
 
@@ -112,7 +112,7 @@ openclaw agents list --bindings
 참고 사항:
 
 - 다이렉트 메시지 접근 제어는 **WhatsApp 계정당 전역**(페어링/허용 목록)이며, 에이전트별이 아닙니다.
-- 공유 그룹의 경우 그룹을 하나의 에이전트에 바인딩하거나 [방송 그룹](/channels/broadcast-groups)을 사용하십시오.
+- 공유 그룹의 경우 그룹을 하나의 에이전트에 바인딩하거나 [방송 그룹](/ko-KR/channels/broadcast-groups)을 사용하십시오.
 
 ## 라우팅 규칙 (메시지가 에이전트를 선택하는 방식)
 
@@ -372,4 +372,4 @@ v2026.1.6부터 각 에이전트는 자체적인 샌드박스 및 도구 제한�
 
 참고: `tools.elevated`는 **전역적**이고 발신자 기반이며, 에이전트별로 구성할 수 없습니다. 에이전트별 경계를 설정하려면 `agents.list[].tools`를 사용하여 `exec`을 거부하십시오. 그룹 대상화를 위해 `agents.list[].groupChat.mentionPatterns`를 설정하여 멘션이 의도된 에이전트에 정확히 매핑되도록 합니다.
 
-자세한 예시는 [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools)를 참조하십시오.
+자세한 예시는 [Multi-Agent Sandbox & Tools](/ko-KR/tools/multi-agent-sandbox-tools)를 참조하십시오.

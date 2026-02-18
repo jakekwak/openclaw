@@ -57,5 +57,5 @@ openclaw models auth login --provider openai-codex
 
 ## Notes
 
-- 모델 참조는 항상 `provider/model` 형식을 사용합니다 (자세한 내용은 [/concepts/models](/concepts/models)를 참조).
-- 인증 세부 사항 및 재사용 규칙은 [/concepts/oauth](/concepts/oauth)에 있습니다.
+- 모델 참조는 항상 `provider/model` 형식을 사용합니다 (자세한 내용은 [/concepts/models](/ko-KR/concepts/models)를 참조).
+- 인증 세부 사항 및 재사용 규칙은 [/concepts/oauth](/ko-KR/concepts/oauth)에 있습니다.

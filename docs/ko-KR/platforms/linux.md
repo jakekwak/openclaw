@@ -21,18 +21,18 @@ Native Linux 동반 앱이 계획되어 있습니다. 개발에 도움을 주시
 4. 노트북에서: `ssh -N -L 18789:127.0.0.1:18789 <user>@<host>`
 5. `http://127.0.0.1:18789/`를 열고 토큰을 붙여넣기
 
-단계별 VPS 가이드: [exe.dev](/install/exe-dev)
+단계별 VPS 가이드: [exe.dev](/ko-KR/install/exe-dev)
 
 ## 설치
 
-- [시작하기](/start/getting-started)
-- [설치 및 업데이트](/install/updating)
-- 선택적 흐름: [Bun (실험적)](/install/bun), [Nix](/install/nix), [Docker](/install/docker)
+- [시작하기](/ko-KR/start/getting-started)
+- [설치 및 업데이트](/ko-KR/install/updating)
+- 선택적 흐름: [Bun (실험적)](/ko-KR/install/bun), [Nix](/ko-KR/install/nix), [Docker](/ko-KR/install/docker)
 
 ## 게이트웨이
 
-- [게이트웨이 실행 가이드](/gateway)
-- [설정](/gateway/configuration)
+- [게이트웨이 실행 가이드](/ko-KR/gateway)
+- [설정](/ko-KR/gateway/configuration)
 
 ## 게이트웨이 서비스 설치 (CLI)
 
@@ -64,7 +64,7 @@ openclaw doctor
 
 ## 시스템 제어 (systemd 사용자 유닛)
 
-OpenClaw는 기본적으로 systemd **사용자** 서비스를 설치합니다. 공유 또는 상시 가동 서버에는 **시스템** 서비스를 사용하십시오. 전체 유닛 예제와 지침은 [게이트웨이 실행 가이드](/gateway)에 있습니다.
+OpenClaw는 기본적으로 systemd **사용자** 서비스를 설치합니다. 공유 또는 상시 가동 서버에는 **시스템** 서비스를 사용하십시오. 전체 유닛 예제와 지침은 [게이트웨이 실행 가이드](/ko-KR/gateway)에 있습니다.
 
 Minimal setup:
 

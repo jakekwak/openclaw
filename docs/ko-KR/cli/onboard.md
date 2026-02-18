@@ -11,11 +11,11 @@ title: "onboard"
 
 ## 관련 안내서
 
-- CLI 온보딩 허브: [온보딩 마법사 (CLI)](/start/wizard)
-- 온보딩 개요: [온보딩 개요](/start/onboarding-overview)
-- CLI 온보딩 참조: [CLI 온보딩 참조](/start/wizard-cli-reference)
-- CLI 자동화: [CLI 자동화](/start/wizard-cli-automation)
-- macOS 온보딩: [온보딩 (macOS 앱)](/start/onboarding)
+- CLI 온보딩 허브: [온보딩 마법사 (CLI)](/ko-KR/start/wizard)
+- 온보딩 개요: [온보딩 개요](/ko-KR/start/onboarding-overview)
+- CLI 온보딩 참조: [CLI 온보딩 참조](/ko-KR/start/wizard-cli-reference)
+- CLI 자동화: [CLI 자동화](/ko-KR/start/wizard-cli-automation)
+- macOS 온보딩: [온보딩 (macOS 앱)](/ko-KR/start/onboarding)
 
 ## Examples
 

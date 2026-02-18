@@ -9,7 +9,7 @@ read_when:
 
 # Node.js
 
-OpenClaw는 **Node 22 이상**이 필요합니다. [설치 스크립트](/install#install-methods)는 Node를 자동으로 감지하고 설치합니다. 이 페이지는 Node를 직접 설정하고 모든 것이 올바르게 연결되어 있는지 확인하고자 할 때 유용합니다 (버전, PATH, 전역 설치).
+OpenClaw는 **Node 22 이상**이 필요합니다. [설치 스크립트](/ko-KR/install#install-methods)는 Node를 자동으로 감지하고 설치합니다. 이 페이지는 Node를 직접 설정하고 모든 것이 올바르게 연결되어 있는지 확인하고자 할 때 유용합니다 (버전, PATH, 전역 설치).
 
 ## 버전 확인
 

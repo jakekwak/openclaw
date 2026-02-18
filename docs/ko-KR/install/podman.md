@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "루트리스 Podman 컨테이너에서 OpenClaw 실행하기"
 read_when:
@@ -105,4 +104,3 @@ Quadlet 파일은 `~openclaw/.config/containers/systemd/openclaw.container`에 �
 ## 선택 사항: 자신의 사용자로 실행하기
 
 정상 사용자로 게이트웨이를 실행하려면 (전용 openclaw 사용자 없이): 이미지를 빌드하고 `~/.openclaw/.env`에 `OPENCLAW_GATEWAY_TOKEN`을 생성한 후 자신의 `~/.openclaw`에 마운트 및 `--userns=keep-id`로 컨테이너를 실행하세요. 실행 스크립트는 openclaw 사용자 흐름에 맞춰 설계되었습니다; 단일 사용자 설정을 위해 스크립트의 `podman run` 명령어를 수동으로 실행하고 설정 및 작업공간을 자신의 홈으로 지정할 수 있습니다. 대부분의 사용자에게 권장: `setup-podman.sh`를 사용하고 openclaw 사용자로 실행하여 설정 및 프로세스를 격리하세요.
-```

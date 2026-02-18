@@ -12,7 +12,7 @@ Security tools (audit + optional fixes).
 
 Related:
 
-- Security guide: [Security](/gateway/security)
+- Security guide: [Security](/ko-KR/gateway/security)
 
 ## Audit
 

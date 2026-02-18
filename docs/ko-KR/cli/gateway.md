@@ -15,9 +15,9 @@ title: "게이트웨이"
 
 관련 문서:
 
-- [/gateway/bonjour](/gateway/bonjour)
-- [/gateway/discovery](/gateway/discovery)
-- [/gateway/configuration](/gateway/configuration)
+- [/gateway/bonjour](/ko-KR/gateway/bonjour)
+- [/gateway/discovery](/ko-KR/gateway/discovery)
+- [/gateway/configuration](/ko-KR/gateway/configuration)
 
 ## Run the Gateway
 
@@ -168,7 +168,7 @@ openclaw gateway uninstall
 `gateway discover`는 게이트웨이 비콘 (`_openclaw-gw._tcp`)을 검색합니다.
 
 - 멀티캐스트 DNS-SD: `local.`
-- 유니캐스트 DNS-SD (광역 Bonjour): 도메인을 선택 (예: `openclaw.internal.`) 하고 분할 DNS + DNS 서버를 설정합니다. 자세한 사항은 [/gateway/bonjour](/gateway/bonjour)를 참조하세요.
+- 유니캐스트 DNS-SD (광역 Bonjour): 도메인을 선택 (예: `openclaw.internal.`) 하고 분할 DNS + DNS 서버를 설정합니다. 자세한 사항은 [/gateway/bonjour](/ko-KR/gateway/bonjour)를 참조하세요.
 
 Bonjour 검색을 활성화한 게이트웨이만 (기본값) 비콘을 광고합니다.
 

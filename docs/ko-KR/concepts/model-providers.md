@@ -9,7 +9,7 @@ title: "모델 프로바이더"
 # 모델 프로바이더
 
 이 페이지는 **LLM/모델 프로바이더**를 다루며 (WhatsApp/Telegram 같은 채널은 아닙니다).
-모델 선택 규칙에 대해서는 [/concepts/models](/concepts/models)를 참조하세요.
+모델 선택 규칙에 대해서는 [/concepts/models](/ko-KR/concepts/models)를 참조하세요.
 
 ## 빠른 규칙
 
@@ -119,7 +119,7 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
   - OpenAI 호환 베이스 URL: `https://api.cerebras.ai/v1`.
 - Mistral: `mistral` (`MISTRAL_API_KEY`)
 - GitHub Copilot: `github-copilot` (`COPILOT_GITHUB_TOKEN` / `GH_TOKEN` / `GITHUB_TOKEN`)
-- Hugging Face Inference: `huggingface` (`HUGGINGFACE_HUB_TOKEN` 또는 `HF_TOKEN`) — OpenAI 호환 라우터; 예제 모델: `huggingface/deepseek-ai/DeepSeek-R1`; CLI: `openclaw onboard --auth-choice huggingface-api-key`. [Hugging Face (Inference)](/providers/huggingface) 참조.
+- Hugging Face Inference: `huggingface` (`HUGGINGFACE_HUB_TOKEN` 또는 `HF_TOKEN`) — OpenAI 호환 라우터; 예제 모델: `huggingface/deepseek-ai/DeepSeek-R1`; CLI: `openclaw onboard --auth-choice huggingface-api-key`. [Hugging Face (Inference)](/ko-KR/providers/huggingface) 참조.
 
 ## `models.providers`를 통한 프로바이더 (커스텀/기본 URL)
 
@@ -195,7 +195,7 @@ openclaw models auth login --provider qwen-portal --set-default
 - `qwen-portal/coder-model`
 - `qwen-portal/vision-model`
 
-설정 세부정보 및 주의사항은 [/providers/qwen](/providers/qwen)를 참조하세요.
+설정 세부정보 및 주의사항은 [/providers/qwen](/ko-KR/providers/qwen)를 참조하세요.
 
 ### Synthetic
 
@@ -232,7 +232,7 @@ MiniMax는 커스텀 엔드포인트를 사용하기 때문에 `models.providers
 - MiniMax (Anthropic 호환): `--auth-choice minimax-api`
 - 인증: `MINIMAX_API_KEY`
 
-설정 세부정보, 모델 옵션 및 구성 스니펫은 [/providers/minimax](/providers/minimax)를 참조하세요.
+설정 세부정보, 모델 옵션 및 구성 스니펫은 [/providers/minimax](/ko-KR/providers/minimax)를 참조하세요.
 
 ### Ollama
 
@@ -256,7 +256,7 @@ ollama pull llama3.3
 }
 ```
 
-Ollama는 로컬에서 `http://127.0.0.1:11434/v1`로 실행될 때 자동으로 감지됩니다. 모델 추천 및 사용자 설정 구성에 대해서는 [/providers/ollama](/providers/ollama)를 참조하세요.
+Ollama는 로컬에서 `http://127.0.0.1:11434/v1`로 실행될 때 자동으로 감지됩니다. 모델 추천 및 사용자 설정 구성에 대해서는 [/providers/ollama](/ko-KR/providers/ollama)를 참조하세요.
 
 ### vLLM
 
@@ -282,7 +282,7 @@ export VLLM_API_KEY="vllm-local"
 }
 ```
 
-자세한 내용은 [/providers/vllm](/providers/vllm)를 참조하세요.
+자세한 내용은 [/providers/vllm](/ko-KR/providers/vllm)를 참조하세요.
 
 ### 로컬 프록시 (LM Studio, vLLM, LiteLLM 등)
 
@@ -338,4 +338,4 @@ openclaw models set opencode/claude-opus-4-6
 openclaw models list
 ```
 
-전체 구성 예제는 [/gateway/configuration](/gateway/configuration)을 참고하세요.
+전체 구성 예제는 [/gateway/configuration](/ko-KR/gateway/configuration)을 참고하세요.

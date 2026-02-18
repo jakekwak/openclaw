@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "CLI 온보딩 마법사에 대한 전체 참조: 모든 단계, 플래그 및 설정 필드"
 read_when:
@@ -12,7 +11,7 @@ sidebarTitle: "마법사 참조"
 # 온보딩 마법사 참조
 
 이 문서는 `openclaw onboard` CLI 마법사에 대한 전체 참조입니다.
-고급 개요는 [온보딩 마법사](/start/wizard)를 참조하세요.
+고급 개요는 [온보딩 마법사](/ko-KR/start/wizard)를 참조하세요.
 
 ## 흐름 세부사항 (로컬 모드)
 
@@ -38,21 +37,21 @@ sidebarTitle: "마법사 참조"
     - **OpenCode Zen (다중 모델 프록시)**: `OPENCODE_API_KEY`(또는 `OPENCODE_ZEN_API_KEY`)를 요청받습니다. https://opencode.ai/auth에서 받을 수 있습니다.
     - **API 키**: 키를 저장해줍니다.
     - **Vercel AI 게이트웨이 (다중 모델 프록시)**: `AI_GATEWAY_API_KEY`를 요청받습니다.
-    - 자세한 내용: [Vercel AI 게이트웨이](/providers/vercel-ai-gateway)
+    - 자세한 내용: [Vercel AI 게이트웨이](/ko-KR/providers/vercel-ai-gateway)
     - **Cloudflare AI 게이트웨이**: 계정 ID, 게이트웨이 ID, 그리고 `CLOUDFLARE_AI_GATEWAY_API_KEY`를 요청받습니다.
-    - 자세한 내용: [Cloudflare AI 게이트웨이](/providers/cloudflare-ai-gateway)
+    - 자세한 내용: [Cloudflare AI 게이트웨이](/ko-KR/providers/cloudflare-ai-gateway)
     - **MiniMax M2.1**: 설정이 자동으로 작성됩니다.
-    - 자세한 내용: [MiniMax](/providers/minimax)
+    - 자세한 내용: [MiniMax](/ko-KR/providers/minimax)
     - **Synthetic (Anthropic 호환)**: `SYNTHETIC_API_KEY`를 요청받습니다.
-    - 자세한 내용: [Synthetic](/providers/synthetic)
+    - 자세한 내용: [Synthetic](/ko-KR/providers/synthetic)
     - **Moonshot (Kimi K2)**: 설정이 자동으로 작성됩니다.
     - **Kimi Coding**: 설정이 자동으로 작성됩니다.
-    - 자세한 내용: [Moonshot AI (Kimi + Kimi Coding)](/providers/moonshot)
+    - 자세한 내용: [Moonshot AI (Kimi + Kimi Coding)](/ko-KR/providers/moonshot)
     - **건너뛰기**: 아직 인증이 설정되지 않았습니다.
     - 감지된 옵션에서 기본 모델을 선택하거나 프로바이더/모델을 수동으로 입력합니다.
     - 마법사는 모델 검사를 수행하고 구성된 모델이 불명확하거나 인증이 누락된 경우 경고합니다.
     - OAuth 자격 증명은 `~/.openclaw/credentials/oauth.json`에 저장됩니다. 인증 프로필은 `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`에 저장됩니다 (API 키 + OAuth).
-    - 자세한 내용: [/concepts/oauth](/concepts/oauth)
+    - 자세한 내용: [/concepts/oauth](/ko-KR/concepts/oauth)
     <Note>
     헤드리스/서버 팁: 브라우저가 있는 기기에서 OAuth를 완료한 후 `~/.openclaw/credentials/oauth.json` (또는 `$OPENCLAW_STATE_DIR/credentials/oauth.json`)을 게이트웨이 호스트로 복사하세요.
     </Note>
@@ -60,7 +59,7 @@ sidebarTitle: "마법사 참조"
   <Step title="작업 공간">
     - 기본 `~/.openclaw/workspace` (구성 가능).
     - 에이전트 부트스트랩 의식을 위해 필요한 작업 공간 파일을 시드합니다.
-    - 전체 작업 공간 레이아웃 + 백업 가이드: [에이전트 작업 공간](/concepts/agent-workspace)
+    - 전체 작업 공간 레이아웃 + 백업 가이드: [에이전트 작업 공간](/ko-KR/concepts/agent-workspace)
   </Step>
   <Step title="게이트웨이">
     - 포트, 바인드, 인증 모드, tailscale 노출.
@@ -69,14 +68,14 @@ sidebarTitle: "마법사 참조"
     - 비‑루프백 바인드는 여전히 인증이 필요합니다.
   </Step>
   <Step title="채널">
-    - [WhatsApp](/channels/whatsapp): 선택적 QR 로그인.
-    - [Telegram](/channels/telegram): 봇 토큰.
-    - [Discord](/channels/discord): 봇 토큰.
-    - [Google Chat](/channels/googlechat): 서비스 계정 JSON + 웹훅 대상.
-    - [Mattermost](/channels/mattermost) (플러그인): 봇 토큰 + 기본 URL.
-    - [Signal](/channels/signal): 선택적 `signal-cli` 설치 + 계정 설정.
-    - [BlueBubbles](/channels/bluebubbles): **iMessage에 권장됨**; 서버 URL + 비밀번호 + 웹훅.
-    - [iMessage](/channels/imessage): 레거시 `imsg` CLI 경로 + DB 액세스.
+    - [WhatsApp](/ko-KR/channels/whatsapp): 선택적 QR 로그인.
+    - [Telegram](/ko-KR/channels/telegram): 봇 토큰.
+    - [Discord](/ko-KR/channels/discord): 봇 토큰.
+    - [Google Chat](/ko-KR/channels/googlechat): 서비스 계정 JSON + 웹훅 대상.
+    - [Mattermost](/ko-KR/channels/mattermost) (플러그인): 봇 토큰 + 기본 URL.
+    - [Signal](/ko-KR/channels/signal): 선택적 `signal-cli` 설치 + 계정 설정.
+    - [BlueBubbles](/ko-KR/channels/bluebubbles): **iMessage에 권장됨**; 서버 URL + 비밀번호 + 웹훅.
+    - [iMessage](/ko-KR/channels/imessage): 레거시 `imsg` CLI 경로 + DB 액세스.
     - 다이렉트 메시지 보안: 기본값은 페어링입니다. 첫 번째 다이렉트 메시지는 코드를 보냅니다; `openclaw pairing approve <channel> <code>`를 통해 승인하거나 허용 목록을 사용하세요.
   </Step>
   <Step title="데몬 설치">
@@ -258,9 +257,8 @@ WhatsApp 자격 증명은 `~/.openclaw/credentials/whatsapp/<accountId>/`에 보
 
 ## 관련 문서
 
-- 마법사 개요: [온보딩 마법사](/start/wizard)
-- macOS 앱 온보딩: [온보딩](/start/onboarding)
-- 설정 참조: [게이트웨이 구성](/gateway/configuration)
-- 프로바이더: [WhatsApp](/channels/whatsapp), [Telegram](/channels/telegram), [Discord](/channels/discord), [Google Chat](/channels/googlechat), [Signal](/channels/signal), [BlueBubbles](/channels/bluebubbles) (iMessage), [iMessage](/channels/imessage) (레거시)
-- 스킬: [스킬](/tools/skills), [스킬 설정](/tools/skills-config)
-```
+- 마법사 개요: [온보딩 마법사](/ko-KR/start/wizard)
+- macOS 앱 온보딩: [온보딩](/ko-KR/start/onboarding)
+- 설정 참조: [게이트웨이 구성](/ko-KR/gateway/configuration)
+- 프로바이더: [WhatsApp](/ko-KR/channels/whatsapp), [Telegram](/ko-KR/channels/telegram), [Discord](/ko-KR/channels/discord), [Google Chat](/ko-KR/channels/googlechat), [Signal](/ko-KR/channels/signal), [BlueBubbles](/ko-KR/channels/bluebubbles) (iMessage), [iMessage](/ko-KR/channels/imessage) (레거시)
+- 스킬: [스킬](/ko-KR/tools/skills), [스킬 설정](/ko-KR/tools/skills-config)

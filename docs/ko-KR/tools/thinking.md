@@ -60,7 +60,7 @@ title: "Thinking Levels"
 
 ## 관련
 
-- [Elevated mode](/tools/elevated)에 문서가 있습니다.
+- [Elevated mode](/ko-KR/tools/elevated)에 문서가 있습니다.
 
 ## 하트비트
 

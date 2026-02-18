@@ -23,7 +23,7 @@ title: "트랜스크립트 위생"
 
 트랜스크립트 저장 세부사항이 필요하면 다음을 참조하십시오:
 
-- [/reference/session-management-compaction](/reference/session-management-compaction)
+- [/reference/session-management-compaction](/ko-KR/reference/session-management-compaction)
 
 ---
 

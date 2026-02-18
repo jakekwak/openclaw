@@ -9,7 +9,7 @@ sidebarTitle: "Onboarding: macOS App"
 
 # Onboarding (macOS App)
 
-이 문서는 **현재** 첫 실행 온보딩 흐름에 대해 설명합니다. 목표는 매끄러운 "첫날" 경험을 제공하는 것입니다: 게이트웨이 실행 위치를 선택하고, 인증을 연결하고, 마법사를 실행하여 에이전트가 자체 부트스트랩하도록 합니다. 온보딩 경로의 일반 개요는 [Onboarding Overview](/start/onboarding-overview)를 참조하세요.
+이 문서는 **현재** 첫 실행 온보딩 흐름에 대해 설명합니다. 목표는 매끄러운 "첫날" 경험을 제공하는 것입니다: 게이트웨이 실행 위치를 선택하고, 인증을 연결하고, 마법사를 실행하여 에이전트가 자체 부트스트랩하도록 합니다. 온보딩 경로의 일반 개요는 [Onboarding Overview](/ko-KR/start/onboarding-overview)를 참조하세요.
 
 <Steps>
 <Step title="Approve macOS warning">
@@ -67,6 +67,6 @@ sidebarTitle: "Onboarding: macOS App"
   앱은 글로벌 `openclaw` CLI를 npm/pnpm을 통해 설치할 수 있어 터미널 워크플로우와 launchd 작업이 즉시 작동합니다.
 </Step>
 <Step title="Onboarding Chat (dedicated session)">
-  설정 후, 앱은 전용 온보딩 채팅 세션을 열어 에이전트가 자기소개를 하고 다음 단계를 안내할 수 있게 합니다. 이는 첫 실행 안내를 일반 대화와 분리합니다. 첫 에이전트 실행 시 게이트웨이 호스트에서 무슨 일이 일어나는지에 대한 자세한 내용은 [Bootstrapping](/start/bootstrapping)을 참조하세요.
+  설정 후, 앱은 전용 온보딩 채팅 세션을 열어 에이전트가 자기소개를 하고 다음 단계를 안내할 수 있게 합니다. 이는 첫 실행 안내를 일반 대화와 분리합니다. 첫 에이전트 실행 시 게이트웨이 호스트에서 무슨 일이 일어나는지에 대한 자세한 내용은 [Bootstrapping](/ko-KR/start/bootstrapping)을 참조하세요.
 </Step>
 </Steps>

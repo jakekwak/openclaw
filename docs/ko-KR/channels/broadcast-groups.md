@@ -1,4 +1,3 @@
-```yaml
 ---
 summary: "여러 에이전트에게 WhatsApp 메시지 방송"
 read_when:
@@ -438,7 +437,6 @@ interface OpenClawConfig {
 
 ## 추가 정보
 
-- [다중 에이전트 구성](/tools/multi-agent-sandbox-tools)
-- [라우팅 구성](/channels/channel-routing)
-- [세션 관리](/concepts/sessions)
-```
+- [다중 에이전트 구성](/ko-KR/tools/multi-agent-sandbox-tools)
+- [라우팅 구성](/ko-KR/channels/channel-routing)
+- [세션 관리](/ko-KR/concepts/sessions)

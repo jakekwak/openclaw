@@ -97,7 +97,7 @@ openclaw config set agents.list[0].tools.exec.node "node-id-or-name"
 ## Exec approvals (동반 앱 / 노드 호스트)
 
 샌드박스 격리된 에이전트는 게이트웨이 또는 노드 호스트에서 `exec`이 실행되기 전에 요청별 승인을 요구할 수 있습니다.
-[Exec approvals](/tools/exec-approvals)에서 정책, 허용 목록 및 UI 흐름을 확인하세요.
+[Exec approvals](/ko-KR/tools/exec-approvals)에서 정책, 허용 목록 및 UI 흐름을 확인하세요.
 
 승인이 필요한 경우, exec 도구는 즉시 `status: "approval-pending"`와 승인 ID를 반환합니다. 승인(또는 거부/시간 초과)되면, 게이트웨이가 시스템 이벤트 (`Exec finished` / `Exec denied`)를 발생시킵니다. 명령어가 `tools.exec.approvalRunningNoticeMs` 이후에도 실행 중일 경우, 단일 `Exec running` 알림이 발생됩니다.
 

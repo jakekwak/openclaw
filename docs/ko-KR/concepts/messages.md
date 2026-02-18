@@ -27,7 +27,7 @@ title: "메시지"
 - 블록 스트리밍과 청킹의 기본값을 위한 `agents.defaults.*`.
 - 최대값과 스트리밍 전환을 위한 채널 재정의 (`channels.whatsapp.*`, `channels.telegram.*` 등).
 
-전체 스키마는 [구성](/gateway/configuration)을 참조하세요.
+전체 스키마는 [구성](/ko-KR/gateway/configuration)을 참조하세요.
 
 ## 수신 중복 제거 (Inbound dedupe)
 
@@ -69,7 +69,7 @@ title: "메시지"
 
 여러 디바이스/채널이 동일한 세션에 매핑될 수 있지만, 이 기록은 모든 클라이언트에 완전히 동기화되지 않습니다. 권장 사항: 긴 대화를 위해 하나의 주요 디바이스를 사용하여 문맥의 분기를 방지하세요. 제어 UI와 TUI는 항상 게이트웨이 지원 세션 기록을 보여주므로, 이는 기준 정보가 됩니다.
 
-세부사항: [세션 관리](/concepts/session).
+세부사항: [세션 관리](/ko-KR/concepts/session).
 
 ## 수신 본문과 기록 컨텍스트
 
@@ -97,7 +97,7 @@ OpenClaw는 **프롬프트 본문**을 **명령 본문**과 분리합니다:
 - `messages.queue` (및 `messages.queue.byChannel`)를 통해 구성합니다.
 - 모드: `interrupt`, `steer`, `followup`, `collect`, 여기에 백로그 변형 추가.
 
-세부사항: [대기열](/concepts/queue).
+세부사항: [대기열](/ko-KR/concepts/queue).
 
 ## 스트리밍, 청킹, 배칭
 
@@ -112,7 +112,7 @@ OpenClaw는 **프롬프트 본문**을 **명령 본문**과 분리합니다:
 - `agents.defaults.humanDelay` (블록 응답 사이의 인간과 같은 휴지)
 - 채널 재정의: `*.blockStreaming`과 `*.blockStreamingCoalesce` (Telegram 이외의 채널은 명시적으로 `*.blockStreaming: true` 설정이 필요)
 
-세부사항: [스트리밍 + 청킹](/concepts/streaming).
+세부사항: [스트리밍 + 청킹](/ko-KR/concepts/streaming).
 
 ## 추론 가시성과 토큰
 
@@ -122,7 +122,7 @@ OpenClaw는 모델의 추론을 노출하거나 숨길 수 있습니다:
 - 추론 콘텐츠는 모델이 생성할 때 여전히 토큰 사용량에 포함됩니다.
 - Telegram은 추론 스트림을 초안 버블에 지원합니다.
 
-자세한 내용: [사고 + 추론 지시문](/tools/thinking) 및 [토큰 사용](/reference/token-use).
+자세한 내용: [사고 + 추론 지시문](/ko-KR/tools/thinking) 및 [토큰 사용](/ko-KR/reference/token-use).
 
 ## 접두사, 스레딩, 응답
 
@@ -131,4 +131,4 @@ OpenClaw는 모델의 추론을 노출하거나 숨길 수 있습니다:
 - `messages.responsePrefix`, `channels.<channel>.responsePrefix`, 및 `channels.<channel>.accounts.<id>.responsePrefix` (발신 접두사 계단), `channels.whatsapp.messagePrefix` (WhatsApp 수신 접두사)
 - `replyToMode` 및 채널 별 기본값을 통한 응답 스레딩
 
-자세한 내용: [구성](/gateway/configuration#messages) 및 채널 문서.
+자세한 내용: [구성](/ko-KR/gateway/configuration#messages) 및 채널 문서.

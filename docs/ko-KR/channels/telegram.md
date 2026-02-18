@@ -10,13 +10,13 @@ title: "Telegram"
 상태: grammY를 통해 봇 다이렉트 메시지 + 그룹에서 프로덕션 레디. 기본 모드는 롱 폴링이며 웹훅 모드는 선택 사항입니다.
 
 <CardGroup cols={3}>
-  <Card title="Pairing" icon="link" href="/channels/pairing">
+  <Card title="Pairing" icon="link" href="/ko-KR/channels/pairing">
     Telegram의 기본 다이렉트 메시지 정책은 페어링입니다.
   </Card>
-  <Card title="Channel troubleshooting" icon="wrench" href="/channels/troubleshooting">
+  <Card title="Channel troubleshooting" icon="wrench" href="/ko-KR/channels/troubleshooting">
     크로스 채널 진단 및 수리 플레이북.
   </Card>
-  <Card title="Gateway configuration" icon="settings" href="/gateway/configuration">
+  <Card title="Gateway configuration" icon="settings" href="/ko-KR/gateway/configuration">
     전체 채널 구성 패턴 및 예제.
   </Card>
 </CardGroup>
@@ -316,7 +316,7 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
     2. 코드를 iOS 앱에 붙여 넣기
     3. `/pair approve`는 최신 대기 요청을 승인합니다
 
-    더 많은 정보: [페어링](/channels/pairing#pair-via-telegram-recommended-for-ios).
+    더 많은 정보: [페어링](/ko-KR/channels/pairing#pair-via-telegram-recommended-for-ios).
 
   </Accordion>
 
@@ -404,7 +404,7 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
     - `channels.telegram.actions.reactions`
     - `channels.telegram.actions.sticker` (기본: 비활성화)
 
-    반응 제거 의미 체계: [/tools/reactions](/tools/reactions)
+    반응 제거 의미 체계: [/tools/reactions](/ko-KR/tools/reactions)
 
   </Accordion>
 
@@ -692,7 +692,7 @@ dig +short api.telegram.org AAAA
   </Accordion>
 </AccordionGroup>
 
-자세한 도움말: [채널 문제 해결](/channels/troubleshooting).
+자세한 도움말: [채널 문제 해결](/ko-KR/channels/troubleshooting).
 
 ## Telegram 구성 참조 포인터
 
@@ -737,7 +737,7 @@ dig +short api.telegram.org AAAA
 - `channels.telegram.reactionNotifications`: `off | own | all` — 어떤 반응이 시스템 이벤트를 트리거하는지 제어 (기본: `own` 사용하지 않을 때).
 - `channels.telegram.reactionLevel`: `off | ack | minimal | extensive` — 에이전트의 반응 기능 제어 (기본: `minimal` 사용하지 않을 때).
 
-- [구성 참조 - Telegram](/gateway/configuration-reference#telegram)
+- [구성 참조 - Telegram](/ko-KR/gateway/configuration-reference#telegram)
 
 Telegram 전용 특징적 필드:
 
@@ -755,6 +755,6 @@ Telegram 전용 특징적 필드:
 
 ## 관련 사항
 
-- [페어링](/channels/pairing)
-- [채널 라우팅](/channels/channel-routing)
-- [문제 해결](/channels/troubleshooting)
+- [페어링](/ko-KR/channels/pairing)
+- [채널 라우팅](/ko-KR/channels/channel-routing)
+- [문제 해결](/ko-KR/channels/troubleshooting)

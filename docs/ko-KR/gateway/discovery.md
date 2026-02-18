@@ -22,12 +22,12 @@ OpenClaw는 표면적으로는 유사해 보이는 두 가지 뚜렷한 문제�
 - **Gateway WS (제어 플레인)**: 기본적으로 `127.0.0.1:18789`의 WebSocket 엔드포인트; LAN/tailnet을 통해 `gateway.bind`로 연결할 수 있습니다.
 - **직접 WS 전송**: LAN/tailnet을 지향하는 Gateway WS 엔드포인트 (SSH 없음).
 - **SSH 전송 (대체)**: `127.0.0.1:18789`를 SSH로 포워딩하여 원격 제어.
-- **레거시 TCP 브리지 (사용 중단/제거됨)**: 오래된 노드 전송 (참고 [Bridge protocol](/gateway/bridge-protocol)); 더 이상 디바이스 검색에 광고되지 않음.
+- **레거시 TCP 브리지 (사용 중단/제거됨)**: 오래된 노드 전송 (참고 [Bridge protocol](/ko-KR/gateway/bridge-protocol)); 더 이상 디바이스 검색에 광고되지 않음.
 
 프로토콜 세부 사항:
 
-- [Gateway protocol](/gateway/protocol)
-- [Bridge protocol (legacy)](/gateway/bridge-protocol)
+- [Gateway protocol](/ko-KR/gateway/protocol)
+- [Bridge protocol (legacy)](/ko-KR/gateway/bridge-protocol)
 
 ## 왜 '직접'과 SSH를 모두 유지하는가
 
@@ -51,7 +51,7 @@ Bonjour는 최선을 다하지만 네트워크를 넘지 않습니다. 같은 LA
 - **게이트웨이**는 Bonjour를 통해 WS 엔드포인트를 광고합니다.
 - 클라이언트는 브라우징하고 "게이트웨이를 선택하십시오" 목록을 보여주고 선택한 엔드포인트를 저장합니다.
 
-문제 해결 및 비콘 세부 사항: [Bonjour](/gateway/bonjour).
+문제 해결 및 비콘 세부 사항: [Bonjour](/ko-KR/gateway/bonjour).
 
 #### 서비스 비콘 세부 사항
 
@@ -95,7 +95,7 @@ Bonjour는 최선을 다하지만 네트워크를 넘지 않습니다. 같은 LA
 
 직접 경로가 없거나 (또는 직접 경로가 비활성화된 경우), 클라이언트는 로컬 루프백 게이트웨이 포트를 SSH로 전달하여 항상 연결할 수 있습니다.
 
-[원격 접근](/gateway/remote)을 참조하세요.
+[원격 접근](/ko-KR/gateway/remote)을 참조하세요.
 
 ## 전송 선택 (클라이언트 정책)
 
@@ -110,7 +110,7 @@ Bonjour는 최선을 다하지만 네트워크를 넘지 않습니다. 같은 LA
 
 게이트웨이는 노드/클라이언트 허가의 진실 원천입니다.
 
-- 페어링 요청은 게이트웨이에서 생성/승인/거부됩니다 (참조 [Gateway pairing](/gateway/pairing)).
+- 페어링 요청은 게이트웨이에서 생성/승인/거부됩니다 (참조 [Gateway pairing](/ko-KR/gateway/pairing)).
 - 게이트웨이는 다음을 시행합니다:
   - 인증 (토큰 / 키페어)
   - 범위/ACLs (게이트웨이는 모든 메서드에 대해 원시 프록시가 아닙니다)

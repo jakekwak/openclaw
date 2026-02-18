@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "Run OpenClaw Gateway on exe.dev (VM + HTTPS proxy) for remote access"
 read_when:
@@ -120,5 +119,4 @@ openclaw gateway restart
 openclaw health
 ```
 
-Guide: [Updating](/install/updating)
-```
+Guide: [Updating](/ko-KR/install/updating)

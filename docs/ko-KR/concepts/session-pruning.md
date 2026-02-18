@@ -73,7 +73,7 @@ read_when:
 ## 다른 제한과의 상호 작용
 
 - 내장 도구는 이미 자체 출력을 잘라냅니다. 세션 가지치기는 모델 컨텍스트에 너무 많은 도구 출력이 누적되지 않도록 추가적으로 작용합니다.
-- 압축은 별개입니다: 압축은 요약 및 영구적이며, 가지치기는 요청 당 일시적입니다. [/concepts/compaction](/concepts/compaction)를 참조하세요.
+- 압축은 별개입니다: 압축은 요약 및 영구적이며, 가지치기는 요청 당 일시적입니다. [/concepts/compaction](/ko-KR/concepts/compaction)를 참조하세요.
 
 ## 기본값 (활성화 되었을 때)
 
@@ -120,4 +120,4 @@ TTL-인식 가지치기 활성화:
 }
 ```
 
-설정 참조: [Gateway Configuration](/gateway/configuration)
+설정 참조: [Gateway Configuration](/ko-KR/gateway/configuration)

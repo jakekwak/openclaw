@@ -12,45 +12,45 @@ title: "CLI 참조"
 
 ## 명령어 페이지
 
-- [`setup`](/cli/setup)
-- [`onboard`](/cli/onboard)
-- [`configure`](/cli/configure)
-- [`config`](/cli/config)
-- [`doctor`](/cli/doctor)
-- [`dashboard`](/cli/dashboard)
-- [`reset`](/cli/reset)
-- [`uninstall`](/cli/uninstall)
-- [`update`](/cli/update)
-- [`message`](/cli/message)
-- [`agent`](/cli/agent)
-- [`agents`](/cli/agents)
-- [`acp`](/cli/acp)
-- [`status`](/cli/status)
-- [`health`](/cli/health)
-- [`sessions`](/cli/sessions)
-- [`gateway`](/cli/gateway)
-- [`logs`](/cli/logs)
-- [`system`](/cli/system)
-- [`models`](/cli/models)
-- [`memory`](/cli/memory)
-- [`nodes`](/cli/nodes)
-- [`devices`](/cli/devices)
-- [`node`](/cli/node)
-- [`approvals`](/cli/approvals)
-- [`sandbox`](/cli/sandbox)
-- [`tui`](/cli/tui)
-- [`browser`](/cli/browser)
-- [`cron`](/cli/cron)
-- [`dns`](/cli/dns)
-- [`docs`](/cli/docs)
-- [`hooks`](/cli/hooks)
-- [`webhooks`](/cli/webhooks)
-- [`pairing`](/cli/pairing)
-- [`plugins`](/cli/plugins) (플러그인 명령어)
-- [`channels`](/cli/channels)
-- [`security`](/cli/security)
-- [`skills`](/cli/skills)
-- [`voicecall`](/cli/voicecall) (플러그인; 설치된 경우)
+- [`setup`](/ko-KR/cli/setup)
+- [`onboard`](/ko-KR/cli/onboard)
+- [`configure`](/ko-KR/cli/configure)
+- [`config`](/ko-KR/cli/config)
+- [`doctor`](/ko-KR/cli/doctor)
+- [`dashboard`](/ko-KR/cli/dashboard)
+- [`reset`](/ko-KR/cli/reset)
+- [`uninstall`](/ko-KR/cli/uninstall)
+- [`update`](/ko-KR/cli/update)
+- [`message`](/ko-KR/cli/message)
+- [`agent`](/ko-KR/cli/agent)
+- [`agents`](/ko-KR/cli/agents)
+- [`acp`](/ko-KR/cli/acp)
+- [`status`](/ko-KR/cli/status)
+- [`health`](/ko-KR/cli/health)
+- [`sessions`](/ko-KR/cli/sessions)
+- [`gateway`](/ko-KR/cli/gateway)
+- [`logs`](/ko-KR/cli/logs)
+- [`system`](/ko-KR/cli/system)
+- [`models`](/ko-KR/cli/models)
+- [`memory`](/ko-KR/cli/memory)
+- [`nodes`](/ko-KR/cli/nodes)
+- [`devices`](/ko-KR/cli/devices)
+- [`node`](/ko-KR/cli/node)
+- [`approvals`](/ko-KR/cli/approvals)
+- [`sandbox`](/ko-KR/cli/sandbox)
+- [`tui`](/ko-KR/cli/tui)
+- [`browser`](/ko-KR/cli/browser)
+- [`cron`](/ko-KR/cli/cron)
+- [`dns`](/ko-KR/cli/dns)
+- [`docs`](/ko-KR/cli/docs)
+- [`hooks`](/ko-KR/cli/hooks)
+- [`webhooks`](/ko-KR/cli/webhooks)
+- [`pairing`](/ko-KR/cli/pairing)
+- [`plugins`](/ko-KR/cli/plugins) (플러그인 명령어)
+- [`channels`](/ko-KR/cli/channels)
+- [`security`](/ko-KR/cli/security)
+- [`skills`](/ko-KR/cli/skills)
+- [`voicecall`](/ko-KR/cli/voicecall) (플러그인; 설치된 경우)
 
 ## 글로벌 플래그
 
@@ -255,7 +255,7 @@ openclaw [--dev] [--profile <name>] <command>
 - `openclaw plugins enable <id>` / `disable <id>` — `plugins.entries.<id>.enabled` 토글.
 - `openclaw plugins doctor` — 플러그인 로드 오류 보고.
 
-대부분의 플러그인 변경사항은 게이트웨이 재시작이 필요합니다. [/plugin](/tools/plugin)을 참조하세요.
+대부분의 플러그인 변경사항은 게이트웨이 재시작이 필요합니다. [/plugin](/ko-KR/tools/plugin)을 참조하세요.
 
 ## 메모리
 
@@ -267,7 +267,7 @@ openclaw [--dev] [--profile <name>] <command>
 
 ## 채팅 슬래시 명령어
 
-채팅 메시지는 `/...` 명령어 (텍스트 및 네이티브)를 지원합니다. [/tools/slash-commands](/tools/slash-commands)를 참조하세요.
+채팅 메시지는 `/...` 명령어 (텍스트 및 네이티브)를 지원합니다. [/tools/slash-commands](/ko-KR/tools/slash-commands)를 참조하세요.
 
 하이라이트:
 
@@ -412,7 +412,7 @@ openclaw [--dev] [--profile <name>] <command>
 - `--lines <n>` (기본값 `200`)
 - `--json`
 
-자세한 내용: [/concepts/oauth](/concepts/oauth)
+자세한 내용: [/concepts/oauth](/ko-KR/concepts/oauth)
 
 예제:
 
@@ -453,7 +453,7 @@ openclaw status --deep
 
 ### `webhooks gmail`
 
-Gmail Pub/Sub 훅 설정 + 실행기. [/automation/gmail-pubsub](/automation/gmail-pubsub)를 참조하세요.
+Gmail Pub/Sub 훅 설정 + 실행기. [/automation/gmail-pubsub](/ko-KR/automation/gmail-pubsub)를 참조하세요.
 
 하위 명령어:
 
@@ -462,7 +462,7 @@ Gmail Pub/Sub 훅 설정 + 실행기. [/automation/gmail-pubsub](/automation/gma
 
 ### `dns setup`
 
-광역 검색 DNS 도우미 (CoreDNS + Tailscale). [/gateway/discovery](/gateway/discovery)를 참조하세요.
+광역 검색 DNS 도우미 (CoreDNS + Tailscale). [/gateway/discovery](/ko-KR/gateway/discovery)를 참조하세요.
 
 옵션:
 
@@ -474,7 +474,7 @@ Gmail Pub/Sub 훅 설정 + 실행기. [/automation/gmail-pubsub](/automation/gma
 
 통합 아웃바운드 메시징 + 채널 작업.
 
-참조: [/cli/message](/cli/message)
+참조: [/cli/message](/ko-KR/cli/message)
 
 하위 명령어:
 
@@ -554,7 +554,7 @@ Gmail Pub/Sub 훅 설정 + 실행기. [/automation/gmail-pubsub](/automation/gma
 
 IDE를 게이트웨이에 연결하는 ACP 브리지 실행.
 
-전체 옵션과 예제는 [`acp`](/cli/acp)를 참조하세요.
+전체 옵션과 예제는 [`acp`](/ko-KR/cli/acp)를 참조하세요.
 
 ### `status`
 
@@ -589,7 +589,7 @@ OpenClaw는 OAuth/API 자격 증명이 있을 때 프로바이더 사용량/할�
 - 데이터는 직접적으로 프로바이더 사용량 엔드포인트에서 가져옵니다 (추정값 없음).
 - 프로바이더: Anthropic, GitHub Copilot, OpenAI Codex OAuth, Gemini CLI/Antigravity (이러한 프로바이더 플러그인이 활성화된 경우).
 - 일치하는 자격 증명이 없으면 사용량은 숨겨집니다.
-- 세부사항: [사용량 추적](/concepts/usage-tracking)을 참조하세요.
+- 세부사항: [사용량 추적](/ko-KR/concepts/usage-tracking)을 참조하세요.
 
 ### `health`
 
@@ -742,7 +742,7 @@ openclaw logs --no-color
 
 ## 모델
 
-대체 동작 및 스캔 전략은 [/concepts/models](/concepts/models)에서 확인하세요.
+대체 동작 및 스캔 전략은 [/concepts/models](/ko-KR/concepts/models)에서 확인하세요.
 
 선호되는 Anthropic 인증 (설정 토큰):
 
@@ -891,7 +891,7 @@ openclaw models status
 
 ## 크론
 
-예약된 작업 관리 (Gateway RPC). [/automation/cron-jobs](/automation/cron-jobs)를 참조하세요.
+예약된 작업 관리 (Gateway RPC). [/automation/cron-jobs](/ko-KR/automation/cron-jobs)를 참조하세요.
 
 하위 명령어:
 
@@ -909,7 +909,7 @@ openclaw models status
 
 ## 노드 호스트
 
-`node`는 **헤드리스 노드 호스트**를 실행하거나 백그라운드 서비스로 관리합니다. [`openclaw node`](/cli/node)를 참조하세요.
+`node`는 **헤드리스 노드 호스트**를 실행하거나 백그라운드 서비스로 관리합니다. [`openclaw node`](/ko-KR/cli/node)를 참조하세요.
 
 하위 명령어:
 
@@ -922,7 +922,7 @@ openclaw models status
 
 ## 노드
 
-`nodes`는 게이트웨이와 대화하고 연결된 노드를 대상에 합니다. [/nodes](/nodes)를 참조하세요.
+`nodes`는 게이트웨이와 대화하고 연결된 노드를 대상에 합니다. [/nodes](/ko-KR/nodes)를 참조하세요.
 
 일반 옵션:
 
@@ -964,7 +964,7 @@ openclaw models status
 
 ## 브라우저
 
-브라우저 제어 CLI (전용 Chrome/Brave/Edge/Chromium). [`openclaw browser`](/cli/browser)와 [브라우저 도구](/tools/browser)를 참조하세요.
+브라우저 제어 CLI (전용 Chrome/Brave/Edge/Chromium). [`openclaw browser`](/ko-KR/cli/browser)와 [브라우저 도구](/ko-KR/tools/browser)를 참조하세요.
 
 일반 옵션:
 

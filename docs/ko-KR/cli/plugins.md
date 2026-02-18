@@ -12,9 +12,9 @@ Manage Gateway plugins/extensions (loaded in-process).
 
 Related:
 
-- Plugin system: [Plugins](/tools/plugin)
-- Plugin manifest + schema: [Plugin manifest](/plugins/manifest)
-- Security hardening: [Security](/gateway/security)
+- Plugin system: [Plugins](/ko-KR/tools/plugin)
+- Plugin manifest + schema: [Plugin manifest](/ko-KR/plugins/manifest)
+- Security hardening: [Security](/ko-KR/gateway/security)
 
 ## Commands
 

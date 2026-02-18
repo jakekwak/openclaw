@@ -123,6 +123,6 @@ If you need local time, convert it downstream using the known timezone.
 
 ## Related docs
 
-- [System Prompt](/concepts/system-prompt)
-- [Timezones](/concepts/timezone)
-- [Messages](/concepts/messages)
+- [System Prompt](/ko-KR/concepts/system-prompt)
+- [Timezones](/ko-KR/concepts/timezone)
+- [Messages](/ko-KR/concepts/messages)

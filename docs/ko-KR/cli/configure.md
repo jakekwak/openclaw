@@ -17,8 +17,8 @@ Tip: `openclaw config` without a subcommand opens the same wizard. Use
 
 Related:
 
-- Gateway configuration reference: [Configuration](/gateway/configuration)
-- Config CLI: [Config](/cli/config)
+- Gateway configuration reference: [Configuration](/ko-KR/gateway/configuration)
+- Config CLI: [Config](/ko-KR/cli/config)
 
 Notes:
 

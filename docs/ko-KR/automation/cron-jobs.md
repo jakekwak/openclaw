@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "게이트웨이 스케줄러를 위한 크론 작업 + 웨이크업"
 read_when:
@@ -10,13 +9,13 @@ title: "크론 작업"
 
 # 크론 작업 (게이트웨이 스케줄러)
 
-> **Cron vs Heartbeat?** 각 사용처에 대한 지침은 [Cron vs Heartbeat](/automation/cron-vs-heartbeat)을 참조하세요.
+> **Cron vs Heartbeat?** 각 사용처에 대한 지침은 [Cron vs Heartbeat](/ko-KR/automation/cron-vs-heartbeat)을 참조하세요.
 
 크론은 게이트웨이의 내장 스케줄러입니다. 작업을 유지하며, 에이전트를 적절한 시간에 깨우고, 출력물을 채팅으로 다시 전달할 수 있습니다.
 
 "매일 아침 실행하기" 또는 "20분 후 에이전트 호출하기"와 같은 동작을 원할 경우, 크론이 사용됩니다.
 
-문제 해결: [/automation/troubleshooting](/automation/troubleshooting)
+문제 해결: [/automation/troubleshooting](/ko-KR/automation/troubleshooting)
 
 ## TL;DR
 
@@ -63,7 +62,7 @@ openclaw cron add \
 
 ## 도구 호출 동등 항목 (게이트웨이 크론 도구)
 
-표준 JSON 형태와 예제는 [도구 호출을 위한 JSON 스키마](/automation/cron-jobs#json-schema-for-tool-calls)를 참조하세요.
+표준 JSON 형태와 예제는 [도구 호출을 위한 JSON 스키마](/ko-KR/automation/cron-jobs#json-schema-for-tool-calls)를 참조하세요.
 
 ## 크론 작업의 저장 위치
 
@@ -125,7 +124,7 @@ openclaw cron add \
 - `wakeMode: "next-heartbeat"`: 이벤트가 다음 예정된 하트비트를 기다립니다.
 
 일반적인 하트비트 프롬프트 + 메인 세션 컨텍스트를 원하는 경우에 가장 적합합니다.
-[하트비트](/gateway/heartbeat)를 참조하세요.
+[하트비트](/ko-KR/gateway/heartbeat)를 참조하세요.
 
 #### 격리 작업 (전용 크론 세션)
 
@@ -464,7 +463,7 @@ openclaw system event --mode now --text "Next heartbeat: check battery."
 
 - `cron.list`, `cron.status`, `cron.add`, `cron.update`, `cron.remove`
 - `cron.run` (강제 실행 또는 예정된 실행), `cron.runs`
-  작업 없는 즉시 시스템 이벤트의 경우, [`openclaw system event`](/cli/system)를 사용하세요.
+  작업 없는 즉시 시스템 이벤트의 경우, [`openclaw system event`](/ko-KR/cli/system)를 사용하세요.
 
 ## 문제 해결
 
@@ -491,4 +490,3 @@ openclaw system event --mode now --text "Next heartbeat: check battery."
 - 발표 흐름이 `false`를 반환하는 경우 (예: 요청처 세션이 바쁨), 게이트웨이는 최대 3회까지 `announceRetryCount`를 통해 추적하여 재시도합니다.
 - `endedAt` 이후 5분 이상 지난 발표는 무효화되어 무기한으로 오래된 항목이 반복되지 않도록 합니다.
 - 로그에 반복적인 발표 전달이 보이는 경우, 하위 에이전트 레지스트리에서 높은 `announceRetryCount` 값을 가진 항목을 확인하십시오.
-```

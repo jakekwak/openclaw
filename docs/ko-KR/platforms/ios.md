@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "iOS 노드 앱: 게이트웨이 연결, 페어링, 캔버스 및 문제 해결"
 read_when:
@@ -59,7 +58,7 @@ openclaw gateway call node.list --params "{}"
 ### Tailnet (네트워크 간)
 
 mDNS가 차단된 경우, 유니캐스트 DNS-SD 구역을 사용하십시오 (도메인 선택; 예: `openclaw.internal.`) 및 Tailscale 분할 DNS.
-CoreDNS 예제를 위해 [Bonjour](/gateway/bonjour)을 참조하십시오.
+CoreDNS 예제를 위해 [Bonjour](/ko-KR/gateway/bonjour)을 참조하십시오.
 
 ### 수동 호스트/포트
 
@@ -98,13 +97,12 @@ openclaw nodes invoke --node "iOS Node" --command canvas.snapshot --params '{"ma
 ## 일반 오류
 
 - `NODE_BACKGROUND_UNAVAILABLE`: iOS 앱을 포그라운드로 가져오세요 (캔버스/카메라/화면 명령어가 필요합니다).
-- `A2UI_HOST_NOT_CONFIGURED`: 게이트웨이가 캔버스 호스트 URL을 광고하지 않았습니다; [게이트웨이 구성](/gateway/configuration)에서 `canvasHost`를 확인하십시오.
+- `A2UI_HOST_NOT_CONFIGURED`: 게이트웨이가 캔버스 호스트 URL을 광고하지 않았습니다; [게이트웨이 구성](/ko-KR/gateway/configuration)에서 `canvasHost`를 확인하십시오.
 - 페어링 프롬프트가 나타나지 않음: `openclaw nodes pending`을 실행하여 수동으로 승인하세요.
 - 재설치 후 재연결 실패: 키체인 페어링 토큰이 지워졌습니다; 노드를 다시 페어링하세요.
 
 ## 관련 문서
 
-- [Pairing](/gateway/pairing)
-- [Discovery](/gateway/discovery)
-- [Bonjour](/gateway/bonjour)
-```
+- [Pairing](/ko-KR/gateway/pairing)
+- [Discovery](/ko-KR/gateway/discovery)
+- [Bonjour](/ko-KR/gateway/bonjour)

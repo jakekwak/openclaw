@@ -1,8 +1,8 @@
 ---
-summary: "OpenClaw 용 에이전트 도구 인터페이스 (브라우저, 캔버스, 노드, 메시지, 크론)로 레거시 `openclaw-*` 스킬을 대체합니다."
+summary: "OpenClaw 용 에이전트 도구 인터페이스 (브라우저, 캔버스, 노드, 메시지, 크론)로 레거시 openclaw-* 스킬을 대체합니다."
 read_when:
   - 에이전트 도구 추가 또는 수정
-  - `openclaw-*` 스킬 삭제 또는 변경
+  - openclaw-* 스킬 삭제 또는 변경
 title: "Tools"
 ---
 
@@ -155,12 +155,12 @@ OpenClaw는 브라우저, 캔버스, 노드, 크론을 위한 **일급 에이전
 
 ## 플러그인 + 도구
 
-플러그인은 핵심 세트를 넘어서 **추가 도구**(및 CLI 명령어)를 등록할 수 있습니다. 설치 및 설정에 대한 정보는 [플러그인](/tools/plugin)을 참조하고 도구 사용 지침이 프롬프트에 주입되는 방식은 [스킬](/tools/skills)을 참조하십시오. 일부 플러그인은 도구와 함께 자체 스킬도 제공합니다 (예: 음성 통화 플러그인).
+플러그인은 핵심 세트를 넘어서 **추가 도구**(및 CLI 명령어)를 등록할 수 있습니다. 설치 및 설정에 대한 정보는 [플러그인](/ko-KR/tools/plugin)을 참조하고 도구 사용 지침이 프롬프트에 주입되는 방식은 [스킬](/ko-KR/tools/skills)을 참조하십시오. 일부 플러그인은 도구와 함께 자체 스킬도 제공합니다 (예: 음성 통화 플러그인).
 
 옵션 플러그인 도구:
 
-- [Lobster](/tools/lobster): 재개 가능한 승인 기능이 있는 타입화된 워크플로우 런타임 (게이트웨이 호스트에 Lobster CLI 필요).
-- [LLM Task](/tools/llm-task): 구조화된 워크플로우 출력을 위한 JSON 전용 LLM 단계 (옵션 스키마 검증).
+- [Lobster](/ko-KR/tools/lobster): 재개 가능한 승인 기능이 있는 타입화된 워크플로우 런타임 (게이트웨이 호스트에 Lobster CLI 필요).
+- [LLM Task](/ko-KR/tools/llm-task): 구조화된 워크플로우 출력을 위한 JSON 전용 LLM 단계 (옵션 스키마 검증).
 
 ## 도구 인벤토리
 
@@ -193,7 +193,7 @@ OpenClaw는 브라우저, 캔버스, 노드, 크론을 위한 **일급 에이전
 - `elevated`는 `tools.elevated`와 `agents.list[].tools.elevated` 오버라이드를 모두 허용해야 하며, `host=gateway` + `security=full`의 별칭 역할을 합니다.
 - `elevated`는 에이전트가 샌드박스 격리된 경우에만 동작을 변경하며, 그렇지 않으면 동작하지 않습니다.
 - `host=node`는 macOS 동반 앱이나 헤드리스 노드 호스트 (`openclaw node run`)를 대상으로 할 수 있습니다.
-- 게이트웨이/노드 승인 및 허용 목록: [Exec 승인](/tools/exec-approvals).
+- 게이트웨이/노드 승인 및 허용 목록: [Exec 승인](/ko-KR/tools/exec-approvals).
 
 ### `process`
 
@@ -252,7 +252,7 @@ Brave Search API를 사용하여 웹을 검색합니다.
 - Brave API 키가 필요합니다 (권장: `openclaw configure --section web` 명령어나 `BRAVE_API_KEY` 설정).
 - `tools.web.search.enabled`로 활성화.
 - 응답은 캐시됩니다 (기본 15분).
-- 설정은 [웹 도구](/tools/web)를 참조하십시오.
+- 설정은 [웹 도구](/ko-KR/tools/web)를 참조하십시오.
 
 ### `web_fetch`
 
@@ -270,8 +270,8 @@ URL에서 읽을 수 있는 콘텐츠를 추출 (HTML → markdown/text)합니�
 - `maxChars`는 `tools.web.fetch.maxCharsCap`으로 제한됩니다 (기본 50000).
 - 응답은 캐시됩니다 (기본 15분).
 - JS가 많은 사이트의 경우 브라우저 도구를 선호하십시오.
-- 설정은 [웹 도구](/tools/web)를 참조하십시오.
-- 선택적 안티봇 대체는 [Firecrawl](/tools/firecrawl)를 참조하십시오.
+- 설정은 [웹 도구](/ko-KR/tools/web)를 참조하십시오.
+- 선택적 안티봇 대체는 [Firecrawl](/ko-KR/tools/firecrawl)를 참조하십시오.
 
 ### `browser`
 

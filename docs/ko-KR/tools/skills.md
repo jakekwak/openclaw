@@ -36,11 +36,11 @@ OpenClaw는 에이전트에게 도구를 사용하는 방법을 가르치기 위
 
 ## 플러그인 + 스킬
 
-플러그인은 `openclaw.plugin.json`에서 `skills` 디렉터리를 나열하여 자체 스킬을 포함할 수 있습니다 (플러그인 루트에 상대적인 경로). 플러그인 스킬은 플러그인이 활성화되면 로드되며 일반적인 스킬 우선순위 규칙에 따라 동작합니다. 플러그인의 구성 항목에 있는 `metadata.openclaw.requires.config`로 게이트할 수 있습니다. 탐색/구성은 [플러그인](/tools/plugin)을, 에이전트에게 가르칠 도구 표면은 [도구](/tools)를 참조하십시오.
+플러그인은 `openclaw.plugin.json`에서 `skills` 디렉터리를 나열하여 자체 스킬을 포함할 수 있습니다 (플러그인 루트에 상대적인 경로). 플러그인 스킬은 플러그인이 활성화되면 로드되며 일반적인 스킬 우선순위 규칙에 따라 동작합니다. 플러그인의 구성 항목에 있는 `metadata.openclaw.requires.config`로 게이트할 수 있습니다. 탐색/구성은 [플러그인](/ko-KR/tools/plugin)을, 에이전트에게 가르칠 도구 표면은 [도구](/ko-KR/tools)를 참조하십시오.
 
 ## ClawHub (설치 + 동기화)
 
-ClawHub는 OpenClaw의 공개 스킬 레지스트리입니다. [https://clawhub.com](https://clawhub.com)을 방문하여 스킬을 검색, 설치, 업데이트 및 백업할 수 있습니다. 전체 가이드는: [ClawHub](/tools/clawhub)를 참조하십시오.
+ClawHub는 OpenClaw의 공개 스킬 레지스트리입니다. [https://clawhub.com](https://clawhub.com)을 방문하여 스킬을 검색, 설치, 업데이트 및 백업할 수 있습니다. 전체 가이드는: [ClawHub](/ko-KR/tools/clawhub)를 참조하십시오.
 
 일반적인 흐름:
 
@@ -56,9 +56,9 @@ ClawHub는 OpenClaw의 공개 스킬 레지스트리입니다. [https://clawhub.
 ## 보안 주의사항
 
 - 타사 스킬을 **신뢰할 수 없는 코드**로 취급하십시오. 사용 전에 읽어보십시오.
-- 신뢰할 수 없는 입력과 위험한 도구에 대해 샌드박스 격리 실행을 선호하십시오. [샌드박스 격리](/gateway/sandboxing)를 참조하십시오.
+- 신뢰할 수 없는 입력과 위험한 도구에 대해 샌드박스 격리 실행을 선호하십시오. [샌드박스 격리](/ko-KR/gateway/sandboxing)를 참조하십시오.
 - `skills.entries.*.env` 및 `skills.entries.*.apiKey`는 **호스트** 프로세스에 비밀을 주입합니다 (샌드박스가 아님). 비밀은 프롬프트와 로그에서 제외하십시오.
-- 더 넓은 위협 모델 및 체크리스트는 [보안](/gateway/security)을 참조하십시오.
+- 더 넓은 위협 모델 및 체크리스트는 [보안](/ko-KR/gateway/security)을 참조하십시오.
 
 ## 형식 (AgentSkills + Pi 호환)
 
@@ -263,7 +263,7 @@ OpenClaw는 설치 (npm 패키지 또는 OpenClaw.app)의 일부로 **번들 스
 
 ## 구성 참조
 
-전체 구성 스키마는 [스킬 설정](/tools/skills-config)을 참조하십시오.
+전체 구성 스키마는 [스킬 설정](/ko-KR/tools/skills-config)을 참조하십시오.
 
 ## 추가 스킬을 찾고 계십니까?
 

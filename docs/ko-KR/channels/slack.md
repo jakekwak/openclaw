@@ -10,13 +10,13 @@ title: "Slack"
 상태: Slack 앱 통합을 통한 다이렉트 메시지 + 채널에 대해 프로덕션 준비 완료. 기본 모드는 소켓 모드이며, HTTP 이벤트 API 모드도 지원됩니다.
 
 <CardGroup cols={3}>
-  <Card title="Pairing" icon="link" href="/channels/pairing">
+  <Card title="Pairing" icon="link" href="/ko-KR/channels/pairing">
     Slack 다이렉트 메시지는 기본적으로 페어링 모드를 사용합니다.
   </Card>
-  <Card title="Slash commands" icon="terminal" href="/tools/slash-commands">
+  <Card title="Slash commands" icon="terminal" href="/ko-KR/tools/slash-commands">
     네이티브 명령어 동작 및 명령어 목록.
   </Card>
-  <Card title="Channel troubleshooting" icon="wrench" href="/channels/troubleshooting">
+  <Card title="Channel troubleshooting" icon="wrench" href="/ko-KR/channels/troubleshooting">
     크로스 채널 진단 및 수리 플레이북.
   </Card>
 </CardGroup>
@@ -463,7 +463,7 @@ openclaw pairing list slack
 
 주요 참조:
 
-- [구성 참조 - Slack](/gateway/configuration-reference#slack)
+- [구성 참조 - Slack](/ko-KR/gateway/configuration-reference#slack)
 
   신호 강도가 높은 Slack 필드:
   - 모드/인증: `mode`, `botToken`, `appToken`, `signingSecret`, `webhookPath`, `accounts.*`
@@ -475,8 +475,8 @@ openclaw pairing list slack
 
 ## 관련 항목
 
-- [Pairing](/channels/pairing)
-- [채널 라우팅](/channels/channel-routing)
-- [문제 해결](/channels/troubleshooting)
-- [구성](/gateway/configuration)
-- [슬래시 명령어](/tools/slash-commands)
+- [Pairing](/ko-KR/channels/pairing)
+- [채널 라우팅](/ko-KR/channels/channel-routing)
+- [문제 해결](/ko-KR/channels/troubleshooting)
+- [구성](/ko-KR/gateway/configuration)
+- [슬래시 명령어](/ko-KR/tools/slash-commands)
