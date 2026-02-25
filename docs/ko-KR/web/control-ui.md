@@ -61,7 +61,7 @@ openclaw devices approve <requestId>
 - 채널: WhatsApp/Telegram/Discord/Slack + 플러그인 채널 (Mattermost 등) 상태 + QR 로그인 + 채널별 설정 (`channels.status`, `web.login.*`, `config.patch`)
 - 인스턴스: 존재 목록 + 새로 고침 (`system-presence`)
 - 세션: 목록 + 세션별 생각/상세 모드 오버라이드 (`sessions.list`, `sessions.patch`)
-- Cron 작업: 목록/추가/실행/활성화/비활성화 + 실행 기록 (`cron.*`)
+- Cron 작업: 목록/추가/편집/실행/활성화/비활성화 + 실행 기록 (`cron.*`)
 - 스킬: 상태, 활성화/비활성화, 설치, API 키 업데이트 (`skills.*`)
 - 노드: 목록 + 기능 (`node.list`)
 - Exec 승인: 게이트웨이 또는 노드 허용 목록 편집 + `exec host=gateway/node` 정책 요청 (`exec.approvals.*`)
@@ -78,6 +78,8 @@ Cron 작업 패널 주의사항:
 - 독립된 작업의 경우, 기본적으로 요약을 알립니다. 내부 전용 실행을 원할 경우 '없음'으로 전환할 수 있습니다.
 - 알림 모드에서 '배달 모드'를 "webhook"으로 설정하고 '배달 대상'을 유효한 HTTP(S) 웹훅 URL로 설정하세요.
 - 주요 세션 작업의 경우 웹훅 및 없음 배달 모드가 가능합니다.
+- 고급 편집 컨트롤에는 실행 후 삭제, 에이전트 오버라이드 초기화, 크론 정확/스태거 옵션, 에이전트 모델/사고 오버라이드, 최선형 배달 토글이 포함됩니다.
+- 폼 검증은 필드 수준 오류와 함께 인라인으로 수행되며; 잘못된 값은 수정될 때까지 저장 버튼을 비활성화합니다.
 - `cron.webhookToken`을 설정하여 전용 베어러 토큰을 보낼 수 있으며, 생략 시 웹훅은 인증 헤더 없이 전송됩니다.
 - 지원 중단된 대체 옵션: `notify: true`로 저장된 기존 작업은 이주가 완료될 때까지 여전히 `cron.webhook`을 사용할 수 있습니다.
 
@@ -89,7 +91,7 @@ Cron 작업 패널 주의사항:
 - `chat.inject`는 세션 전사에 어시스턴트 노트를 추가하고 UI 전용 업데이트를 위한 `chat` 이벤트를 방송합니다 (에이전트 실행 없음, 채널 전달 없음).
 - 중지:
   - **중지** 클릭 (호출 `chat.abort`)
-  - `/stop` 입력 (또는 `stop|esc|abort|wait|exit|interrupt`) 하여 대역 외에서 중지
+  - `/stop` 입력 (또는 독립적인 중단 구문: `stop`, `stop action`, `stop run`, `stop openclaw`, `please stop`) 하여 대역 외에서 중지
   - `chat.abort`는 `{ sessionKey }`(없음 `runId`)를 지원하여 해당 세션의 모든 활성 실행을 중단합니다.
 - 부분 보존 중지:
   - 실행이 중단되면 부분적인 어시스턴트 텍스트가 UI에 여전히 표시될 수 있습니다.
@@ -211,7 +213,8 @@ http://localhost:5173/?gatewayUrl=wss://<gateway-host>:18789&token=<gateway-toke
   `token` (또는 `password`)를 명시적으로 제공하십시오. 명시적인 자격 증명이 없으면 오류가 발생합니다.
 - 게이트웨이가 TLS(Tailscale Serve, HTTPS 프록시 등) 뒤에 있을 때 `wss://`를 사용하세요.
 - `gatewayUrl`은 클릭재킹을 방지하기 위해 최상위 창에서만 허용됩니다 (내장되지 않음).
-- 크로스-오리진 개발 설정의 경우 (예: 원격 게이트웨이에 `pnpm ui:dev`), UI 기원을 `gateway.controlUi.allowedOrigins`에 추가하십시오.
+- 루프백 이외의 Control UI 배포는 `gateway.controlUi.allowedOrigins` 를 명시적으로 설정해야 합니다 (전체 오리진). 원격 개발 설정도 포함됩니다.
+- `gateway.controlUi.dangerouslyAllowHostHeaderOriginFallback=true` 는 Host 헤더 오리진 폴백 모드를 활성화하지만, 위험한 보안 모드입니다.
 
 예제:
 

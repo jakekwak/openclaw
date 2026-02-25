@@ -121,6 +121,7 @@ title: "슬래시 명령어"
 - Discord 전용 네이티브 명령어: `/vc join|leave|status`는 음성 채널을 제어합니다 (`channels.discord.voice`와 네이티브 명령어 필요; 텍스트로는 사용 불가).
 - Discord 스레드 바인딩 명령어 (`/focus`, `/unfocus`, `/agents`, `/session ttl`)는 유효한 스레드 바인딩이 활성화되어 있어야 합니다 (`session.threadBindings.enabled` 및/또는 `channels.discord.threadBindings.enabled`).
 - `/verbose`는 디버깅 및 추가 가시성을 목적으로 하며, 일반 사용 시는 **비활성화** 상태로 유지하세요.
+- 도구 실패 요약은 관련 있을 때 여전히 표시되지만, 상세한 실패 텍스트는 `/verbose`가 `on` 또는 `full`일 때만 포함됩니다.
 - `/reasoning`(및 `/verbose`)는 그룹 설정에서는 위험할 수 있습니다: 내부 추론이나 의도하지 않은 도구 출력이 드러날 수 있습니다. 특히 그룹 채팅에서는 비활성화를 권장합니다.
 - **빠른 경로:** 허용된 발신자로부터의 명령 전용 메시지는 즉시 처리됩니다 (대기열 및 모델을 우회).
 - **그룹 멘션 게이팅:** 허용된 발신자로부터의 명령 전용 메시지는 멘션 요구사항을 우회합니다.

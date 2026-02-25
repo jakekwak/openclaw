@@ -331,7 +331,8 @@ Telegram은 `message_thread_id`를 통해 포럼 주제를 지원합니다. 크�
 ## 저장소 및 히스토리
 
 - 작업 저장소: `~/.openclaw/cron/jobs.json` (게이트웨이 관리 JSON).
-- 실행 히스토리: `~/.openclaw/cron/runs/<jobId>.jsonl` (JSONL, 자동 정리).
+- 실행 히스토리: `~/.openclaw/cron/runs/<jobId>.jsonl` (JSONL, 크기와 줄 수로 자동 정리).
+- `sessions.json` 의 격리된 크론 실행 세션은 `cron.sessionRetention` 으로 정리됩니다 (기본값 `24h`; 비활성화하려면 `false` 설정).
 - 저장소 경로 오버라이드: 구성의 `cron.store`.
 
 ## 구성
@@ -344,9 +345,20 @@ Telegram은 `message_thread_id`를 통해 포럼 주제를 지원합니다. 크�
     maxConcurrentRuns: 1, // 기본값은 1
     webhook: "https://example.invalid/legacy", // 저장된 notify:true 작업에 대한 사용 중단된 백업
     webhookToken: "replace-with-dedicated-webhook-token", // 웹훅 모드에 대한 선택적 베어러 토큰
+    sessionRetention: "24h", // 기간 문자열 또는 false
+    runLog: {
+      maxBytes: "2mb", // 기본값 2_000_000 bytes
+      keepLines: 2000, // 기본값 2000
+    },
   },
 }
 ```
+
+실행 로그 정리 동작:
+
+- `cron.runLog.maxBytes`: 정리 전 최대 실행 로그 파일 크기.
+- `cron.runLog.keepLines`: 정리 시 최신 N 줄만 유지.
+- 두 항목 모두 `cron/runs/<jobId>.jsonl` 파일에 적용됩니다.
 
 웹훅 동작:
 
@@ -361,6 +373,85 @@ Telegram은 `message_thread_id`를 통해 포럼 주제를 지원합니다. 크�
 
 - `cron.enabled: false` (구성)
 - `OPENCLAW_SKIP_CRON=1` (환경 변수)
+
+## 유지관리
+
+크론에는 두 가지 내장 유지관리 경로가 있습니다: 격리된 실행 세션 보존과 실행 로그 정리.
+
+### 기본값
+
+- `cron.sessionRetention`: `24h` (실행 세션 정리를 비활성화하려면 `false` 설정)
+- `cron.runLog.maxBytes`: `2_000_000` bytes
+- `cron.runLog.keepLines`: `2000`
+
+### 작동 방식
+
+- 격리된 실행은 세션 항목 (`...:cron:<jobId>:run:<uuid>`) 과 전사본 파일을 생성합니다.
+- 리퍼는 `cron.sessionRetention` 보다 오래된 만료된 실행 세션 항목을 제거합니다.
+- 세션 저장소에서 더 이상 참조되지 않는 제거된 실행 세션의 경우, OpenClaw 는 전사본 파일을 아카이브하고 동일한 보존 기간에 오래된 삭제된 아카이브를 제거합니다.
+- 각 실행 추가 후, `cron/runs/<jobId>.jsonl` 의 크기를 확인합니다:
+  - 파일 크기가 `runLog.maxBytes` 를 초과하면 최신 `runLog.keepLines` 줄로 트리밍됩니다.
+
+### 고용량 스케줄러에 대한 성능 주의사항
+
+고주파 크론 설정은 큰 실행 세션 및 실행 로그 공간을 생성할 수 있습니다. 유지관리가 내장되어 있지만, 느슨한 제한은 여전히 불필요한 IO 및 정리 작업을 생성할 수 있습니다.
+
+주의할 사항:
+
+- 많은 격리된 실행을 가진 긴 `cron.sessionRetention` 기간
+- 큰 `runLog.maxBytes` 와 결합된 높은 `cron.runLog.keepLines`
+- 동일한 `cron/runs/<jobId>.jsonl` 에 쓰는 많은 잡음이 많은 반복 작업
+
+해야 할 일:
+
+- 디버깅/감사 요구사항이 허용하는 한 `cron.sessionRetention` 을 짧게 유지
+- 적당한 `runLog.maxBytes` 와 `runLog.keepLines` 로 실행 로그를 제한
+- 잡음이 많은 백그라운드 작업을 불필요한 수다를 피하는 전달 규칙이 있는 격리 모드로 이동
+- `openclaw cron runs` 로 정기적으로 증가를 검토하고 로그가 커지기 전에 보존을 조정
+
+### 사용자 정의 예시
+
+실행 세션을 일주일간 유지하고 더 큰 실행 로그 허용:
+
+```json5
+{
+  cron: {
+    sessionRetention: "7d",
+    runLog: {
+      maxBytes: "10mb",
+      keepLines: 5000,
+    },
+  },
+}
+```
+
+격리된 실행 세션 정리를 비활성화하되 실행 로그 정리는 유지:
+
+```json5
+{
+  cron: {
+    sessionRetention: false,
+    runLog: {
+      maxBytes: "5mb",
+      keepLines: 3000,
+    },
+  },
+}
+```
+
+고용량 크론 사용에 맞게 조정 (예시):
+
+```json5
+{
+  cron: {
+    sessionRetention: "12h",
+    runLog: {
+      maxBytes: "3mb",
+      keepLines: 1500,
+    },
+  },
+}
+```
 
 ## CLI 빠른 시작
 

@@ -171,7 +171,7 @@ OpenClaw는 가능하면 별도의 번호에서 WhatsApp을 실행하는 것을 
     - `groupAllowFrom`이 설정되지 않은 경우, 런타임은 `allowFrom`을 사용할 수 있을 때 대체합니다.
     - 발신자 허용 목록은 멘션/답장 활성화 전에 평가됩니다.
 
-    참고: `channels.whatsapp` 블록이 전혀 없는 경우 런타임 그룹 정책 대체는 실질적으로 `open`입니다.
+    참고: `channels.whatsapp` 블록이 전혀 없는 경우 런타임 그룹 정책 대체는 (경고 로그와 함께) `allowlist`이며, `channels.defaults.groupPolicy`가 설정되어 있더라도 마찬가지입니다.
 
   </Tab>
 

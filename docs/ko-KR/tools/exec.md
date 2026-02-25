@@ -36,7 +36,7 @@ title: "Exec Tool"
 - 여러 노드가 사용할 수 있는 경우, `exec.node` 또는 `tools.exec.node`를 설정하여 하나를 선택하십시오.
 - Windows가 아닌 호스트에서는, `exec`가 `SHELL`을 사용하고, `SHELL`이 `fish`인 경우, fish와 호환되지 않는 스크립트를 피하려고 `PATH`에서 `bash`(또는 `sh`)를 선호하며, 존재하지 않으면 `SHELL`로 되돌립니다.
 - 호스트 실행(`gateway`/`node`)은 바이너리 하이재킹 또는 주입된 코드를 방지하기 위해 `env.PATH`와 로더 재정의(`LD_*`/`DYLD_*`)를 거부합니다.
-- 중요: 샌드박스 격리는 **기본적으로 꺼져** 있습니다. 샌드박스 격리가 꺼져 있으면, `host=sandbox`는 게이트웨이 호스트에서 직접 실행됩니다 (컨테이너 없음) 그리고 **승인이 필요하지 않습니다**. 승인이 필요하면, `host=gateway`로 실행하고 exec 승인을 구성하십시오 (또는 샌드박스 격리를 활성화).
+- 중요: 샌드박스 격리는 **기본적으로 꺼져** 있습니다. 샌드박스 격리가 꺼져 있고 `host=sandbox`가 명시적으로 구성/요청된 경우, exec은 게이트웨이 호스트에서 자동 실행하는 대신 페일-클로즈드로 실패합니다. 샌드박스 격리를 활성화하거나 승인이 있는 `host=gateway`를 사용하세요.
 - 스크립트 사전 검사 (일반적인 Python/Node 쉘 구문 오류 검사)는 유효한 `workdir` 경계 내의 파일만 검사합니다. 스크립트 경로가 `workdir` 밖으로 해석되는 경우, 해당 파일에 대한 사전 검사는 건너뜁니다.
 
 ## Config
@@ -49,6 +49,8 @@ title: "Exec Tool"
 - `tools.exec.node` (기본값: 설정되지 않음)
 - `tools.exec.pathPrepend`: exec 실행을 위해 `PATH`에 추가할 디렉토리 목록 (게이트웨이 + 샌드박스 전용).
 - `tools.exec.safeBins`: 명시적 승인이 필요 없는 표준 입력 전용 안전 바이너리. 동작 세부 사항은 [안전한 바이너리](/tools/exec-approvals#safe-bins-stdin-only)를 참조하세요.
+- `tools.exec.safeBinTrustedDirs`: `safeBins` 경로 검사에 신뢰할 수 있는 추가 명시적 디렉토리. `PATH` 항목은 자동으로 신뢰되지 않습니다.
+- `tools.exec.safeBinProfiles`: 안전한 바이너리별 선택적 사용자 정의 argv 정책 (`minPositional`, `maxPositional`, `allowedValueFlags`, `deniedFlags`).
 
 예:
 
@@ -104,7 +106,21 @@ openclaw config set agents.list[0].tools.exec.node "node-id-or-name"
 
 ## Allowlist + safe bins
 
-허용 목록 강제는 **해결된 바이너리 경로만**과 일치합니다 (베이스 이름과는 무관함). `security=allowlist`일 때, 셸 명령은 각 파이프라인 세그먼트가 허용 목록에 포함되거나 안전한 바이너리인 경우에만 자동 허용됩니다. 연결 (`;`, `&&`, `||`) 및 리다이렉션은 허용 목록 모드에서 거부됩니다. 허용 목록 조건을 만족할 경우에만 최상위 세그먼트를 포함하여 (안전한 바이너리를 포함) 허용되며, 리다이렉션은 여전히 지원되지 않습니다.
+수동 허용 목록 강제는 **해결된 바이너리 경로만**과 일치합니다 (베이스 이름과는 무관함). `security=allowlist`일 때, 셸 명령은 각 파이프라인 세그먼트가 허용 목록에 포함되거나 안전한 바이너리인 경우에만 자동 허용됩니다. 연결 (`;`, `&&`, `||`) 및 리다이렉션은 허용 목록 모드에서 거부됩니다. 허용 목록 조건을 만족할 경우에만 최상위 세그먼트를 포함하여 (안전한 바이너리를 포함) 허용되며, 리다이렉션은 여전히 지원되지 않습니다.
+
+`autoAllowSkills`는 exec 승인에서의 별도 편의 경로입니다. 수동 경로 허용 목록 항목과 동일하지 않습니다. 엄격한 명시적 신뢰를 위해서는 `autoAllowSkills`를 비활성화하세요.
+
+두 컨트롤을 다른 용도로 사용하세요:
+
+- `tools.exec.safeBins`: 작은 stdin 전용 스트림 필터.
+- `tools.exec.safeBinTrustedDirs`: 안전한 바이너리 실행 경로를 위한 명시적 추가 신뢰 디렉토리.
+- `tools.exec.safeBinProfiles`: 커스텀 안전한 바이너리에 대한 명시적 argv 정책.
+- allowlist: 실행 파일 경로에 대한 명시적 신뢰.
+
+`safeBins`를 일반 허용 목록으로 취급하지 말고, 인터프리터/런타임 바이너리 (예: `python3`, `node`, `ruby`, `bash`)를 추가하지 마세요. 이것들이 필요하다면 명시적 허용 목록 항목을 사용하고 승인 프롬프트를 활성화하세요.
+`openclaw security audit`는 명시적 프로필이 없는 인터프리터/런타임 `safeBins` 항목을 경고하며, `openclaw doctor --fix`는 누락된 커스텀 `safeBinProfiles` 항목을 스캐폴드할 수 있습니다.
+
+전체 정책 세부 사항과 예제는 [Exec 승인](/tools/exec-approvals#safe-bins-stdin-only) 및 [안전한 바이너리 vs 허용 목록](/tools/exec-approvals#safe-bins-versus-allowlist)을 참조하세요.
 
 ## Examples
 

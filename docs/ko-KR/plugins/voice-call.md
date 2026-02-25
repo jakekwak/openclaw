@@ -105,6 +105,10 @@ cd ./extensions/voice-call && pnpm install
           streaming: {
             enabled: true,
             streamPath: "/voice/stream",
+            preStartTimeoutMs: 5000,
+            maxPendingConnections: 32,
+            maxPendingConnectionsPerIp: 4,
+            maxConnections: 128,
           },
         },
       },
@@ -123,6 +127,11 @@ cd ./extensions/voice-call && pnpm install
 - 무료 ngrok를 사용하는 경우, 정확한 ngrok URL을 `publicUrl`로 설정하세요; 서명 검증은 항상 적용됩니다.
 - `tunnel.allowNgrokFreeTierLoopbackBypass: true`는 `serve.bind`가 로컬 루프백일 때 (ngrok 로컬 에이전트) **단지** `tunnel.provider="ngrok"`일 때 Twilio 웹훅을 허용합니다. 로컬 개발에만 사용하세요.
 - ngrok 무료 tier URL은 변경되거나 중간 행동을 추가할 수 있습니다; `publicUrl`이 변동하면 Twilio 서명이 실패합니다. 상용 환경에서는 안정적인 도메인이나 Tailscale 퍼널을 선호하세요.
+- 스트리밍 보안 기본값:
+  - `streaming.preStartTimeoutMs`: 유효한 `start` 프레임을 보내지 않는 소켓을 닫습니다.
+  - `streaming.maxPendingConnections`: 총 인증되지 않은 사전 시작 소켓 수를 제한합니다.
+  - `streaming.maxPendingConnectionsPerIp`: 소스 IP당 인증되지 않은 사전 시작 소켓 수를 제한합니다.
+  - `streaming.maxConnections`: 총 열린 미디어 스트림 소켓 수 (대기 중 + 활성)를 제한합니다.
 
 ## Stale call reaper
 
@@ -159,6 +168,10 @@ cd ./extensions/voice-call && pnpm install
 `webhookSecurity.trustForwardingHeaders`는 허용 리스트 없이 전달된 헤더를 신뢰합니다.
 
 `webhookSecurity.trustedProxyIPs`는 요청 리모트 IP가 목록과 일치할 때만 전달 헤더를 신뢰합니다.
+
+Twilio와 Plivo에 대한 웹훅 리플레이 보호가 활성화되어 있습니다. 리플레이된 유효한 웹훅 요청은 승인되지만 사이드 이펙트는 건너뜁니다.
+
+Twilio 대화 턴에는 `<Gather>` 콜백의 턴별 토큰이 포함되어 있어, 오래되거나 리플레이된 음성 콜백이 최신 대기 중인 전사 턴을 충족할 수 없습니다.
 
 안정적인 공개 호스트 예시:
 

@@ -111,6 +111,7 @@ openclaw pairing approve line <CODE>
 - `channels.line.groupPolicy`: `allowlist | open | disabled`
 - `channels.line.groupAllowFrom`: 그룹에 대한 허용된 LINE 사용자 ID
 - 그룹별 재정의: `channels.line.groups.<groupId>.allowFrom`
+- 런타임 노트: `channels.line`이 완전히 없는 경우, `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 그룹 확인에 `groupPolicy="allowlist"`로 폴백합니다.
 
 LINE ID는 대소문자를 구분합니다. 유효한 ID는 다음과 같습니다:
 

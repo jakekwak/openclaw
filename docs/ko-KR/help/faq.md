@@ -1,5 +1,8 @@
 ---
 summary: "OpenClaw 설정, 구성 및 사용에 대한 자주 묻는 질문"
+read_when:
+  - 일반적인 설정, 설치, 온보딩, 또는 런타임 지원 질문에 답변할 때
+  - 더 깊은 디버깅 전에 사용자 보고 문제를 분류할 때
 title: "자주 묻는 질문"
 ---
 
@@ -1166,9 +1169,9 @@ OpenClaw는 또한 **자동 메모리 플러시**를 실행하여 모델에게 �
 
 **OpenAI 임베딩**을 사용하는 경우에만 필요합니다. Codex OAuth는 채팅/완성을 포함하되 임베딩 접근을 부여하지 않으므로, **Codex에 로그인 (OAuth 또는 Codex CLI 로그인)**해도 시맨틱 메모리 검색에는 도움이 되지 않습니다. OpenAI 임베딩은 여전히 실제 API 키 (`OPENAI_API_KEY` 또는 `models.providers.openai.apiKey`)가 필요합니다.
 
-프로바이더를 명시적으로 설정하지 않으면, OpenClaw는 API 키를 해석할 수 있을 때 자동으로 프로바이더를 선택합니다 (인증 프로파일, `models.providers.*.apiKey`, 환경 변수). OpenAI 키가 해석될 경우 OpenAI를 우선하며, 그 외에는 Gemini가 우선됩니다. 두 키 모두 사용 가능하지 않으면, 메모리 검색은 구성될 때까지 비활성화됩니다. 로컬 모델 경로가 구성되어 있고 접근 가능한 경우, OpenClaw는 `local`을 선호합니다.
+프로바이더를 명시적으로 설정하지 않으면, OpenClaw는 API 키를 해석할 수 있을 때 자동으로 프로바이더를 선택합니다 (인증 프로파일, `models.providers.*.apiKey`, 환경 변수). OpenAI 키가 해석될 경우 OpenAI를 우선하며, 그 외에는 Gemini, 그 다음 Voyage, 그 다음 Mistral 순으로 우선됩니다. 원격 키가 없으면, 메모리 검색은 구성될 때까지 비활성화됩니다. 로컬 모델 경로가 구성되어 있고 접근 가능한 경우, OpenClaw는 `local`을 선호합니다.
 
-로컬을 선호하신다면, `memorySearch.provider = "local"` (그리고 선택적으로 `memorySearch.fallback = "none"`)을 설정하세요. Gemini 임베딩을 원하신다면, `memorySearch.provider = "gemini"`를 설정하고 `GEMINI_API_KEY` (또는 `memorySearch.remote.apiKey`)를 제공합니다. 우리는 **OpenAI, Gemini 또는 로컬** 임베딩 모델을 지원합니다 - [메모리](/concepts/memory)에서 설정 세부 사항을 확인하세요.
+로컬을 선호하신다면, `memorySearch.provider = "local"` (그리고 선택적으로 `memorySearch.fallback = "none"`)을 설정하세요. Gemini 임베딩을 원하신다면, `memorySearch.provider = "gemini"`를 설정하고 `GEMINI_API_KEY` (또는 `memorySearch.remote.apiKey`)를 제공합니다. 우리는 **OpenAI, Gemini, Voyage, Mistral 또는 로컬** 임베딩 모델을 지원합니다 - [메모리](/concepts/memory)에서 설정 세부 사항을 확인하세요.
 
 ### 메모리는 영구적으로 지속되나요. 제한은 무엇인가요
 
@@ -2635,6 +2638,19 @@ openclaw pairing list whatsapp
 
 ```
 stop
+stop action
+stop current action
+stop run
+stop current run
+stop agent
+stop the agent
+stop openclaw
+openclaw stop
+stop don't do anything
+stop do not do anything
+stop doing anything
+please stop
+stop please
 abort
 esc
 wait

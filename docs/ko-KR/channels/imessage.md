@@ -158,6 +158,7 @@ imsg send <handle> "test"
     그룹 발신자 알로우 리스트: `channels.imessage.groupAllowFrom`.
 
     런타임 폴백: `groupAllowFrom`이 설정되지 않은 경우, iMessage 그룹 발신자 체크는 사용 가능한 경우 `allowFrom`으로 폴백합니다.
+    런타임 노트: `channels.imessage`가 완전히 없는 경우, `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 `groupPolicy="allowlist"`로 폴백하고 경고를 기록합니다.
 
     그룹 멘션 게이팅:
 

@@ -47,6 +47,7 @@ title: "Telegram"
 ```
 
     환경 변수 대체: `TELEGRAM_BOT_TOKEN=...` (기본 계정에만 적용).
+    Telegram은 `openclaw channels login telegram` 을 **사용하지 않습니다**; 설정/환경 변수에서 토큰을 구성한 후 게이트웨이를 시작하세요.
 
   </Step>
 
@@ -148,6 +149,7 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
 
     `groupAllowFrom`은 그룹 발신자 필터링에 사용됩니다. 설정되지 않은 경우 Telegram은 `allowFrom`을 기본으로 사용합니다.
     `groupAllowFrom` 항목은 숫자로 된 Telegram 사용자 ID여야 합니다.
+    런타임 참고: `channels.telegram` 이 완전히 없는 경우, 런타임은 그룹 정책 평가에 대해 `groupPolicy="allowlist"` 로 폴백합니다 (`channels.defaults.groupPolicy` 가 설정되어 있어도).
 
     예: 특정 그룹에서 모든 멤버를 허용하려면:
 
@@ -682,6 +684,29 @@ openclaw message send --channel telegram --target @name --message "hi"
 
     - Node 22+ + 사용자 정의 fetch/프록시가 임의의 중단 동작을 트리거하여 AbortSignal 유형 불일치가 발생할 수 있습니다.
     - 일부 호스트는 `api.telegram.org`를 먼저 IPv6로 해석합니다; IPv6 유출이 잘못되면 Telegram API 오류 간헐적으로 발생할 수 있습니다.
+    - 로그에 `TypeError: fetch failed` 또는 `Network request for 'getUpdates' failed!` 가 포함된 경우, OpenClaw는 이제 이를 복구 가능한 네트워크 오류로 재시도합니다.
+    - 불안정한 직접 이그레스/TLS가 있는 VPS 호스트에서 `channels.telegram.proxy` 를 통해 Telegram API 호출을 라우팅하세요:
+
+```yaml
+channels:
+  telegram:
+    proxy: socks5://user:pass@proxy-host:1080
+```
+
+    - Node 22+ 는 기본적으로 `autoSelectFamily=true` 입니다 (WSL2 제외) 그리고 `dnsResultOrder=ipv4first`.
+    - 호스트가 WSL2이거나 IPv4 전용 동작이 더 잘 작동하는 경우, 패밀리 선택을 강제하세요:
+
+```yaml
+channels:
+  telegram:
+    network:
+      autoSelectFamily: false
+```
+
+    - 환경 변수 오버라이드 (임시):
+      - `OPENCLAW_TELEGRAM_DISABLE_AUTO_SELECT_FAMILY=1`
+      - `OPENCLAW_TELEGRAM_ENABLE_AUTO_SELECT_FAMILY=1`
+      - `OPENCLAW_TELEGRAM_DNS_RESULT_ORDER=ipv4first`
     - DNS 응답을 검증:
 
 ```bash
@@ -724,7 +749,8 @@ dig +short api.telegram.org AAAA
 - `channels.telegram.streamMode`: `off | partial | block` (라이브 스트림 미리보기).
 - `channels.telegram.mediaMaxMb`: 인바운드/아웃바운드 미디어 한도 (MB).
 - `channels.telegram.retry`: 아웃바운드 Telegram API 호출에 대한 재시도 정책 (시도 횟수, minDelayMs, maxDelayMs, 지터).
-- `channels.telegram.network.autoSelectFamily`: Node autoSelectFamily 재정의 (true=활성화, false=비활성화). Node 22에서 기본적으로 비활성화되어 Happy Eyeballs 시간 초과를 방지함.
+- `channels.telegram.network.autoSelectFamily`: Node autoSelectFamily 재정의 (true=활성화, false=비활성화). Node 22+에서 기본적으로 활성화되며, WSL2는 기본적으로 비활성화됩니다.
+- `channels.telegram.network.dnsResultOrder`: DNS 결과 순서 재정의 (`ipv4first` 또는 `verbatim`). Node 22+에서 기본값은 `ipv4first`.
 - `channels.telegram.proxy`: Bot API 호출에 대한 프록시 URL (SOCKS/HTTP).
 - `channels.telegram.webhookUrl`: 웹훅 모드 활성화 (requires `channels.telegram.webhookSecret`).
 - `channels.telegram.webhookSecret`: 웹훅 비밀 (webhookUrl이 설정된 경우 필수).
@@ -747,7 +773,7 @@ Telegram 전용 특징적 필드:
 - 스레딩/응답: `replyToMode`
 - 스트리밍: `streamMode` (미리보기), `draftChunk`, `blockStreaming`
 - 형식/배달: `textChunkLimit`, `chunkMode`, `linkPreview`, `responsePrefix`
-- 미디어/네트워크: `mediaMaxMb`, `timeoutSeconds`, `retry`, `network.autoSelectFamily`, `proxy`
+- 미디어/네트워크: `mediaMaxMb`, `timeoutSeconds`, `retry`, `network.autoSelectFamily`, `network.dnsResultOrder`, `proxy`
 - 웹훅: `webhookUrl`, `webhookSecret`, `webhookPath`, `webhookHost`
 - 액션/기능: `capabilities.inlineButtons`, `actions.sendMessage|editMessage|deleteMessage|reactions|sticker`
 - 반응: `reactionNotifications`, `reactionLevel`

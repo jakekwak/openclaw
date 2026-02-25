@@ -125,16 +125,31 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
 - 예제 모델: `vercel-ai-gateway/anthropic/claude-opus-4.6`
 - CLI: `openclaw onboard --auth-choice ai-gateway-api-key`
 
+### Kilo 게이트웨이
+
+- 프로바이더: `kilocode`
+- 인증: `KILOCODE_API_KEY`
+- 예제 모델: `kilocode/anthropic/claude-opus-4.6`
+- CLI: `openclaw onboard --kilocode-api-key <key>`
+- 베이스 URL: `https://api.kilo.ai/api/gateway/`
+- 확장된 기본 제공 카탈로그에는 GLM-5 Free, MiniMax M2.5 Free, GPT-5.2, Gemini 3 Pro Preview, Gemini 3 Flash Preview, Grok Code Fast 1, Kimi K2.5가 포함됩니다.
+
+설정 세부 사항은 [/providers/kilocode](/ko-KR/providers/kilocode)를 참조하세요.
+
 ### 기타 기본 제공 프로바이더
 
 - OpenRouter: `openrouter` (`OPENROUTER_API_KEY`)
 - 예제 모델: `openrouter/anthropic/claude-sonnet-4-5`
+- Kilo 게이트웨이: `kilocode` (`KILOCODE_API_KEY`)
+- 예제 모델: `kilocode/anthropic/claude-opus-4.6`
 - xAI: `xai` (`XAI_API_KEY`)
+- Mistral: `mistral` (`MISTRAL_API_KEY`)
+- 예제 모델: `mistral/mistral-large-latest`
+- CLI: `openclaw onboard --auth-choice mistral-api-key`
 - Groq: `groq` (`GROQ_API_KEY`)
 - Cerebras: `cerebras` (`CEREBRAS_API_KEY`)
   - Cerebras의 GLM 모델은 `zai-glm-4.7` 및 `zai-glm-4.6` ID를 사용합니다.
   - OpenAI 호환 베이스 URL: `https://api.cerebras.ai/v1`.
-- Mistral: `mistral` (`MISTRAL_API_KEY`)
 - GitHub Copilot: `github-copilot` (`COPILOT_GITHUB_TOKEN` / `GH_TOKEN` / `GITHUB_TOKEN`)
 - Hugging Face Inference: `huggingface` (`HUGGINGFACE_HUB_TOKEN` 또는 `HF_TOKEN`) — OpenAI 호환 라우터; 예제 모델: `huggingface/deepseek-ai/DeepSeek-R1`; CLI: `openclaw onboard --auth-choice huggingface-api-key`. [Hugging Face (Inference)](/ko-KR/providers/huggingface) 참조.
 

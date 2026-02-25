@@ -1,6 +1,10 @@
 ---
 title: IRC
 description: OpenClaw를 IRC 채널 및 다이렉트 메시지에 연결합니다.
+summary: "IRC 플러그인 설정, 접근 제어 및 문제 해결"
+read_when:
+  - OpenClaw를 IRC 채널 또는 DM에 연결하고 싶을 때
+  - IRC 허용 목록, 그룹 정책 또는 멘션 게이팅을 구성할 때
 ---
 
 OpenClaw를 클래식 채널 (`#room`) 및 다이렉트 메시지에서 사용하려면 IRC를 사용하십시오. IRC는 확장 플러그인으로 제공되지만, `channels.irc` 아래에 있는 메인 설정에서 설정됩니다.
@@ -52,7 +56,8 @@ IRC 채널에는 두 개의 별도 "게이트"가 있습니다:
 - 채널별 제어 (채널 + 발신자 + 멘션 규칙): `channels.irc.groups["#channel"]`
 - `channels.irc.groupPolicy="open"`은 구성되지 않은 채널을 허용하지만, 기본적으로는 여전히 멘션 게이트가 설정되어 있음
 
-허용 목록 항목은 닉네임 또는 `nick!user@host` 형식을 사용할 수 있습니다.
+허용 목록 항목은 안정적인 발신자 ID (`nick!user@host`)를 사용해야 합니다.
+순수 닉 매칭은 변경 가능하며 `channels.irc.dangerouslyAllowNameMatching: true`일 때만 활성화됩니다.
 
 ### 흔한 문제: `allowFrom`은 채널이 아닌 다이렉트 메시지를 위한 것
 
@@ -157,7 +162,7 @@ IRC 채널에서 **멘션 없이** 봇이 응답하도록 하려면, 해당 채�
             "*": {
               deny: ["group:runtime", "group:fs", "gateway", "nodes", "cron", "browser"],
             },
-            eigen: {
+            "id:eigen": {
               deny: ["gateway", "nodes", "cron"],
             },
           },
@@ -170,7 +175,8 @@ IRC 채널에서 **멘션 없이** 봇이 응답하도록 하려면, 해당 채�
 
 메모:
 
-- `toolsBySender` 키는 닉네임 (예: `"eigen"`) 또는 강력한 신원 확인을 위한 전체 호스트 마스크 (`"eigen!~eigen@174.127.248.171"`)일 수 있습니다.
+- `toolsBySender` 키는 IRC 발신자 신원 값에 `id:`를 사용해야 합니다: 더 강력한 매칭을 위해 `id:eigen` 또는 `id:eigen!~eigen@174.127.248.171`.
+- 기존 접두사 없는 키는 여전히 허용되며 `id:`로만 매핑됩니다.
 - 첫 번째로 일치하는 발신자 정책이 우선한다; `"*"`는 대체 와일드카드입니다.
 
 그룹 접근과 멘션 게이트의 작동 방식 및 상호작용에 대한 자세한 내용은: [/channels/groups](/ko-KR/channels/groups)을 참조하십시오.

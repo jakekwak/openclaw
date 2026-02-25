@@ -302,21 +302,28 @@ openclaw plugins doctor
 
 ## 플러그인 후크
 
-플러그인은 후크를 제공하고 런타임에 등록할 수 있습니다. 이를 통해 플러그인은 별도의 후크 팩 설치 없이 이벤트 기반 자동화를 번들링할 수 있습니다.
+플러그인은 런타임에 후크를 등록할 수 있습니다. 이를 통해 플러그인은 별도의 후크 팩 설치 없이 이벤트 기반 자동화를 번들링할 수 있습니다.
 
 ### 예
 
-```
-import { registerPluginHooksFromDir } from "openclaw/plugin-sdk";
-
+```ts
 export default function register(api) {
-  registerPluginHooksFromDir(api, "./hooks");
+  api.registerHook(
+    "command:new",
+    async () => {
+      // Hook logic here.
+    },
+    {
+      name: "my-plugin.command-new",
+      description: "Runs when /new is invoked",
+    },
+  );
 }
 ```
 
 주의사항:
 
-- 후크 디렉터리는 일반적인 후크 구조를 따릅니다 (`HOOK.md` + `handler.ts`).
+- `api.registerHook(...)`을 통해 후크를 명시적으로 등록하세요.
 - 후크 적합성 규칙은 여전히 적용됩니다 (OS/바이너리/환경/설정 요건).
 - 플러그인 관리 후크는 `openclaw hooks list`에 `plugin:<id>`로 표시됩니다.
 - `openclaw hooks`를 통해 플러그인 관리 후크를 활성화/비활성화할 수 없습니다; 대신 플러그인을 활성화/비활성화하십시오.

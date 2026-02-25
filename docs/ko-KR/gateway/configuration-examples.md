@@ -169,6 +169,9 @@ title: "구성 예제"
       pruneAfter: "30d",
       maxEntries: 500,
       rotateBytes: "10mb",
+      resetArchiveRetention: "30d", // 기간 또는 false
+      maxDiskBytes: "500mb", // 선택 사항
+      highWaterBytes: "400mb", // 선택 사항 (기본값: maxDiskBytes의 80%)
     },
     typingIntervalSeconds: 5,
     sendPolicy: {
@@ -176,8 +179,8 @@ title: "구성 예제"
       rules: [
         {
           action: "deny",
-          match: { channel: "discord", chatType: "group" }
-        }
+          match: { channel: "discord", chatType: "group" },
+        },
       ],
     },
   },
@@ -204,7 +207,7 @@ title: "구성 예제"
     discord: {
       enabled: true,
       token: "YOUR_DISCORD_BOT_TOKEN",
-      dm: { enabled: true, allowFrom: ["steipete"] },
+      dm: { enabled: true, allowFrom: ["123456789012345678"] },
       guilds: {
         "123456789012345678": {
           slug: "friends-of-openclaw",
@@ -319,7 +322,7 @@ title: "구성 예제"
       allowFrom: {
         whatsapp: ["+15555550123"],
         telegram: ["123456789"],
-        discord: ["steipete"],
+        discord: ["123456789012345678"],
         slack: ["U123"],
         signal: ["+15555550123"],
         imessage: ["user@example.com"],
@@ -360,6 +363,10 @@ title: "구성 예제"
     store: "~/.openclaw/cron/cron.json",
     maxConcurrentRuns: 2,
     sessionRetention: "24h",
+    runLog: {
+      maxBytes: "2mb",
+      keepLines: 2000,
+    },
   },
 
   // 웹훅
@@ -459,7 +466,7 @@ title: "구성 예제"
     discord: {
       enabled: true,
       token: "YOUR_TOKEN",
-      dm: { allowFrom: ["yourname"] },
+      dm: { allowFrom: ["123456789012345678"] },
     },
   },
 }
@@ -485,11 +492,14 @@ title: "구성 예제"
     discord: {
       enabled: true,
       token: "YOUR_DISCORD_BOT_TOKEN",
-      dm: { enabled: true, allowFrom: ["alice", "bob"] },
+      dm: { enabled: true, allowFrom: ["123456789012345678", "987654321098765432"] },
     },
   },
 }
 ```
+
+Discord/Slack/Google Chat/MS Teams/Mattermost/IRC의 경우, 발신자 인증은 기본적으로 ID 우선입니다.
+각 채널의 `dangerouslyAllowNameMatching: true`로 직접 변경 가능한 이름/이메일/닉 매칭을 명시적으로 그 위험을 수용하는 경우에만 활성화하세요.
 
 ### OAuth 및 API 키 대체
 

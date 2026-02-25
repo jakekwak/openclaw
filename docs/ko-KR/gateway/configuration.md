@@ -251,11 +251,17 @@ OpenClaw 는 스키마와 완전히 일치하는 구성만 허용합니다. 알 
         enabled: true,
         maxConcurrentRuns: 2,
         sessionRetention: "24h",
+        runLog: {
+          maxBytes: "2mb",
+          keepLines: 2000,
+        },
       },
     }
     ```
 
-    기능 개요 및 CLI 예제는 [Cron jobs](/ko-KR/automation/cron-jobs)를 참조하세요.
+    - `sessionRetention`: `sessions.json`에서 완료된 격리 실행 세션 정리 (기본값 `24h`; 비활성화하려면 `false`).
+    - `runLog`: `cron/runs/<jobId>.jsonl`을 크기와 유지 줄 수로 정리.
+    - 기능 개요 및 CLI 예제는 [Cron jobs](/ko-KR/automation/cron-jobs)를 참조하세요.
 
   </Accordion>
 

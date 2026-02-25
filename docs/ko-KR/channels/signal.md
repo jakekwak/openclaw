@@ -194,6 +194,7 @@ Groups:
 
 - `channels.signal.groupPolicy = open | allowlist | disabled`.
 - `allowlist`가 설정된 경우 `channels.signal.groupAllowFrom`이 그룹 내에서 트리거할 수 있는 대상자를 제어합니다.
+- 런타임 노트: `channels.signal`이 완전히 없는 경우, `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 그룹 확인에 `groupPolicy="allowlist"`로 폴백합니다.
 
 ## How it works (behavior)
 

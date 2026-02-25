@@ -165,12 +165,13 @@ openclaw gateway
 
     채널 허용 목록은 `channels.slack.channels`에 있습니다.
 
-    런타임 노트: `channels.slack`이 완전히 없고 (환경 변수 설정만 있는 경우) `channels.defaults.groupPolicy`가 설정되지 않은 경우, 런타임은 `groupPolicy="open"`으로 기본값으로 이동하며 경고를 기록합니다.
+    런타임 노트: `channels.slack`이 완전히 없는 경우 (환경 변수 설정만 있는 경우), `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 `groupPolicy="allowlist"`로 기본값으로 이동하며 경고를 기록합니다.
 
     이름/ID 해결:
 
     - 채널 허용 목록 항목 및 DM 허용 목록 항목은 토큰 액세스가 허용할 때 시작 시 해결됩니다
     - 해결되지 않은 항목은 구성된 그대로 유지됩니다
+    - 인바운드 인증 매칭은 기본적으로 ID 우선입니다; 직접 사용자명/슬러그 매칭은 `channels.slack.dangerouslyAllowNameMatching: true`가 필요합니다
 
   </Tab>
 
@@ -191,6 +192,8 @@ openclaw gateway
     - `skills`
     - `systemPrompt`
     - `tools`, `toolsBySender`
+    - `toolsBySender` 키 형식: `id:`, `e164:`, `username:`, `name:`, 또는 `"*"` 와일드카드
+      (기존 접두사 없는 키는 `id:`에만 매핑됩니다)
 
   </Tab>
 </Tabs>
@@ -241,7 +244,7 @@ openclaw gateway
 - `[[reply_to_current]]`
 - `[[reply_to:<id>]]`
 
-참고: `replyToMode="off"`는 암시적 응답 쓰레딩을 비활성화합니다. 명시적 `[[reply_to_*]]` 태그는 여전히 허용됩니다.
+참고: `replyToMode="off"`는 명시적 `[[reply_to_*]]` 태그를 포함한 **모든** Slack 응답 쓰레딩을 비활성화합니다. 이는 명시적 태그가 `"off"` 모드에서도 여전히 허용되는 Telegram과 다릅니다. 차이는 플랫폼 쓰레딩 모델을 반영합니다: Slack 쓰레드는 채널에서 메시지를 숨기지만, Telegram 응답은 메인 채팅 흐름에서 계속 보입니다.
 
 ## 미디어, 청킹 및 전달
 
@@ -511,6 +514,7 @@ channels:
   신호 강도가 높은 Slack 필드:
   - 모드/인증: `mode`, `botToken`, `appToken`, `signingSecret`, `webhookPath`, `accounts.*`
   - DM 접근: `dm.enabled`, `dmPolicy`, `allowFrom` (기존: `dm.policy`, `dm.allowFrom`), `dm.groupEnabled`, `dm.groupChannels`
+  - 호환성 토글: `dangerouslyAllowNameMatching` (비상용; 필요하지 않으면 off 유지)
   - 채널 접근: `groupPolicy`, `channels.*`, `channels.*.users`, `channels.*.requireMention`
   - 쓰레딩/히스토리: `replyToMode`, `replyToModeByChatType`, `thread.*`, `historyLimit`, `dmHistoryLimit`, `dms.*.historyLimit`
   - 전달: `textChunkLimit`, `chunkMode`, `mediaMaxMb`, `streaming`, `nativeStreaming`

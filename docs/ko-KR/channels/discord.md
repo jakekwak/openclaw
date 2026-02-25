@@ -397,8 +397,9 @@ OpenClaw는 에이전트 메시지에 대해 Discord components v2 컨테이너�
     `allowlist` 동작:
 
     - 길드는 `channels.discord.guilds`와 일치해야 합니다 (`id` 권장, 슬러그 허용)
-    - 선택적 발신자 허용 목록: `users` (ID 또는 이름) 및 `roles` (역할 ID만); 둘 중 하나가 구성된 경우, 발신자는 `users` 또는 `roles`와 일치할 때 허용됩니다.
-    - `users`에는 이름/태그가 지원되지만 ID가 더 안전합니다; `openclaw security audit`는 이름/태그 항목이 사용될 때 경고합니다
+    - 선택적 발신자 허용 목록: `users` (안정적인 ID 권장) 및 `roles` (역할 ID만); 둘 중 하나가 구성된 경우, 발신자는 `users` 또는 `roles`와 일치할 때 허용됩니다.
+    - 직접 이름/태그 매칭은 기본적으로 비활성화됩니다; break-glass 호환성 모드로만 `channels.discord.dangerouslyAllowNameMatching: true` 를 활성화하세요.
+    - `users`에는 이름/태그가 지원되지만 ID가 더 안전합니다; `openclaw security audit`는 이름/태그 항목이 사용될 때 경고합니다.
     - 길드에 `channels`가 구성된 경우, 나열되지 않은 채널은 거부됩니다.
     - 길드에 `channels` 블록이 없는 경우, 허용 목록에 있는 길드의 모든 채널이 허용됩니다.
 
@@ -425,7 +426,7 @@ OpenClaw는 에이전트 메시지에 대해 Discord components v2 컨테이너�
 }
 ```
 
-    `DISCORD_BOT_TOKEN`만 설정하고 `channels.discord` 블록을 생성하지 않으면, 런타임 대체는 `groupPolicy="open"`입니다 (로그에 경고와 함께).
+    `DISCORD_BOT_TOKEN`만 설정하고 `channels.discord` 블록을 생성하지 않으면, 런타임 대체는 `groupPolicy="allowlist"`입니다 (로그에 경고와 함께), `channels.defaults.groupPolicy` 가 `open` 이어도 동일합니다.
 
   </Tab>
 
@@ -767,7 +768,7 @@ Discord 길드 멤버를 역할 ID에 따라 다른 에이전트로 라우팅하
     참고 사항:
 
     - 허용 목록은 `pk:<memberId>`를 사용할 수 있습니다
-    - 멤버 표시 이름은 이름/슬러그로 일치됩니다
+    - 멤버 표시 이름은 `channels.discord.dangerouslyAllowNameMatching: true` 인 경우에만 이름/슬러그로 일치됩니다
     - 조회는 원본 메시지 ID를 사용하며 시간 제약 내에 있습니다
     - 조회 실패 시, 대리 메시지는 봇 메시지로 처리되고 `allowBots=true`가 아닌 이상 삭제됩니다
 

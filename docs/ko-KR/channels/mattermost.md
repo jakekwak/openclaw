@@ -101,8 +101,10 @@ Mattermost는 다이렉트 메시지에 자동으로 응답합니다. 채널 동
 ## 채널 (그룹)
 
 - 기본값: `channels.mattermost.groupPolicy = "allowlist"` (언급 제한).
-- `channels.mattermost.groupAllowFrom`(사용자 ID 또는 `@username`)을 통해 발신자를 허용 목록에 추가합니다.
+- `channels.mattermost.groupAllowFrom` (사용자 ID 추천)을 통해 발신자를 허용 목록에 추가합니다.
+- `@username` 매칭은 변경 가능하며 `channels.mattermost.dangerouslyAllowNameMatching: true`일 때만 활성화됩니다.
 - 공개 채널: `channels.mattermost.groupPolicy="open"` (언급 제한).
+- 런타임 노트: `channels.mattermost`가 완전히 없는 경우, `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 그룹 확인에 `groupPolicy="allowlist"`로 폴백합니다.
 
 ## 아웃바운드 전송용 대상
 

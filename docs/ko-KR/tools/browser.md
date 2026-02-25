@@ -57,6 +57,12 @@ openclaw browser --browser-profile openclaw snapshot
 {
   browser: {
     enabled: true, // default: true
+    ssrfPolicy: {
+      dangerouslyAllowPrivateNetwork: true, // 기본값: 신뢰 네트워크 모드
+      // allowPrivateNetwork: true, // 레거시 별칭
+      // hostnameAllowlist: ["*.example.com", "example.com"],
+      // allowedHostnames: ["localhost"],
+    },
     // cdpUrl: "http://127.0.0.1:18792", // 유산 단일 프로파일 오버라이드
     remoteCdpTimeoutMs: 1500, // 원격 CDP HTTP 시간 초과 (ms)
     remoteCdpHandshakeTimeoutMs: 3000, // 원격 CDP 웹소켓 핸드셰이크 시간 초과 (ms)
@@ -84,6 +90,9 @@ openclaw browser --browser-profile openclaw snapshot
 - `cdpUrl`은 설정되지 않은 경우 릴레이 포트를 기본값으로 사용합니다.
 - `remoteCdpTimeoutMs`는 원격 (비 로컬 루프백) CDP 도달 가능성 확인에 적용됩니다.
 - `remoteCdpHandshakeTimeoutMs`는 원격 CDP 웹소켓 도달 가능성 확인에 적용됩니다.
+- 브라우저 탐색/탭 열기는 탐색 전에 SSRF 가드를 거치며, 탐색 후 최종 `http(s)` URL에서 재확인합니다.
+- `browser.ssrfPolicy.dangerouslyAllowPrivateNetwork`는 기본값이 `true` (신뢰 네트워크 모델)입니다. 엄격한 공개 전용 탐색을 위해 `false`로 설정하세요.
+- `browser.ssrfPolicy.allowPrivateNetwork`는 호환성을 위한 레거시 별칭으로 계속 지원됩니다.
 - `attachOnly: true`는 "로컬 브라우저를 실행하지 않고 현재 실행 중인 경우에만 연결합니다."를 의미합니다.
 - `color` + 프로파일별 `color`로 브라우저 UI를 착색하여 활성화된 프로파일을 확인할 수 있습니다.
 - 기본 프로파일은 `chrome` (확장 릴레이). 관리 브라우저에 `defaultProfile: "openclaw"`를 사용하십시오.
@@ -551,6 +560,20 @@ JSON에서의 역할 스냅샷은 `refs` 및 작은 `stats` 블록 (lines/chars/
 - 로그인 및 봇 방지 메모 (X/Twitter 등)에 대해서는 [브라우저 로그인 + X/Twitter 게시물](/ko-KR/tools/browser-login)을 참조하십시오.
 - 게이트웨이/노드 호스트는 사설 (로컬 루프백 또는 tailnet 전용)로 유지하십시오.
 - 원격 CDP 엔드포인트는 강력합니다; 터널링 및 보호하세요.
+
+엄격 모드 예제 (기본적으로 사설/내부 대상 차단):
+
+```json5
+{
+  browser: {
+    ssrfPolicy: {
+      dangerouslyAllowPrivateNetwork: false,
+      hostnameAllowlist: ["*.example.com", "example.com"],
+      allowedHostnames: ["localhost"], // 선택적 정확한 허용
+    },
+  },
+}
+```
 
 ## 문제 해결
 

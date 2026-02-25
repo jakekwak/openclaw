@@ -23,7 +23,9 @@ title: "하위 에이전트"
 - `/subagents steer <id|#> <message>`
 - `/subagents spawn <agentId> <task> [--model <model>] [--thinking <level>]`
 
-Discord 스레드 바인딩 제어:
+스레드 바인딩 제어:
+
+이 명령어들은 지속적인 스레드 바인딩을 지원하는 채널에서 작동합니다. 아래의 **스레드 지원 채널**을 참조하세요.
 
 - `/focus <subagent-label|session-key|session-id|session-label>`
 - `/unfocus`
@@ -75,7 +77,7 @@ Discord 스레드 바인딩 제어:
 - `agentId?` (옵션; 다른 에이전트 ID 아래에 생성할 수 있는 경우)
 - `model?` (옵션; 하위 에이전트 모델을 재정의합니다. 잘못된 값은 건너뛰고 하위 에이전트는 기본 모델에서 경고와 함께 실행됩니다)
 - `thinking?` (옵션; 하위 에이전트 실행의 사고 수준을 재정의합니다)
-- `runTimeoutSeconds?` (기본값 `0`; 설정된 경우, 하위 에이전트 실행은 N초 후에 중단됩니다)
+- `runTimeoutSeconds?` (설정된 경우 `agents.defaults.subagents.runTimeoutSeconds` 를 기본값으로 사용하고, 그렇지 않으면 `0`; 설정된 경우, 하위 에이전트 실행은 N초 후에 중단됩니다)
 - `thread?` (기본값 `false`; `true`이면 이 하위 에이전트 세션에 대한 채널 스레드 바인딩을 요청)
 - `mode?` (`run|session`)
   - 기본값은 `run`
@@ -83,14 +85,18 @@ Discord 스레드 바인딩 제어:
   - `mode: "session"`은 `thread: true`가 필요
 - `cleanup?` (`delete|keep`, 기본값 `keep`)
 
-## Discord 스레드 바인딩 세션
+## 스레드 바인딩 세션
 
-스레드 바인딩이 활성화되면, 서브에이전트는 Discord 스레드에 바인딩되어 해당 스레드의 후속 사용자 메시지가 동일한 서브에이전트 세션으로 계속 라우팅될 수 있습니다.
+스레드 바인딩이 활성화된 채널에서, 서브에이전트는 스레드에 바인딩되어 해당 스레드의 후속 사용자 메시지가 동일한 서브에이전트 세션으로 계속 라우팅될 수 있습니다.
+
+### 스레드 지원 채널
+
+- Discord (현재 유일하게 지원되는 채널): 지속적인 스레드 바인딩 서브에이전트 세션 (`sessions_spawn` with `thread: true`), 수동 스레드 제어 (`/focus`, `/unfocus`, `/agents`, `/session ttl`), 어댑터 키 `channels.discord.threadBindings.enabled`, `channels.discord.threadBindings.ttlHours`, `channels.discord.threadBindings.spawnSubagentSessions` 지원.
 
 빠른 흐름:
 
 1. `sessions_spawn`에서 `thread: true`를 사용하여 생성합니다 (선택적으로 `mode: "session"`).
-2. OpenClaw는 Discord 스레드를 생성하거나 해당 세션 대상에 바인딩합니다.
+2. OpenClaw는 활성 채널의 해당 세션 대상에 스레드를 생성하거나 바인딩합니다.
 3. 해당 스레드의 답장 및 후속 메시지가 바인딩된 세션으로 라우팅됩니다.
 4. `/session ttl`로 자동 해제 TTL을 확인/업데이트합니다.
 5. `/unfocus`로 수동으로 분리합니다.
@@ -98,17 +104,16 @@ Discord 스레드 바인딩 제어:
 수동 제어:
 
 - `/focus <target>`은 현재 스레드 (또는 새 스레드)를 서브에이전트/세션 대상에 바인딩합니다.
-- `/unfocus`는 현재 Discord 스레드의 바인딩을 제거합니다.
+- `/unfocus`는 현재 바인딩된 스레드의 바인딩을 제거합니다.
 - `/agents`는 활성 실행 및 바인딩 상태를 나열합니다 (`thread:<id>` 또는 `unbound`).
-- `/session ttl`은 집중된 Discord 스레드에서만 작동합니다.
+- `/session ttl`은 집중된 바인딩 스레드에서만 작동합니다.
 
 설정 스위치:
 
 - 글로벌 기본값: `session.threadBindings.enabled`, `session.threadBindings.ttlHours`
-- Discord 오버라이드: `channels.discord.threadBindings.enabled`, `channels.discord.threadBindings.ttlHours`
-- 생성 자동 바인딩 활성화: `channels.discord.threadBindings.spawnSubagentSessions`
+- 채널 오버라이드 및 생성 자동 바인딩 키는 어댑터별로 다릅니다. 위의 **스레드 지원 채널**을 참조하세요.
 
-[Discord](/ko-KR/channels/discord), [설정 레퍼런스](/ko-KR/gateway/configuration-reference), [슬래시 명령](/ko-KR/tools/slash-commands)를 참조하세요.
+현재 어댑터 세부 사항은 [설정 레퍼런스](/ko-KR/gateway/configuration-reference)와 [슬래시 명령](/ko-KR/tools/slash-commands)을 참조하세요.
 
 허용 목록:
 

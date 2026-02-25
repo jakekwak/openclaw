@@ -31,8 +31,18 @@ title: "VPS 호스팅"
 - 기본 보안을 위해 게이트웨이를 루프백에 유지하고 SSH 터널 또는 Tailscale Serve로 접근합니다.
   `lan`/`tailnet`에 바인딩하려면 `gateway.auth.token` 또는 `gateway.auth.password`가 필요합니다.
 
-원격 접근: [게이트웨이 원격](/gateway/remote)  
+원격 접근: [게이트웨이 원격](/gateway/remote)
 플랫폼 허브: [플랫폼](/platforms)
+
+## VPS의 공유 회사 에이전트
+
+사용자가 하나의 신뢰 경계에 있는 경우 (예: 한 회사 팀), 에이전트가 업무 전용인 경우 유효한 설정입니다.
+
+- 전용 런타임에 유지하세요 (VPS/VM/컨테이너 + 전용 OS 사용자/계정).
+- 그 런타임을 개인 Apple/Google 계정이나 개인 브라우저/비밀번호 관리자 프로필에 로그인하지 마세요.
+- 사용자들이 서로 신뢰하지 않는 경우, 게이트웨이/호스트/OS 사용자로 분리하세요.
+
+보안 모델 세부 사항: [보안](/ko-KR/gateway/security)
 
 ## VPS와 노드를 사용하는 방법
 

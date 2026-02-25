@@ -153,7 +153,8 @@ your-domain.com {
 
 배송 및 허용 목록을 위한 다음 식별자를 사용하세요:
 
-- 다이렉트 메시지: `users/<userId>` (추천) 또는 원시 이메일 `name@example.com` (변경 가능한 주체).
+- 다이렉트 메시지: `users/<userId>` (추천).
+- 원시 이메일 `name@example.com`은 변경 가능하며 `channels.googlechat.dangerouslyAllowNameMatching: true`일 때만 직접 허용 목록 매칭에 사용됩니다.
 - 사용되지 않음: `users/<email>`은 사용자 아이디로 간주되며, 이메일 허용 목록이 아닙니다.
 - 스페이스: `spaces/<spaceId>`.
 
@@ -171,7 +172,7 @@ your-domain.com {
       botUser: "users/1234567890", // 선택 사항; 멘션 감지에 도움
       dm: {
         policy: "pairing",
-        allowFrom: ["users/1234567890", "name@example.com"],
+        allowFrom: ["users/1234567890"],
       },
       groupPolicy: "allowlist",
       groups: {
@@ -194,6 +195,7 @@ your-domain.com {
 
 - 서비스 계정 자격 증명은 `serviceAccount` (JSON 문자열)로 인라인 전달될 수도 있습니다.
 - `webhookPath`가 설정되지 않으면 기본 웹훅 경로는 `/googlechat`입니다.
+- `dangerouslyAllowNameMatching`은 허용 목록에서 변경 가능한 이메일 주체 매칭을 다시 활성화합니다 (비상용 호환성 모드).
 - 리액션은 `actions.reactions`가 활성화된 경우 `reactions` 도구 및 `channels action`을 통해 사용할 수 있습니다.
 - `typingIndicator`는 `none`, `message` (기본값), `reaction` (리액션은 사용자 OAuth 필요)을 지원합니다.
 - 첨부 파일은 Chat API를 통해 다운로드되며 미디어 파이프라인에 저장됩니다 (`mediaMaxMb`에 따라 크기 제한).

@@ -42,3 +42,10 @@ title: "커뮤니티 플러그인"
   npm: `@scope/package`
   repo: `https://github.com/org/repo`
   install: `openclaw plugins install @scope/package`
+
+## 등재된 플러그인
+
+- **WeChat** — WeChatPadPro (iPad 프로토콜)를 통해 OpenClaw를 WeChat 개인 계정에 연결합니다. 키워드 트리거 대화로 텍스트, 이미지, 파일 교환을 지원합니다.
+  npm: `@icesword760/openclaw-wechat`
+  repo: `https://github.com/icesword0760/openclaw-wechat`
+  install: `openclaw plugins install @icesword760/openclaw-wechat`

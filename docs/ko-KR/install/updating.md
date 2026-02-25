@@ -66,6 +66,32 @@ openclaw update --channel stable
 
 참고: npm 설치 시, 게이트웨이는 시작 시 업데이트 힌트를 로깅합니다 (현재 채널 태그를 확인). `update.checkOnStart: false`로 비활성화하세요.
 
+### 코어 자동 업데이터 (선택 사항)
+
+자동 업데이터는 **기본적으로 꺼져** 있으며 코어 게이트웨이 기능입니다 (플러그인이 아님).
+
+```json
+{
+  "update": {
+    "channel": "stable",
+    "auto": {
+      "enabled": true,
+      "stableDelayHours": 6,
+      "stableJitterHours": 12,
+      "betaCheckIntervalHours": 1
+    }
+  }
+}
+```
+
+동작:
+
+- `stable`: 새 버전이 발견되면, OpenClaw는 `stableDelayHours`만큼 대기한 후 `stableJitterHours` 내에서 설치별 결정론적 지터를 적용합니다 (롤아웃 분산).
+- `beta`: `betaCheckIntervalHours` 주기로 확인하고 (기본값: 매시간) 업데이트가 있으면 적용합니다.
+- `dev`: 자동 적용 없음; 수동으로 `openclaw update`를 사용하세요.
+
+자동화를 활성화하기 전에 `openclaw update --dry-run`으로 업데이트 작업을 미리 확인하세요.
+
 이후:
 
 ```bash

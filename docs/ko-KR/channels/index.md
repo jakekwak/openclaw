@@ -24,6 +24,7 @@ OpenClaw 는 당신이 이미 사용하고 있는 채팅 앱에서 대화할 수
 - [BlueBubbles](/ko-KR/channels/bluebubbles) — **iMessage 를 위한 추천**; BlueBubbles macOS 서버 REST API 를 사용하여 전체 기능 지원 (수정, 전송 취소, 이펙트, 반응, 그룹 관리 — 수정은 현재 macOS 26 Tahoe 에서 고장).
 - [iMessage (legacy)](/ko-KR/channels/imessage) — imsg CLI 를 통한 레거시 macOS 통합 (더 이상 사용되지 않음, 새로운 설치에는 BlueBubbles 사용).
 - [Microsoft Teams](/ko-KR/channels/msteams) — Bot Framework; 엔터프라이즈 지원 (플러그인, 별도로 설치).
+- [Synology Chat](/ko-KR/channels/synology-chat) — 나가는+들어오는 웹훅을 통한 Synology NAS Chat (플러그인, 별도로 설치).
 - [LINE](/ko-KR/channels/line) — LINE Messaging API 봇 (플러그인, 별도로 설치).
 - [Nextcloud Talk](/ko-KR/channels/nextcloud-talk) — Nextcloud Talk 를 통한 자가 호스팅 채팅 (플러그인, 별도로 설치).
 - [Matrix](/ko-KR/channels/matrix) — Matrix 프로토콜 (플러그인, 별도로 설치).

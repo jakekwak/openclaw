@@ -44,6 +44,7 @@ openclaw agents add <name>
     - 워크스페이스 기본값 (또는 기존 워크스페이스)
     - 게이트웨이 포트 **18789**
     - 게이트웨이 인증 **토큰** (로컬 루프백에서도 자동 생성됨)
+    - DM 격리 기본값: 로컬 온보딩은 미설정 시 `session.dmScope: "per-channel-peer"`를 씁니다. 세부 정보: [CLI 온보딩 참조](/ko-KR/start/wizard-cli-reference#outputs-and-internals)
     - Tailscale 노출 **Off**
     - Telegram + WhatsApp 다이렉트 메시지의 기본값은 **허용 목록** (전화번호를 입력해야 할 수 있습니다)
   </Tab>

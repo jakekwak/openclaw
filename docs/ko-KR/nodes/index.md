@@ -271,8 +271,11 @@ openclaw nodes notify --node <idOrNameOrIp> --title "Ping" --body "Gateway ready
 - `system.run`는 페이로드 내 표준 출력/표준 오류/종료 코드를 반환합니다.
 - `system.notify`는 macOS 앱의 알림 권한 상태를 따릅니다.
 - `system.run`은 `--cwd`, `--env KEY=VAL`, `--command-timeout`, 및 `--needs-screen-recording`을 지원합니다.
+- 셸 래퍼 (`bash|sh|zsh ... -c/-lc`)의 경우, 요청 범위의 `--env` 값은 명시적 허용 목록 (`TERM`, `LANG`, `LC_*`, `COLORTERM`, `NO_COLOR`, `FORCE_COLOR`)으로 축소됩니다.
+- 허용 목록 모드에서 항상 허용 결정의 경우, 알려진 디스패치 래퍼 (`env`, `nice`, `nohup`, `stdbuf`, `timeout`)는 래퍼 경로 대신 내부 실행 파일 경로를 유지합니다. 언래핑이 안전하지 않으면 허용 목록 항목이 자동으로 유지되지 않습니다.
+- 허용 목록 모드의 Windows 노드 호스트에서 `cmd.exe /c`를 통한 셸 래퍼 실행은 승인이 필요합니다 (허용 목록 항목만으로는 래퍼 형식을 자동 허용하지 않습니다).
 - `system.notify`는 `--priority <passive|active|timeSensitive>`와 `--delivery <system|overlay|auto>`를 지원합니다.
-- 노드 호스트는 `PATH` 오버라이드를 무시합니다. 추가 PATH 항목이 필요한 경우, 노드 호스트 서비스 환경을 설정하거나 표준 위치에 도구를 설치하십시오. `--env`를 통해 `PATH`를 전달하지 마십시오.
+- 노드 호스트는 `PATH` 오버라이드를 무시하고 위험한 시작/셸 키 (`DYLD_*`, `LD_*`, `NODE_OPTIONS`, `PYTHON*`, `PERL*`, `RUBYOPT`, `SHELLOPTS`, `PS4`)를 제거합니다. 추가 PATH 항목이 필요한 경우, 노드 호스트 서비스 환경을 설정하거나 표준 위치에 도구를 설치하십시오. `--env`를 통해 `PATH`를 전달하지 마십시오.
 - macOS 노드 모드에서 `system.run`은 macOS 앱의 실행 승인 (설정 → 실행 승인)에 의해 게이트됩니다. 묻기/허용 목록/전체는 헤드리스 노드 호스트와 동일하게 작동합니다; 거부된 프롬프트는 `SYSTEM_RUN_DENIED` 반환.
 - 헤드리스 노드 호스트에서는 `system.run`이 실행 승인 (`~/.openclaw/exec-approvals.json`)에 의해 게이트됩니다.
 
@@ -320,7 +323,7 @@ openclaw node run --host <gateway-host> --port 18789
 - 노드 호스트는 `~/.openclaw/node.json`에 노드 ID, 토큰, 표시 이름, 게이트웨이 연결 정보를 저장합니다.
 - 실행 승인은 `~/.openclaw/exec-approvals.json`를 통해 로컬에서 적용됩니다
   (참조 [실행 승인](/ko-KR/tools/exec-approvals)).
-- macOS에서 헤드리스 노드 호스트는 동반 앱 실행 호스트가 도달 가능한 경우 이를 선호하며, 앱이 사용 불가능할 땐 로컬 실행으로 대체합니다. `OPENCLAW_NODE_EXEC_HOST=app`을 설정하여 앱 필요를 지정하거나, `OPENCLAW_NODE_EXEC_FALLBACK=0`으로 대체 기능을 비활성화하십시오.
+- macOS에서 헤드리스 노드 호스트는 기본적으로 `system.run`을 로컬로 실행합니다. `OPENCLAW_NODE_EXEC_HOST=app`을 설정하여 `system.run`을 동반 앱 실행 호스트를 통해 라우팅하고, `OPENCLAW_NODE_EXEC_FALLBACK=0`을 추가하여 앱 호스트를 요구하고 사용 불가능한 경우 페일-클로즈드로 실패하게 합니다.
 - 게이트웨이 WS가 TLS를 사용하는 경우 `--tls` / `--tls-fingerprint`를 추가하십시오.
 
 ## Mac 노드 모드

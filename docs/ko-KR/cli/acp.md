@@ -50,6 +50,13 @@ openclaw acp client --server-args --url wss://gateway-host:18789 --token-file ~/
 openclaw acp client --server "node" --server-args openclaw.mjs acp --url ws://127.0.0.1:19001
 ```
 
+권한 모델 (클라이언트 디버그 모드):
+
+- 자동 승인은 허용 목록 기반이며 신뢰할 수 있는 코어 도구 ID에만 적용됩니다.
+- `read` 자동 승인은 현재 작업 디렉토리 (`--cwd` 설정 시)로 범위가 제한됩니다.
+- 알 수 없는/비코어 도구 이름, 범위 외 읽기, 위험한 도구는 항상 명시적 프롬프트 승인이 필요합니다.
+- 서버에서 제공된 `toolCall.kind`는 신뢰할 수 없는 메타데이터로 취급됩니다 (인증 소스가 아님).
+
 ## 사용 방법
 
 IDE (또는 기타 클라이언트)가 에이전트 클라이언트 프로토콜을 사용하고 OpenClaw 게이트웨이 세션을 실행하려는 경우 ACP를 사용하십시오.

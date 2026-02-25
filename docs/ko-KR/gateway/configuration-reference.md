@@ -1,6 +1,10 @@
 ---
 title: "구성 참조"
 description: "완전한 필드별 참조를 위한 ~/.openclaw/openclaw.json"
+summary: "모든 OpenClaw 설정 키, 기본값, 채널 설정에 대한 완전한 참조"
+read_when:
+  - 정확한 필드 수준 설정 의미나 기본값이 필요할 때
+  - 채널, 모델, 게이트웨이, 또는 도구 설정 블록을 검증할 때
 ---
 
 # 구성 참조
@@ -33,7 +37,7 @@ description: "완전한 필드별 참조를 위한 ~/.openclaw/openclaw.json"
 | `disabled`           | 모든 그룹/방 메시지 차단                            |
 
 <Note>
-`channels.defaults.groupPolicy` 는 프로바이더의 `groupPolicy` 가 설정되지 않았을 때 기본값을 설정합니다. 페어링 코드는 1 시간 후 만료됩니다. 대기 중인 다이렉트 메시지 페어링 요청은 **채널 당 3 개** 로 제한됩니다. Slack/Discord 는 특별한 예외 사항을 가지고 있습니다: 프로바이더 섹션이 완전히 없을 경우 런타임 그룹 정책은 `open` 으로 해결될 수 있습니다 (시작 경고와 함께).
+`channels.defaults.groupPolicy` 는 프로바이더의 `groupPolicy` 가 설정되지 않았을 때 기본값을 설정합니다. 페어링 코드는 1 시간 후 만료됩니다. 대기 중인 다이렉트 메시지 페어링 요청은 **채널 당 3 개** 로 제한됩니다. 프로바이더 블록이 완전히 없는 경우 (`channels.<provider>` 부재), 런타임 그룹 정책은 `allowlist` 로 폴백합니다 (fail-closed, 시작 경고 포함).
 </Note>
 
 ### WhatsApp
@@ -141,7 +145,10 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
         maxDelayMs: 30000,
         jitter: 0.1,
       },
-      network: { autoSelectFamily: false },
+      network: {
+        autoSelectFamily: true,
+        dnsResultOrder: "ipv4first",
+      },
       proxy: "socks5://localhost:9050",
       webhookUrl: "https://example.com/telegram-webhook",
       webhookSecret: "secret",
@@ -185,7 +192,7 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
       },
       replyToMode: "off", // off | first | all
       dmPolicy: "pairing",
-      allowFrom: ["1234567890", "steipete"],
+      allowFrom: ["1234567890", "123456789012345678"],
       dm: { enabled: true, groupEnabled: false, groupChannels: ["openclaw-dm"] },
       guilds: {
         "123456789012345678": {
@@ -231,6 +238,9 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
 - 봇이 작성한 메시지는 기본적으로 무시됩니다. `allowBots: true` 를 통해 활성화할 수 있습니다 (여전히 자신이 보낸 메시지는 필터링됨).
 - `maxLinesPerMessage` (기본값 17)는 2000자 미만의 긴 메시지라도 분할합니다.
 - `channels.discord.ui.components.accentColor` 는 Discord 컴포넌트 v2 컨테이너의 강조 색상을 설정합니다.
+- `channels.discord.voice` 는 Discord 음성 채널 대화와 선택적 자동 참가 + TTS 오버라이드를 활성화합니다.
+- `channels.discord.streaming` 은 정규 스트림 모드 키입니다. 레거시 `streamMode` 및 불리언 `streaming` 값은 자동 마이그레이션됩니다.
+- `channels.discord.dangerouslyAllowNameMatching` 은 변경 가능한 이름/태그 매칭을 재활성화합니다 (break-glass 호환성 모드).
 
 **반응 알림 모드:** `off` (없음), `own` (봇의 메시지, 기본값), `all` (모든 메시지), `allowlist` (모든 메시지의 `guilds.<id>.users` 에서).
 
@@ -265,7 +275,8 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
 
 - 서비스 계정 JSON: 인라인 (`serviceAccount`) 또는 파일 기반 (`serviceAccountFile`).
 - 환경 대체: `GOOGLE_CHAT_SERVICE_ACCOUNT` 또는 `GOOGLE_CHAT_SERVICE_ACCOUNT_FILE`.
-- 배송 대상에는 `spaces/<spaceId>` 또는 `users/<userId|email>` 을 사용합니다.
+- 배송 대상에는 `spaces/<spaceId>` 또는 `users/<userId>` 를 사용합니다.
+- `channels.googlechat.dangerouslyAllowNameMatching` 은 변경 가능한 이메일 주체 매칭을 재활성화합니다 (break-glass 호환성 모드).
 
 ### Slack
 
@@ -663,9 +674,16 @@ exec ssh -T gateway-host imsg "$@"
 }
 ```
 
+- `model`: 문자열 (`"provider/model"`) 또는 객체 (`{ primary, fallbacks }`) 형태를 허용합니다.
+  - 문자열 형태는 기본 모델만 설정합니다.
+  - 객체 형태는 기본 모델과 순서가 지정된 장애 조치 모델을 설정합니다.
+- `imageModel`: 문자열 (`"provider/model"`) 또는 객체 (`{ primary, fallbacks }`) 형태를 허용합니다.
+  - `image` 도구 경로에서 비전 모델 설정으로 사용됩니다.
+  - 선택/기본 모델이 이미지 입력을 허용하지 않을 때 폴백 라우팅으로도 사용됩니다.
 - `model.primary`: 형식 `provider/model` (예: `anthropic/claude-opus-4-6`). 프로바이더를 생략한 경우, OpenClaw 는 `anthropic` 으로 가정합니다 (사용 중단됨).
-- `models`: 구성된 모델 카탈로그 및 `/model` 에 대한 허용 목록. 각 항목에는 `alias` (단축키) 및 `params` (프로바이더별: `temperature`, `maxTokens`) 를 포함할 수 있습니다.
-- `imageModel`: 기본 모델에 이미지 입력이 없는 경우에만 사용됩니다.
+- `models`: 구성된 모델 카탈로그 및 `/model` 에 대한 허용 목록. 각 항목에는 `alias` (단축키) 및 `params` (프로바이더별, 예: `temperature`, `maxTokens`, `cacheRetention`, `context1m`) 를 포함할 수 있습니다.
+- `params` 병합 우선순위 (설정): `agents.defaults.models["provider/model"].params` 가 기본값이며, `agents.list[].params` (일치하는 에이전트 id)가 키별로 오버라이드합니다.
+- 이러한 필드를 변경하는 설정 작성기 (예: `/models set`, `/models set-image`, 폴백 추가/제거 명령어)는 정규 객체 형태를 저장하고 가능한 경우 기존 폴백 목록을 보존합니다.
 - `maxConcurrent`: 세션 간에 최대 병렬 에이전트 실행을 설정합니다 (각 세션은 여전히 직렬화됩니다). 기본값: 1.
 
 **내장된 별칭 단축키** (모델이 `agents.defaults.models` 에 있는 경우에만 적용):
@@ -1177,6 +1195,9 @@ scripts/sandbox-browser-setup.sh   # 선택적 브라우저 이미지
       pruneAfter: "30d",
       maxEntries: 500,
       rotateBytes: "10mb",
+      resetArchiveRetention: "30d", // 기간 또는 false
+      maxDiskBytes: "500mb", // 선택적 하드 예산
+      highWaterBytes: "400mb", // 선택적 정리 목표
     },
     mainKey: "main", // 레거시 (런타임에서는 항상 "main" 사용)
     agentToAgent: { maxPingPongTurns: 5 },
@@ -1200,7 +1221,14 @@ scripts/sandbox-browser-setup.sh   # 선택적 브라우저 이미지
 - **`resetByType`**: 유형별 재설정 (`direct`, `group`, `thread`). 레거시 `dm` 은 `direct` 의 별칭으로 허용됩니다.
 - **`mainKey`**: 레거시 필드. 런타임에서는 이제 항상 "main"을 메인 다이렉트 채팅 버킷으로 사용합니다.
 - **`sendPolicy`**: `channel`, `chatType` (`direct|group|channel`, 레거시 `dm` 별칭 포함) 또는 `keyPrefix`, `rawKeyPrefix` 별로 매칭됩니다. 첫 번째 거부가 승리합니다.
-- **`maintenance`**: `warn` 은 활성 세션에 퇴출 경고를 표시하며, `enforce` 는 가지치기와 회전을 적용합니다.
+- **`maintenance`**: 세션 저장소 정리 + 보존 기간 제어.
+  - `mode`: `warn` 은 경고만 출력하고; `enforce` 는 정리를 적용합니다.
+  - `pruneAfter`: 오래된 항목에 대한 나이 임계값 (기본값 `30d`).
+  - `maxEntries`: `sessions.json` 의 최대 항목 수 (기본값 `500`).
+  - `rotateBytes`: 이 크기를 초과하면 `sessions.json` 을 회전합니다 (기본값 `10mb`).
+  - `resetArchiveRetention`: `*.reset.<timestamp>` 전사본 아카이브의 보존 기간. 기본값은 `pruneAfter`; 비활성화하려면 `false` 로 설정.
+  - `maxDiskBytes`: 선택적 세션 디렉토리 디스크 예산. `warn` 모드에서는 경고를 기록하고; `enforce` 모드에서는 가장 오래된 아티팩트/세션부터 삭제합니다.
+  - `highWaterBytes`: 예산 정리 후 선택적 목표. 기본값은 `maxDiskBytes` 의 `80%`.
 
 </Accordion>
 
@@ -1594,6 +1622,7 @@ Talk 모드 (macOS/iOS/Android) 의 기본값입니다.
       subagents: {
         model: "minimax/MiniMax-M2.1",
         maxConcurrent: 1,
+        runTimeoutSeconds: 900,
         archiveAfterMinutes: 60,
       },
     },
@@ -1602,6 +1631,7 @@ Talk 모드 (macOS/iOS/Android) 의 기본값입니다.
 ```
 
 - `model`: 생성된 하위 에이전트의 기본 모델. 지정되지 않은 경우, 하위 에이전트는 호출자의 모델을 상속합니다.
+- `runTimeoutSeconds`: 도구 호출에서 `runTimeoutSeconds` 를 생략한 경우 `sessions_spawn` 의 기본 제한 시간 (초). `0` 은 제한 없음을 의미합니다.
 - 하위 에이전트 도구 정책: `tools.subagents.tools.allow` / `tools.subagents.tools.deny`.
 
 ---

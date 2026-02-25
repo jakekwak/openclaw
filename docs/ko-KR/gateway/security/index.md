@@ -7,6 +7,22 @@ title: "보안"
 
 # 보안 🔒
 
+> [!WARNING]
+> **개인 비서 신뢰 모델:** 이 지침은 게이트웨이당 하나의 신뢰할 수 있는 운영자 경계(단일 사용자/개인 비서 모델)를 가정합니다.
+> OpenClaw는 하나의 에이전트/게이트웨이를 공유하는 여러 적대적 사용자를 위한 **적대적 멀티 테넌트 보안 경계가 아닙니다**.
+> 혼합 신뢰 또는 적대적 사용자 운영이 필요한 경우, 신뢰 경계를 분리하세요 (별도 게이트웨이 + 자격 증명, 가급적 별도 OS 사용자/호스트).
+
+## 범위 먼저: 개인 비서 보안 모델
+
+OpenClaw 보안 지침은 **개인 비서** 배포를 가정합니다: 하나의 신뢰할 수 있는 운영자 경계, 잠재적으로 여러 에이전트.
+
+- 지원되는 보안 자세: 게이트웨이당 하나의 사용자/신뢰 경계 (경계당 하나의 OS 사용자/호스트/VPS 권장).
+- 지원되지 않는 보안 경계: 상호 신뢰하지 않거나 적대적인 사용자가 공유하는 하나의 게이트웨이/에이전트.
+- 적대적 사용자 격리가 필요한 경우, 신뢰 경계로 분리하세요 (별도 게이트웨이 + 자격 증명, 가급적 별도 OS 사용자/호스트).
+- 여러 신뢰할 수 없는 사용자가 하나의 도구 활성화 에이전트에 메시지를 보낼 수 있는 경우, 해당 에이전트에 대해 동일한 위임된 도구 권한을 공유하는 것으로 취급하세요.
+
+이 페이지는 **해당 모델 내**에서의 강화를 설명합니다. 하나의 공유 게이트웨이에서의 적대적 멀티 테넌트 격리를 주장하지 않습니다.
+
 ## 빠른 점검: `openclaw security audit`
 
 참고: [형식 검증 (보안 모델)](/ko-KR/security/formal-verification/)
@@ -37,6 +53,94 @@ OpenClaw는 호스트와 설정 경계가 신뢰할 수 있다고 가정합니�
 - 누군가가 게이트웨이 호스트 상태/설정 (`~/.openclaw`, `openclaw.json` 포함)을 수정할 수 있다면 신뢰할 수 있는 운영자로 취급하세요.
 - 상호 신뢰하지 않는/적대적인 여러 운영자를 위해 하나의 게이트웨이를 실행하는 것은 **권장되지 않는 설정**입니다.
 - 혼합 신뢰 팀의 경우, 별도의 게이트웨이 (또는 최소한 별도의 OS 사용자/호스트)로 신뢰 경계를 분리하세요.
+- OpenClaw는 한 대의 머신에서 여러 게이트웨이 인스턴스를 실행할 수 있지만, 권장 운영은 명확한 신뢰 경계 분리를 선호합니다.
+- 권장 기본값: 머신/호스트(또는 VPS)당 하나의 사용자, 해당 사용자를 위한 하나의 게이트웨이, 그리고 해당 게이트웨이 내 하나 이상의 에이전트.
+- 여러 사용자가 OpenClaw를 원하는 경우, 사용자당 하나의 VPS/호스트를 사용하세요.
+
+### 실질적 결과 (운영자 신뢰 경계)
+
+하나의 게이트웨이 인스턴스 내에서, 인증된 운영자 액세스는 신뢰할 수 있는 제어 평면 역할이며 사용자별 테넌트 역할이 아닙니다.
+
+- 읽기/제어 평면 액세스를 가진 운영자는 설계상 게이트웨이 세션 메타데이터/기록을 검사할 수 있습니다.
+- 세션 식별자 (`sessionKey`, 세션 ID, 레이블)는 라우팅 선택자이며 인증 토큰이 아닙니다.
+- 예시: `sessions.list`, `sessions.preview`, 또는 `chat.history`와 같은 방법에 대해 운영자별 격리를 기대하는 것은 이 모델 범위 밖입니다.
+- 적대적 사용자 격리가 필요한 경우, 신뢰 경계당 별도의 게이트웨이를 실행하세요.
+- 한 대의 머신에서 여러 게이트웨이는 기술적으로 가능하지만, 멀티 사용자 격리를 위한 권장 기본값은 아닙니다.
+
+## 개인 비서 모델 (멀티 테넌트 버스 아님)
+
+OpenClaw는 개인 비서 보안 모델로 설계되었습니다: 하나의 신뢰할 수 있는 운영자 경계, 잠재적으로 여러 에이전트.
+
+- 여러 사람이 하나의 도구 활성화 에이전트에 메시지를 보낼 수 있는 경우, 그들 각각이 동일한 권한 집합을 조종할 수 있습니다.
+- 사용자별 세션/메모리 격리는 프라이버시에 도움이 되지만, 공유 에이전트를 사용자별 호스트 인증으로 변환하지 않습니다.
+- 사용자가 서로 적대적일 수 있는 경우, 신뢰 경계당 별도의 게이트웨이 (또는 별도의 OS 사용자/호스트)를 실행하세요.
+
+### 공유 Slack 워크스페이스: 실제 위험
+
+"Slack의 모든 사람이 봇에 메시지를 보낼 수 있다"면, 핵심 위험은 위임된 도구 권한입니다:
+
+- 허용된 발신자는 에이전트 정책 내에서 도구 호출 (`exec`, 브라우저, 네트워크/파일 도구)을 유발할 수 있습니다;
+- 한 발신자의 프롬프트/콘텐츠 인젝션이 공유 상태, 장치 또는 출력에 영향을 미치는 동작을 유발할 수 있습니다;
+- 하나의 공유 에이전트가 민감한 자격 증명/파일을 가지고 있다면, 허용된 발신자는 도구 사용을 통해 잠재적으로 유출을 유도할 수 있습니다.
+
+팀 워크플로우에는 최소 도구를 가진 별도 에이전트/게이트웨이를 사용하고; 개인 데이터 에이전트는 비공개로 유지하세요.
+
+### 회사 공유 에이전트: 허용 가능한 패턴
+
+모든 에이전트 사용자가 동일한 신뢰 경계 안에 있고 (예: 하나의 회사 팀) 에이전트가 엄격하게 업무 범위로 제한된 경우 허용됩니다.
+
+- 전용 머신/VM/컨테이너에서 실행하세요;
+- 해당 런타임을 위해 전용 OS 사용자 + 전용 브라우저/프로필/계정을 사용하세요;
+- 해당 런타임을 개인 Apple/Google 계정이나 개인 비밀번호 관리자/브라우저 프로필에 로그인시키지 마세요.
+
+동일한 런타임에 개인 및 회사 신원을 혼합하면 분리가 무너지고 개인 데이터 노출 위험이 증가합니다.
+
+## 게이트웨이 및 노드 신뢰 개념
+
+게이트웨이와 노드를 하나의 운영자 신뢰 도메인으로, 다른 역할을 가진 것으로 취급하세요:
+
+- **게이트웨이**는 제어 평면 및 정책 표면입니다 (`gateway.auth`, 도구 정책, 라우팅).
+- **노드**는 해당 게이트웨이에 페어링된 원격 실행 표면입니다 (명령어, 장치 동작, 호스트 로컬 기능).
+- 게이트웨이에 인증된 호출자는 게이트웨이 범위에서 신뢰됩니다. 페어링 후, 노드 동작은 해당 노드에서의 신뢰할 수 있는 운영자 동작입니다.
+- `sessionKey`는 라우팅/컨텍스트 선택이며 사용자별 인증이 아닙니다.
+- Exec 승인 (허용 목록 + 질문)은 운영자 의도를 위한 가드레일이며 적대적 멀티 테넌트 격리가 아닙니다.
+
+적대적 사용자 격리가 필요한 경우, OS 사용자/호스트별로 신뢰 경계를 분리하고 별도의 게이트웨이를 실행하세요.
+
+## 신뢰 경계 매트릭스
+
+위험을 분류할 때 빠른 모델로 사용하세요:
+
+| 경계 또는 제어                           | 의미                                       | 일반적인 오해                                                              |
+| ---------------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------- |
+| `gateway.auth` (토큰/비밀번호/장치 인증) | 게이트웨이 API에 대한 호출자 인증          | "보안을 위해 모든 프레임에 메시지별 서명이 필요하다"                       |
+| `sessionKey`                             | 컨텍스트/세션 선택을 위한 라우팅 키        | "세션 키는 사용자 인증 경계다"                                             |
+| 프롬프트/콘텐츠 가드레일                 | 모델 오용 위험 감소                        | "프롬프트 인젝션만으로 인증 우회가 증명된다"                               |
+| `canvas.eval` / 브라우저 평가            | 활성화 시 의도적인 운영자 기능             | "JS eval 기본 요소는 이 신뢰 모델에서 자동으로 취약점이다"                 |
+| 로컬 TUI `!` 쉘                          | 명시적 운영자 트리거 로컬 실행             | "로컬 쉘 편의 명령은 원격 인젝션이다"                                      |
+| 노드 페어링 및 노드 명령어               | 페어링된 장치에 대한 운영자 수준 원격 실행 | "원격 장치 제어는 기본적으로 신뢰할 수 없는 사용자 액세스로 취급해야 한다" |
+
+## 설계상 취약점이 아닌 것들
+
+다음 패턴들은 흔히 보고되지만 실제 경계 우회가 확인되지 않는 한 대부분 조치 없음으로 종결됩니다:
+
+- 정책/인증/샌드박스 우회 없는 프롬프트 인젝션만의 체인.
+- 하나의 공유 호스트/설정에서 적대적 멀티 테넌트 운영을 가정하는 주장.
+- 공유 게이트웨이 설정에서 정상적인 운영자 읽기 경로 액세스 (예: `sessions.list`/`sessions.preview`/`chat.history`)를 IDOR로 분류하는 주장.
+- 루프백 전용 배포 결과 (예: 루프백 전용 게이트웨이에서의 HSTS).
+- 이 저장소에 존재하지 않는 인바운드 경로에 대한 Discord 인바운드 웹훅 서명 결과.
+- `sessionKey`를 인증 토큰으로 취급하는 "사용자별 인증 누락" 결과.
+
+## 연구자 사전 점검 체크리스트
+
+GHSA를 개설하기 전에 다음 모든 항목을 확인하세요:
+
+1. 최신 `main` 또는 최신 릴리스에서 재현이 여전히 작동합니다.
+2. 보고서에 정확한 코드 경로 (`파일`, 함수, 줄 범위)와 테스트된 버전/커밋이 포함되어 있습니다.
+3. 영향이 문서화된 신뢰 경계를 넘습니다 (프롬프트 인젝션만이 아님).
+4. 주장이 [범위 밖](https://github.com/openclaw/openclaw/blob/main/SECURITY.md#out-of-scope)에 나열되어 있지 않습니다.
+5. 중복 여부를 기존 권고와 대조했습니다 (해당 시 정규 GHSA 재사용).
+6. 배포 가정이 명확합니다 (루프백/로컬 vs 노출, 신뢰할 수 있는 vs 신뢰할 수 없는 운영자).
 
 ## 60초 안에 강화된 기본 설정
 
@@ -84,7 +188,8 @@ OpenClaw는 호스트와 설정 경계가 신뢰할 수 있다고 가정합니�
 - **브라우저 제어 노출** (원격 노드, 릴레이 포트, 원격 CDP 엔드포인트).
 - **로컬 디스크 위생** (권한, 심볼릭 링크, 설정 포함, "동기화된 폴더" 경로).
 - **플러그인** (명시적 허용 목록 없이 존재하는 확장).
-- **정책 드리프트/오설정** (샌드박스 Docker 설정이 구성되었으나 샌드박스 모드가 꺼져 있음; 비효과적인 `gateway.nodes.denyCommands` 패턴; 전역 `tools.profile="minimal"`이 에이전트 프로필별로 오버라이드됨; 허용성 높은 도구 정책 하에서 확장 플러그인 도구가 접근 가능함).
+- **정책 드리프트/오설정** (샌드박스 Docker 설정이 구성되었으나 샌드박스 모드가 꺼져 있음; 비효과적인 `gateway.nodes.denyCommands` 패턴; 위험한 `gateway.nodes.allowCommands` 항목; 전역 `tools.profile="minimal"`이 에이전트 프로필별로 오버라이드됨; 허용성 높은 도구 정책 하에서 확장 플러그인 도구가 접근 가능함).
+- **런타임 기대 드리프트** (예: 샌드박스 모드가 꺼진 상태에서 `tools.exec.host="sandbox"`를 사용하면 게이트웨이 호스트에서 직접 실행됨).
 - **모델 위생** (구성된 모델이 구식일 경우 경고; 하드 블록 아님).
 
 `--deep` 실행 시, OpenClaw는 최대한 노력하여 실시간 게이트웨이 탐색을 시도합니다.
@@ -93,26 +198,38 @@ OpenClaw는 호스트와 설정 경계가 신뢰할 수 있다고 가정합니�
 
 실제 배포에서 가장 자주 볼 수 있는 높은 신호 `checkId` 값 (전체 목록은 아님):
 
-| `checkId`                                    | 심각도        | 중요한 이유                                           | 주요 수정 키/경로                                | 자동 수정 |
-| -------------------------------------------- | ------------- | ----------------------------------------------------- | ------------------------------------------------ | --------- |
-| `fs.state_dir.perms_world_writable`          | critical      | 다른 사용자/프로세스가 전체 OpenClaw 상태를 수정 가능 | `~/.openclaw`의 파일시스템 권한                  | yes       |
-| `fs.config.perms_writable`                   | critical      | 다른 사용자가 인증/도구 정책/구성 변경 가능           | `~/.openclaw/openclaw.json`의 파일시스템 권한    | yes       |
-| `fs.config.perms_world_readable`             | critical      | 구성이 토큰/설정 노출 가능                            | 구성 파일의 파일시스템 권한                      | yes       |
-| `gateway.bind_no_auth`                       | critical      | 공유 비밀 없는 원격 바인드                            | `gateway.bind`, `gateway.auth.*`                 | no        |
-| `gateway.loopback_no_auth`                   | critical      | 역방향 프록시 루프백이 인증되지 않을 수 있음          | `gateway.auth.*`, 프록시 설정                    | no        |
-| `gateway.tools_invoke_http.dangerous_allow`  | warn/critical | HTTP API를 통해 위험한 도구 재활성화                  | `gateway.tools.allow`                            | no        |
-| `gateway.tailscale_funnel`                   | critical      | 공용 인터넷 노출                                      | `gateway.tailscale.mode`                         | no        |
-| `gateway.control_ui.insecure_auth`           | warn          | 안전하지 않은 인증 호환성 토글 활성화                 | `gateway.controlUi.allowInsecureAuth`            | no        |
-| `gateway.control_ui.device_auth_disabled`    | critical      | 장치 ID 검사 비활성화                                 | `gateway.controlUi.dangerouslyDisableDeviceAuth` | no        |
-| `config.insecure_or_dangerous_flags`         | warn          | 안전하지 않은/위험한 디버그 플래그 활성화             | 여러 키 (발견 세부 정보 참고)                    | no        |
-| `hooks.token_too_short`                      | warn          | 훅 진입에 대한 무차별 대입 공격이 쉬워짐              | `hooks.token`                                    | no        |
-| `hooks.request_session_key_enabled`          | warn/critical | 외부 호출자가 sessionKey 선택 가능                    | `hooks.allowRequestSessionKey`                   | no        |
-| `hooks.request_session_key_prefixes_missing` | warn/critical | 외부 세션 키 형태에 대한 제한 없음                    | `hooks.allowedSessionKeyPrefixes`                | no        |
-| `logging.redact_off`                         | warn          | 민감한 값이 로그/상태로 누출                          | `logging.redactSensitive`                        | yes       |
-| `sandbox.docker_config_mode_off`             | warn          | 샌드박스 Docker 구성 존재하나 비활성 상태             | `agents.*.sandbox.mode`                          | no        |
-| `tools.profile_minimal_overridden`           | warn          | 에이전트 오버라이드가 전역 최소 프로필 우회           | `agents.list[].tools.profile`                    | no        |
-| `plugins.tools_reachable_permissive_policy`  | warn          | 허용적 컨텍스트에서 확장 도구 접근 가능               | `tools.profile` + tool allow/deny                | no        |
-| `models.small_params`                        | critical/info | 소형 모델 + 안전하지 않은 도구 표면이 주입 위험 증가  | 모델 선택 + 샌드박스/도구 정책                   | no        |
+| `checkId`                                          | 심각도        | 중요한 이유                                                                 | 주요 수정 키/경로                                                                                 | 자동 수정 |
+| -------------------------------------------------- | ------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | --------- |
+| `fs.state_dir.perms_world_writable`                | critical      | 다른 사용자/프로세스가 전체 OpenClaw 상태를 수정 가능                       | `~/.openclaw`의 파일시스템 권한                                                                   | yes       |
+| `fs.config.perms_writable`                         | critical      | 다른 사용자가 인증/도구 정책/구성 변경 가능                                 | `~/.openclaw/openclaw.json`의 파일시스템 권한                                                     | yes       |
+| `fs.config.perms_world_readable`                   | critical      | 구성이 토큰/설정 노출 가능                                                  | 구성 파일의 파일시스템 권한                                                                       | yes       |
+| `gateway.bind_no_auth`                             | critical      | 공유 비밀 없는 원격 바인드                                                  | `gateway.bind`, `gateway.auth.*`                                                                  | no        |
+| `gateway.loopback_no_auth`                         | critical      | 역방향 프록시 루프백이 인증되지 않을 수 있음                                | `gateway.auth.*`, 프록시 설정                                                                     | no        |
+| `gateway.http.no_auth`                             | warn/critical | `auth.mode="none"`으로 게이트웨이 HTTP API 접근 가능                        | `gateway.auth.mode`, `gateway.http.endpoints.*`                                                   | no        |
+| `gateway.tools_invoke_http.dangerous_allow`        | warn/critical | HTTP API를 통해 위험한 도구 재활성화                                        | `gateway.tools.allow`                                                                             | no        |
+| `gateway.nodes.allow_commands_dangerous`           | warn/critical | 높은 영향의 노드 명령 활성화 (카메라/화면/연락처/캘린더/SMS)                | `gateway.nodes.allowCommands`                                                                     | no        |
+| `gateway.tailscale_funnel`                         | critical      | 공용 인터넷 노출                                                            | `gateway.tailscale.mode`                                                                          | no        |
+| `gateway.control_ui.allowed_origins_required`      | critical      | 명시적 브라우저 오리진 허용 목록 없는 비루프백 Control UI                   | `gateway.controlUi.allowedOrigins`                                                                | no        |
+| `gateway.control_ui.host_header_origin_fallback`   | warn/critical | Host 헤더 오리진 폴백 활성화 (DNS 리바인딩 강화 다운그레이드)               | `gateway.controlUi.dangerouslyAllowHostHeaderOriginFallback`                                      | no        |
+| `gateway.control_ui.insecure_auth`                 | warn          | 안전하지 않은 인증 호환성 토글 활성화                                       | `gateway.controlUi.allowInsecureAuth`                                                             | no        |
+| `gateway.control_ui.device_auth_disabled`          | critical      | 장치 ID 검사 비활성화                                                       | `gateway.controlUi.dangerouslyDisableDeviceAuth`                                                  | no        |
+| `gateway.real_ip_fallback_enabled`                 | warn/critical | `X-Real-IP` 폴백을 신뢰하면 프록시 오설정을 통한 소스 IP 스푸핑 가능        | `gateway.allowRealIpFallback`, `gateway.trustedProxies`                                           | no        |
+| `discovery.mdns_full_mode`                         | warn/critical | mDNS 전체 모드가 로컬 네트워크에 `cliPath`/`sshPort` 메타데이터를 광고함    | `discovery.mdns.mode`, `gateway.bind`                                                             | no        |
+| `config.insecure_or_dangerous_flags`               | warn          | 안전하지 않은/위험한 디버그 플래그 활성화                                   | 여러 키 (발견 세부 정보 참고)                                                                     | no        |
+| `hooks.token_too_short`                            | warn          | 훅 진입에 대한 무차별 대입 공격이 쉬워짐                                    | `hooks.token`                                                                                     | no        |
+| `hooks.request_session_key_enabled`                | warn/critical | 외부 호출자가 sessionKey 선택 가능                                          | `hooks.allowRequestSessionKey`                                                                    | no        |
+| `hooks.request_session_key_prefixes_missing`       | warn/critical | 외부 세션 키 형태에 대한 제한 없음                                          | `hooks.allowedSessionKeyPrefixes`                                                                 | no        |
+| `logging.redact_off`                               | warn          | 민감한 값이 로그/상태로 누출                                                | `logging.redactSensitive`                                                                         | yes       |
+| `sandbox.docker_config_mode_off`                   | warn          | 샌드박스 Docker 구성 존재하나 비활성 상태                                   | `agents.*.sandbox.mode`                                                                           | no        |
+| `tools.exec.host_sandbox_no_sandbox_defaults`      | warn          | 샌드박스가 꺼진 경우 `exec host=sandbox`가 호스트 exec로 해석됨             | `tools.exec.host`, `agents.defaults.sandbox.mode`                                                 | no        |
+| `tools.exec.host_sandbox_no_sandbox_agents`        | warn          | 샌드박스가 꺼진 경우 에이전트별 `exec host=sandbox`가 호스트 exec로 해석됨  | `agents.list[].tools.exec.host`, `agents.list[].sandbox.mode`                                     | no        |
+| `tools.exec.safe_bins_interpreter_unprofiled`      | warn          | 명시적 프로필 없이 `safeBins`의 인터프리터/런타임 바이너리가 exec 위험 증가 | `tools.exec.safeBins`, `tools.exec.safeBinProfiles`, `agents.list[].tools.exec.*`                 | no        |
+| `security.exposure.open_groups_with_elevated`      | critical      | 개방된 그룹 + elevated 도구가 높은 영향의 프롬프트 인젝션 경로 생성         | `channels.*.groupPolicy`, `tools.elevated.*`                                                      | no        |
+| `security.exposure.open_groups_with_runtime_or_fs` | critical/warn | 개방된 그룹이 샌드박스/워크스페이스 가드 없이 명령/파일 도구에 접근 가능    | `channels.*.groupPolicy`, `tools.profile/deny`, `tools.fs.workspaceOnly`, `agents.*.sandbox.mode` | no        |
+| `security.trust_model.multi_user_heuristic`        | warn          | 설정이 멀티 사용자처럼 보이지만 게이트웨이 신뢰 모델은 개인 비서            | 신뢰 경계 분리, 또는 공유 사용자 강화 (`sandbox.mode`, 도구 거부/워크스페이스 범위 지정)          | no        |
+| `tools.profile_minimal_overridden`                 | warn          | 에이전트 오버라이드가 전역 최소 프로필 우회                                 | `agents.list[].tools.profile`                                                                     | no        |
+| `plugins.tools_reachable_permissive_policy`        | warn          | 허용적 컨텍스트에서 확장 도구 접근 가능                                     | `tools.profile` + tool allow/deny                                                                 | no        |
+| `models.small_params`                              | critical/info | 소형 모델 + 안전하지 않은 도구 표면이 주입 위험 증가                        | 모델 선택 + 샌드박스/도구 정책                                                                    | no        |
 
 ## 자격 증명 저장소 맵
 
