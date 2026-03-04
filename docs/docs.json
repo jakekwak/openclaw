@@ -816,6 +816,7 @@
     "languages": [
       {
         "language": "ko",
+        "default": true,
         "tabs": [
           {
             "tab": "시작하기",
