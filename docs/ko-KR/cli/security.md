@@ -27,7 +27,7 @@ openclaw security audit --json
 이는 협력적/공유 받은 편지함 강화를 위한 것입니다. 상호 신뢰하지 않는/적대적인 운영자가 공유하는 단일 게이트웨이는 권장되지 않는 설정입니다; 별도의 게이트웨이 (또는 별도의 OS 사용자/호스트)로 신뢰 경계를 분리하세요.
 또한 작은 모델 (`<=300B`)이 샌드박싱 없이 웹/브라우저 도구가 활성화된 상태로 사용될 때도 경고합니다.
 웹훅 수신의 경우, `hooks.defaultSessionKey`가 설정되지 않았을 때, 요청 `sessionKey` 오버라이드가 활성화되었을 때, 오버라이드가 `hooks.allowedSessionKeyPrefixes` 없이 활성화되었을 때 경고합니다.
-또한 샌드박스 모드가 꺼져 있는 동안 샌드박스 Docker 설정이 구성되었을 때, `gateway.nodes.denyCommands`가 효과 없는 패턴형/알 수 없는 항목을 사용할 때, 전역 `tools.profile="minimal"`이 에이전트 도구 프로필로 오버라이드될 때, 설치된 확장 플러그인 도구가 관대한 도구 정책 하에서 도달 가능할 때 경고합니다.
+또한 샌드박스 모드가 꺼져 있는 동안 샌드박스 Docker 설정이 구성되었을 때, `gateway.nodes.denyCommands`가 효과 없는 패턴형/알 수 없는 항목을 사용할 때(셸 텍스트 필터링이 아니라 정확한 노드 명령 이름 매칭만 지원), 전역 `tools.profile="minimal"`이 에이전트 도구 프로필로 오버라이드될 때, 설치된 확장 플러그인 도구가 관대한 도구 정책 하에서 도달 가능할 때 경고합니다.
 또한 샌드박스 브라우저가 `sandbox.browser.cdpSourceRange` 없이 Docker `bridge` 네트워크를 사용할 때 경고합니다.
 또한 위험한 샌드박스 Docker 네트워크 모드(`host` 및 `container:*` 네임스페이스 결합 포함)를 경고합니다.
 또한 기존 샌드박스 브라우저 Docker 컨테이너에 누락/오래된 해시 레이블이 있을 때 (예: `openclaw.browserConfigEpoch`가 누락된 마이그레이션 전 컨테이너) 경고하며 `openclaw sandbox recreate --browser --all`을 권장합니다.

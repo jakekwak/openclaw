@@ -73,8 +73,10 @@ title: "슬래시 명령어"
 - `/context [list|detail|json]` ("컨텍스트" 설명; `detail`은 파일별, 도구별, 스킬별, 시스템 프롬프트 크기 표시)
 - `/export-session [path]` (별칭: `/export`) (현재 세션을 시스템 프롬프트 전체와 함께 HTML로 내보내기)
 - `/whoami` (발신자 id 표시; 별칭: `/id`)
-- `/session ttl <duration|off>` (TTL 같은 세션 수준 설정 관리)
+- `/session idle <duration|off>` (집중된 스레드 바인딩의 비활성 자동 unfocus 관리)
+- `/session max-age <duration|off>` (집중된 스레드 바인딩의 하드 max-age 자동 unfocus 관리)
 - `/subagents list|kill|log|info|send|steer|spawn` (현재 세션의 서브-에이전트 실행을 검사, 제어 또는 생성)
+- `/acp spawn|cancel|steer|close|status|set-mode|set|cwd|permissions|timeout|model|reset-options|doctor|install|sessions` (ACP 런타임 세션 검사/제어)
 - `/agents` (이 세션의 스레드 바인딩된 에이전트 목록)
 - `/focus <target>` (Discord: 이 스레드 또는 새 스레드를 세션/서브에이전트 대상에 바인딩)
 - `/unfocus` (Discord: 현재 스레드 바인딩 제거)
@@ -119,7 +121,8 @@ title: "슬래시 명령어"
 - `/usage`는 응답별 사용 요약을 제어하며, `/usage cost`는 OpenClaw 세션 로그에서 현지 비용 요약을 출력합니다.
 - `/restart`는 기본적으로 활성화되어 있습니다; 비활성화하려면 `commands.restart: false`를 설정하세요.
 - Discord 전용 네이티브 명령어: `/vc join|leave|status`는 음성 채널을 제어합니다 (`channels.discord.voice`와 네이티브 명령어 필요; 텍스트로는 사용 불가).
-- Discord 스레드 바인딩 명령어 (`/focus`, `/unfocus`, `/agents`, `/session ttl`)는 유효한 스레드 바인딩이 활성화되어 있어야 합니다 (`session.threadBindings.enabled` 및/또는 `channels.discord.threadBindings.enabled`).
+- Discord 스레드 바인딩 명령어 (`/focus`, `/unfocus`, `/agents`, `/session idle`, `/session max-age`)는 유효한 스레드 바인딩이 활성화되어 있어야 합니다 (`session.threadBindings.enabled` 및/또는 `channels.discord.threadBindings.enabled`).
+- ACP 명령어 참조 및 런타임 동작: [ACP Agents](/ko-KR/tools/acp-agents).
 - `/verbose`는 디버깅 및 추가 가시성을 목적으로 하며, 일반 사용 시는 **비활성화** 상태로 유지하세요.
 - 도구 실패 요약은 관련 있을 때 여전히 표시되지만, 상세한 실패 텍스트는 `/verbose`가 `on` 또는 `full`일 때만 포함됩니다.
 - `/reasoning`(및 `/verbose`)는 그룹 설정에서는 위험할 수 있습니다: 내부 추론이나 의도하지 않은 도구 출력이 드러날 수 있습니다. 특히 그룹 채팅에서는 비활성화를 권장합니다.
@@ -211,3 +214,4 @@ title: "슬래시 명령어"
   - Telegram: `telegram:slash:<userId>` (채팅 세션을 `CommandTargetSessionKey`로 대상으로 함)
 - **`/stop`**은 활성 채팅 세션을 대상으로 하여 현재 실행을 중단할 수 있습니다.
 - **Slack:** `channels.slack.slashCommand`는 여전히 단일 `/openclaw` 스타일 명령어에 대해 지원됩니다. `commands.native`를 활성화하면, 내장 명령어당 하나의 Slack 슬래시 명령어를 생성해야 합니다 (`/help`와 동일한 이름). Slack의 명령 인수 메뉴는 임시 Block Kit 버튼으로 제공됩니다.
+  - Slack 네이티브 예외: Slack이 `/status`를 예약하므로 `/status` 대신 `/agentstatus`를 등록하세요. 텍스트 `/status`는 Slack 메시지에서 계속 동작합니다.

@@ -1,7 +1,7 @@
 ---
-summary: "Camera capture (iOS node + macOS app) for agent use: photos (jpg) and short video clips (mp4)"
+summary: "Camera capture (iOS/Android nodes + macOS app) for agent use: photos (jpg) and short video clips (mp4)"
 read_when:
-  - iOS 노드 또는 macOS에서 카메라 캡처 추가 또는 수정
+  - iOS/Android 노드 또는 macOS에서 카메라 캡처 추가 또는 수정
   - 에이전트가 접근 가능한 MEDIA 임시 파일 워크플로우 확장
 title: "카메라 캡처"
 ---

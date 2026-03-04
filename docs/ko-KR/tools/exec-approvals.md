@@ -206,6 +206,8 @@ CLI: `openclaw approvals`는 게이트웨이나 노드 편집을 지원합니다
 
 프롬프트가 필요한 경우, 게이트웨이는 `exec.approval.requested`를 운영자 클라이언트에게 방송합니다. 컨트롤 UI 및 macOS 앱은 `exec.approval.resolve`를 통해 이를 해결한 다음, 게이트웨이는 승인된 요청을 노드 호스트에 전달합니다.
 
+`host=node` 승인 요청에는 canonical `systemRunPlan` 페이로드가 포함됩니다. 게이트웨이는 승인된 `system.run` 요청을 전달할 때 이 plan을 권위 있는 command/cwd/session 컨텍스트로 사용합니다.
+
 승인이 필요한 경우, exec 도구는 승인 ID와 함께 즉시 반환합니다. 그 ID를 사용하여 이후 시스템 이벤트 (`Exec 완료` / `Exec 거부`)를 연관시킬 수 있습니다. 시간 초과 전에 결정이 도착하지 않으면, 요청은 승인 시간 초과로 간주되며 거부 이유로 표시됩니다.
 
 확인 대화 상자에는 다음이 포함됩니다:

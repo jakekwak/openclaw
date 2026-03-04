@@ -19,6 +19,7 @@ sidebarTitle: "마법사 참조"
   <Step title="기존 설정 감지">
     - `~/.openclaw/openclaw.json`이 존재하면 **유지 / 수정 / 초기화**를 선택합니다.
     - 마법사를 다시 실행해도 **초기화**를 명시적으로 선택하거나 `--reset`을 전달하지 않는 한 아무것도 삭제되지 않습니다.
+    - CLI `--reset`의 기본 범위는 `config+creds+sessions`이며, workspace까지 제거하려면 `--reset-scope full`을 사용합니다.
     - 설정이 잘못되었거나 레거시 키가 포함된 경우, 마법사는 중단되고 계속하기 전에 `openclaw doctor`를 실행하도록 요청합니다.
     - 초기화는 `trash`를 사용하고(절대 `rm` 사용 안 함) 범위를 제공합니다:
       - 설정만
@@ -26,13 +27,13 @@ sidebarTitle: "마법사 참조"
       - 전체 초기화 (작업 공간도 제거)
   </Step>
   <Step title="모델/인증">
-    - **Anthropic API 키 (권장)**: 존재하는 경우 `ANTHROPIC_API_KEY`를 사용하거나 키를 요청받아 데몬 사용을 위해 저장합니다.
+    - **Anthropic API 키**: 존재하는 경우 `ANTHROPIC_API_KEY`를 사용하거나 키를 요청받아 데몬 사용을 위해 저장합니다.
     - **Anthropic OAuth (Claude Code CLI)**: macOS에서 마법사는 키체인 항목 "Claude Code-credentials"를 확인합니다(출시 시점의 차단을 방지하려면 "항상 허용" 선택); Linux/Windows에서는 존재하는 경우 `~/.claude/.credentials.json`을 재사용합니다.
     - **Anthropic 토큰 (setup-token 붙여넣기)**: 어떤 기기에서든 `claude setup-token`을 실행한 후 토큰을 붙여넣습니다(이름 지정 가능; 비워두면 기본값).
     - **OpenAI Code (Codex) 구독 (Codex CLI)**: `~/.codex/auth.json`이 존재하는 경우, 마법사는 이를 재사용할 수 있습니다.
     - **OpenAI Code (Codex) 구독(OAuth)**: 브라우저 흐름; `code#state`를 붙여넣습니다.
       - 모델이 설정되지 않았거나 `openai/*`일 때 `agents.defaults.model`을 `openai-codex/gpt-5.2`로 설정합니다.
-    - **OpenAI API 키**: 존재하는 경우 `OPENAI_API_KEY`를 사용하거나 키를 요청받아 `~/.openclaw/.env`에 저장하여 launchd가 읽을 수 있게 합니다.
+    - **OpenAI API 키**: 존재하는 경우 `OPENAI_API_KEY`를 사용하거나 키를 요청받아 인증 프로필(auth profile)에 저장합니다.
     - **xAI (Grok) API 키**: `XAI_API_KEY`를 요청받아 xAI를 모델 프로바이더로 설정합니다.
     - **OpenCode Zen (다중 모델 프록시)**: `OPENCODE_API_KEY`(또는 `OPENCODE_ZEN_API_KEY`)를 요청받습니다. https://opencode.ai/auth에서 받을 수 있습니다.
     - **API 키**: 키를 저장해줍니다.
@@ -40,7 +41,7 @@ sidebarTitle: "마법사 참조"
     - 자세한 내용: [Vercel AI 게이트웨이](/ko-KR/providers/vercel-ai-gateway)
     - **Cloudflare AI 게이트웨이**: 계정 ID, 게이트웨이 ID, 그리고 `CLOUDFLARE_AI_GATEWAY_API_KEY`를 요청받습니다.
     - 자세한 내용: [Cloudflare AI 게이트웨이](/ko-KR/providers/cloudflare-ai-gateway)
-    - **MiniMax M2.1**: 설정이 자동으로 작성됩니다.
+    - **MiniMax M2.5**: 설정이 자동으로 작성됩니다.
     - 자세한 내용: [MiniMax](/ko-KR/providers/minimax)
     - **Synthetic (Anthropic 호환)**: `SYNTHETIC_API_KEY`를 요청받습니다.
     - 자세한 내용: [Synthetic](/ko-KR/providers/synthetic)
@@ -48,7 +49,8 @@ sidebarTitle: "마법사 참조"
     - **Kimi Coding**: 설정이 자동으로 작성됩니다.
     - 자세한 내용: [Moonshot AI (Kimi + Kimi Coding)](/ko-KR/providers/moonshot)
     - **건너뛰기**: 아직 인증이 설정되지 않았습니다.
-    - 감지된 옵션에서 기본 모델을 선택하거나 프로바이더/모델을 수동으로 입력합니다.
+    - 감지된 옵션에서 기본 모델을 선택하거나 프로바이더/모델을 수동으로 입력합니다. 품질과 프롬프트 인젝션 위험 감소를 위해 프로바이더 스택에서 가능한 가장 강한 최신 세대 모델을 선택하세요.
+    - API 키 저장 모드는 기본적으로 auth-profile 평문 값입니다. env 기반 참조 저장을 원하면 `--secret-input-mode ref`를 사용하세요 (예: `keyRef: { source: "env", provider: "default", id: "OPENAI_API_KEY" }`).
     - 마법사는 모델 검사를 수행하고 구성된 모델이 불명확하거나 인증이 누락된 경우 경고합니다.
     - OAuth 자격 증명은 `~/.openclaw/credentials/oauth.json`에 저장됩니다. 인증 프로필은 `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`에 저장됩니다 (API 키 + OAuth).
     - 자세한 내용: [/concepts/oauth](/ko-KR/concepts/oauth)
@@ -238,6 +240,7 @@ openclaw agents add work \
 
 - `agents.defaults.workspace`
 - `agents.defaults.model` / `models.providers` (MiniMax가 선택된 경우)
+- `tools.profile` (로컬 온보딩에서 미설정 시 기본값 `"messaging"`; 기존 명시적 값은 유지)
 - `gateway.*` (모드, 바인드, 인증, tailscale)
 - `channels.telegram.botToken`, `channels.discord.token`, `channels.signal.*`, `channels.imessage.*`
 - 프롬프트 동안 선택하면 채널 허용 목록 (Slack/Discord/Matrix/Microsoft Teams) (가능한 경우 이름이 ID로 변환됨).

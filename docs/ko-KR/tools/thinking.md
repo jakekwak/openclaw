@@ -10,23 +10,26 @@ title: "Thinking Levels"
 ## 수행 기능
 
 - 모든 수신 본문에서 인라인 지시어: `/t <level>`, `/think:<level>`, 또는 `/thinking <level>`.
-- 수준(별칭): `off | minimal | low | medium | high | xhigh` (GPT-5.2 + Codex 모델에서만 사용 가능)
+- 수준(별칭): `off | minimal | low | medium | high | xhigh | adaptive`
   - minimal → “think”
   - low → “think hard”
   - medium → “think harder”
   - high → “ultrathink” (최대 예산)
   - xhigh → “ultrathink+” (GPT-5.2 + Codex 모델에서만 사용 가능)
+  - adaptive → 프로바이더 관리형 적응 추론 예산 (Anthropic Claude 4.6 계열 지원)
   - `x-high`, `x_high`, `extra-high`, `extra high`, `extra_high`는 `xhigh`에 매핑됩니다.
   - `highest`, `max`는 `high`에 매핑됩니다.
 - 프로바이더 참고 사항:
+  - Anthropic Claude 4.6 모델 계열은 명시적 thinking 수준이 없을 때 기본값으로 `adaptive`를 사용합니다.
   - Z.AI(`zai/*`)는 이진 사고(`on`/`off`)만 지원합니다. `off`가 아닌 모든 수준은 `on`으로 취급됩니다(`low`로 매핑됩니다).
+  - Moonshot(`moonshot/*`)은 `/think off`를 `thinking: { type: "disabled" }`로, `off`가 아닌 모든 값을 `thinking: { type: "enabled" }`로 매핑합니다. thinking이 활성화되면 Moonshot은 `tool_choice`로 `auto|none`만 허용하므로, OpenClaw는 호환되지 않는 값을 `auto`로 정규화합니다.
 
 ## 해결 순서
 
 1. 메시지의 인라인 지시어(해당 메시지에만 적용).
 2. 세션 재정의(지시어만 포함된 메시지를 보내 설정).
 3. 전역 기본값(`agents.defaults.thinkingDefault` 설정).
-4. 대체: 추론 가능한 모델의 경우 low; 그렇지 않으면 off.
+4. 대체: Anthropic Claude 4.6 모델은 `adaptive`, 그 외 추론 가능한 모델은 `low`, 나머지는 `off`.
 
 ## 세션 기본값 설정
 

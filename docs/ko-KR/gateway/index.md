@@ -16,6 +16,12 @@ title: "게이트웨이 런북"
   <Card title="설정" icon="sliders" href="/ko-KR/gateway/configuration">
     작업 지향 설정 가이드 + 전체 설정 참조.
   </Card>
+  <Card title="Secrets 관리" icon="key-round" href="/ko-KR/gateway/secrets">
+    SecretRef 계약, 런타임 스냅샷 동작, migrate/reload 작업.
+  </Card>
+  <Card title="Secrets plan 계약" icon="shield-check" href="/ko-KR/gateway/secrets-plan-contract">
+    `secrets apply`의 정확한 target/path 규칙과 ref-only auth-profile 동작.
+  </Card>
 </CardGroup>
 
 ## 5분 내 로컬 시작
@@ -71,19 +77,19 @@ openclaw channels status --probe
 
 ### 포트 및 바인드 우선순위
 
-| 설정         | 해결 순서                                                       |
-| ------------ | ------------------------------------------------------------- |
+| 설정            | 해결 순서                                                     |
+| --------------- | ------------------------------------------------------------- |
 | 게이트웨이 포트 | `--port` → `OPENCLAW_GATEWAY_PORT` → `gateway.port` → `18789` |
-| 바인드 모드    | CLI/override → `gateway.bind` → `로컬 루프백`               |
+| 바인드 모드     | CLI/override → `gateway.bind` → `로컬 루프백`                 |
 
 ### 핫 리로드 모드
 
-| `gateway.reload.mode` | 동작                                            |
-| --------------------- | ------------------------------------------ |
-| `off`                 | 설정 리로드 안 함                                |
-| `hot`                 | 핫-세이프한 변경 만 적용                         |
-| `restart`             | 리로드가 필요한 변경 시 재시작                      |
-| `hybrid` (기본)       | 안전할 때 핫 적용, 필요 시 재시작                 |
+| `gateway.reload.mode` | 동작                              |
+| --------------------- | --------------------------------- |
+| `off`                 | 설정 리로드 안 함                 |
+| `hot`                 | 핫-세이프한 변경 만 적용          |
+| `restart`             | 리로드가 필요한 변경 시 재시작    |
+| `hybrid` (기본)       | 안전할 때 핫 적용, 필요 시 재시작 |
 
 ## 운영자 명령 세트
 
@@ -94,6 +100,7 @@ openclaw gateway status --json
 openclaw gateway install
 openclaw gateway restart
 openclaw gateway stop
+openclaw secrets reload
 openclaw logs --follow
 openclaw doctor
 ```
@@ -227,11 +234,11 @@ openclaw health
 
 ## 일반적인 실패 시그니처
 
-| 시그니처                                                      | 가능성 있는 문제                             |
+| 시그니처                                                       | 가능성 있는 문제                         |
 | -------------------------------------------------------------- | ---------------------------------------- |
-| `refusing to bind gateway ... without auth`                    | 인증 정보가 없는 비-로컬 루프백 바인드       |
-| `another gateway instance is already listening` / `EADDRINUSE` | 포트 충돌                            |
-| `Gateway start blocked: set gateway.mode=local`                | 원격 모드로 설정된 구성                |
+| `refusing to bind gateway ... without auth`                    | 인증 정보가 없는 비-로컬 루프백 바인드   |
+| `another gateway instance is already listening` / `EADDRINUSE` | 포트 충돌                                |
+| `Gateway start blocked: set gateway.mode=local`                | 원격 모드로 설정된 구성                  |
 | `unauthorized` during connect                                  | 클라이언트와 게이트웨이 간의 인증 불일치 |
 
 전체 진단 단계는 [게이트웨이 문제 해결](/ko-KR/gateway/troubleshooting)을 참조하십시오.

@@ -65,6 +65,7 @@ OpenClaw는 다음에서 자격 증명을 가져올 수 있습니다:
 - `memorySearch.provider = "openai"` → OpenAI 임베딩
 - `memorySearch.provider = "gemini"` → Gemini 임베딩
 - `memorySearch.provider = "voyage"` → Voyage 임베딩
+- `memorySearch.provider = "ollama"` → Ollama 임베딩 (로컬/셀프호스팅, 일반적으로 호스팅 API 과금 없음)
 - 로컬 임베딩 실패 시 선택적으로 원격 프로바이더로 대체
 
 로컬로 유지하려면 `memorySearch.provider = "local"`을 사용하세요 (API 사용 없음).
@@ -77,12 +78,6 @@ OpenClaw는 다음에서 자격 증명을 가져올 수 있습니다:
 
 - **Brave Search API**: `BRAVE_API_KEY` 또는 `tools.web.search.apiKey`
 - **Perplexity** (OpenRouter 경유): `PERPLEXITY_API_KEY` 또는 `OPENROUTER_API_KEY`
-
-**Brave 무료 계층 (관대한 조건):**
-
-- **2,000 요청/월**
-- **1 요청/초**
-- **신용 카드 필요** (업그레이드하지 않으면 요금 없음)
 
 자세한 내용은 [Web tools](/ko-KR/tools/web)를 참조하세요.
 

@@ -37,6 +37,7 @@ title: "Exec Tool"
 - Windows가 아닌 호스트에서는, `exec`가 `SHELL`을 사용하고, `SHELL`이 `fish`인 경우, fish와 호환되지 않는 스크립트를 피하려고 `PATH`에서 `bash`(또는 `sh`)를 선호하며, 존재하지 않으면 `SHELL`로 되돌립니다.
 - Windows 호스트에서는, exec가 PowerShell 7 (`pwsh`) 검색을 우선합니다 (Program Files, ProgramW6432, 그 다음 PATH), 그 다음 Windows PowerShell 5.1로 폴백합니다.
 - 호스트 실행(`gateway`/`node`)은 바이너리 하이재킹 또는 주입된 코드를 방지하기 위해 `env.PATH`와 로더 재정의(`LD_*`/`DYLD_*`)를 거부합니다.
+- OpenClaw는 스폰된 명령 환경(PTY 및 샌드박스 실행 포함)에 `OPENCLAW_SHELL=exec`를 설정하여 셸/프로필 규칙이 exec-tool 컨텍스트를 감지할 수 있게 합니다.
 - 중요: 샌드박스 격리는 **기본적으로 꺼져** 있습니다. 샌드박스 격리가 꺼져 있고 `host=sandbox`가 명시적으로 구성/요청된 경우, exec은 게이트웨이 호스트에서 자동 실행하는 대신 페일-클로즈드로 실패합니다. 샌드박스 격리를 활성화하거나 승인이 있는 `host=gateway`를 사용하세요.
 - 스크립트 사전 검사 (일반적인 Python/Node 쉘 구문 오류 검사)는 유효한 `workdir` 경계 내의 파일만 검사합니다. 스크립트 경로가 `workdir` 밖으로 해석되는 경우, 해당 파일에 대한 사전 검사는 건너뜁니다.
 

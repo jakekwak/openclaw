@@ -173,7 +173,7 @@ metadata:
     entries: {
       "nano-banana-pro": {
         enabled: true,
-        apiKey: "GEMINI_KEY_HERE",
+        apiKey: { source: "env", provider: "default", id: "GEMINI_API_KEY" }, // 또는 평문 문자열
         env: {
           GEMINI_API_KEY: "GEMINI_KEY_HERE",
         },
@@ -198,6 +198,7 @@ metadata:
 - `enabled: false`는 스킬을 번들 또는 설치되어 있더라도 비활성화합니다.
 - `env`: 프로세스에 이미 설정되어 있지 않은 경우에만 주입됩니다.
 - `apiKey`: `metadata.openclaw.primaryEnv`를 선언하는 스킬용 편리 기능.
+  평문 문자열 또는 SecretRef 객체(`{ source, provider, id }`)를 지원합니다.
 - `config`: 사용자 지정 필드를 위한 선택적 가방; 사용자 지정 키는 여기에 있어야 합니다.
 - `allowBundled`: **번들** 스킬에만 해당하는 선택적 허용 목록. 설정된 경우, 목록에 있는 번들 스킬만 자격이 있습니다 (관리형/작업공간 스킬은 영향받지 않음).
 

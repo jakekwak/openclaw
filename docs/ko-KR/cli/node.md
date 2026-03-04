@@ -89,11 +89,11 @@ openclaw node uninstall
 
 ## 페어링
 
-첫 연결은 게이트웨이에 보류 중인 노드 페어 요청을 생성합니다. 다음을 통해 승인하세요:
+첫 연결은 게이트웨이에 보류 중인 장치 페어링 요청(`role: node`)을 생성합니다. 다음을 통해 승인하세요:
 
 ```bash
-openclaw nodes pending
-openclaw nodes approve <requestId>
+openclaw devices list
+openclaw devices approve <requestId>
 ```
 
 노드 호스트는 `~/.openclaw/node.json`에 노드 id, 토큰, 표시 이름 및 게이트웨이 연결 정보를 저장합니다.

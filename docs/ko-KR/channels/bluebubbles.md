@@ -47,6 +47,7 @@ title: "BlueBubbles"
 보안 주의사항:
 
 - 항상 웹훅 비밀번호를 설정하십시오. 게이트웨이를 리버스 프록시 (Tailscale Serve/Funnel, nginx, Cloudflare Tunnel, ngrok)를 통해 노출하는 경우 프록시는 로컬 루프백을 통해 게이트웨이와 연결할 수 있습니다. BlueBubbles 웹훅 핸들러는 프록시된 것으로 간주되는 요청을 수락하지 않습니다.
+- 전체 웹훅 본문을 읽거나 파싱하기 전에 비밀번호 인증을 먼저 검사합니다.
 
 ## Messages.app 활성 유지 (VM / 헤드리스 설정)
 

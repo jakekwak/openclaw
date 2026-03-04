@@ -183,6 +183,7 @@ otherwise -> reply
 
 - `groupPolicy`는 멘션 게이팅과 별개입니다 (멘션이 필요함).
 - WhatsApp/Telegram/Signal/iMessage/Microsoft Teams/Zalo: `groupAllowFrom` 사용 (백업: 명시적 `allowFrom`).
+- DM 페어링 승인(`*-allowFrom` 저장소 항목)은 DM 접근에만 적용됩니다. 그룹 발신자 인증은 그룹 허용 목록에서 명시적으로 설정해야 합니다.
 - Discord: 허용 목록은 `channels.discord.guilds.<id>.channels`를 사용합니다.
 - Slack: 허용 목록은 `channels.slack.channels`를 사용합니다.
 - Matrix: 허용 목록은 `channels.matrix.groups`를 사용합니다 (방 ID, 별칭 또는 이름). 발신자를 제한하려면 `channels.matrix.groupAllowFrom`을 사용하세요; 방별 `users` 허용 목록도 지원됩니다.

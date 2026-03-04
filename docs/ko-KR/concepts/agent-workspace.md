@@ -29,6 +29,7 @@ title: "에이전트 작업 공간"
 ```
 
 `openclaw onboard`, `openclaw configure`, 또는 `openclaw setup`은 작업 공간을 생성하고 부트스트랩 파일을 생성합니다.
+샌드박스 시드 복사는 작업 공간 내부의 일반 파일만 허용하며, 소스 작업 공간 밖으로 해석되는 symlink/hardlink 별칭은 무시됩니다.
 
 이미 작업 공간 파일을 관리하고 있다면, 부트스트랩 파일 생성을 끌 수 있습니다:
 

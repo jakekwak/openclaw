@@ -127,10 +127,13 @@ openclaw health
 
 - **WhatsApp**: `~/.openclaw/credentials/whatsapp/<accountId>/creds.json`
 - **Telegram 봇 토큰**: 설정/환경 변수 또는 `channels.telegram.tokenFile`
-- **Discord 봇 토큰**: 설정/환경 변수 (토큰 파일은 아직 지원되지 않음)
+- **Discord 봇 토큰**: 설정/환경 변수 또는 SecretRef (env/file/exec provider)
 - **Slack 토큰들**: 설정/환경 변수 (`channels.slack.*`)
-- **페어링 허용 목록**: `~/.openclaw/credentials/<channel>-allowFrom.json`
+- **페어링 허용 목록**:
+  - `~/.openclaw/credentials/<channel>-allowFrom.json` (기본 계정)
+  - `~/.openclaw/credentials/<channel>-<accountId>-allowFrom.json` (비기본 계정)
 - **모델 인증 프로필**: `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
+- **파일 기반 secrets payload (선택 사항)**: `~/.openclaw/secrets.json`
 - **레거시 OAuth 가져오기**: `~/.openclaw/credentials/oauth.json`
   더 상세한 내용: [보안](/ko-KR/gateway/security#credential-storage-map).
 

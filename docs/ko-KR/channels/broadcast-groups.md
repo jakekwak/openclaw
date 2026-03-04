@@ -439,4 +439,4 @@ interface OpenClawConfig {
 
 - [다중 에이전트 구성](/ko-KR/tools/multi-agent-sandbox-tools)
 - [라우팅 구성](/ko-KR/channels/channel-routing)
-- [세션 관리](/ko-KR/concepts/sessions)
+- [세션 관리](/ko-KR/concepts/session)

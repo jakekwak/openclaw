@@ -114,6 +114,8 @@ title: "컨텍스트"
 
 큰 파일은 `agents.defaults.bootstrapMaxChars` (기본 `20000` 문자)을 사용하여 파일별로 잘립니다. OpenClaw는 `agents.defaults.bootstrapTotalMaxChars` (기본 `150000` 문자)를 사용하여 파일 전체의 총 부트스트랩 주입 제한도 시행합니다. `/context`는 **원본 대 주입** 크기와 잘림 여부를 보여줍니다.
 
+잘림이 발생하면 런타임은 Project Context 아래에 프롬프트 경고 블록을 주입할 수 있습니다. `agents.defaults.bootstrapPromptTruncationWarning` (`off`, `once`, `always`; 기본 `once`)으로 제어하세요.
+
 ## 스킬: 주입된 것 vs 필요 시 로드된 것
 
 시스템 프롬프트에는 압축된 **스킬 목록**(이름 + 설명 + 위치)이 포함되어 있습니다. 이 목록은 실제 오버헤드를 가집니다.

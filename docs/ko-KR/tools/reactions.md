@@ -19,4 +19,5 @@ title: "반응"
 - **Google Chat**: 빈 `emoji`는 메시지에서 앱의 반응을 제거합니다. `remove: true`는 그 이모지만 제거합니다.
 - **Telegram**: 빈 `emoji`는 봇의 반응을 제거합니다. `remove: true`는 또한 반응을 제거하지만 도구 유효성을 위해 여전히 비어 있지 않은 `emoji`가 필요합니다.
 - **WhatsApp**: 빈 `emoji`는 봇의 반응을 제거합니다. `remove: true`는 빈 이모지로 매핑됩니다 (여전히 `emoji`가 필요).
+- **Zalo Personal (`zalouser`)**: 비어 있지 않은 `emoji`가 필요하며 `remove: true`는 해당 이모지 반응만 제거합니다.
 - **Signal**: `channels.signal.reactionNotifications`가 활성화되어 있으면 들어오는 반응 알림이 시스템 이벤트를 발생시킵니다.

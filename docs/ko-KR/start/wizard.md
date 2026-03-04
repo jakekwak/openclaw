@@ -44,6 +44,7 @@ openclaw agents add <name>
     - 워크스페이스 기본값 (또는 기존 워크스페이스)
     - 게이트웨이 포트 **18789**
     - 게이트웨이 인증 **토큰** (로컬 루프백에서도 자동 생성됨)
+    - 새 로컬 설정의 도구 정책 기본값: `tools.profile: "messaging"` (기존 명시적 profile은 유지)
     - DM 격리 기본값: 로컬 온보딩은 미설정 시 `session.dmScope: "per-channel-peer"`를 씁니다. 세부 정보: [CLI 온보딩 참조](/ko-KR/start/wizard-cli-reference#outputs-and-internals)
     - Tailscale 노출 **Off**
     - Telegram + WhatsApp 다이렉트 메시지의 기본값은 **허용 목록** (전화번호를 입력해야 할 수 있습니다)
@@ -57,7 +58,11 @@ openclaw agents add <name>
 
 **로컬 모드 (기본값)**는 다음 단계를 안내합니다:
 
-1. **모델/인증** — Anthropic API 키 (권장), OpenAI, 또는 사용자 지정 제공자 (OpenAI 호환, Anthropic 호환, 또는 자동 감지). 기본 모델 선택.
+1. **모델/인증** — 지원되는 제공자/인증 플로우(API 키, OAuth, setup-token 포함) 중 선택하고 기본 모델을 지정합니다. 사용자 지정 제공자(OpenAI 호환, Anthropic 호환, Unknown 자동 감지)도 지원합니다.
+   보안 참고: 이 에이전트가 도구를 실행하거나 webhook/hooks 콘텐츠를 처리할 예정이라면 최신 세대의 강한 모델을 우선 사용하고 도구 정책을 엄격하게 유지하세요. 약한/구형 모델은 프롬프트 인젝션에 더 취약합니다.
+   비대화형 실행에서 `--secret-input-mode ref`를 사용하면 env 기반 참조를 auth profile에 평문 API 키 대신 저장합니다.
+   비대화형 `ref` 모드에서는 provider env var가 반드시 설정되어야 하며, 해당 env var 없이 인라인 키 플래그를 전달하면 즉시 실패합니다.
+   대화형 실행에서 secret reference 모드를 고르면 환경 변수 또는 구성된 provider ref(`file`/`exec`)를 지정할 수 있고 저장 전 빠른 사전 검증을 수행합니다.
 2. **워크스페이스** — 에이전트 파일의 위치 (기본값 `~/.openclaw/workspace`). 부트스트랩 파일 씨딩.
 3. **게이트웨이** — 포트, 바인드 주소, 인증 모드, Tailscale 노출.
 4. **채널** — WhatsApp, Telegram, Discord, Google Chat, Mattermost, Signal, BlueBubbles 또는 iMessage.
@@ -67,6 +72,7 @@ openclaw agents add <name>
 
 <Note>
 마법사를 다시 실행해도 **Reset**을 명시적으로 선택하지 않는 한 아무것도 삭제되지 않습니다 (또는 `--reset`을 전달하지 않은 경우).
+CLI `--reset`의 기본 범위는 config/credentials/sessions이며, workspace까지 포함하려면 `--reset-scope full`을 사용하세요.
 구성이 잘못되었거나 레거시 키가 포함된 경우, 마법사는 먼저 `openclaw doctor`를 실행하도록 요청합니다.
 </Note>
 

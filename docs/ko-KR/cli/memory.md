@@ -49,3 +49,5 @@ Notes:
 - `memory status --deep --index`는 저장소가 깨끗하지 않을 경우 재인덱스를 실행합니다.
 - `memory index --verbose`는 각 단계의 세부 정보를 출력합니다 (프로바이더, 모델, 소스, 배치 활동).
 - `memory status`는 `memorySearch.extraPaths`를 통해 구성된 추가 경로를 포함합니다.
+- 활성 메모리 원격 API 키 필드가 SecretRef로 구성된 경우, 명령은 활성 게이트웨이 스냅샷에서 값을 해석합니다. 게이트웨이에 연결할 수 없으면 즉시 실패합니다.
+- 게이트웨이 버전 불일치 참고: 이 경로는 `secrets.resolve`를 지원하는 게이트웨이가 필요합니다. 오래된 게이트웨이는 unknown-method 오류를 반환합니다.

@@ -26,7 +26,7 @@ title: "스킬 설정"
     entries: {
       "nano-banana-pro": {
         enabled: true,
-        apiKey: "GEMINI_KEY_HERE",
+        apiKey: { source: "env", provider: "default", id: "GEMINI_API_KEY" }, // 또는 평문 문자열
         env: {
           GEMINI_API_KEY: "GEMINI_KEY_HERE",
         },
@@ -54,6 +54,7 @@ title: "스킬 설정"
 - `enabled`: 스킬이 번들되거나 설치되어 있어도 `false`로 설정하여 비활성화합니다.
 - `env`: 에이전트 실행 시 주입되는 환경 변수 (이미 설정되어 있지 않은 경우에만).
 - `apiKey`: 기본 환경 변수를 선언하는 스킬에 대한 선택적 편의 기능.
+  평문 문자열 또는 SecretRef 객체(`{ source, provider, id }`)를 지원합니다.
 
 ## 주의사항
 

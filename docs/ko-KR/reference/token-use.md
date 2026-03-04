@@ -107,6 +107,10 @@ agents:
 
 이는 Anthropic의 `context-1m-2025-08-07` 베타 헤더로 매핑됩니다.
 
+이 동작은 해당 모델 항목에 `context1m: true`가 설정된 경우에만 적용됩니다.
+
+요구 사항: 자격 증명이 long-context 사용 자격을 충족해야 합니다 (API 키 과금 또는 Extra Usage가 활성화된 구독). 자격이 없으면 Anthropic은 `HTTP 429: rate_limit_error: Extra usage is required for long context requests`를 반환합니다.
+
 ## 토큰 압박 줄이는 팁
 
 - `/compact`를 사용하여 긴 세션을 요약합니다.

@@ -48,6 +48,9 @@ Security note: treat plugin installs like running code. Prefer pinned versions.
 Npm specs are **registry-only** (package name + optional version/tag). Git/URL/file
 specs are rejected. Dependency installs run with `--ignore-scripts` for safety.
 
+Install 스펙이 번들 플러그인 ID(예: `diffs`)와 동일하면 OpenClaw는 번들 플러그인을 직접 설치합니다.
+같은 이름의 npm 패키지를 설치하려면 명시적인 스코프 스펙(예: `@scope/diffs`)을 사용하세요.
+
 Supported archives: `.zip`, `.tgz`, `.tar.gz`, `.tar`.
 
 Use `--link` to avoid copying a local directory (adds to `plugins.load.paths`):

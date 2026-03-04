@@ -95,7 +95,7 @@ openclaw browser --browser-profile openclaw snapshot
 - `browser.ssrfPolicy.allowPrivateNetwork`는 호환성을 위한 레거시 별칭으로 계속 지원됩니다.
 - `attachOnly: true`는 "로컬 브라우저를 실행하지 않고 현재 실행 중인 경우에만 연결합니다."를 의미합니다.
 - `color` + 프로파일별 `color`로 브라우저 UI를 착색하여 활성화된 프로파일을 확인할 수 있습니다.
-- 기본 프로파일은 `chrome` (확장 릴레이). 관리 브라우저에 `defaultProfile: "openclaw"`를 사용하십시오.
+- 기본 프로파일은 `openclaw` (OpenClaw 관리 독립 브라우저)입니다. Chrome 확장 릴레이를 사용하려면 `defaultProfile: "chrome"`를 설정하세요.
 - 자동 감지 순서: Chromium 기반 브라우저가 시스템 기본값인 경우; 그렇지 않으면 Chrome → Brave → Edge → Chromium → Chrome Canary.
 - 로컬 `openclaw` 프로파일은 `cdpPort`/`cdpUrl`을 자동 할당합니다 — 이것들은 원격 CDP에만 설정하십시오.
 

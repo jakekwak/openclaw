@@ -11,10 +11,10 @@ title: "설치프로그램 내부"
 
 OpenClaw은 `openclaw.ai`에서 제공하는 세 가지 설치 스크립트를 제공합니다.
 
-| 스크립트                            | 플랫폼             | 수행 작업                                                                                       |
-| ---------------------------------- | ------------------ | -------------------------------------------------------------------------------------------- |
-| [`install.sh`](#installsh)         | macOS / Linux / WSL | 필요시 Node를 설치하고, npm(기본값) 또는 git을 통해 OpenClaw를 설치하며, 온보딩을 실행할 수 있음. |
-| [`install-cli.sh`](#install-clish) | macOS / Linux / WSL | 로컬 접두사(`~/.openclaw`)에 Node + OpenClaw 설치. 루트 권한 필요 없음.                         |
+| 스크립트                           | 플랫폼               | 수행 작업                                                                                         |
+| ---------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------- |
+| [`install.sh`](#installsh)         | macOS / Linux / WSL  | 필요시 Node를 설치하고, npm(기본값) 또는 git을 통해 OpenClaw를 설치하며, 온보딩을 실행할 수 있음. |
+| [`install-cli.sh`](#install-clish) | macOS / Linux / WSL  | 로컬 접두사(`~/.openclaw`)에 Node + OpenClaw 설치. 루트 권한 필요 없음.                           |
 | [`install.ps1`](#installps1)       | Windows (PowerShell) | 필요시 Node를 설치하고, npm(기본값) 또는 git을 통해 OpenClaw를 설치하며, 온보딩을 실행할 수 있음. |
 
 ## 빠른 실행 명령어
@@ -126,38 +126,38 @@ TTY가 없고 설치 방법이 설정되지 않은 경우, 기본값으로 `npm`
 <AccordionGroup>
   <Accordion title="플래그 참조">
 
-| 플래그                             | 설명                                                     |
-| ---------------------------------- | -------------------------------------------------------- |
-| `--install-method npm\|git`        | 설치 방법 선택 (기본값: `npm`). 별칭: `--method`         |
-| `--npm`                            | npm 방법의 단축키                                         |
-| `--git`                            | git 방법의 단축키. 별칭: `--github`                      |
-| `--version <version\|dist-tag>`    | npm 버전 또는 배포 태그 (기본값: `latest`)               |
-| `--beta`                           | 사용 가능 시 beta 배포 태그 사용, 아닐 시 `latest` 대체   |
-| `--git-dir <path>`                 | 체크아웃 디렉토리 (기본값: `~/openclaw`). 별칭: `--dir`  |
-| `--no-git-update`                  | 기존 체크아웃의 `git pull` 건너뛰기                      |
-| `--no-prompt`                      | 프롬프트 비활성화                                        |
-| `--no-onboard`                     | 온보딩 건너뛰기                                          |
-| `--onboard`                        | 온보딩 활성화                                            |
-| `--dry-run`                        | 변경사항 적용 없이 작업 출력                              |
-| `--verbose`                        | 디버그 출력 활성화 (`set -x`, npm notice-level 로그)      |
-| `--help`                           | 사용법 표시 (`-h`)                                       |
+| 플래그                          | 설명                                                    |
+| ------------------------------- | ------------------------------------------------------- |
+| `--install-method npm\|git`     | 설치 방법 선택 (기본값: `npm`). 별칭: `--method`        |
+| `--npm`                         | npm 방법의 단축키                                       |
+| `--git`                         | git 방법의 단축키. 별칭: `--github`                     |
+| `--version <version\|dist-tag>` | npm 버전 또는 배포 태그 (기본값: `latest`)              |
+| `--beta`                        | 사용 가능 시 beta 배포 태그 사용, 아닐 시 `latest` 대체 |
+| `--git-dir <path>`              | 체크아웃 디렉토리 (기본값: `~/openclaw`). 별칭: `--dir` |
+| `--no-git-update`               | 기존 체크아웃의 `git pull` 건너뛰기                     |
+| `--no-prompt`                   | 프롬프트 비활성화                                       |
+| `--no-onboard`                  | 온보딩 건너뛰기                                         |
+| `--onboard`                     | 온보딩 활성화                                           |
+| `--dry-run`                     | 변경사항 적용 없이 작업 출력                            |
+| `--verbose`                     | 디버그 출력 활성화 (`set -x`, npm notice-level 로그)    |
+| `--help`                        | 사용법 표시 (`-h`)                                      |
 
   </Accordion>
 
   <Accordion title="환경 변수 참조">
 
-| 변수                                       | 설명                                  |
-| ------------------------------------------- | ------------------------------------ |
+| 변수                                        | 설명                                  |
+| ------------------------------------------- | ------------------------------------- |
 | `OPENCLAW_INSTALL_METHOD=git\|npm`          | 설치 방법                             |
-| `OPENCLAW_VERSION=latest\|next\|<semver>`   | npm 버전 또는 배포 태그              |
-| `OPENCLAW_BETA=0\|1`                        | 사용 가능 시 beta 사용               |
+| `OPENCLAW_VERSION=latest\|next\|<semver>`   | npm 버전 또는 배포 태그               |
+| `OPENCLAW_BETA=0\|1`                        | 사용 가능 시 beta 사용                |
 | `OPENCLAW_GIT_DIR=<path>`                   | 체크아웃 디렉토리                     |
 | `OPENCLAW_GIT_UPDATE=0\|1`                  | git 업데이트 토글                     |
 | `OPENCLAW_NO_PROMPT=1`                      | 프롬프트 비활성화                     |
-| `OPENCLAW_NO_ONBOARD=1`                     | 온보딩 건너뛰기                      |
+| `OPENCLAW_NO_ONBOARD=1`                     | 온보딩 건너뛰기                       |
 | `OPENCLAW_DRY_RUN=1`                        | 드라이 런 모드                        |
 | `OPENCLAW_VERBOSE=1`                        | 디버그 모드                           |
-| `OPENCLAW_NPM_LOGLEVEL=error\|warn\|notice` | npm 로그 레벨                        |
+| `OPENCLAW_NPM_LOGLEVEL=error\|warn\|notice` | npm 로그 레벨                         |
 | `SHARP_IGNORE_GLOBAL_LIBVIPS=0\|1`          | sharp/libvips 동작 제어 (기본값: `1`) |
 
   </Accordion>
@@ -213,30 +213,30 @@ TTY가 없고 설치 방법이 설정되지 않은 경우, 기본값으로 `npm`
 <AccordionGroup>
   <Accordion title="플래그 참조">
 
-| 플래그                   | 설명                                                                         |
-| ------------------------ | --------------------------------------------------------------------------- |
-| `--prefix <path>`        | 설치 접두사 (기본값: `~/.openclaw`)                                          |
-| `--version <ver>`        | OpenClaw 버전 또는 배포 태그 (기본값: `latest`)                               |
-| `--node-version <ver>`   | Node 버전 (기본값: `22.22.0`)                                                |
-| `--json`                 | NDJSON 이벤트 출력                                                           |
-| `--onboard`              | 설치 후 `openclaw onboard` 실행                                              |
-| `--no-onboard`           | 온보딩 건너뛰기 (기본값)                                                     |
-| `--set-npm-prefix`       | Linux에서, 현재 npm 접두사가 쓰기 불가능할 경우 `~/.npm-global`로 강제 변경   |
-| `--help`                 | 사용법 표시 (`-h`)                                                           |
+| 플래그                 | 설명                                                                        |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `--prefix <path>`      | 설치 접두사 (기본값: `~/.openclaw`)                                         |
+| `--version <ver>`      | OpenClaw 버전 또는 배포 태그 (기본값: `latest`)                             |
+| `--node-version <ver>` | Node 버전 (기본값: `22.22.0`)                                               |
+| `--json`               | NDJSON 이벤트 출력                                                          |
+| `--onboard`            | 설치 후 `openclaw onboard` 실행                                             |
+| `--no-onboard`         | 온보딩 건너뛰기 (기본값)                                                    |
+| `--set-npm-prefix`     | Linux에서, 현재 npm 접두사가 쓰기 불가능할 경우 `~/.npm-global`로 강제 변경 |
+| `--help`               | 사용법 표시 (`-h`)                                                          |
 
   </Accordion>
 
   <Accordion title="환경 변수 참조">
 
-| 변수                                       | 설명                                                                    |
-| ------------------------------------------- | ---------------------------------------------------------------------- |
-| `OPENCLAW_PREFIX=<path>`                    | 설치 접두사                                                            |
-| `OPENCLAW_VERSION=<ver>`                    | OpenClaw 버전 또는 배포 태그                                           |
-| `OPENCLAW_NODE_VERSION=<ver>`               | Node 버전                                                              |
-| `OPENCLAW_NO_ONBOARD=1`                     | 온보딩 건너뛰기                                                        |
-| `OPENCLAW_NPM_LOGLEVEL=error\|warn\|notice` | npm 로그 레벨                                                         |
-| `OPENCLAW_GIT_DIR=<path>`                   | 오래된 `Peekaboo` 서브모듈 체크아웃 삭제 경로 (유산 제거 시 사용)        |
-| `SHARP_IGNORE_GLOBAL_LIBVIPS=0\|1`          | sharp/libvips 동작 제어 (기본값: `1`)                                  |
+| 변수                                        | 설명                                                              |
+| ------------------------------------------- | ----------------------------------------------------------------- |
+| `OPENCLAW_PREFIX=<path>`                    | 설치 접두사                                                       |
+| `OPENCLAW_VERSION=<ver>`                    | OpenClaw 버전 또는 배포 태그                                      |
+| `OPENCLAW_NODE_VERSION=<ver>`               | Node 버전                                                         |
+| `OPENCLAW_NO_ONBOARD=1`                     | 온보딩 건너뛰기                                                   |
+| `OPENCLAW_NPM_LOGLEVEL=error\|warn\|notice` | npm 로그 레벨                                                     |
+| `OPENCLAW_GIT_DIR=<path>`                   | 오래된 `Peekaboo` 서브모듈 체크아웃 삭제 경로 (유산 제거 시 사용) |
+| `SHARP_IGNORE_GLOBAL_LIBVIPS=0\|1`          | sharp/libvips 동작 제어 (기본값: `1`)                             |
 
   </Accordion>
 </AccordionGroup>
@@ -299,26 +299,26 @@ TTY가 없고 설치 방법이 설정되지 않은 경우, 기본값으로 `npm`
 <AccordionGroup>
   <Accordion title="플래그 참조">
 
-| 플래그                        | 설명                                               |
-| ----------------------------- | ------------------------------------------------ |
-| `-InstallMethod npm\|git`     | 설치 방법 (기본값: `npm`)                          |
-| `-Tag <tag>`                  | npm 배포 태그 (기본값: `latest`)                   |
-| `-GitDir <path>`              | 체크아웃 디렉토리 (기본값: `%USERPROFILE%\openclaw`) |
-| `-NoOnboard`                  | 온보딩 건너뛰기                                    |
-| `-NoGitUpdate`                | `git pull` 건너뛰기                                |
-| `-DryRun`                     | 작업만 출력                                        |
+| 플래그                    | 설명                                                 |
+| ------------------------- | ---------------------------------------------------- |
+| `-InstallMethod npm\|git` | 설치 방법 (기본값: `npm`)                            |
+| `-Tag <tag>`              | npm 배포 태그 (기본값: `latest`)                     |
+| `-GitDir <path>`          | 체크아웃 디렉토리 (기본값: `%USERPROFILE%\openclaw`) |
+| `-NoOnboard`              | 온보딩 건너뛰기                                      |
+| `-NoGitUpdate`            | `git pull` 건너뛰기                                  |
+| `-DryRun`                 | 작업만 출력                                          |
 
   </Accordion>
 
   <Accordion title="환경 변수 참조">
 
-| 변수                                      | 설명                        |
-| ------------------------------------------ | -------------------------- |
-| `OPENCLAW_INSTALL_METHOD=git\|npm`         | 설치 방법                   |
-| `OPENCLAW_GIT_DIR=<path>`                  | 체크아웃 디렉토리           |
-| `OPENCLAW_NO_ONBOARD=1`                    | 온보딩 건너뛰기             |
-| `OPENCLAW_GIT_UPDATE=0`                    | git pull 비활성화           |
-| `OPENCLAW_DRY_RUN=1`                       | 드라이 런 모드               |
+| 변수                               | 설명              |
+| ---------------------------------- | ----------------- |
+| `OPENCLAW_INSTALL_METHOD=git\|npm` | 설치 방법         |
+| `OPENCLAW_GIT_DIR=<path>`          | 체크아웃 디렉토리 |
+| `OPENCLAW_NO_ONBOARD=1`            | 온보딩 건너뛰기   |
+| `OPENCLAW_GIT_UPDATE=0`            | git pull 비활성화 |
+| `OPENCLAW_DRY_RUN=1`               | 드라이 런 모드    |
 
   </Accordion>
 </AccordionGroup>
@@ -384,7 +384,7 @@ TTY가 없고 설치 방법이 설정되지 않은 경우, 기본값으로 `npm`
   </Accordion>
 
   <Accordion title='Windows: "openclaw을 인식할 수 없습니다"'>
-    `npm config get prefix` 명령어를 실행하여 `\bin`을 추가하고, 그 디렉토리를 사용자 PATH에 추가한 후 PowerShell을 다시 여세요.
+    `npm config get prefix` 명령어를 실행하고 해당 디렉토리를 사용자 PATH에 추가하세요 (Windows에서는 `\bin` 접미사가 필요하지 않음). 이후 PowerShell을 다시 여세요.
   </Accordion>
 
   <Accordion title="Windows: 설치 프로그램의 자세한 출력 얻는 법">

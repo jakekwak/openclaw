@@ -38,8 +38,8 @@ openclaw gateway --port 18789
 3. 게이트웨이 호스트에서 페어링 요청 승인:
 
 ```bash
-openclaw nodes pending
-openclaw nodes approve <requestId>
+openclaw devices list
+openclaw devices approve <requestId>
 ```
 
 4. 연결 확인:
@@ -98,11 +98,11 @@ openclaw nodes invoke --node "iOS Node" --command canvas.snapshot --params '{"ma
 
 - `NODE_BACKGROUND_UNAVAILABLE`: iOS 앱을 포그라운드로 가져오세요 (캔버스/카메라/화면 명령어가 필요합니다).
 - `A2UI_HOST_NOT_CONFIGURED`: 게이트웨이가 캔버스 호스트 URL을 광고하지 않았습니다; [게이트웨이 구성](/ko-KR/gateway/configuration)에서 `canvasHost`를 확인하십시오.
-- 페어링 프롬프트가 나타나지 않음: `openclaw nodes pending`을 실행하여 수동으로 승인하세요.
+- 페어링 프롬프트가 나타나지 않음: `openclaw devices list`를 실행하여 수동으로 승인하세요.
 - 재설치 후 재연결 실패: 키체인 페어링 토큰이 지워졌습니다; 노드를 다시 페어링하세요.
 
 ## 관련 문서
 
-- [Pairing](/ko-KR/gateway/pairing)
+- [Pairing](/ko-KR/channels/pairing)
 - [Discovery](/ko-KR/gateway/discovery)
 - [Bonjour](/ko-KR/gateway/bonjour)

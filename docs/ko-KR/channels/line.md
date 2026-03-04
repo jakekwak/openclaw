@@ -42,6 +42,10 @@ https://gateway-host/line/webhook
 
 게이트웨이는 LINE의 웹훅 확인(GET)과 인바운드 이벤트(POST)에 응답합니다. 사용자 정의 경로가 필요하다면, `channels.line.webhookPath` 또는 `channels.line.accounts.<id>.webhookPath`를 설정하고 URL을 적절히 업데이트하세요.
 
+보안 참고:
+
+- LINE 서명 검증은 본문 의존적입니다 (원본 바디에 대한 HMAC). 따라서 OpenClaw는 서명 검증 전에 엄격한 사전 인증 본문 크기 제한과 타임아웃을 적용합니다.
+
 ## 구성
 
 최소 구성:
