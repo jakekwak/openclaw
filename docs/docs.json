@@ -48,6 +48,10 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "destination": "/ko-KR"
+    },
+    {
       "source": "/messages",
       "destination": "/concepts/messages"
     },
