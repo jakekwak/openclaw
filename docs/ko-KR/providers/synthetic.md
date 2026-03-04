@@ -24,7 +24,7 @@ openclaw onboard --auth-choice synthetic-api-key
 기본 모델은 다음으로 설정됩니다:
 
 ```
-synthetic/hf:MiniMaxAI/MiniMax-M2.1
+synthetic/hf:MiniMaxAI/MiniMax-M2.5
 ```
 
 ## 설정 예시
@@ -34,8 +34,8 @@ synthetic/hf:MiniMaxAI/MiniMax-M2.1
   env: { SYNTHETIC_API_KEY: "sk-..." },
   agents: {
     defaults: {
-      model: { primary: "synthetic/hf:MiniMaxAI/MiniMax-M2.1" },
-      models: { "synthetic/hf:MiniMaxAI/MiniMax-M2.1": { alias: "MiniMax M2.1" } },
+      model: { primary: "synthetic/hf:MiniMaxAI/MiniMax-M2.5" },
+      models: { "synthetic/hf:MiniMaxAI/MiniMax-M2.5": { alias: "MiniMax M2.5" } },
     },
   },
   models: {
@@ -47,8 +47,8 @@ synthetic/hf:MiniMaxAI/MiniMax-M2.1
         api: "anthropic-messages",
         models: [
           {
-            id: "hf:MiniMaxAI/MiniMax-M2.1",
-            name: "MiniMax M2.1",
+            id: "hf:MiniMaxAI/MiniMax-M2.5",
+            name: "MiniMax M2.5",
             reasoning: false,
             input: ["text"],
             cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -70,7 +70,7 @@ synthetic/hf:MiniMaxAI/MiniMax-M2.1
 
 | Model ID                                               | Context window | Max tokens | Reasoning | Input        |
 | ------------------------------------------------------ | -------------- | ---------- | --------- | ------------ |
-| `hf:MiniMaxAI/MiniMax-M2.1`                            | 192000         | 65536      | false     | text         |
+| `hf:MiniMaxAI/MiniMax-M2.5`                            | 192000         | 65536      | false     | text         |
 | `hf:moonshotai/Kimi-K2-Thinking`                       | 256000         | 8192       | true      | text         |
 | `hf:zai-org/GLM-4.7`                                   | 198000         | 128000     | false     | text         |
 | `hf:deepseek-ai/DeepSeek-R1-0528`                      | 128000         | 8192       | false     | text         |

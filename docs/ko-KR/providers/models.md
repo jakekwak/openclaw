@@ -10,15 +10,6 @@ title: "모델 프로바이더 빠른 시작 가이드"
 
 OpenClaw는 다양한 LLM 프로바이더를 사용할 수 있습니다. 하나를 선택하고, 인증한 다음, 기본 모델을 `provider/model`로 설정하세요.
 
-## 하이라이트: Venice (Venice AI)
-
-Venice는 개인 정보 보호를 우선시하는 추론을 위한 추천 Venice AI 설정이며, 가장 어려운 작업에 대해 Opus를 사용할 수 있는 옵션이 있습니다.
-
-- 기본값: `venice/llama-3.3-70b`
-- 가장 우수: `venice/claude-opus-45` (Opus가 여전히 가장 강력함)
-
-자세한 내용은 [Venice AI](/providers/venice)를 참조하세요.
-
 ## 빠른 시작 (두 단계)
 
 1. 프로바이더에 인증하기 (보통 `openclaw onboard`를 통해 실행).

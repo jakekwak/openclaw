@@ -67,7 +67,7 @@ OpenClaw는 `src/config/sessions.ts`를 통해 이를 해결합니다.
 
 ## 세션 키 (`sessionKey`)
 
-`sessionKey`는 _어떤 대화 버킷_에 있는지를 식별합니다 (라우팅 + 격리).
+`sessionKey`는 *어떤 대화 버킷*에 있는지를 식별합니다 (라우팅 + 격리).
 
 일반적인 패턴:
 
@@ -90,6 +90,7 @@ OpenClaw는 `src/config/sessions.ts`를 통해 이를 해결합니다.
 - **재설정** (`/new`, `/reset`)은 해당 `sessionKey`에 새 `sessionId`를 만듭니다.
 - **일일 재설정** (기본값 게이트웨이 호스트 현지 시간 4:00 AM)은 재설정 경계 이후 첫 메시지에서 새 `sessionId`를 만듭니다.
 - **유휴 만료** (`session.reset.idleMinutes` 또는 레거시 `session.idleMinutes`)는 유휴 창 이후 메시지가 도착하면 새 `sessionId`를 만듭니다. 일일 + 유휴가 모두 설정된 경우 먼저 만료되는 것이 이깁니다.
+- **스레드 부모 포크 가드** (`session.parentForkMaxTokens`, 기본값 `100000`)는 부모 세션이 이미 너무 클 때 부모 전사 포킹을 건너뛰고 새 스레드를 깨끗하게 시작합니다. 비활성화하려면 `0`으로 설정하세요.
 
 구현 세부사항: 결정은 `src/auto-reply/reply/session.ts`의 `initSessionState()`에서 발생합니다.
 

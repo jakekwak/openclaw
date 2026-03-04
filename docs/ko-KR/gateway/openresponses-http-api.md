@@ -29,6 +29,18 @@ OpenClaw의 게이트웨이는 OpenResponses와 호환되는 `POST /v1/responses
 - `gateway.auth.mode="password"`일 때, `gateway.auth.password`(또는 `OPENCLAW_GATEWAY_PASSWORD`)을 사용합니다.
 - `gateway.auth.rateLimit`이 설정되고 인증 실패 횟수가 많을 경우, 엔드포인트는 `429`와 `Retry-After`를 반환합니다.
 
+## 보안 경계 (중요)
+
+이 엔드포인트를 게이트웨이 인스턴스에 대한 **완전한 운영자 접근** 표면으로 취급하세요.
+
+- 여기의 HTTP bearer 인증은 사용자별로 좁게 분리된 스코프 모델이 아닙니다.
+- 이 엔드포인트용으로 유효한 Gateway 토큰/비밀번호는 소유자/운영자 자격 증명으로 취급해야 합니다.
+- 요청은 신뢰된 운영자 액션과 동일한 control-plane agent 경로를 통해 실행됩니다.
+- 대상 에이전트 정책이 민감한 도구를 허용하면, 이 엔드포인트에서도 해당 도구를 사용할 수 있습니다.
+- 이 엔드포인트는 loopback/tailnet/private ingress에서만 유지하고, 퍼블릭 인터넷에 직접 노출하지 마세요.
+
+자세한 내용은 [보안](/ko-KR/gateway/security) 및 [원격 접근](/ko-KR/gateway/remote)을 참조하세요.
+
 ## 에이전트 선택하기
 
 젠더 헤더가 필요하지 않습니다: 에이전트 ID를 OpenResponses `model` 필드에 인코딩합니다:

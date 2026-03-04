@@ -120,10 +120,17 @@ Doctor는 다음을 수행합니다:
 - `routing.agentToAgent` → `tools.agentToAgent`
 - `routing.transcribeAudio` → `tools.media.audio.models`
 - `bindings[].match.accountID` → `bindings[].match.accountId`
+- 이름이 있는 `accounts`는 있지만 `accounts.default`가 없는 채널의 경우, 해당 값이 존재하면 계정 스코프의 최상위 단일 계정 채널 값을 `channels.<channel>.accounts.default`로 이동
 - `identity` → `agents.list[].identity`
 - `agent.*` → `agents.defaults` + `tools.*` (tools/elevated/exec/sandbox/subagents)
 - `agent.model`/`allowedModels`/`modelAliases`/`modelFallbacks`/`imageModelFallbacks`
   → `agents.defaults.models` + `agents.defaults.model.primary/fallbacks` + `agents.defaults.imageModel.primary/fallbacks`
+- `browser.ssrfPolicy.allowPrivateNetwork` → `browser.ssrfPolicy.dangerouslyAllowPrivateNetwork`
+
+Doctor 경고에는 다중 계정 채널에 대한 기본 계정 가이드도 포함됩니다:
+
+- `channels.<channel>.accounts` 항목이 2개 이상인데 `channels.<channel>.defaultAccount` 또는 `accounts.default`가 없으면, 폴백 라우팅이 예상과 다른 계정을 선택할 수 있다고 doctor가 경고합니다.
+- `channels.<channel>.defaultAccount`가 알 수 없는 계정 ID로 설정되어 있으면, doctor가 경고하고 구성된 계정 ID 목록을 함께 표시합니다.
 
 ### 2b) OpenCode Zen 프로바이더 오버라이드
 
@@ -160,6 +167,13 @@ Doctor 점검 사항:
   프롬프트하며, 누락된 데이터를 복구할 수 없음을 상기시킵니다.
 - **상태 디렉토리 권한**: 쓰기 가능성을 확인합니다; 권한 복구를 제안합니다
   (소유자/그룹 불일치가 감지되면 `chown` 힌트를 제공합니다).
+- **macOS 클라우드 동기화 상태 디렉토리**: 상태 경로가 iCloud Drive
+  (`~/Library/Mobile Documents/com~apple~CloudDocs/...`) 또는
+  `~/Library/CloudStorage/...` 아래로 해석되면 경고합니다. 동기화 기반 경로는
+  I/O 저하와 잠금/동기화 레이스를 유발할 수 있습니다.
+- **Linux SD 또는 eMMC 상태 디렉토리**: 상태 경로가 `mmcblk*` 마운트 소스로 해석되면
+  경고합니다. SD/eMMC 기반 랜덤 I/O는 세션 및 자격 증명 쓰기에서 더 느리고
+  마모가 더 빠를 수 있습니다.
 - **세션 디렉토리 누락**: `sessions/`와 세션 스토어 디렉토리는 기록 유지와
   `ENOENT` 충돌 방지에 필요합니다.
 - **트랜스크립트 불일치**: 최근 세션 항목에 트랜스크립트 파일이 누락된 경우 경고합니다.

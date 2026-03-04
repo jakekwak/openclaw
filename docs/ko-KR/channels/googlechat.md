@@ -139,6 +139,8 @@ your-domain.com {
 ## 작동 원리
 
 1. Google Chat이 게이트웨이로 웹훅 POST를 보냅니다. 각 요청에는 `Authorization: Bearer <토큰>` 헤더가 포함됩니다.
+   - 해당 헤더가 있을 때 OpenClaw는 전체 웹훅 본문을 읽거나 파싱하기 전에 bearer 인증을 먼저 검증합니다.
+   - 본문에 `authorizationEventObject.systemIdToken`을 담는 Google Workspace Add-on 요청도 더 엄격한 사전 인증 본문 예산으로 지원됩니다.
 2. OpenClaw는 구성된 `audienceType` + `audience`에 대해 토큰을 검증합니다:
    - `audienceType: "app-url"` → 수신자는 HTTPS 웹훅 URL입니다.
    - `audienceType: "project-number"` → 수신자는 Cloud 프로젝트 번호입니다.
@@ -166,6 +168,7 @@ your-domain.com {
     googlechat: {
       enabled: true,
       serviceAccountFile: "/path/to/service-account.json",
+      // 또는 serviceAccountRef: { source: "file", provider: "filemain", id: "/channels/googlechat/serviceAccount" }
       audienceType: "app-url",
       audience: "https://gateway.example.com/googlechat",
       webhookPath: "/googlechat",
@@ -194,11 +197,14 @@ your-domain.com {
 노트:
 
 - 서비스 계정 자격 증명은 `serviceAccount` (JSON 문자열)로 인라인 전달될 수도 있습니다.
+- `serviceAccountRef` (env/file SecretRef)도 지원되며, `channels.googlechat.accounts.<id>.serviceAccountRef`의 계정별 참조도 지원합니다.
 - `webhookPath`가 설정되지 않으면 기본 웹훅 경로는 `/googlechat`입니다.
 - `dangerouslyAllowNameMatching`은 허용 목록에서 변경 가능한 이메일 주체 매칭을 다시 활성화합니다 (비상용 호환성 모드).
 - 리액션은 `actions.reactions`가 활성화된 경우 `reactions` 도구 및 `channels action`을 통해 사용할 수 있습니다.
 - `typingIndicator`는 `none`, `message` (기본값), `reaction` (리액션은 사용자 OAuth 필요)을 지원합니다.
 - 첨부 파일은 Chat API를 통해 다운로드되며 미디어 파이프라인에 저장됩니다 (`mediaMaxMb`에 따라 크기 제한).
+
+Secrets 참조 상세: [Secrets Management](/ko-KR/gateway/secrets).
 
 ## 문제 해결
 

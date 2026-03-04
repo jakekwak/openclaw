@@ -22,6 +22,7 @@ title: "컴팩션"
 ## 설정
 
 `openclaw.json`의 `agents.defaults.compaction` 설정을 사용하여 컴팩션 동작(모드, 목표 토큰 등)을 구성합니다.
+컴팩션 요약은 기본적으로 불투명 식별자를 보존합니다 (`identifierPolicy: "strict"`). `identifierPolicy: "off"`로 끌 수 있고, `identifierPolicy: "custom"`과 `identifierInstructions`로 사용자 지정 텍스트를 제공할 수도 있습니다.
 
 ## 자동 컴팩션 (기본 활성화)
 
@@ -52,6 +53,15 @@ title: "컴팩션"
 - **세션 가지치기**: 오래된 **도구 결과**만을 요청마다 **메모리 내에서** 잘라냅니다.
 
 가지치기 세부사항은 [/concepts/session-pruning](/concepts/session-pruning)을 참조하세요.
+
+## OpenAI 서버 측 컴팩션
+
+OpenClaw는 호환되는 OpenAI 직결 모델에 대해 OpenAI Responses 서버 측 컴팩션 힌트도 지원합니다. 이 기능은 로컬 OpenClaw 컴팩션과는 별개이며 함께 병행할 수 있습니다.
+
+- 로컬 컴팩션: OpenClaw가 요약을 만들어 세션 JSONL에 저장합니다.
+- 서버 측 컴팩션: `store` + `context_management`가 활성화되면 OpenAI가 프로바이더 측에서 컨텍스트를 컴팩트합니다.
+
+모델 파라미터와 오버라이드는 [OpenAI 프로바이더](/ko-KR/providers/openai)를 참조하세요.
 
 ## 팁
 

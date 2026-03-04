@@ -36,14 +36,14 @@ Client                    Gateway
 
 일반적인 메서드 및 이벤트:
 
-| 카테고리  | 예제                                                      | 비고                                |
-| --------- | --------------------------------------------------------- | ---------------------------------- |
-| Core      | `connect`, `health`, `status`                             | `connect`는 반드시 첫 번째이어야 함            |
-| Messaging | `send`, `poll`, `agent`, `agent.wait`                     | 부작용이 있는 경우 `idempotencyKey` 필요     |
-| Chat      | `chat.history`, `chat.send`, `chat.abort`, `chat.inject`  | WebChat에서 사용됨                  |
-| Sessions  | `sessions.list`, `sessions.patch`, `sessions.delete`      | 세션 관리                           |
-| Nodes     | `node.list`, `node.invoke`, `node.pair.*`                 | 게이트웨이 WS + 노드 작업            |
-| Events    | `tick`, `presence`, `agent`, `chat`, `health`, `shutdown` | 서버 푸시                           |
+| 카테고리  | 예제                                                      | 비고                                     |
+| --------- | --------------------------------------------------------- | ---------------------------------------- |
+| Core      | `connect`, `health`, `status`                             | `connect`는 반드시 첫 번째이어야 함      |
+| Messaging | `send`, `poll`, `agent`, `agent.wait`                     | 부작용이 있는 경우 `idempotencyKey` 필요 |
+| Chat      | `chat.history`, `chat.send`, `chat.abort`, `chat.inject`  | WebChat에서 사용됨                       |
+| Sessions  | `sessions.list`, `sessions.patch`, `sessions.delete`      | 세션 관리                                |
+| Nodes     | `node.list`, `node.invoke`, `node.pair.*`                 | 게이트웨이 WS + 노드 작업                |
+| Events    | `tick`, `presence`, `agent`, `chat`, `health`, `shutdown` | 서버 푸시                                |
 
 권위 있는 목록은 `src/gateway/server.ts` (`METHODS`, `EVENTS`)에 있습니다.
 
@@ -263,6 +263,8 @@ Swift 생성기는 다음을 내보냅니다:
 - `NonEmptyString`은 기본적인 ID 및 메서드/이벤트 명칭에 사용됩니다.
 - 최상위 `GatewayFrame`은 `type`에 대한 **discriminator**를 사용합니다.
 - 부작용이 있는 메서드는 보통 파라미터에 `idempotencyKey`를 요구합니다 (예: `send`, `poll`, `agent`, `chat.send`).
+- `agent`는 런타임 생성 오케스트레이션 컨텍스트를 위한 선택적 `internalEvents`를 받을 수 있습니다
+  (예: subagent/cron 작업 완료 핸드오프). 내부 API 표면으로 취급하세요.
 
 ## 라이브 스키마 JSON
 

@@ -42,7 +42,14 @@ openclaw pairing approve telegram <CODE>
 `~/.openclaw/credentials/`에 저장됨:
 
 - 대기 중인 요청: `<channel>-pairing.json`
-- 승인된 허용 목록 저장소: `<channel>-allowFrom.json`
+- 승인된 허용 목록 저장소:
+  - 기본 계정: `<channel>-allowFrom.json`
+  - 비기본 계정: `<channel>-<accountId>-allowFrom.json`
+
+계정 스코프 동작:
+
+- 비기본 계정은 자신의 스코프 허용 목록 파일만 읽고 씁니다.
+- 기본 계정은 채널 스코프의 비스코프 허용 목록 파일을 사용합니다.
 
 이것을 민감하게 처리하세요 (당신의 비서 접근을 제어합니다).
 

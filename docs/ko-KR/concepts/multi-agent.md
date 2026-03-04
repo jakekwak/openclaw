@@ -130,9 +130,23 @@ openclaw agents list --bindings
 같은 계층에서 여러 바인딩이 일치하는 경우, 설정 순서에서 첫 번째 항목이 우선합니다.
 바인딩이 여러 매칭 필드를 설정한 경우 (예: `peer` + `guildId`), 모든 지정된 필드가 필요합니다 (`AND` 의미).
 
+중요한 계정 스코프 세부 사항:
+
+- `accountId`를 생략한 바인딩은 기본 계정에만 매칭됩니다.
+- 모든 계정을 아우르는 채널 전체 폴백은 `accountId: "*"`를 사용하세요.
+- 나중에 같은 에이전트에 대해 동일한 바인딩을 명시적 계정 ID와 함께 추가하면, OpenClaw는 중복 생성 대신 기존 채널 전용 바인딩을 계정 스코프로 업그레이드합니다.
+
 ## 다중 계정 / 전화번호
 
 다수의 계정을 지원하는 채널 (예: WhatsApp)은 `accountId`를 사용하여 각 로그인을 식별합니다. 각 `accountId`는 다른 에이전트로 라우팅될 수 있으므로, 하나의 서버가 세션 섞임 없이 여러 전화번호를 호스트할 수 있습니다.
+
+`accountId`가 생략되었을 때 채널 전체 기본 계정을 원하면, `channels.<channel>.defaultAccount`(선택 사항)를 설정하세요. 설정하지 않으면 OpenClaw는 `default`가 있을 때 이를 사용하고, 없으면 정렬된 첫 번째 계정 ID로 폴백합니다.
+
+이 패턴을 지원하는 대표 채널:
+
+- `whatsapp`, `telegram`, `discord`, `slack`, `signal`, `imessage`
+- `irc`, `line`, `googlechat`, `mattermost`, `matrix`, `nextcloud-talk`
+- `bluebubbles`, `zalo`, `zalouser`, `nostr`, `feishu`
 
 ## 개념
 

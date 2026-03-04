@@ -24,7 +24,7 @@ title: "기능"
     웹 제어 UI 및 macOS 동반 앱.
   </Card>
   <Card title="모바일 노드" icon="smartphone">
-    Canvas 지원 iOS 및 Android 노드.
+    페어링, voice/chat, 풍부한 디바이스 명령을 갖춘 iOS/Android 노드.
   </Card>
 </Columns>
 
@@ -44,8 +44,8 @@ title: "기능"
 - 이미지, 오디오 및 문서에 대한 미디어 지원
 - 선택적 음성 메모 전사 훅
 - WebChat 및 macOS 메뉴 막대 앱
-- 페어링 및 Canvas 표면을 지원하는 iOS 노드
-- 페어링, Canvas, 채팅 및 카메라를 지원하는 Android 노드
+- iOS 노드: 페어링, Canvas, 카메라, 화면 녹화, 위치, 음성 기능 지원
+- Android 노드: 페어링, Connect 탭, chat 세션, voice 탭, Canvas/카메라/화면, 그리고 device/notifications/contacts/calendar/motion/photos/SMS/app update 명령 지원
 
 <Note>
 기존 Claude, Codex, Gemini 및 Opencode 경로가 제거되었습니다. Pi는 유일한 코딩 에이전트 경로입니다.

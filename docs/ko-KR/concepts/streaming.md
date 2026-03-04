@@ -101,7 +101,7 @@ Model output
 
 Telegram은 실시간 미리보기 스트리밍을 지원하는 유일한 채널입니다:
 
-- Bot API `sendMessage` (첫 번째 업데이트) 및 `editMessageText` (후속 업데이트)를 사용합니다.
+- 가능할 때 DM에서는 Bot API `sendMessageDraft`를 사용하고, 그룹/토픽 미리보기 업데이트에는 `sendMessage` + `editMessageText`를 사용합니다.
 - `channels.telegram.streamMode: "partial" | "block" | "off"`.
   - `partial`: 최신 스트림 텍스트로 미리보기를 업데이트합니다.
   - `block`: 청크된 블록에서 미리보기를 업데이트합니다 (동일한 청크 규칙).

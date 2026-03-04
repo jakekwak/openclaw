@@ -152,6 +152,12 @@ openclaw gateway
     - `dm.groupEnabled` (그룹 DM의 기본값 false)
     - `dm.groupChannels` (선택 사항 MPIM allowlist)
 
+    다중 계정 우선순위:
+
+    - `channels.slack.accounts.default.allowFrom`은 `default` 계정에만 적용됩니다.
+    - 이름이 있는 계정은 자체 `allowFrom`이 설정되지 않은 경우 `channels.slack.allowFrom`을 상속합니다.
+    - 이름이 있는 계정은 `channels.slack.accounts.default.allowFrom`을 상속하지 않습니다.
+
     다이렉트 메시지의 페어링은 `openclaw pairing approve slack <code>`를 사용합니다.
 
   </Tab>
@@ -202,7 +208,8 @@ openclaw gateway
 
 - 네이티브 명령어 자동 모드는 Slack에 대해 **비활성화**되어 있습니다 (`commands.native: "auto"`는 Slack 네이티브 명령어를 활성화하지 않음).
 - `channels.slack.commands.native: true` (혹은 글로벌 `commands.native: true`)로 Slack 네이티브 명령어 핸들러를 활성화하세요.
-- 네이티브 명령어가 활성화되면, Slack에 일치하는 슬래시 명령어를 등록하세요 (`/<command>` 이름).
+- 네이티브 명령어가 활성화되면, Slack에 일치하는 슬래시 명령어를 등록하세요 (`/<command>` 이름). 단, 예외가 하나 있습니다:
+  - status 명령어에는 `/agentstatus`를 등록하세요 (Slack이 `/status`를 예약함).
 - 네이티브 명령어가 활성화되지 않은 경우, `channels.slack.slashCommand`를 통해 단일 구성된 슬래시 명령어를 실행할 수 있습니다.
 - 네이티브 인수 메뉴는 다음과 같이 렌더링 전략에 적응합니다:
   - 최대 5개 옵션: 버튼 블록
@@ -352,7 +359,11 @@ Slack 조작은 `channels.slack.actions.*`로 제어됩니다.
         "channels:read",
         "groups:history",
         "im:history",
+        "im:read",
+        "im:write",
         "mpim:history",
+        "mpim:read",
+        "mpim:write",
         "users:read",
         "app_mentions:read",
         "assistant:write",

@@ -152,11 +152,17 @@ title: "세션 도구"
 - `agentId?` (옵션; 허용되면 다른 에이전트 id 아래에서 생성)
 - `model?` (옵션; 하위 에이전트 모델 재정의; 잘못된 값은 오류 발생)
 - `runTimeoutSeconds?` (기본값 0; 설정되면 하위 에이전트 실행이 N초 후에 중단됨)
+- `thread?` (기본값 false; 채널/플러그인이 지원하면 스폰을 스레드 바인딩 라우팅으로 요청)
+- `mode?` (`run|session`; 기본값은 `run`, 단 `thread=true`일 때 기본값은 `session`; `mode="session"`은 `thread=true` 필요)
 - `cleanup?` (`delete|keep`, 기본값 `keep`)
+- `sandbox?` (`inherit|require`, 기본값 `inherit`; `require`는 대상 child 런타임이 샌드박스가 아니면 spawn 거부)
+- `attachments?` (선택적 인라인 파일 배열; subagent 런타임만 지원, ACP는 거부). 각 항목: `{ name, content, encoding?: "utf8" | "base64", mimeType? }`. 파일은 child workspace의 `.openclaw/attachments/<uuid>/`에 materialize되며 파일별 sha256 receipt를 반환합니다.
+- `attachAs?` (선택적; `{ mountPath? }` 힌트, 향후 마운트 구현용 예약)
 
 허용 목록:
 
 - `agents.list[].subagents.allowAgents`: `agentId`를 통해 허용되는 에이전트 ids 목록 (`["*"]`은 모두 허용). 기본값: 요청자 에이전트만.
+- 샌드박스 상속 가드: 요청자 세션이 샌드박스 상태이면 `sessions_spawn`은 비샌드박스 대상 런타임을 거부합니다.
 
 디바이스 검색:
 

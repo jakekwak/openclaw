@@ -4,8 +4,8 @@
 
 ## 문서
 
-- [위협 모델](./THREAT-MODEL-ATLAS.md) - OpenClaw 생태계를 위한 MITRE ATLAS 기반 위협 모델
-- [위협 모델 기여하기](./CONTRIBUTING-THREAT-MODEL.md) - 위협, 완화책, 공격 체인을 추가하는 방법
+- [위협 모델](/ko-KR/security/THREAT-MODEL-ATLAS) - OpenClaw 생태계를 위한 MITRE ATLAS 기반 위협 모델
+- [위협 모델 기여하기](/ko-KR/security/CONTRIBUTING-THREAT-MODEL) - 위협, 완화책, 공격 체인을 추가하는 방법
 
 ## 취약성 보고
 
