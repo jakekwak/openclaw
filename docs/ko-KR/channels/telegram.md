@@ -116,6 +116,7 @@ openclaw pairing approve telegram <CODE>
     `channels.telegram.allowFrom`은 Telegram 사용자 ID를 숫자로 받습니다. `telegram:` / `tg:` 접두사는 허용되고 정규화됩니다.
     온보딩 마법사는 `@username` 입력을 허용하고 숫자 ID로 변환합니다.
     업그레이드했으며 구성에 `@username` 허용 목록 항목이 있는 경우, `openclaw doctor --fix`를 실행하여 이를 해결하세요 (최대한의 노력; Telegram 봇 토큰 필요).
+    한 명의 소유자만 사용하는 봇이라면 과거 페어링 승인 기록에 기대기보다 숫자 `allowFrom` ID를 명시한 `dmPolicy: "allowlist"`를 권장합니다.
 
     ### Telegram 사용자 ID 찾기
 
@@ -440,6 +441,63 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
     - 입력 작업은 여전히 ​​`message_thread_id`를 포함합니다
 
     주제 상속: 주제 항목은 재정의되지 않는 한 그룹 설정을 상속합니다 (`requireMention`, `allowFrom`, `skills`, `systemPrompt`, `enabled`, `groupPolicy`).
+    `agentId`는 주제 전용 필드이며 그룹 기본값에서 상속되지 않습니다.
+
+    **주제별 에이전트 라우팅**
+
+    각 주제는 `agentId`를 통해 다른 에이전트로 라우팅할 수 있으며, 이 경우 주제마다 고유한 워크스페이스, 메모리, 세션을 갖습니다.
+
+```json5
+{
+  channels: {
+    telegram: {
+      groups: {
+        "-1001234567890": {
+          topics: {
+            "1": { agentId: "main" },
+            "3": { agentId: "zu" },
+            "5": { agentId: "coder" },
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+    예를 들어 주제 `3`의 세션 키는 `agent:zu:telegram:group:-1001234567890:topic:3`가 됩니다.
+
+    **영속 ACP 주제 바인딩**
+
+    포럼 주제는 최상위 typed ACP 바인딩으로 ACP harness 세션에 고정할 수 있습니다.
+
+    - `bindings[]`에 `type: "acp"` 사용
+    - `match.channel: "telegram"` 사용
+
+```json5
+{
+  bindings: [
+    {
+      type: "acp",
+      agentId: "codex",
+      match: {
+        channel: "telegram",
+        accountId: "default",
+        peer: { kind: "group", id: "-1001234567890:topic:42" },
+      },
+    },
+  ],
+}
+```
+
+    현재 이 기능은 그룹/슈퍼그룹의 포럼 주제 범위에 한정됩니다.
+
+    **채팅에서 스레드 바인딩 ACP 생성**
+
+    - `/acp spawn <agent> --thread here|auto`로 현재 Telegram 주제를 새 ACP 세션에 바인딩할 수 있습니다.
+    - 이후 주제 메시지는 `/acp steer` 없이 해당 ACP 세션으로 직접 라우팅됩니다.
+    - 바인딩 성공 후 OpenClaw가 확인 메시지를 해당 주제 안에 pin 합니다.
+    - `channels.telegram.threadBindings.spawnAcpSessions=true`가 필요합니다.
 
     템플릿 컨텍스트 포함:
 
@@ -632,7 +690,7 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
   <Accordion title="제한사항, 재시도 및 CLI 대상">
     - `channels.telegram.textChunkLimit` 기본은 4000입니다.
     - `channels.telegram.chunkMode="newline"`은 길이 분할 전에 단락 경계를 (빈 줄) 선호합니다.
-    - `channels.telegram.mediaMaxMb` (기본값 5)는 수신 Telegram 미디어 다운로드/처리 크기를 제한합니다.
+    - `channels.telegram.mediaMaxMb` (기본값 100)는 수신/발신 Telegram 미디어 크기를 제한합니다.
     - `channels.telegram.timeoutSeconds`는 Telegram API 클라이언트 타임아웃을 재정의합니다 (설정되지 않으면 grammY 기본값이 적용됩니다).
     - 그룹 컨텍스트 히스토리는 `channels.telegram.historyLimit` 또는 `messages.groupChat.historyLimit`을 사용합니다 (기본값 50); `0`은 비활성화.
     - DM 히스토리 컨트롤:
@@ -646,6 +704,28 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
 openclaw message send --channel telegram --target 123456789 --message "hi"
 openclaw message send --channel telegram --target @name --message "hi"
 ```
+
+    Telegram poll은 `openclaw message poll`로 전송하며 포럼 주제도 지원합니다.
+
+```bash
+openclaw message poll --channel telegram --target 123456789 \
+  --poll-question "Ship it?" --poll-option "Yes" --poll-option "No"
+openclaw message poll --channel telegram --target -1001234567890:topic:42 \
+  --poll-question "Pick a time" --poll-option "10am" --poll-option "2pm" \
+  --poll-duration-seconds 300 --poll-public
+```
+
+    Telegram 전용 poll 플래그:
+
+    - `--poll-duration-seconds` (5-600)
+    - `--poll-anonymous`
+    - `--poll-public`
+    - 포럼 주제용 `--thread-id` (또는 `:topic:` 타깃 사용)
+
+    액션 게이팅:
+
+    - `channels.telegram.actions.sendMessage=false`는 poll을 포함한 발신 Telegram 메시지를 비활성화합니다.
+    - `channels.telegram.actions.poll=false`는 일반 전송은 유지하면서 poll 생성만 막습니다.
 
   </Accordion>
 </AccordionGroup>
@@ -737,17 +817,20 @@ dig +short api.telegram.org AAAA
   - `channels.telegram.groups.<id>.allowFrom`: 그룹별 발신자 허용 목록 오버라이드.
   - `channels.telegram.groups.<id>.systemPrompt`: 그룹에 대한 추가 시스템 프롬프트.
   - `channels.telegram.groups.<id>.enabled`: 그룹을 비활성화할 때 `false`.
-  - `channels.telegram.groups.<id>.topics.<threadId>.*`: 주제별 오버라이드 (그룹과 동일한 필드).
+  - `channels.telegram.actions.poll`: Telegram poll 생성 허용/비활성화 (기본값: 활성화, 단 `sendMessage`도 필요).
+  - `channels.telegram.groups.<id>.topics.<threadId>.*`: 주제별 오버라이드 (그룹 필드 + 주제 전용 `agentId`).
+  - `channels.telegram.groups.<id>.topics.<threadId>.agentId`: 이 주제를 특정 에이전트로 라우팅합니다.
   - `channels.telegram.groups.<id>.topics.<threadId>.groupPolicy`: 주제별 groupPolicy 오버라이드 (`open | allowlist | disabled`).
   - `channels.telegram.groups.<id>.topics.<threadId>.requireMention`: 주제별 언급 게이팅 오버라이드.
+  - 최상위 `bindings[]`에서 `type: "acp"`와 canonical topic id(`chatId:topic:topicId`)를 `match.peer.id`에 쓰면 영속 ACP 주제 바인딩을 구성할 수 있습니다.
 - `channels.telegram.capabilities.inlineButtons`: `off | dm | group | all | allowlist` (기본값: allowlist).
 - `channels.telegram.accounts.<account>.capabilities.inlineButtons`: 계정별 오버라이드.
 - `channels.telegram.replyToMode`: `off | first | all` (기본값: `off`).
 - `channels.telegram.textChunkLimit`: 아웃바운드 청크 크기 (문자 수).
 - `channels.telegram.chunkMode`: `length` (기본값) 또는 `newline`으로 빈 줄 (단락 경계)로 분할하려면.
 - `channels.telegram.linkPreview`: 아웃바운드 메시지 링크 미리보기 토글 (기본: true).
-- `channels.telegram.streamMode`: `off | partial | block` (라이브 스트림 미리보기).
-- `channels.telegram.mediaMaxMb`: 인바운드/아웃바운드 미디어 한도 (MB).
+- `channels.telegram.streamMode`: `off | partial | block` (라이브 스트림 미리보기). Telegram 미리보기 스트리밍은 하나의 미리보기 메시지를 in-place로 편집합니다.
+- `channels.telegram.mediaMaxMb`: 인바운드/아웃바운드 Telegram 미디어 한도 (MB, 기본값 `100`).
 - `channels.telegram.retry`: 아웃바운드 Telegram API 호출에 대한 재시도 정책 (시도 횟수, minDelayMs, maxDelayMs, 지터).
 - `channels.telegram.network.autoSelectFamily`: Node autoSelectFamily 재정의 (true=활성화, false=비활성화). Node 22+에서 기본적으로 활성화되며, WSL2는 기본적으로 비활성화됩니다.
 - `channels.telegram.network.dnsResultOrder`: DNS 결과 순서 재정의 (`ipv4first` 또는 `verbatim`). Node 22+에서 기본값은 `ipv4first`.
@@ -768,7 +851,7 @@ dig +short api.telegram.org AAAA
 Telegram 전용 특징적 필드:
 
 - 시작/인증: `enabled`, `botToken`, `tokenFile`, `accounts.*`
-- 액세스 제어: `dmPolicy`, `allowFrom`, `groupPolicy`, `groupAllowFrom`, `groups`, `groups.*.topics.*`
+- 액세스 제어: `dmPolicy`, `allowFrom`, `groupPolicy`, `groupAllowFrom`, `groups`, `groups.*.topics.*`, 최상위 `bindings[]` (`type: "acp"`)
 - 명령/메뉴: `commands.native`, `customCommands`
 - 스레딩/응답: `replyToMode`
 - 스트리밍: `streamMode` (미리보기), `draftChunk`, `blockStreaming`

@@ -45,7 +45,7 @@ title: "기능"
 - 선택적 음성 메모 전사 훅
 - WebChat 및 macOS 메뉴 막대 앱
 - iOS 노드: 페어링, Canvas, 카메라, 화면 녹화, 위치, 음성 기능 지원
-- Android 노드: 페어링, Connect 탭, chat 세션, voice 탭, Canvas/카메라/화면, 그리고 device/notifications/contacts/calendar/motion/photos/SMS/app update 명령 지원
+- Android 노드: 페어링, Connect 탭, chat 세션, voice 탭, Canvas/카메라, 그리고 device/notifications/contacts/calendar/motion/photos/SMS 명령 지원
 
 <Note>
 기존 Claude, Codex, Gemini 및 Opencode 경로가 제거되었습니다. Pi는 유일한 코딩 에이전트 경로입니다.

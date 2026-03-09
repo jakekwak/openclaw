@@ -308,7 +308,8 @@ OpenClaw는 가능하면 별도의 번호에서 WhatsApp을 실행하는 것을 
 
   <Accordion title="미디어 크기 제한 및 대체 동작">
     - 인바운드 미디어 저장 한도: `channels.whatsapp.mediaMaxMb` (기본값 `50MB`)
-    - 자동 응답 아웃바운드 미디어 한도: `agents.defaults.mediaMaxMb` (기본값 `5MB`)
+    - 아웃바운드 미디어 전송 상한: `channels.whatsapp.mediaMaxMb` (기본값 `50`)
+    - 계정별 재정의: `channels.whatsapp.accounts.<accountId>.mediaMaxMb`
     - 이미지의 경우 제한을 맞추기 위해 자동으로 최적화됩니다 (크기 조정/품질 조정).
     - 미디어 전송 실패 시, 첫 번째 항목 대체 전송은 경고 텍스트를 보냅니다 (응답을 조용히 드롭하지 않습니다).
   </Accordion>

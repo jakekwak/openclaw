@@ -24,11 +24,14 @@ title: "온보딩 및 설정 프로토콜"
 - `wizard.cancel` 매개변수: `{ sessionId }`
 - `wizard.status` 매개변수: `{ sessionId }`
 - `config.schema` 매개변수: `{}`
+- `config.schema.lookup` 매개변수: `{ path }`
+  - `path`는 표준 config segment와 slash-delimited 플러그인 ID를 모두 허용합니다. 예: `plugins.entries.pack/one.config`
 
 응답 형태
 
 - 마법사: `{ sessionId, done, step?, status?, error? }`
 - 설정 스키마: `{ schema, uiHints, version, generatedAt }`
+- 설정 스키마 lookup: `{ path, schema, hint?, hintPath?, children[] }`
 
 ## UI 힌트
 

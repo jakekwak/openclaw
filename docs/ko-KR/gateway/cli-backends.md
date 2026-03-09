@@ -32,7 +32,7 @@ openclaw agent --message "hi" --model claude-cli/opus-4.6
 Codex CLI도 바로 동작합니다:
 
 ```bash
-openclaw agent --message "hi" --model codex-cli/gpt-5.3-codex
+openclaw agent --message "hi" --model codex-cli/gpt-5.4
 ```
 
 게이트웨이가 launchd/systemd 하에서 실행되고 PATH가 최소화된 경우, 명령어 경로만 추가하면 됩니다:
@@ -181,8 +181,8 @@ OpenClaw는 base64 이미지를 임시 파일에 씁니다. `imageArg`가 설정
 OpenClaw는 `claude-cli`에 대한 기본값을 내장합니다:
 
 - `command: "claude"`
-- `args: ["-p", "--output-format", "json", "--dangerously-skip-permissions"]`
-- `resumeArgs: ["-p", "--output-format", "json", "--dangerously-skip-permissions", "--resume", "{sessionId}"]`
+- `args: ["-p", "--output-format", "json", "--permission-mode", "bypassPermissions"]`
+- `resumeArgs: ["-p", "--output-format", "json", "--permission-mode", "bypassPermissions", "--resume", "{sessionId}"]`
 - `modelArg: "--model"`
 - `systemPromptArg: "--append-system-prompt"`
 - `sessionArg: "--session-id"`

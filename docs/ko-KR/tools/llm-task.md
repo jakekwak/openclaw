@@ -51,9 +51,9 @@ title: "LLM Task"
         "enabled": true,
         "config": {
           "defaultProvider": "openai-codex",
-          "defaultModel": "gpt-5.2",
+          "defaultModel": "gpt-5.4",
           "defaultAuthProfileId": "main",
-          "allowedModels": ["openai-codex/gpt-5.3-codex"],
+          "allowedModels": ["openai-codex/gpt-5.4"],
           "maxTokens": 800,
           "timeoutMs": 30000
         }

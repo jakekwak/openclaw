@@ -90,7 +90,7 @@ openclaw hooks info session-memory
   출처: openclaw-bundled
   경로: /path/to/openclaw/hooks/bundled/session-memory/HOOK.md
   핸들러: /path/to/openclaw/hooks/bundled/session-memory/handler.ts
-  홈페이지: https://docs.openclaw.ai/automation/hooks#session-memory
+  홈페이지: https://docs.openclaw.kr/ko-KR/automation/hooks#session-memory
   이벤트: command:new
 
 요구 사항:

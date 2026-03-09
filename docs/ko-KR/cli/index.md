@@ -18,6 +18,7 @@ title: "CLI 참조"
 - [`config`](/ko-KR/cli/config)
 - [`doctor`](/ko-KR/cli/doctor)
 - [`dashboard`](/ko-KR/cli/dashboard)
+- [`backup`](/ko-KR/cli/backup)
 - [`reset`](/ko-KR/cli/reset)
 - [`uninstall`](/ko-KR/cli/uninstall)
 - [`update`](/ko-KR/cli/update)
@@ -95,6 +96,9 @@ openclaw [--dev] [--profile <name>] <command>
     set
     unset
   doctor
+  backup
+    create
+    verify
   security
     audit
   reset
@@ -327,6 +331,7 @@ openclaw [--dev] [--profile <name>] <command>
 - `--gateway-bind <loopback|lan|tailnet|auto|custom>`
 - `--gateway-auth <token|password>`
 - `--gateway-token <token>`
+- `--gateway-token-ref-env <name>` (비대화형; `gateway.auth.token`을 env SecretRef로 저장하며 해당 환경 변수가 설정돼 있어야 함; `--gateway-token`과 함께 사용할 수 없음)
 - `--gateway-password <password>`
 - `--remote-url <url>`
 - `--remote-token <token>`
@@ -934,6 +939,11 @@ openclaw models status
 - `node uninstall`
 - `node stop`
 - `node restart`
+
+인증 참고:
+
+- `node`는 `--token`/`--password` 플래그 없이 env/config에서 게이트웨이 인증을 해석합니다: `OPENCLAW_GATEWAY_TOKEN` / `OPENCLAW_GATEWAY_PASSWORD`, 그다음 `gateway.auth.*`, 필요 시 `gateway.remote.*`도 지원합니다.
+- 레거시 `CLAWDBOT_GATEWAY_*` 환경 변수는 node-host 인증 해석에서 의도적으로 무시됩니다.
 
 ## 노드
 

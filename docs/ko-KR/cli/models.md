@@ -78,3 +78,4 @@ openclaw models auth paste-token
 - `setup-token`은 설정 토큰 값을 묻습니다 (어떤 기계에서든 `claude setup-token`으로 생성하세요).
 - `paste-token`은 다른 곳에서 생성된 토큰 문자열이나 자동화에서 생성된 토큰 문자열을 허용합니다.
 - Anthropic 정책 참고: setup-token 지원은 기술적 호환성입니다. Anthropic은 과거 Claude Code 외부에서 일부 구독 사용을 차단한 적이 있으므로, 광범위하게 사용하기 전에 최신 약관을 확인하세요.
+- `models status`의 인증 출력에서는 비밀이 아닌 플레이스홀더를 비밀처럼 마스킹하지 않고 `marker(<value>)` 형태로 표시할 수 있습니다. 예: `OPENAI_API_KEY`, `secretref-managed`, `minimax-oauth`, `qwen-oauth`, `ollama-local`

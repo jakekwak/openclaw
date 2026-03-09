@@ -1001,7 +1001,8 @@
                   "ko-KR/tools/browser",
                   "ko-KR/tools/browser-login",
                   "ko-KR/tools/chrome-extension",
-                  "ko-KR/tools/browser-linux-troubleshooting"
+                  "ko-KR/tools/browser-linux-troubleshooting",
+                  "ko-KR/tools/browser-wsl2-windows-remote-cdp-troubleshooting"
                 ]
               },
               {
@@ -1221,6 +1222,7 @@
                   "ko-KR/cli/agent",
                   "ko-KR/cli/agents",
                   "ko-KR/cli/approvals",
+                  "ko-KR/cli/backup",
                   "ko-KR/cli/browser",
                   "ko-KR/cli/channels",
                   "ko-KR/cli/configure",

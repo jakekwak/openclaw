@@ -718,6 +718,71 @@ Discord 길드 멤버를 역할 ID에 따라 다른 에이전트로 라우팅하
 
   </Accordion>
 
+  <Accordion title="지속형 ACP 채널 바인딩">
+    항상 유지되는 ACP 워크스페이스가 필요하면, Discord 대화를 대상으로 하는 최상위 typed ACP 바인딩을 설정할 수 있습니다.
+
+    설정 경로:
+
+    - `bindings[]`에 `type: "acp"` 및 `match.channel: "discord"` 사용
+
+    예시:
+
+```json5
+{
+  agents: {
+    list: [
+      {
+        id: "codex",
+        runtime: {
+          type: "acp",
+          acp: {
+            agent: "codex",
+            backend: "acpx",
+            mode: "persistent",
+            cwd: "/workspace/openclaw",
+          },
+        },
+      },
+    ],
+  },
+  bindings: [
+    {
+      type: "acp",
+      agentId: "codex",
+      match: {
+        channel: "discord",
+        accountId: "default",
+        peer: { kind: "channel", id: "222222222222222222" },
+      },
+      acp: { label: "codex-main" },
+    },
+  ],
+  channels: {
+    discord: {
+      guilds: {
+        "111111111111111111": {
+          channels: {
+            "222222222222222222": {
+              requireMention: false,
+            },
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+    참고:
+
+    - 스레드 메시지는 상위 채널의 ACP 바인딩을 상속할 수 있습니다.
+    - 바인딩된 채널이나 스레드에서 `/new`, `/reset`은 같은 ACP 세션을 그 자리에서 재설정합니다.
+    - 임시 스레드 바인딩도 계속 동작하며, 활성 상태에서는 대상 해석을 덮어쓸 수 있습니다.
+
+    자세한 바인딩 동작은 [ACP Agents](/ko-KR/tools/acp-agents)를 참조하십시오.
+
+  </Accordion>
+
   <Accordion title="Gateway proxy">
     Discord 게이트웨이 웹소켓 트래픽과 시작 REST 조회 (애플리케이션 ID + 허용 목록 해상도)를 HTTP(S) 프록시를 통해 라우팅하세요 `channels.discord.proxy`.
 
@@ -1045,7 +1110,7 @@ High-signal Discord fields:
 - actions: `actions.*`
 - presence: `activity`, `status`, `activityType`, `activityUrl`
 - UI: `ui.components.accentColor`
-- features: `pluralkit`, `execApprovals`, `intents`, `agentComponents`, `heartbeat`, `responsePrefix`
+- features: `threadBindings`, 최상위 `bindings[]` (`type: "acp"`), `pluralkit`, `execApprovals`, `intents`, `agentComponents`, `heartbeat`, `responsePrefix`
 
 ## Safety and operations
 

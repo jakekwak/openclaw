@@ -153,6 +153,8 @@ title: "컨텍스트"
 
 문서: [세션](/ko-KR/concepts/session), [요약](/ko-KR/concepts/compaction), [세션 가지치기](/ko-KR/concepts/session-pruning).
 
+기본적으로 OpenClaw는 컨텍스트 조립과 compaction에 내장 `legacy` context engine을 사용합니다. `kind: "context-engine"`를 제공하는 플러그인을 설치하고 `plugins.slots.contextEngine`으로 선택하면, OpenClaw는 컨텍스트 조립, `/compact`, 관련 subagent context lifecycle hook을 그 엔진에 위임합니다.
+
 ## `/context`가 실제로 보고하는 것
 
 `/context`는 가능할 경우 최신 **실행 빌드** 시스템 프롬프트 보고서를 선호합니다:

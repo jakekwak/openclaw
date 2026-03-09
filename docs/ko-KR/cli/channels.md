@@ -47,6 +47,7 @@ openclaw channels logout --channel whatsapp
 - 전반적인 탐색을 위해 `openclaw status --deep`을 실행하세요.
 - 안내된 수정 방법을 위해 `openclaw doctor`를 사용하세요.
 - `openclaw channels list`는 `Claude: HTTP 403 ... user:profile`을 출력합니다 → 사용 스냅샷에는 `user:profile` 스코프가 필요합니다. `--no-usage`를 사용하거나, claude.ai 세션 키 (`CLAUDE_WEB_SESSION_KEY` / `CLAUDE_WEB_COOKIE`)를 제공하거나, Claude Code CLI를 통해 다시 인증하세요.
+- `openclaw channels status`는 게이트웨이에 연결할 수 없을 때 config-only 요약으로 폴백합니다. 지원 채널 자격 증명이 SecretRef로 구성돼 있지만 현재 명령 경로에서 사용할 수 없는 경우, 미구성으로 표시하지 않고 degraded 메모와 함께 configured 상태로 보고합니다.
 
 ## 기능 탐색
 
@@ -77,3 +78,4 @@ openclaw channels resolve --channel matrix "Project Room"
 
 - `--kind user|group|auto`를 사용하여 대상 유형을 강제로 지정하세요.
 - 여러 항목이 같은 이름을 공유할 경우 매칭된 활성 항목을 우선합니다.
+- `channels resolve`는 읽기 전용입니다. 선택한 계정이 SecretRef로 구성돼 있지만 현재 명령 경로에서 해당 자격 증명을 사용할 수 없는 경우, 전체 실행을 중단하지 않고 메모가 포함된 degraded unresolved 결과를 반환합니다.

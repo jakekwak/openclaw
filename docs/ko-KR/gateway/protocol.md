@@ -148,6 +148,8 @@ title: "게이트웨이 프로토콜"
 - `operator.approvals`
 - `operator.pairing`
 
+메서드 범위는 첫 번째 관문일 뿐입니다. `chat.send`를 통해 도달하는 일부 슬래시 명령어는 그 위에 더 엄격한 명령 수준 검사를 적용합니다. 예를 들어 영구적인 `/config set`과 `/config unset` 쓰기 작업은 `operator.admin`이 필요합니다.
+
 ### Caps/commands/permissions (node)
 
 노드는 연결 시 기능 클레임(capability claims)을 선언합니다:

@@ -201,6 +201,7 @@ flowchart TD
     - [/gateway/troubleshooting#cron-and-heartbeat-delivery](/ko-KR/gateway/troubleshooting#cron-and-heartbeat-delivery)
     - [/automation/troubleshooting](/ko-KR/automation/troubleshooting)
     - [/gateway/heartbeat](/ko-KR/gateway/heartbeat)
+    - [/tools/browser-wsl2-windows-remote-cdp-troubleshooting](/ko-KR/tools/browser-wsl2-windows-remote-cdp-troubleshooting)
 
   </Accordion>
 

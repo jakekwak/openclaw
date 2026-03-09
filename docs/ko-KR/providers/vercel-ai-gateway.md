@@ -10,6 +10,8 @@ read_when:
 
 [Vercel AI 게이트웨이](https://vercel.com/ai-gateway)는 단일 엔드포인트를 통해 수백 개의 모델에 접근할 수 있는 통합 API를 제공합니다.
 
+- OpenClaw는 Gateway의 `/v1/models` 카탈로그를 자동 탐색하므로 `/models vercel-ai-gateway`에는 `vercel-ai-gateway/openai/gpt-5.4` 같은 최신 모델 ref가 포함됩니다.
+
 - 프로바이더: `vercel-ai-gateway`
 - 인증: `AI_GATEWAY_API_KEY`
 - API: Anthropic Messages 호환

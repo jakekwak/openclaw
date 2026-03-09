@@ -204,8 +204,44 @@ API 키로 인증할 수 있습니다.
 
 원격 CDP 팁:
 
-- 가능한 경우 HTTPS 엔드포인트와 단기 토큰을 선호하십시오.
+- 가능한 경우 암호화된 엔드포인트(HTTPS 또는 WSS)와 단기 토큰을 선호하십시오.
 - 장기 토큰을 설정 파일에 직접 포함하는 것을 피하십시오.
+
+## Direct WebSocket CDP providers
+
+일부 호스팅 브라우저 서비스는 표준 HTTP 기반 CDP discovery (`/json/version`) 대신 **직접 WebSocket** 엔드포인트를 제공합니다. OpenClaw는 두 방식을 모두 지원합니다.
+
+- **HTTP(S) 엔드포인트** (예: Browserless): OpenClaw가 `/json/version`을 호출해 WebSocket debugger URL을 찾은 뒤 연결합니다.
+- **WebSocket 엔드포인트** (`ws://` / `wss://`): OpenClaw가 `/json/version`을 건너뛰고 바로 연결합니다. [Browserbase](https://www.browserbase.com) 같은 서비스나 WebSocket URL을 직접 주는 제공자에 사용합니다.
+
+### Browserbase
+
+[Browserbase](https://www.browserbase.com)는 CAPTCHA 해결, stealth mode, residential proxy가 내장된 클라우드 헤드리스 브라우저 플랫폼입니다.
+
+```json5
+{
+  browser: {
+    enabled: true,
+    defaultProfile: "browserbase",
+    remoteCdpTimeoutMs: 3000,
+    remoteCdpHandshakeTimeoutMs: 5000,
+    profiles: {
+      browserbase: {
+        cdpUrl: "wss://connect.browserbase.com?apiKey=<BROWSERBASE_API_KEY>",
+        color: "#F97316",
+      },
+    },
+  },
+}
+```
+
+참고:
+
+- [가입](https://www.browserbase.com/sign-up) 후 [Overview 대시보드](https://www.browserbase.com/overview)에서 **API Key**를 복사하십시오.
+- `<BROWSERBASE_API_KEY>`를 실제 Browserbase API 키로 바꾸십시오.
+- Browserbase는 WebSocket 연결 시 브라우저 세션을 자동 생성하므로 별도 수동 세션 생성 단계가 필요 없습니다.
+- 무료 요금제는 동시 세션 1개와 월 1 브라우저 시간까지 허용합니다. 유료 제한은 [pricing](https://www.browserbase.com/pricing)을 참조하십시오.
+- 전체 API 참조, SDK 안내, 통합 예시는 [Browserbase docs](https://docs.browserbase.com)를 확인하십시오.
 
 ## 프로파일 (다중 브라우저)
 
@@ -238,6 +274,22 @@ OpenClaw는 로컬 CDP 릴레이 + Chrome 확장을 통해 **기존 Chrome 탭**
 - 에이전트는 `browser` 도구를 통해 올바른 프로파일을 선택하여 해당 탭을 제어합니다.
 
 게이트웨이가 다른 곳에서 실행되면, 게이트웨이가 브라우저 동작을 좀 더 자유롭게 프록시할 수 있도록 브라우저 기계에서 노드 호스트를 실행하십시오.
+
+노트:
+
+- 기본값으로 릴레이는 loopback 전용으로 두십시오. 다른 네트워크 네임스페이스에서 릴레이에 접근해야 한다면 (예: Gateway는 WSL2, Chrome은 Windows) `browser.relayBindHost`를 `0.0.0.0` 같은 명시적 바인드 주소로 설정하되, 주변 네트워크는 비공개와 인증 상태를 유지해야 합니다.
+
+WSL2 / cross-namespace 예시:
+
+```json5
+{
+  browser: {
+    enabled: true,
+    relayBindHost: "0.0.0.0",
+    defaultProfile: "chrome",
+  },
+}
+```
 
 ### 샌드박스 세션
 
@@ -579,6 +631,9 @@ JSON에서의 역할 스냅샷은 `refs` 및 작은 `stats` 블록 (lines/chars/
 
 Linux 전용 문제 (특히 스냅 Chromium) 관련하여,
 [브라우저 문제 해결](/ko-KR/tools/browser-linux-troubleshooting)을 참조하십시오.
+
+WSL2 Gateway + Windows Chrome split-host 구성은
+[WSL2 + Windows + 원격 Chrome CDP 문제 해결](/ko-KR/tools/browser-wsl2-windows-remote-cdp-troubleshooting)을 참조하십시오.
 
 ## 에이전트 도구 및 제어 방법
 

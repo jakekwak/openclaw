@@ -23,6 +23,10 @@ MiniMax 는 M2.1에서 다음과 같은 개선 사항을 강조합니다:
 - 강력한 **도구/에이전트 프레임워크** 호환성과 컨텍스트 관리 (Claude Code, Droid/Factory AI, Cline, Kilo Code, Roo Code, BlackBox).
 - 고품질의 **대화 및 기술 문서 작성** 출력.
 
+## 현재 모델 ID
+
+- `MiniMax-M2.5` 또는 `MiniMax-M2.5-highspeed`를 사용하십시오.
+
 ## MiniMax M2.1 vs MiniMax M2.1 Lightning
 
 - **속도:** Lightning은 MiniMax의 가격 문서에서 "빠른" 변형입니다.

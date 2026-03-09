@@ -168,6 +168,7 @@ openclaw cron add \
 - `message`: 필수 텍스트 프롬프트.
 - `model` / `thinking`: 선택적 재정의 (아래 참조).
 - `timeoutSeconds`: 선택적 타임아웃 재정의.
+- `lightContext`: 워크스페이스 bootstrap 파일 주입이 필요 없는 작업을 위한 선택적 경량 bootstrap 모드.
 
 전달 구성:
 
@@ -212,6 +213,14 @@ announce 전달은 실행 시 메시징 도구 전송을 억제합니다; 채팅
 
 - `model`: 프로바이더/모델 문자열 (예: `anthropic/claude-sonnet-4-20250514`) 또는 별칭 (예: `opus`)
 - `thinking`: 사고 수준 (`off`, `minimal`, `low`, `medium`, `high`, `xhigh`; GPT-5.2 + 코덱스 모델에만 해당)
+
+### 경량 bootstrap 컨텍스트
+
+격리 작업(`agentTurn`)은 `lightContext: true`를 설정해 경량 bootstrap 컨텍스트로 실행할 수 있습니다.
+
+- 워크스페이스 bootstrap 파일 주입이 필요 없는 예약성 작업에 적합합니다.
+- 내부적으로는 임베디드 런타임이 `bootstrapContextMode: "lightweight"`로 실행되어, 크론 bootstrap 컨텍스트를 의도적으로 비워 둡니다.
+- CLI 대응 옵션: `openclaw cron add --light-context ...` 및 `openclaw cron edit --light-context`
 
 참고: 메인 세션 작업에 `model`을 설정할 수도 있지만, 이는 공유 메인 세션 모델을 변경합니다. 격리 작업에만 모델 재정의를 사용하는 것이 예기치 않은 컨텍스트 전환을 방지하는 데 권장됩니다.
 
@@ -552,6 +561,8 @@ openclaw cron edit <jobId> --clear-agent
 openclaw cron run <jobId>
 openclaw cron run <jobId> --due
 ```
+
+`cron.run`은 이제 작업이 끝난 뒤가 아니라 수동 실행이 큐에 들어간 시점에 바로 응답합니다. 성공적으로 큐잉되면 `{ ok: true, enqueued: true, runId }` 형태가 반환됩니다. 작업이 이미 실행 중이거나 `--due`에서 실행 대상이 없으면 `{ ok: true, ran: false, reason }` 형태를 유지합니다. 최종 완료 결과는 `openclaw cron runs --id <jobId>` 또는 `cron.runs` 게이트웨이 메서드로 확인하십시오.
 
 기존 작업 편집 (필드 수정):
 

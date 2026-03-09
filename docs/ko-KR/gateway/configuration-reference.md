@@ -138,7 +138,7 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
       },
       actions: { reactions: true, sendMessage: true },
       reactionNotifications: "own", // off | own | all
-      mediaMaxMb: 5,
+      mediaMaxMb: 100,
       retry: {
         attempts: 3,
         minDelayMs: 400,
@@ -160,6 +160,7 @@ WhatsApp 은 게이트웨이의 웹 채널 (Baileys Web) 을 통해 실행됩니
 
 - 봇 토큰: `channels.telegram.botToken` 또는 `channels.telegram.tokenFile`, 기본 계정의 경우 `TELEGRAM_BOT_TOKEN` 으로 대체합니다.
 - `configWrites: false` 는 Telegram 이 시작한 구성 쓰기를 차단합니다 (슈퍼그룹 ID 마이그레이션, `/config set|unset`).
+- 최상위 `bindings[]`의 `type: "acp"` 항목은 포럼 주제용 영속 ACP 바인딩을 구성합니다. `match.peer.id`에는 canonical `chatId:topic:topicId`를 사용합니다.
 - Telegram 스트림 미리보기는 `sendMessage` + `editMessageText` 사용 (다이렉트 및 그룹 채팅에서 작동).
 - 재시도 정책: [Retry policy](/ko-KR/concepts/retry) 를 참조하세요.
 
@@ -551,7 +552,7 @@ exec ssh -T gateway-host imsg "$@"
 - 채널별로 재정의: `channels.discord.commands.native` (bool 또는 `"auto"`). `false` 는 이전에 등록된 명령어를 모두 지웁니다.
 - `channels.telegram.customCommands` 는 추가적인 Telegram 봇 메뉴 항목을 추가합니다.
 - `bash: true` 는 호스트 셸에서 `! <cmd>` 를 활성화합니다. `tools.elevated.enabled` 와 발신자가 `tools.elevated.allowFrom.<channel>` 에 있어야 합니다.
-- `config: true` 는 `/config` 를 활성화합니다 ( `openclaw.json` 을 읽고 쓰기).
+- `config: true` 는 `/config` 를 활성화합니다 (`openclaw.json` 읽기/쓰기). 게이트웨이 `chat.send` 클라이언트의 경우 영속 `/config set|unset` 쓰기는 추가로 `operator.admin`이 필요하며, 읽기 전용 `/config show`는 일반 write-scope operator 클라이언트에도 계속 허용됩니다.
 - `channels.<provider>.configWrites` 는 채널 별로 구성 변경을 허용합니다 (기본값: true).
 - `allowFrom` 는 프로바이더별로 적용됩니다. 설정된 경우, 이는 **유일한** 권한 출처이며, 채널 허용 목록/페어링 및 `useAccessGroups` 는 무시됩니다.
 - `useAccessGroups: false` 는 명령어가 `allowFrom` 이 설정되지 않은 경우 접근 그룹 정책을 우회할 수 있도록 합니다.
@@ -690,14 +691,15 @@ exec ssh -T gateway-host imsg "$@"
 
 **내장된 별칭 단축키** (모델이 `agents.defaults.models` 에 있는 경우에만 적용):
 
-| 별칭           | 모델                            |
-| -------------- | ------------------------------- |
-| `opus`         | `anthropic/claude-opus-4-6`     |
-| `sonnet`       | `anthropic/claude-sonnet-4-5`   |
-| `gpt`          | `openai/gpt-5.2`                |
-| `gpt-mini`     | `openai/gpt-5-mini`             |
-| `gemini`       | `google/gemini-3-pro-preview`   |
-| `gemini-flash` | `google/gemini-3-flash-preview` |
+| 별칭                | 모델                                   |
+| ------------------- | -------------------------------------- |
+| `opus`              | `anthropic/claude-opus-4-6`            |
+| `sonnet`            | `anthropic/claude-sonnet-4-6`          |
+| `gpt`               | `openai/gpt-5.4`                       |
+| `gpt-mini`          | `openai/gpt-5-mini`                    |
+| `gemini`            | `google/gemini-3.1-pro-preview`        |
+| `gemini-flash`      | `google/gemini-3-flash-preview`        |
+| `gemini-flash-lite` | `google/gemini-3.1-flash-lite-preview` |
 
 구성된 별칭이 항상 기본값을 이깁니다.
 
@@ -750,6 +752,7 @@ Z.AI 모델은 도구 호출 스트리밍을 위해 기본적으로 `tool_stream
         every: "30m", // 0m 비활성화
         model: "openai/gpt-5.2-mini",
         includeReasoning: false,
+        lightContext: false,
         session: "main",
         to: "+15555550123",
         target: "none", // 기본값: none | 옵션: last | whatsapp | telegram | discord | ...
@@ -764,6 +767,7 @@ Z.AI 모델은 도구 호출 스트리밍을 위해 기본적으로 `tool_stream
 
 - `every`: 지속시간 문자열 (ms/s/m/h). 기본값: `30m`.
 - `suppressToolErrorWarnings`: true 인 경우, 하트비트 실행 중 도구 오류 경고 페이로드를 억제합니다.
+- `lightContext`: true이면 하트비트는 경량 bootstrap 컨텍스트를 사용하고 워크스페이스 bootstrap 파일 중 `HEARTBEAT.md`만 유지합니다.
 - 대상이 다이렉트로 분류될 수 있는 경우 (예: `user:<id>`, Telegram 사용자 채팅 ID, WhatsApp 직접 번호/JID), 하트비트는 다이렉트/DM 채팅 대상으로 전송되지 않습니다.
 - 에이전트별: `agents.list[].heartbeat` 를 설정합니다. 에이전트가 `heartbeat` 를 정의하면, **해당 에이전트만** 하트비트를 실행합니다.
 - 하트비트는 전체 에이전트 턴을 실행합니다 — 짧은 간격은 더 많은 토큰을 소모합니다.
@@ -777,6 +781,10 @@ Z.AI 모델은 도구 호출 스트리밍을 위해 기본적으로 `tool_stream
       compaction: {
         mode: "safeguard", // default | safeguard
         reserveTokensFloor: 24000,
+        identifierPolicy: "strict", // strict | off | custom
+        identifierInstructions: "배포 ID, 티켓 ID, host:port 쌍을 정확히 보존하세요.",
+        postCompactionSections: ["Session Startup", "Red Lines"], // [] 이면 reinjection 비활성화
+        model: "openrouter/anthropic/claude-sonnet-4-5", // 선택적 compaction 전용 모델
         memoryFlush: {
           enabled: true,
           softThresholdTokens: 6000,

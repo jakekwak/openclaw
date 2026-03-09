@@ -204,13 +204,17 @@ title: "하위 에이전트"
 
 - 알림 단계는 하위 에이전트 세션 내에서 실행됩니다 (요청자 세션이 아님).
 - 하위 에이전트가 정확히 `ANNOUNCE_SKIP`이라고 응답하면 아무것도 게시되지 않습니다.
-- 그렇지 않으면 알림 응답은 후속 `agent` 호출을 통해 요청자 채팅 채널에 게시됩니다 (`deliver=true`).
+- 그렇지 않으면 전달은 요청자 깊이에 따라 달라집니다:
+  - 최상위 요청자 세션은 외부 전달이 켜진 후속 `agent` 호출(`deliver=true`)을 사용합니다.
+  - 중첩된 요청자 subagent 세션은 오케스트레이터가 세션 내부에서 자식 결과를 합성할 수 있도록 내부 후속 주입(`deliver=false`)을 받습니다.
+  - 중첩 요청자 subagent 세션이 사라졌다면, 가능한 경우 그 세션의 requester로 폴백합니다.
 - 알림 응답은 사용 가능한 경우 스레드/주제 라우팅을 유지합니다 (Slack 스레드, Telegram 주제, Matrix 스레드).
 - 알림 메시지는 안정적인 템플릿으로 정규화됩니다:
   - `Status:` 실행 결과에서 파생됨 (`success`, `error`, `timeout`, 또는 `unknown`).
   - `Result:` 알림 단계의 요약 내용 (또는 누락된 경우 `(not available)`).
   - `Notes:` 오류 세부 사항 및 다른 유용한 컨텍스트.
 - `Status`는 모델 출력에서 유추되지 않습니다; 런타임 결과 신호로부터 옴.
+- 중첩 completion findings를 만들 때 child completion aggregation은 현재 requester run 범위로만 제한되어, 이전 실행의 오래된 자식 출력이 현재 announce에 섞여 들어오지 않습니다.
 
 알림 페이로드는 끝에 통계 줄을 포함합니다 (감싸진 경우에도):
 

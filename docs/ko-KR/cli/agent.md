@@ -22,3 +22,7 @@ openclaw agent --agent ops --message "Summarize logs"
 openclaw agent --session-id 1234 --message "Summarize inbox" --thinking medium
 openclaw agent --agent ops --message "Generate report" --deliver --reply-channel slack --reply-to "#reports"
 ```
+
+## Notes
+
+- 이 명령이 `models.json` 재생성을 유발하면, SecretRef-managed 프로바이더 자격 증명은 해석된 비밀 평문 대신 비비밀 marker(예: env var 이름 또는 `secretref-managed`)로 저장됩니다.

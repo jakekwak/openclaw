@@ -79,7 +79,7 @@ OpenClaw에는 두 가지 후크 시스템이 있습니다:
 이들은 에이전트 루프 또는 게이트웨이 파이프라인 내부에서 실행됩니다:
 
 - **`before_model_resolve`**: 세션 전 (no `messages`)에 실행되어 결정적으로 프로바이더/모델을 모델 해결 전에 오버라이드합니다.
-- **`before_prompt_build`**: 세션 로드 후 (with `messages`) 실행되어 프롬프트 제출 전 `prependContext`/`systemPrompt`를 주입합니다.
+- **`before_prompt_build`**: 세션 로드 후 (with `messages`) 실행되어 프롬프트 제출 전 `prependContext`, `systemPrompt`, `prependSystemContext`, `appendSystemContext`를 주입합니다. 턴마다 바뀌는 동적 텍스트에는 `prependContext`를, 시스템 프롬프트 영역에 안정적으로 유지돼야 하는 지침에는 system-context 필드를 사용하십시오.
 - **`before_agent_start`**: 레거시 호환성을 위한 후크로, 어떤 단계에서든 실행될 수 있습니다; 위 명시적 후크를 권장합니다.
 - **`agent_end`**: 완성 후 최종 메시지 목록과 실행 메타데이터를 검사합니다.
 - **`before_compaction` / `after_compaction`**: 압축 사이클을 관찰하거나 주석을 달 수 있습니다.
