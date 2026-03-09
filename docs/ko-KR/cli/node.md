@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "`openclaw node` (헤드리스 노드 호스트)의 CLI 참조"
 read_when:
@@ -38,7 +37,6 @@ title: "node"
   },
 }
 ```
-````
 
 ## 실행 (포그라운드)
 

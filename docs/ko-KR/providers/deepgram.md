@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "들어오는 음성 메모에 대한 Deepgram 필기 기록"
 read_when:
@@ -19,7 +18,6 @@ Deepgram은 음성 인식 API입니다. OpenClaw에서는 `tools.media.audio`를
 ## 시작하기
 
 1. API 키 설정:
-```
 
 DEEPGRAM*API_KEY=dg*...
 

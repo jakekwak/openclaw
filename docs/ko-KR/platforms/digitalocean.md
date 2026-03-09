@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "OpenClaw DigitalOcean (간단한 유료 VPS 옵션)"
 read_when:
@@ -60,7 +59,6 @@ title: "DigitalOcean"
 ```bash
 ssh root@YOUR_DROPLET_IP
 ```
-````
 
 ## 3) OpenClaw 설치
 

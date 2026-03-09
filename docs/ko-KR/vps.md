@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "OpenClaw 를 위한 VPS 호스팅 허브 (Oracle/Fly/Hetzner/GCP/exe.dev)"
 read_when:
@@ -50,4 +49,3 @@ title: "VPS 호스팅"
 노드는 로컬 화면/카메라/캔버스와 `system.run` 기능을 제공하며, 게이트웨이는 클라우드에 남아 있습니다.
 
 문서: [노드](/nodes), [노드 CLI](/cli/nodes)
-```

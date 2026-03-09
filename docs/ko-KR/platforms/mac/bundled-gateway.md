@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "macOS에서 게이트웨이 런타임 (외부 launchd 서비스)"
 read_when:
@@ -19,7 +18,6 @@ Mac에 Node 22+가 필요하며, 그런 다음 `openclaw`를 전역으로 설치
 ```bash
 npm install -g openclaw@<version>
 ```
-````
 
 macOS 앱의 **CLI 설치** 버튼은 npm/pnpm을 통해 동일한 흐름을 실행합니다 (Bun은 게이트웨이 런타임에 권장되지 않음).
 

@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "리서치 노트: Clawd 워크스페이스의 오프라인 메모리 시스템 (Markdown 소스 오브 트루스 + 파생 인덱스)"
 read_when:
@@ -62,7 +61,6 @@ title: "워크스페이스 메모리 연구"
 `~/.openclaw/workspace`를 사람이 읽을 수 있는 정식 메모리로 유지.
 
 제안된 워크스페이스 레이아웃:
-```
 
 ~/.openclaw/workspace/
 memory.md # 작고: 내구성 있는 사실 + 선호 (핵심 중)

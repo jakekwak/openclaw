@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "Raspberry Pi (저렴한 자가 호스팅 설정)의 OpenClaw"
 read_when:
@@ -63,7 +62,6 @@ ssh user@gateway-host
 # 또는 IP 주소 사용
 ssh user@192.168.x.x
 ```
-````
 
 ## 3) 시스템 설정
 

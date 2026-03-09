@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "개발 에이전트 AGENTS.md (C-3PO)"
 read_when:
@@ -25,7 +24,6 @@ git init
 git add AGENTS.md
 git commit -m "Add agent workspace"
 ```
-````
 
 ## 안전 기본값
 

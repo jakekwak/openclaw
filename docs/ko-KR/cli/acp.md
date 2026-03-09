@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "IDE 통합을 위한 ACP 브리지 실행"
 read_when:
@@ -33,7 +32,6 @@ openclaw acp --session-label "support inbox"
 # 첫 번째 프롬프트 전에 세션 키 재설정
 openclaw acp --session agent:main:main --reset-session
 ```
-````
 
 ## ACP 클라이언트 (디버그)
 

@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: Node + tsx "__name is not a function" 오류 노트 및 해결 방법
 read_when:
@@ -12,7 +11,6 @@ title: "Node + tsx 오류"
 ## 요약
 
 `tsx`를 사용하여 Node로 OpenClaw를 실행하면 다음과 같은 오류가 발생합니다:
-```
 
 [openclaw] CLI 시작 실패: TypeError: \_\_name is not a function
 at createSubsystemLogger (.../src/logging/subsystem.ts:203:25)

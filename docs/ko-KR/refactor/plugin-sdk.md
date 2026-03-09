@@ -1,4 +1,3 @@
-````markdown
 ---
 summary: "계획: 모든 메시징 커넥터를 위한 하나의 깔끔한 플러그인 SDK + 런타임"
 read_when:
@@ -144,7 +143,6 @@ export type PluginRuntime = {
   };
 };
 ```
-````
 
 주의사항:
 

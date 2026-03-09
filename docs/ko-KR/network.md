@@ -1,4 +1,3 @@
-```markdown
 ---
 summary: "네트워크 허브: 게이트웨이 서피스, 페어링, 디바이스 검색, 보안"
 read_when:
@@ -51,4 +50,3 @@ title: "네트워크"
 - [게이트웨이 설정 참조](/gateway/configuration)
 - [문제 해결](/gateway/troubleshooting)
 - [Doctor](/gateway/doctor)
-```
