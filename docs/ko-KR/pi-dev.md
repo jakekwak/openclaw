@@ -66,5 +66,5 @@ scripts/pi/run-tests.sh --live
 
 ## 참고 자료
 
-- [https://docs.openclaw.kr/ko-KR/testing](https://docs.openclaw.kr/ko-KR/testing)
+- [https://docs.openclaw.kr/ko-KR/help/testing](https://docs.openclaw.kr/ko-KR/help/testing)
 - [https://docs.openclaw.kr/ko-KR/start/getting-started](https://docs.openclaw.kr/ko-KR/start/getting-started)

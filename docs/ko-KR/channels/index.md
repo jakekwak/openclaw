@@ -41,6 +41,5 @@ OpenClaw 는 당신이 이미 사용하고 있는 채팅 앱에서 대화할 수
 - 가장 빠른 설정은 일반적으로 **Telegram** (간단한 봇 토큰)입니다. WhatsApp 은 QR 페어링이 필요하며 더 많은 상태를 디스크에 저장합니다.
 - 그룹 동작은 채널에 따라 다릅니다; [Groups](/ko-KR/channels/groups)를 참조하세요.
 - 다이렉트 메시지 페어링과 허용 목록은 안전을 위해 적용됩니다; [Security](/ko-KR/gateway/security)를 참조하세요.
-- Telegram 내부: [grammY notes](/ko-KR/channels/grammy).
 - 문제 해결: [Channel troubleshooting](/ko-KR/channels/troubleshooting).
 - 모델 프로바이더는 별도로 문서화되어 있습니다; [Model Providers](/ko-KR/providers/models)를 참조하세요.

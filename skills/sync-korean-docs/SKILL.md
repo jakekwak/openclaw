@@ -85,6 +85,59 @@ Map English docs to Korean docs like this:
 
 Do not create fake locale nesting such as `docs/ko-KR/ja-JP/...`.
 
+## Post-translation cleanup
+
+Before finishing, scan the edited Korean docs for accidental full-file markdown wrappers.
+
+Bad pattern:
+
+- file starts with ```markdown` or ` ``markdown`
+- file ends with a matching closing fence that wraps the whole document
+
+This sometimes happens when translated markdown gets pasted back as a fenced block.
+If found, remove only the outer wrapper and keep legitimate inner code fences.
+
+Useful check:
+
+`````bash
+python3 - <<'PY'
+from pathlib import Path
+for p in sorted(Path('docs/ko-KR').rglob('*.md')):
+    lines = p.read_text().splitlines()
+    if lines and lines[0] in ('```markdown', '````markdown'):
+        print(p)
+PY
+`````
+
+Also compare `docs/ko-KR` against current English doc paths and remove stale Korean pages
+whose English source path no longer exists because the doc moved.
+
+Typical examples:
+
+- old root page moved under `help/`, `tools/`, `providers/`, `automation/`, or `reference/`
+- legacy path still exists only in `docs/ko-KR/...`
+- `docs/docs.json` or Korean links still reference the old path
+
+Cleanup rules:
+
+- if the English source path is gone and the new Korean destination already exists, delete the stale old Korean file
+- remove stale `docs/docs.json` Korean nav entries for removed pages
+- update Korean links to the new path
+
+Useful check:
+
+```bash
+python3 - <<'PY'
+from pathlib import Path
+root = Path('docs')
+ko = root / 'ko-KR'
+for p in sorted(ko.rglob('*.md')):
+    rel = p.relative_to(ko)
+    if not (root / rel).exists():
+        print(rel)
+PY
+```
+
 ## Finishing rules
 
 When all translations are complete:

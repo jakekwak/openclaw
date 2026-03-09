@@ -904,7 +904,6 @@
                 "pages": [
                   "ko-KR/channels/whatsapp",
                   "ko-KR/channels/telegram",
-                  "ko-KR/channels/grammy",
                   "ko-KR/channels/discord",
                   "ko-KR/channels/irc",
                   "ko-KR/channels/slack",
@@ -1277,11 +1276,7 @@
               },
               {
                 "group": "Technical reference",
-                "pages": [
-                  "ko-KR/reference/wizard",
-                  "ko-KR/reference/token-use",
-                  "ko-KR/channels/grammy"
-                ]
+                "pages": ["ko-KR/reference/wizard", "ko-KR/reference/token-use"]
               },
               {
                 "group": "Concept internals",
@@ -1306,9 +1301,7 @@
                 "pages": [
                   "ko-KR/experiments/onboarding-config-protocol",
                   "ko-KR/experiments/proposals/model-config",
-                  "ko-KR/experiments/research/memory",
-                  "ko-KR/experiments/plans/cron-add-hardening",
-                  "ko-KR/experiments/plans/group-policy-hardening"
+                  "ko-KR/experiments/research/memory"
                 ]
               }
             ]
