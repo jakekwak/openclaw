@@ -43,6 +43,8 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
 - 선택적 로테이션: `OPENAI_API_KEYS`, `OPENAI_API_KEY_1`, `OPENAI_API_KEY_2`, 그리고 `OPENCLAW_LIVE_OPENAI_KEY` (단일 오버라이드)
 - 예제 모델: `openai/gpt-5.1-codex`
 - CLI: `openclaw onboard --auth-choice openai-api-key`
+- 모델별로 `agents.defaults.models["<provider>/<model>"].params.fastMode`를 통해 OpenAI fast mode를 활성화할 수 있습니다.
+- `openai/gpt-5.3-codex-spark`는 실제 OpenAI API가 이를 거부하므로 OpenClaw에서 의도적으로 숨깁니다. Spark는 Codex 전용으로 취급됩니다.
 
 ```json5
 {
@@ -57,6 +59,7 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
 - 선택적 로테이션: `ANTHROPIC_API_KEYS`, `ANTHROPIC_API_KEY_1`, `ANTHROPIC_API_KEY_2`, 그리고 `OPENCLAW_LIVE_ANTHROPIC_KEY` (단일 오버라이드)
 - 예제 모델: `anthropic/claude-opus-4-6`
 - CLI: `openclaw onboard --auth-choice token` (setup-token 을 붙여넣습니다) 또는 `openclaw models auth paste-token --provider anthropic`
+- 직접 API 키 모델은 공용 `/fast` 토글과 `params.fastMode`를 지원하며, OpenClaw는 이를 Anthropic `service_tier`(`auto` 또는 `standard_only`)로 매핑합니다.
 
 ```json5
 {
@@ -70,6 +73,8 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
 - 인증: OAuth (ChatGPT)
 - 예제 모델: `openai-codex/gpt-5.3-codex`
 - CLI: `openclaw onboard --auth-choice openai-codex` 또는 `openclaw models auth login --provider openai-codex`
+- 직접 `openai/*`와 같은 `/fast` 토글과 `params.fastMode` 구성을 공유합니다.
+- `openai-codex/gpt-5.3-codex-spark`는 Codex OAuth 카탈로그가 노출할 때 계속 사용 가능하며, entitlement에 따라 달라집니다.
 
 ```json5
 {
@@ -77,12 +82,13 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
 }
 ```
 
-### OpenCode Zen
+### OpenCode
 
-- 프로바이더: `opencode`
 - 인증: `OPENCODE_API_KEY` (또는 `OPENCODE_ZEN_API_KEY`)
-- 예제 모델: `opencode/claude-opus-4-6`
-- CLI: `openclaw onboard --auth-choice opencode-zen`
+- Zen 런타임 프로바이더: `opencode`
+- Go 런타임 프로바이더: `opencode-go`
+- 예제 모델: `opencode/claude-opus-4-6`, `opencode-go/kimi-k2.5`
+- CLI: `openclaw onboard --auth-choice opencode-zen` 또는 `openclaw onboard --auth-choice opencode-go`
 
 ```json5
 {
@@ -95,7 +101,8 @@ OpenClaw는 pi-ai 카탈로그와 함께 제공됩니다. 이 프로바이더는
 - 프로바이더: `google`
 - 인증: `GEMINI_API_KEY`
 - 선택적 로테이션: `GEMINI_API_KEYS`, `GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, `GOOGLE_API_KEY` 대체, 그리고 `OPENCLAW_LIVE_GEMINI_KEY` (단일 오버라이드)
-- 예제 모델: `google/gemini-3-pro-preview`
+- 예제 모델: `google/gemini-3.1-pro-preview`, `google/gemini-3-flash-preview`
+- 호환성: 기존 OpenClaw 설정에서 `google/gemini-3.1-flash-preview`는 `google/gemini-3-flash-preview`로 정규화됩니다.
 - CLI: `openclaw onboard --auth-choice gemini-api-key`
 
 ### Google Vertex, Antigravity, and Gemini CLI
@@ -268,12 +275,12 @@ MiniMax는 커스텀 엔드포인트를 사용하기 때문에 `models.providers
 
 ### Ollama
 
-Ollama는 OpenAI 호환 API를 제공하는 로컬 LLM 런타임입니다:
+Ollama는 번들 프로바이더 플러그인으로 제공되며 Ollama의 네이티브 API를 사용합니다:
 
 - 프로바이더: `ollama`
 - 인증: 불필요 (로컬 서버)
 - 예제 모델: `ollama/llama3.3`
-- 설치: [https://ollama.ai](https://ollama.ai)
+- 설치: [https://ollama.com/download](https://ollama.com/download)
 
 ```bash
 # Ollama를 설치하고, 그런 다음 모델을 가져옵니다:
@@ -288,11 +295,11 @@ ollama pull llama3.3
 }
 ```
 
-Ollama는 로컬에서 `http://127.0.0.1:11434/v1`로 실행될 때 자동으로 감지됩니다. 모델 추천 및 사용자 설정 구성에 대해서는 [/providers/ollama](/ko-KR/providers/ollama)를 참조하세요.
+로컬 옵트인으로 `OLLAMA_API_KEY`를 설정하면 Ollama는 `http://127.0.0.1:11434`에서 감지됩니다. 번들 프로바이더 플러그인이 Ollama를 `openclaw onboard`와 모델 선택기에 직접 추가합니다. 온보딩, 클라우드/로컬 모드, 사용자 지정 구성은 [/providers/ollama](/ko-KR/providers/ollama)를 참조하세요.
 
 ### vLLM
 
-vLLM은 로컬 (또는 자체 호스팅) OpenAI 호환 서버입니다:
+vLLM은 로컬/자체 호스팅 OpenAI 호환 서버용 번들 프로바이더 플러그인으로 제공됩니다:
 
 - 프로바이더: `vllm`
 - 인증: 선택 사항 (서버 설정에 따라 다름)
@@ -315,6 +322,32 @@ export VLLM_API_KEY="vllm-local"
 ```
 
 자세한 내용은 [/providers/vllm](/ko-KR/providers/vllm)를 참조하세요.
+
+### SGLang
+
+SGLang은 빠른 셀프 호스팅 OpenAI 호환 서버를 위한 번들 프로바이더 플러그인으로 제공됩니다:
+
+- 프로바이더: `sglang`
+- 인증: 선택 사항 (서버 구성에 따라 다름)
+- 기본 베이스 URL: `http://127.0.0.1:30000/v1`
+
+로컬 자동 감지를 옵트인하려면 (서버가 인증을 강제하지 않더라도 아무 값이나 가능):
+
+```bash
+export SGLANG_API_KEY="sglang-local"
+```
+
+그다음 모델을 설정합니다 (`/v1/models`가 반환한 ID 중 하나로 교체):
+
+```json5
+{
+  agents: {
+    defaults: { model: { primary: "sglang/your-model-id" } },
+  },
+}
+```
+
+자세한 내용은 [/providers/sglang](/ko-KR/providers/sglang)를 참조하세요.
 
 ### 로컬 프록시 (LM Studio, vLLM, LiteLLM 등)
 

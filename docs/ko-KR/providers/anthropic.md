@@ -25,6 +25,34 @@ openclaw onboard
 openclaw onboard --anthropic-api-key "$ANTHROPIC_API_KEY"
 ```
 
+## Fast mode (Anthropic API)
+
+OpenClaw의 공통 `/fast` 토글은 직접 Anthropic API 키 트래픽도 지원합니다.
+
+- `/fast on`은 `service_tier: "auto"`로 매핑됩니다
+- `/fast off`는 `service_tier: "standard_only"`로 매핑됩니다
+- config 기본값:
+
+```json5
+{
+  agents: {
+    defaults: {
+      models: {
+        "anthropic/claude-sonnet-4-5": {
+          params: { fastMode: true },
+        },
+      },
+    },
+  },
+}
+```
+
+중요한 제한:
+
+- 이는 **API 키 전용**입니다. Anthropic setup-token / OAuth 인증은 OpenClaw의 fast-mode tier 주입을 반영하지 않습니다.
+- OpenClaw는 직접 `api.anthropic.com`으로 가는 요청에만 Anthropic service tier를 주입합니다. `anthropic/*`를 프록시나 gateway를 통해 라우팅하면 `/fast`는 `service_tier`를 건드리지 않습니다.
+- Anthropic은 응답의 `usage.service_tier` 아래에 실제 적용된 tier를 보고합니다. Priority Tier 용량이 없는 계정에서는 `service_tier: "auto"`가 여전히 `standard`로 해석될 수 있습니다.
+
 ### 설정 스니펫
 
 ```json5
@@ -42,11 +70,11 @@ OpenClaw는 Anthropic의 프롬프트 캐싱 기능을 지원합니다. 이는 *
 
 모델 설정에서 `cacheRetention` 매개변수를 사용하세요:
 
-| 값      | 캐시 기간    | 설명                               |
-| ------- | ------------ | ----------------------------------- |
-| `none`  | 캐싱 없음    | 프롬프트 캐싱 비활성화              |
-| `short` | 5분          | API 키 인증의 기본값                |
-| `long`  | 1시간        | 확장된 캐시 (베타 플래그 필요)      |
+| 값      | 캐시 기간 | 설명                           |
+| ------- | --------- | ------------------------------ |
+| `none`  | 캐싱 없음 | 프롬프트 캐싱 비활성화         |
+| `short` | 5분       | API 키 인증의 기본값           |
+| `long`  | 1시간     | 확장된 캐시 (베타 플래그 필요) |
 
 ```json5
 {

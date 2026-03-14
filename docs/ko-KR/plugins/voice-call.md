@@ -284,6 +284,8 @@ Voice Call은 호출 시 스트리밍 음성을 위한 코어 `messages.tts` 구
 }
 ```
 
+`inboundPolicy: "allowlist"`는 낮은 보증 수준의 caller-ID 필터입니다. 플러그인은 프로바이더가 제공한 `From` 값을 정규화해 `allowFrom`과 비교합니다. 웹훅 검증은 프로바이더 전달과 payload 무결성은 인증하지만 PSTN/VoIP 발신 번호 소유권까지 증명하지는 않습니다. `allowFrom`은 강한 호출자 신원 검증이 아니라 caller-ID 필터링으로 취급하세요.
+
 자동 응답은 에이전트 시스템을 사용합니다. 다음으로 조정합니다:
 
 - `responseModel`

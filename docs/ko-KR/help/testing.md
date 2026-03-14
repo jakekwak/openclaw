@@ -53,8 +53,8 @@ OpenClaw에는 세 가지 Vitest 스위트(단위/통합, E2E, 라이브)와 소
   - 실제 키가 필요하지 않음
   - 빠르고 안정적이어야 함
 - 풀 노트:
-  - OpenClaw는 Node 22/23에서 더 빠른 유닛 샤드를 위해 Vitest `vmForks`를 사용합니다.
-  - Node 24 이상에서는 노드 VM 연결 오류(`ERR_VM_MODULE_LINK_FAILURE` / `module is already linked`)를 피하기 위해 자동으로 일반 `forks`로 돌아갑니다.
+  - OpenClaw는 Node 22, 23, 24에서 더 빠른 유닛 샤드를 위해 Vitest `vmForks`를 사용합니다.
+  - Node 25 이상에서는 저장소가 다시 검증될 때까지 자동으로 일반 `forks`로 돌아갑니다.
   - 수동으로 `OPENCLAW_TEST_VM_FORKS=0` (강제로 `forks`) 또는 `OPENCLAW_TEST_VM_FORKS=1` (강제로 `vmForks`)로 덮어쓸 수 있습니다.
 
 ### E2E (게이트웨이 스모크)

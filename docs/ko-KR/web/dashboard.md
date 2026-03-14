@@ -42,5 +42,7 @@ localhost, Tailscale Serve, 또는 SSH 터널 사용을 권장합니다.
 ## "unauthorized" / 1008 표시될 경우
 
 - 게이트웨이에 연결 가능한지 확인하세요 (로컬: `openclaw status`; 원격: SSH 터널 `ssh -N -L 18789:127.0.0.1:18789 user@host` 그런 다음 `http://127.0.0.1:18789/` 열기).
+- `AUTH_TOKEN_MISMATCH`의 경우, gateway가 retry hint를 반환하면 클라이언트가 캐시된 device token으로 한 번 신뢰된 재시도를 할 수 있습니다. 그 재시도 뒤에도 인증이 실패하면 token drift를 수동으로 해결하세요.
+- token drift 복구 단계는 [Token drift recovery checklist](/cli/devices#token-drift-recovery-checklist)를 따르세요.
 - 게이트웨이 호스트에서 토큰 가져오기: `openclaw config get gateway.auth.token` (또는 하나 생성: `openclaw doctor --generate-gateway-token`).
 - 대시보드 설정에서 인증 필드에 토큰을 붙여넣은 후 연결하세요.

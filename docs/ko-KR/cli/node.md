@@ -85,6 +85,15 @@ openclaw node uninstall
 
 서비스 명령어는 머신 판독 가능한 출력용으로 `--json`을 허용합니다.
 
+인증 해석:
+
+- 먼저 `OPENCLAW_GATEWAY_TOKEN` / `OPENCLAW_GATEWAY_PASSWORD`를 확인합니다.
+- 그다음 로컬 config fallback인 `gateway.auth.token` / `gateway.auth.password`를 확인합니다.
+- 로컬 모드에서 node host는 의도적으로 `gateway.remote.token` / `gateway.remote.password`를 상속하지 않습니다.
+- `gateway.auth.token` / `gateway.auth.password`가 SecretRef로 명시적으로 구성되어 있는데 해석되지 않으면, node 인증 해석은 fail-closed 됩니다 (원격 fallback으로 가리지 않음).
+- `gateway.mode=remote`에서는 원격 우선순위 규칙에 따라 `gateway.remote.token` / `gateway.remote.password`가 참여합니다.
+- 레거시 `CLAWDBOT_GATEWAY_*` 환경 변수는 node host 인증 해석에서 무시됩니다.
+
 ## 페어링
 
 첫 연결은 게이트웨이에 보류 중인 장치 페어링 요청(`role: node`)을 생성합니다. 다음을 통해 승인하세요:

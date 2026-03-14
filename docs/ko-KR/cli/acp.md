@@ -12,6 +12,8 @@ title: "acp"
 
 이 명령어는 IDE를 위해 표준 입출력으로 ACP를 사용하여 게이트웨이로 프롬프트를 WebSocket을 통해 전달합니다. 또한 ACP 세션을 게이트웨이 세션 키에 매핑합니다.
 
+`openclaw acp`는 Gateway-backed ACP bridge이며, 완전한 ACP-native editor runtime은 아닙니다. 세션 라우팅, 프롬프트 전달, 기본 스트리밍 업데이트에 집중합니다.
+
 ## 사용법
 
 ```bash

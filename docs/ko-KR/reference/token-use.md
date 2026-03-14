@@ -17,7 +17,7 @@ OpenClaw는 실행할 때마다 자체 시스템 프롬프트를 조립합니다
 - 도구 목록 + 짧은 설명
 - 스킬 목록 (메타데이터만 포함; 지침은 `read`로 필요 시 로드됨)
 - 자체 업데이트 지침
-- 워크스페이스 + 초기화 파일 (`AGENTS.md`, `SOUL.md`, `TOOLS.md`, `IDENTITY.md`, `USER.md`, `HEARTBEAT.md`, `BOOTSTRAP.md`가 새로워질 때, 그리고 `MEMORY.md` 및/또는 `memory.md`가 있을 경우 포함). 큰 파일은 `agents.defaults.bootstrapMaxChars` (기본값: 20000)로 잘리고, 전체 부트스트랩 주입은 `agents.defaults.bootstrapTotalMaxChars` (기본값: 150000)로 제한됩니다. `memory/*.md` 파일은 메모리 도구를 통해 필요 시 로드되며 자동 주입되지 않습니다.
+- 워크스페이스 + 초기화 파일 (`AGENTS.md`, `SOUL.md`, `TOOLS.md`, `IDENTITY.md`, `USER.md`, `HEARTBEAT.md`, `BOOTSTRAP.md`가 새로워질 때, 그리고 `MEMORY.md`가 있으면 그것을 사용하고, 없으면 소문자 폴백으로 `memory.md`를 사용). 큰 파일은 `agents.defaults.bootstrapMaxChars` (기본값: 20000)로 잘리고, 전체 부트스트랩 주입은 `agents.defaults.bootstrapTotalMaxChars` (기본값: 150000)로 제한됩니다. `memory/*.md` 파일은 메모리 도구를 통해 필요 시 로드되며 자동 주입되지 않습니다.
 - 시간 (UTC + 사용자 시간대)
 - 답글 태그 + 하트비트 행동
 - 런타임 메타데이터 (호스트/OS/모델/생각)

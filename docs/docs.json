@@ -1088,6 +1088,7 @@
                   "ko-KR/providers/vercel-ai-gateway",
                   "ko-KR/providers/moonshot",
                   "ko-KR/providers/minimax",
+                  "ko-KR/providers/opencode-go",
                   "ko-KR/providers/opencode",
                   "ko-KR/providers/glm",
                   "ko-KR/providers/zai",

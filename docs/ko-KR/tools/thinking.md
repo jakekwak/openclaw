@@ -1,5 +1,5 @@
 ---
-summary: "/think + /verbose 지시어 구문과 모델 추론에 미치는 영향"
+summary: "/think, /fast, /verbose, 그리고 reasoning visibility를 위한 지시어 구문"
 read_when:
   - 사고 또는 상세 지시어 구문 분석 또는 기본값 조정
 title: "Thinking Levels"
@@ -41,6 +41,21 @@ title: "Thinking Levels"
 ## 에이전트별 적용
 
 - **Embedded Pi**: 결정된 수준이 인프로세스 Pi 에이전트 런타임으로 전달됩니다.
+
+## Fast mode (/fast)
+
+- 수준: `on|off`.
+- 지시어만 포함된 메시지는 세션 fast-mode override를 토글하고 `Fast mode enabled.` / `Fast mode disabled.`로 응답합니다.
+- `/fast` (또는 `/fast status`)만 보내면 현재 적용 중인 fast-mode 상태를 확인합니다.
+- OpenClaw는 다음 순서로 fast mode를 결정합니다:
+  1. 인라인/지시어만 있는 `/fast on|off`
+  2. 세션 override
+  3. 모델별 config: `agents.defaults.models["<provider>/<model>"].params.fastMode`
+  4. 대체값: `off`
+- `openai/*`에서는 fast mode가 OpenAI fast profile을 적용합니다: 지원될 때 `service_tier=priority`, 그리고 낮은 reasoning effort와 낮은 text verbosity.
+- `openai-codex/*`에서는 같은 저지연 profile을 Codex Responses에 적용합니다.
+- 직접 `anthropic/*` API 키 요청에서는 `/fast on`이 `service_tier=auto`, `/fast off`가 `service_tier=standard_only`에 매핑됩니다.
+- Anthropic fast mode는 API 키 전용입니다. Claude setup-token / OAuth 인증과 non-Anthropic proxy base URL에는 service-tier 주입을 건너뜁니다.
 
 ## 상세 지시어 (/verbose 또는 /v)
 

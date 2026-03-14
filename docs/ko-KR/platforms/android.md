@@ -9,6 +9,8 @@ title: "Android 앱"
 
 # Android 앱 (노드)
 
+> **참고:** Android 앱은 아직 공개 배포되지 않았습니다. 소스 코드는 [OpenClaw 저장소](https://github.com/openclaw/openclaw)의 `apps/android`에 있으며, Java 17과 Android SDK로 직접 빌드할 수 있습니다 (`./gradlew :app:assembleDebug`). 빌드 방법은 [apps/android/README.md](https://github.com/openclaw/openclaw/blob/main/apps/android/README.md)를 참조하세요.
+
 ## 지원 스냅샷
 
 - 역할: 동반 노드 앱 (Android는 게이트웨이를 호스팅하지 않습니다).
@@ -27,7 +29,7 @@ Android 노드 앱 ⇄ (mDNS/NSD + WebSocket) ⇄ **게이트웨이**
 
 Android는 게이트웨이 WebSocket(기본 `ws://<host>:18789`)에 직접 연결하고 게이트웨이 소유의 페어링을 사용합니다.
 
-### 사전 준비 
+### 사전 준비
 
 - "마스터" 기기에서 게이트웨이를 실행할 수 있습니다.
 - Android 장치/에뮬레이터가 게이트웨이 WebSocket에 도달할 수 있습니다:

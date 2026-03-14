@@ -105,6 +105,7 @@ gog.gmail.search --query 'newer_than:1d' \
 ```lobster
 openclaw.invoke --tool llm-task --action json --args-json '{
   "prompt": "입력된 이메일을 입력 받아 의도와 초안을 반환하십시오.",
+  "thinking": "low",
   "input": { "subject": "Hello", "body": "도와줄 수 있나요?" },
   "schema": {
     "type": "object",

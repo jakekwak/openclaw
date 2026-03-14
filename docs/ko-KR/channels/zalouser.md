@@ -89,10 +89,12 @@ openclaw directory groups list --channel zalouser --query "work"
 - 기본값: `channels.zalouser.groupPolicy = "open"` (그룹 허용). 설정되지 않은 경우 기본값을 재정의하려면 `channels.defaults.groupPolicy`를 사용합니다.
 - 허용 목록으로 제한:
   - `channels.zalouser.groupPolicy = "allowlist"`
-  - `channels.zalouser.groups` (키는 그룹 ID 또는 이름)
+  - `channels.zalouser.groups` (키는 안정적인 그룹 ID를 사용하는 것이 좋으며, 이름은 가능할 때 시작 시 ID로 해석됩니다)
 - 모든 그룹 차단: `channels.zalouser.groupPolicy = "disabled"`.
 - 설정 마법사가 그룹 허용 목록을 프롬프트할 수 있습니다.
-- 시작 시, OpenClaw는 허용 목록의 그룹/사용자 이름을 ID로 변환하고 매핑을 기록합니다. 해결되지 않은 항목은 입력된 상태로 유지됩니다.
+- 시작 시, OpenClaw는 허용 목록의 그룹/사용자 이름을 ID로 변환하고 매핑을 기록합니다.
+- 그룹 허용 목록 매칭은 기본적으로 ID 전용입니다. 해결되지 않은 이름은 `channels.zalouser.dangerouslyAllowNameMatching: true`를 켜지 않는 한 인증에 사용되지 않습니다.
+- `channels.zalouser.dangerouslyAllowNameMatching: true`는 변경 가능한 그룹 이름 매칭을 다시 허용하는 비상 호환성 모드입니다.
 
 예시:
 

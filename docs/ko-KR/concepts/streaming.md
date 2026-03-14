@@ -12,9 +12,9 @@ title: "Streaming and Chunking"
 OpenClaw에는 두 개의 별도 "스트리밍" 계층이 있습니다:
 
 - **블록 스트리밍 (채널):** 조수의 작성이 완료된 **블록**을 발행합니다. 이는 일반적인 채널 메시지입니다 (토큰 델타 아님).
-- **유사 토큰 스트리밍 (Telegram 전용):** 생성을 진행하는 동안 임시 **미리보기 메시지**를 부분적으로 업데이트합니다.
+- **미리보기 스트리밍 (Telegram/Discord/Slack):** 생성을 진행하는 동안 임시 **미리보기 메시지**를 업데이트합니다.
 
-오늘날 외부 채널 메시지에 대한 **실제 토큰-델타 스트리밍**은 없습니다. Telegram 미리보기 스트리밍은 유일한 부분 스트림 표면입니다.
+오늘날 외부 채널 메시지에 대한 **실제 토큰-델타 스트리밍**은 없습니다. 미리보기 스트리밍은 메시지 기반입니다 (전송 + 수정/추가).
 
 ## Block streaming (channel messages)
 
@@ -93,31 +93,64 @@ Model output
 - **Stream everything at end:** `blockStreamingBreak: "message_end"` (한 번 플러시, 매우 긴 경우 여러 청크).
 - **No block streaming:** `blockStreamingDefault: "off"` (최종 응답만).
 
-**채널 참고:** Telegram이 아닌 채널의 경우 `*.blockStreaming`이 명시적으로 `true`로 설정되지 않는 한 블록 스트리밍은 **해제**됩니다. Telegram은 블록 응답 없이 실시간 미리보기를 스트리밍할 수 있습니다 (`channels.telegram.streamMode`).
+**채널 참고:** `*.blockStreaming`이 명시적으로 `true`로 설정되지 않는 한 블록 스트리밍은 **해제**됩니다. 채널은 블록 응답 없이도 실시간 미리보기(`channels.<channel>.streaming`)를 스트리밍할 수 있습니다.
 
 구성 위치 알림: `blockStreaming*` 기본값은 루트 구성 아닌 `agents.defaults`에 있습니다.
 
-## Telegram preview streaming (token-ish)
+## 미리보기 스트리밍 모드
 
-Telegram은 실시간 미리보기 스트리밍을 지원하는 유일한 채널입니다:
+정식 키: `channels.<channel>.streaming`
+
+모드:
+
+- `off`: 미리보기 스트리밍 비활성화.
+- `partial`: 단일 미리보기를 최신 텍스트로 교체합니다.
+- `block`: 청크 단위의 단계적 업데이트/추가를 수행합니다.
+- `progress`: 생성 중 상태/진행률 미리보기를 표시하고, 완료 시 최종 답변을 보냅니다.
+
+### 채널 매핑
+
+| 채널     | `off` | `partial` | `block` | `progress`       |
+| -------- | ----- | --------- | ------- | ---------------- |
+| Telegram | ✅    | ✅        | ✅      | `partial`로 매핑 |
+| Discord  | ✅    | ✅        | ✅      | `partial`로 매핑 |
+| Slack    | ✅    | ✅        | ✅      | ✅               |
+
+Slack 전용:
+
+- `channels.slack.nativeStreaming`은 `streaming=partial`일 때 Slack 네이티브 스트리밍 API 호출 사용 여부를 제어합니다 (기본값: `true`).
+
+레거시 키 마이그레이션:
+
+- Telegram: `streamMode` + 불리언 `streaming`은 `streaming` enum으로 자동 마이그레이션됩니다.
+- Discord: `streamMode` + 불리언 `streaming`은 `streaming` enum으로 자동 마이그레이션됩니다.
+- Slack: `streamMode`는 `streaming` enum으로 자동 마이그레이션되고, 불리언 `streaming`은 `nativeStreaming`으로 자동 마이그레이션됩니다.
+
+### 런타임 동작
+
+Telegram:
 
 - DM과 그룹/토픽 전체에서 `sendMessage` + `editMessageText` 기반 미리보기 업데이트를 사용합니다.
-- `channels.telegram.streamMode: "partial" | "block" | "off"`.
-  - `partial`: 최신 스트림 텍스트로 미리보기를 업데이트합니다.
-  - `block`: 청크된 블록에서 미리보기를 업데이트합니다 (동일한 청크 규칙).
-  - `off`: 미리보기 스트리밍 없음.
-- 미리보기 청크 구성 (`streamMode: "block"` 전용): `channels.telegram.draftChunk` (기본값: `minChars: 200`, `maxChars: 800`).
-- 미리보기 스트리밍은 블록 스트리밍과 별도입니다.
-- Telegram 블록 스트리밍이 명시적으로 활성화되면, 중복 스트리밍을 피하기 위해 미리보기 스트리밍이 건너뜁니다.
-- 텍스트 전용 최종은 동일한 미리보기 메시지를 편집하여 적용됩니다.
-- 비텍스트/복잡한 최종은 정상적인 최종 메시지 전달로 되돌아갑니다.
-- `/reasoning stream`이 실시간 미리보기에 추론을 기록합니다 (Telegram 전용).
+- Telegram 블록 스트리밍이 명시적으로 활성화되면 중복 스트리밍을 피하기 위해 미리보기 스트리밍을 건너뜁니다.
+- `/reasoning stream`은 추론 내용을 미리보기에 기록할 수 있습니다.
+
+Discord:
+
+- 전송 + 수정 방식의 미리보기 메시지를 사용합니다.
+- `block` 모드는 `draftChunk`를 사용합니다.
+- Discord 블록 스트리밍이 명시적으로 활성화되면 미리보기 스트리밍을 건너뜁니다.
+
+Slack:
+
+- `partial`은 가능할 경우 Slack 네이티브 스트리밍 (`chat.startStream`/`append`/`stop`)을 사용할 수 있습니다.
+- `block`은 append 스타일의 초안 미리보기를 사용합니다.
+- `progress`는 상태 미리보기 텍스트를 표시한 뒤 최종 답변을 보냅니다.
 
 ```
 Telegram
   └─ sendMessage (임시 미리보기 메시지)
-       ├─ streamMode=partial → 최신 텍스트 편집
-       └─ streamMode=block   → chunker + 편집 업데이트
+       ├─ streaming=partial → 최신 텍스트 편집
+       └─ streaming=block   → chunker + 편집 업데이트
   └─ 최종 텍스트 전용 응답 → 동일한 메시지에서 최종 편집
   └─ 대체: 미리보기 정리 + 정상 최종 전달 (미디어/복잡한)
 ```

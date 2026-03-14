@@ -280,66 +280,14 @@ services:
 
 ---
 
-## 10) Bake required binaries into the image (critical)
+## 10) Shared Docker VM runtime steps
 
-Installing binaries inside a running container is a trap.
-Anything installed at runtime will be lost on restart.
+Use the shared runtime guide for the common Docker host flow:
 
-All external binaries required by skills must be installed at image build time.
-
-The examples below show three common binaries only:
-
-- `gog` for Gmail access
-- `goplaces` for Google Places
-- `wacli` for WhatsApp
-
-These are examples, not a complete list.
-You may install as many binaries as needed using the same pattern.
-
-If you add new skills later that depend on additional binaries, you must:
-
-1. Update the Dockerfile
-2. Rebuild the image
-3. Restart the containers
-
-**Example Dockerfile**
-
-```dockerfile
-FROM node:22-bookworm
-
-RUN apt-get update && apt-get install -y socat && rm -rf /var/lib/apt/lists/*
-
-# Example binary 1: Gmail CLI
-RUN curl -L https://github.com/steipete/gog/releases/latest/download/gog_Linux_x86_64.tar.gz \
-  | tar -xz -C /usr/local/bin && chmod +x /usr/local/bin/gog
-
-# Example binary 2: Google Places CLI
-RUN curl -L https://github.com/steipete/goplaces/releases/latest/download/goplaces_Linux_x86_64.tar.gz \
-  | tar -xz -C /usr/local/bin && chmod +x /usr/local/bin/goplaces
-
-# Example binary 3: WhatsApp CLI
-RUN curl -L https://github.com/steipete/wacli/releases/latest/download/wacli_Linux_x86_64.tar.gz \
-  | tar -xz -C /usr/local/bin && chmod +x /usr/local/bin/wacli
-
-# Add more binaries below using the same pattern
-
-WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
-COPY ui/package.json ./ui/package.json
-COPY scripts ./scripts
-
-RUN corepack enable
-RUN pnpm install --frozen-lockfile
-
-COPY . .
-RUN pnpm build
-RUN pnpm ui:install
-RUN pnpm ui:build
-
-ENV NODE_ENV=production
-
-CMD ["node","dist/index.js"]
-```
+- [Bake required binaries into the image](/install/docker-vm-runtime#bake-required-binaries-into-the-image)
+- [Build and launch](/install/docker-vm-runtime#build-and-launch)
+- [What persists where](/install/docker-vm-runtime#what-persists-where)
+- [Updates](/install/docker-vm-runtime#updates)
 
 ---
 

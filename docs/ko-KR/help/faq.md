@@ -2716,3 +2716,10 @@ OpenClaw는 기본적으로 **크로스 프로바이더** 메시징을 차단합
 ---
 
 여전히 문제를 해결하지 못했나요? [Discord](https://discord.com/invite/clawd)에서 질문하거나 [GitHub 토론](https://github.com/openclaw/openclaw/discussions)을 열어보세요.
+
+### 최근 업데이트 메모
+
+- `gateway.remote.*`는 `gateway.auth.*`가 비어 있을 때만 로컬 폴백으로 쓰이며, SecretRef가 해석되지 않으면 fail-closed 됩니다.
+- `web_search`는 Brave 외에도 Gemini, Grok, Kimi, Perplexity provider 키를 사용할 수 있습니다.
+- Ollama는 로컬 셀프호스팅 모델을 시작하는 가장 쉬운 경로로 권장됩니다.
+- Telegram `setMyCommands` 실패는 네트워크 오류뿐 아니라 `BOT_COMMANDS_TOO_MUCH`도 확인해야 합니다.

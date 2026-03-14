@@ -77,7 +77,10 @@ OpenClaw는 다음에서 자격 증명을 가져올 수 있습니다:
 `web_search`는 API 키를 사용하며, 사용량 요금이 발생할 수 있습니다:
 
 - **Brave Search API**: `BRAVE_API_KEY` 또는 `tools.web.search.apiKey`
-- **Perplexity** (OpenRouter 경유): `PERPLEXITY_API_KEY` 또는 `OPENROUTER_API_KEY`
+- **Gemini (Google Search)**: `GEMINI_API_KEY` 또는 `tools.web.search.gemini.apiKey`
+- **Grok (xAI)**: `XAI_API_KEY` 또는 `tools.web.search.grok.apiKey`
+- **Kimi (Moonshot)**: `KIMI_API_KEY`, `MOONSHOT_API_KEY`, 또는 `tools.web.search.kimi.apiKey`
+- **Perplexity** (OpenRouter 경유): `PERPLEXITY_API_KEY`, `OPENROUTER_API_KEY`, 또는 `tools.web.search.perplexity.apiKey`
 
 자세한 내용은 [Web tools](/ko-KR/tools/web)를 참조하세요.
 

@@ -215,3 +215,9 @@ title: "게이트웨이 프로토콜"
 
 이 프로토콜은 **전체 게이트웨이 API** (상태, 채널, 모델, 채팅, 에이전트, 세션, 노드, 승인 등)를
 노출합니다. 정확한 표면은 `src/gateway/protocol/schema.ts`의 TypeBox 스키마로 정의됩니다.
+
+### 최근 업데이트 메모
+
+- 인증 실패에는 `error.details.code`, `canRetryWithDeviceToken`, `recommendedNextStep`가 함께 전달됩니다.
+- `AUTH_TOKEN_MISMATCH`에서는 신뢰된 클라이언트가 캐시된 디바이스 토큰으로 한 번만 재시도할 수 있습니다.
+- Control UI는 localhost 비보안 HTTP 호환 모드(`allowInsecureAuth`)나 비상 모드(`dangerouslyDisableDeviceAuth`)에서만 device identity를 생략할 수 있습니다.

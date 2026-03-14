@@ -14,7 +14,7 @@ title: "macOS 서명"
 - `scripts/codesign-mac-app.sh`](https://github.com/openclaw/openclaw/blob/main/scripts/codesign-mac-app.sh)를 호출하여 주요 바이너리와 앱 번들을 서명하여 macOS가 각 재빌드를 동일한 서명된 번들로 인식하도록 하여 TCC 권한 (알림, 접근성, 화면 녹화, 마이크, 음성)을 유지합니다. 안정적인 권한을 위해서는 실제 서명 ID를 사용하세요; 임시 서명은 선택적이며 불안정합니다 ([macOS 권한](/platforms/mac/permissions) 참고).
 - 기본적으로 `CODESIGN_TIMESTAMP=auto`를 사용합니다; 이는 Developer ID 서명을 위한 신뢰할 수 있는 타임스탬프를 활성화합니다. 타임스탬핑을 건너뛰려면 `CODESIGN_TIMESTAMP=off`를 설정하세요 (오프라인 디버그 빌드).
 - 빌드 메타데이터를 Info.plist에 주입합니다: `OpenClawBuildTimestamp` (UTC)와 `OpenClawGitCommit` (짧은 해시)를 포함하여 정보 창에서 빌드, git, 디버그/릴리스 채널을 표시할 수 있습니다.
-- **패키징은 Node 22+**가 필요합니다: 이 스크립트는 TS 빌드 및 Control UI 빌드를 실행합니다.
+- **패키징 기본값은 Node 24**입니다: 이 스크립트는 TS 빌드 및 Control UI 빌드를 실행합니다. 호환성을 위해 Node 22 LTS, 현재 `22.16+`, 도 계속 지원됩니다.
 - `SIGN_IDENTITY`를 환경에서 읽습니다. 셸 rc에 `export SIGN_IDENTITY="Apple Development: Your Name (TEAMID)"` (또는 귀하의 Developer ID Application 인증서)를 추가하여 항상 인증서로 서명하세요. 임시 서명은 `ALLOW_ADHOC_SIGNING=1` 또는 `SIGN_IDENTITY="-"`로 명시적인 동의를 요구합니다 (권한 테스트에 권장되지 않음).
 - 서명 후 팀 ID 검사를 실행하고 앱 번들 내의 Mach-O가 다른 팀 ID로 서명되었을 경우 실패합니다. `SKIP_TEAM_ID_CHECK=1`을 설정하여 이를 우회하세요.
 

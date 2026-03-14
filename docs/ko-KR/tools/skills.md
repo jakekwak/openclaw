@@ -74,6 +74,7 @@ description: Generate or edit images via Gemini 3 Pro Image
 노트:
 
 - 레이아웃/의도에 대해 AgentSkills 명세를 따릅니다.
+- Workspace와 extra-dir skill discovery는 resolved realpath가 구성된 루트 내부에 남아 있는 skill root와 `SKILL.md` 파일만 허용합니다.
 - 포함된 에이전트가 사용하는 파서는 **단일 줄** 전면 키만 지원합니다.
 - `metadata`는 **단일 줄 JSON 객체**로 작성해야 합니다.
 - 스킬 폴더 경로를 참조하는 지침에는 `{baseDir}`을 사용하십시오.

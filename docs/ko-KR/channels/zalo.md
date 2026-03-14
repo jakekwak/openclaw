@@ -178,7 +178,7 @@ Zalo는 베트남을 중심으로 한 메시징 앱입니다; 그 Bot API는 게
 
 - `channels.zalo.enabled`: 채널 시작 활성화/비활성화.
 - `channels.zalo.botToken`: Zalo Bot Platform의 봇 토큰.
-- `channels.zalo.tokenFile`: 파일 경로에서 토큰 읽기.
+- `channels.zalo.tokenFile`: 일반 파일 경로에서 토큰을 읽습니다. 심볼릭 링크는 거부됩니다.
 - `channels.zalo.dmPolicy`: `pairing | allowlist | open | disabled` (기본: pairing).
 - `channels.zalo.allowFrom`: DM 허용 목록 (사용자 ID). `open`은 `"*"`가 필요합니다. 마법사는 숫자 ID를 요청합니다.
 - `channels.zalo.groupPolicy`: `open | allowlist | disabled` (기본: allowlist).
@@ -192,7 +192,7 @@ Zalo는 베트남을 중심으로 한 메시징 앱입니다; 그 Bot API는 게
 다중 계정 옵션:
 
 - `channels.zalo.accounts.<id>.botToken`: 계정별 토큰.
-- `channels.zalo.accounts.<id>.tokenFile`: 계정별 토큰 파일.
+- `channels.zalo.accounts.<id>.tokenFile`: 계정별 일반 토큰 파일입니다. 심볼릭 링크는 거부됩니다.
 - `channels.zalo.accounts.<id>.name`: 표시 이름.
 - `channels.zalo.accounts.<id>.enabled`: 계정 활성화/비활성화.
 - `channels.zalo.accounts.<id>.dmPolicy`: 계정별 DM 정책.

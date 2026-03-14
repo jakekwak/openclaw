@@ -121,7 +121,8 @@ macOS 메뉴 바 앱은 동일한 설정을 처음부터 끝까지 수행할 수
 - 평문 `ws://`는 기본적으로 루프백 전용입니다. 신뢰된 사설 네트워크에서만 예외적으로 사용할 때는 클라이언트 프로세스에 `OPENCLAW_ALLOW_INSECURE_PRIVATE_WS=1`을 설정하십시오.
 - **비루프백 바인드**(`lan`/`tailnet`/`custom`, 또는 루프백이 사용 불가능할 때 `auto`)는 인증 토큰/비밀번호를 반드시 사용해야 합니다.
 - `gateway.remote.token` / `gateway.remote.password`는 클라이언트 자격 증명 소스입니다. 이것만으로 서버 인증이 구성되지는 않습니다.
-- 로컬 호출 경로에서도 `gateway.auth.*`가 비어 있으면 `gateway.remote.*`를 폴백으로 사용할 수 있습니다.
+- 로컬 호출 경로에서는 `gateway.auth.*`가 비어 있을 때만 `gateway.remote.*`를 폴백으로 사용할 수 있습니다.
+- `gateway.auth.token` / `gateway.auth.password`가 SecretRef로 명시적으로 구성되어 있는데 해석되지 않으면, 해석은 fail-closed 됩니다 (remote fallback으로 가리지 않음).
 - `gateway.remote.tlsFingerprint`는 `wss://`를 사용할 때 원격 TLS 인증서를 고정합니다.
 - **Tailscale Serve**는 `gateway.auth.allowTailscale: true`일 때 신원 헤더를 통해 Control UI/WebSocket 트래픽을 인증할 수 있습니다; HTTP API 엔드포인트는 여전히 토큰/비밀번호 인증이 필요합니다. 이 토큰 없는 흐름은 게이트웨이 호스트가 신뢰할 수 있다고 가정합니다. 어디서나 토큰/비밀번호를 원하면 이를 `false`로 설정하세요.
 - 브라우저 제어는 운영자 접근처럼 다루십시오: tailnet 전용 + 의도적인 노드 페어링.

@@ -50,6 +50,12 @@ openclaw nodes describe --node <idOrNameOrIp>
 - **노드 호스트**: 노드 머신에서 `system.run`/`system.which`를 실행합니다.
 - **승인**: `~/.openclaw/exec-approvals.json`를 통해 노드 호스트에서 적용됩니다.
 
+승인 참고:
+
+- 승인 기반 node 실행은 정확한 요청 컨텍스트에 바인딩됩니다.
+- 직접 shell/runtime 파일 실행의 경우, OpenClaw는 가능한 경우 하나의 구체적인 로컬 파일 피연산자에도 best-effort로 바인딩하고, 실행 전 그 파일이 바뀌면 실행을 거부합니다.
+- interpreter/runtime 명령에서 정확히 하나의 구체적인 로컬 파일을 식별할 수 없으면, OpenClaw는 전체 런타임 커버리지를 가장하지 않고 승인 기반 실행을 거부합니다. 더 강한 경계가 필요하면 sandboxing, 별도 호스트, 또는 명시적 trusted allowlist/full workflow를 사용하세요.
+
 ### 노드 호스트 시작 (전면)
 
 노드 머신에서:

@@ -92,3 +92,40 @@ openclaw devices revoke --device <deviceId> --role node
 - 이러한 명령어는 `operator.pairing` (또는 `operator.admin`) 범위가 필요합니다.
 - `devices clear`는 의도적으로 `--yes` 플래그가 필요합니다.
 - 로컬 루프백에서 페어링 범위를 사용할 수 없는 경우 (명시적 `--url`도 없는 경우), list/approve는 로컬 페어링 폴백을 사용할 수 있습니다.
+
+## 토큰 불일치 복구 체크리스트
+
+Control UI나 다른 클라이언트가 계속 `AUTH_TOKEN_MISMATCH` 또는 `AUTH_DEVICE_TOKEN_MISMATCH`로 실패할 때 사용하세요.
+
+1. 현재 gateway token source를 확인합니다:
+
+```bash
+openclaw config get gateway.auth.token
+```
+
+2. 페어링된 디바이스 목록을 보고 영향받은 device id를 확인합니다:
+
+```bash
+openclaw devices list
+```
+
+3. 영향받은 디바이스의 operator token을 회전합니다:
+
+```bash
+openclaw devices rotate --device <deviceId> --role operator
+```
+
+4. 회전만으로 충분하지 않으면 오래된 페어링을 제거하고 다시 승인합니다:
+
+```bash
+openclaw devices remove <deviceId>
+openclaw devices list
+openclaw devices approve <requestId>
+```
+
+5. 현재 공유 token/password로 클라이언트 연결을 다시 시도합니다.
+
+관련 문서:
+
+- [대시보드 인증 문제 해결](/web/dashboard#if-you-see-unauthorized-1008)
+- [Gateway 문제 해결](/gateway/troubleshooting#dashboard-control-ui-connectivity)

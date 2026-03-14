@@ -96,12 +96,24 @@ openclaw onboard --non-interactive \
       --gateway-bind loopback
     ```
   </Accordion>
-  <Accordion title="OpenCode Zen 예제">
+  <Accordion title="OpenCode 예제">
     ```bash
     openclaw onboard --non-interactive \
       --mode local \
       --auth-choice opencode-zen \
       --opencode-zen-api-key "$OPENCODE_API_KEY" \
+      --gateway-port 18789 \
+      --gateway-bind loopback
+    ```
+    Go 카탈로그를 쓰려면 `--auth-choice opencode-go --opencode-go-api-key "$OPENCODE_API_KEY"`로 바꾸세요.
+  </Accordion>
+  <Accordion title="Ollama 예제">
+    ```bash
+    openclaw onboard --non-interactive \
+      --mode local \
+      --auth-choice ollama \
+      --custom-model-id "qwen3.5:27b" \
+      --accept-risk \
       --gateway-port 18789 \
       --gateway-bind loopback
     ```

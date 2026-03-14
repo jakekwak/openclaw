@@ -9,7 +9,7 @@ read_when:
 
 # Node.js
 
-OpenClaw는 **Node 22 이상**이 필요합니다. [설치 스크립트](/ko-KR/install#install-methods)는 Node를 자동으로 감지하고 설치합니다. 이 페이지는 Node를 직접 설정하고 모든 것이 올바르게 연결되어 있는지 확인하고자 할 때 유용합니다 (버전, PATH, 전역 설치).
+OpenClaw는 **Node 22.16 이상**이 필요합니다. **Node 24는 설치, CI, 릴리스 워크플로우의 기본이자 권장 런타임**입니다. Node 22는 활성 LTS 경로를 통해 계속 지원됩니다. [설치 스크립트](/ko-KR/install#install-methods)는 Node를 자동으로 감지하고 설치합니다. 이 페이지는 Node를 직접 설정하고 모든 것이 올바르게 연결되어 있는지 확인하고자 할 때 유용합니다 (버전, PATH, 전역 설치).
 
 ## 버전 확인
 
@@ -17,7 +17,7 @@ OpenClaw는 **Node 22 이상**이 필요합니다. [설치 스크립트](/ko-KR/
 node -v
 ```
 
-이 명령이 `v22.x.x` 이상을 출력하면 됩니다. Node가 설치되지 않았거나 버전이 너무 오래되었다면 아래 설치 방법 중 하나를 선택하세요.
+이 명령이 `v24.x.x` 이상을 출력하면 권장 기본값을 사용 중입니다. `v22.16.x` 이상이면 지원되는 Node 22 LTS 경로입니다. Node가 설치되지 않았거나 버전이 너무 오래되었다면 아래 설치 방법 중 하나를 선택하세요.
 
 ## Node 설치
 
@@ -36,7 +36,7 @@ node -v
     **Ubuntu / Debian:**
 
     ```bash
-    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
     sudo apt-get install -y nodejs
     ```
 
@@ -77,8 +77,8 @@ node -v
 fnm 사용 예시:
 
 ```bash
-fnm install 22
-fnm use 22
+fnm install 24
+fnm use 24
 ```
 
   <Warning>

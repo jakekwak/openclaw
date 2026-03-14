@@ -13,7 +13,7 @@ title: "슬래시 명령어"
 관련된 두 가지 시스템이 있습니다:
 
 - **명령어**: 독립된 `/...` 메시지입니다.
-- **지침**: `/think`, `/verbose`, `/reasoning`, `/elevated`, `/exec`, `/model`, `/queue`.
+- **지침**: `/think`, `/fast`, `/verbose`, `/reasoning`, `/elevated`, `/exec`, `/model`, `/queue`.
   - 지침은 모델이 메시지를 보기 전에 제거됩니다.
   - 일반 채팅 메시지(단일 지침이 아님)에서는 "인라인 힌트"로 처리되며 세션 설정에 영구적이지 않습니다.
   - 단일 지침 메시지(지침만 포함된 메시지)에서는 세션에 영구적으로 남고 확인응답과 함께 회신됩니다.
@@ -97,6 +97,7 @@ title: "슬래시 명령어"
 - `/send on|off|inherit` (소유자 전용)
 - `/reset` 또는 `/new [model]` (선택적 모델 힌트; 나머지는 그대로 전달)
 - `/think <off|minimal|low|medium|high|xhigh>` (모델/프로바이더에 따른 동적 선택; 별칭: `/thinking`, `/t`)
+- `/fast <status|on|off>` (인자를 생략하면 현재 적용 중인 fast-mode 상태를 표시)
 - `/verbose on|full|off` (별칭: `/v`)
 - `/reasoning on|off|stream` (별칭: `/reason`; "on"일 때는 "Reasoning:"으로 시작하는 별도 메시지를 전송; `stream` = Telegram 임시 저장 전용)
 - `/elevated on|off|ask|full` (별칭: `/elev`; `full`은 실행 승인을 건너뜀)
@@ -118,12 +119,14 @@ title: "슬래시 명령어"
 - `/new <model>`은 모델 별칭, `provider/model`, 또는 프로바이더 이름(불명확한 일치 가능)을 수용합니다. 일치하는 항목이 없으면 텍스트는 메시지 본문으로 처리됩니다.
 - 프로바이더 사용 내역의 전체 분석을 원한다면 `openclaw status --usage`를 사용하세요.
 - `/allowlist add|remove`는 `commands.config=true`가 필요하며 채널 `configWrites`를 존중합니다.
+- 다중 계정 채널에서는 config 대상 `/allowlist --account <id>` 와 `/config set channels.<provider>.accounts.<id>...` 도 대상 계정의 `configWrites`를 따릅니다.
 - `/usage`는 응답별 사용 요약을 제어하며, `/usage cost`는 OpenClaw 세션 로그에서 현지 비용 요약을 출력합니다.
 - `/restart`는 기본적으로 활성화되어 있습니다; 비활성화하려면 `commands.restart: false`를 설정하세요.
 - Discord 전용 네이티브 명령어: `/vc join|leave|status`는 음성 채널을 제어합니다 (`channels.discord.voice`와 네이티브 명령어 필요; 텍스트로는 사용 불가).
 - Discord 스레드 바인딩 명령어 (`/focus`, `/unfocus`, `/agents`, `/session idle`, `/session max-age`)는 유효한 스레드 바인딩이 활성화되어 있어야 합니다 (`session.threadBindings.enabled` 및/또는 `channels.discord.threadBindings.enabled`).
 - ACP 명령어 참조 및 런타임 동작: [ACP Agents](/ko-KR/tools/acp-agents).
 - `/verbose`는 디버깅 및 추가 가시성을 목적으로 하며, 일반 사용 시는 **비활성화** 상태로 유지하세요.
+- `/fast on|off`는 세션 재정의를 지속합니다. 이를 지우고 config 기본값으로 돌아가려면 Sessions UI의 `inherit` 옵션을 사용하세요.
 - 도구 실패 요약은 관련 있을 때 여전히 표시되지만, 상세한 실패 텍스트는 `/verbose`가 `on` 또는 `full`일 때만 포함됩니다.
 - `/reasoning`(및 `/verbose`)는 그룹 설정에서는 위험할 수 있습니다: 내부 추론이나 의도하지 않은 도구 출력이 드러날 수 있습니다. 특히 그룹 채팅에서는 비활성화를 권장합니다.
 - **빠른 경로:** 허용된 발신자로부터의 명령 전용 메시지는 즉시 처리됩니다 (대기열 및 모델을 우회).

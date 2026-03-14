@@ -307,7 +307,7 @@ openclaw [--dev] [--profile <name>] <command>
 - `--non-interactive`
 - `--mode <local|remote>`
 - `--flow <quickstart|advanced|manual>` (manual은 advanced의 별칭)
-- `--auth-choice <setup-token|token|chutes|openai-codex|openai-api-key|openrouter-api-key|ai-gateway-api-key|moonshot-api-key|moonshot-api-key-cn|kimi-code-api-key|synthetic-api-key|venice-api-key|gemini-api-key|zai-api-key|apiKey|minimax-api|minimax-api-lightning|opencode-zen|custom-api-key|skip>`
+- `--auth-choice <setup-token|token|chutes|openai-codex|openai-api-key|openrouter-api-key|ollama|ai-gateway-api-key|moonshot-api-key|moonshot-api-key-cn|kimi-code-api-key|synthetic-api-key|venice-api-key|gemini-api-key|zai-api-key|mistral-api-key|apiKey|minimax-api|minimax-api-lightning|opencode-zen|opencode-go|custom-api-key|skip>`
 - `--token-provider <id>` (비대화형; `--auth-choice token` 사용 시)
 - `--token <token>` (비대화형; `--auth-choice token` 사용 시)
 - `--token-profile-id <id>` (비대화형; 기본값: `<provider>:manual`)
@@ -322,8 +322,9 @@ openclaw [--dev] [--profile <name>] <command>
 - `--zai-api-key <key>`
 - `--minimax-api-key <key>`
 - `--opencode-zen-api-key <key>`
-- `--custom-base-url <url>` (비대화형; `--auth-choice custom-api-key` 사용 시)
-- `--custom-model-id <id>` (비대화형; `--auth-choice custom-api-key` 사용 시)
+- `--opencode-go-api-key <key>`
+- `--custom-base-url <url>` (비대화형; `--auth-choice custom-api-key` 또는 `--auth-choice ollama` 사용 시)
+- `--custom-model-id <id>` (비대화형; `--auth-choice custom-api-key` 또는 `--auth-choice ollama` 사용 시)
 - `--custom-api-key <key>` (비대화형; 선택사항; `--auth-choice custom-api-key` 사용 시; 누락 시 `CUSTOM_API_KEY`로 대체됨)
 - `--custom-provider-id <id>` (비대화형; 선택사항, 사용자 정의 프로바이더 ID)
 - `--custom-compatibility <openai|anthropic>` (비대화형; 선택사항; 기본값 `openai`)

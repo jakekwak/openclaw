@@ -81,6 +81,8 @@ https://gateway-host/line/webhook
 }
 ```
 
+`tokenFile` 및 `secretFile`은 일반 파일을 가리켜야 합니다. 심볼릭 링크는 거부됩니다.
+
 다중 계정:
 
 ```json5

@@ -2487,3 +2487,11 @@ macOS 온보딩 어시스턴트가 작성합니다. 기본값을 유도합니다
 ---
 
 _관련: [구성](/ko-KR/gateway/configuration) · [구성 예제](/ko-KR/gateway/configuration-examples) · [Doctor](/ko-KR/gateway/doctor)_
+
+### 최근 업데이트 메모
+
+- `channels.telegram.tokenFile`은 일반 파일만 허용하며 심볼릭 링크는 거부됩니다.
+- 멀티 계정 채널에서는 `channels.<provider>.accounts.<id>.configWrites`도 계정 대상 설정 쓰기를 게이트합니다.
+- OpenCode 예시는 `opencode/...`와 `opencode-go/...`를 함께 다루고, 브라우저 기본 프로파일 예시는 `user`를 사용합니다.
+- `gateway.push.apns.relay.*`로 공식/TestFlight iOS 빌드용 relay-backed push를 구성할 수 있습니다.
+- 로컬 호출 경로는 `gateway.auth.*`가 비어 있을 때만 `gateway.remote.*`를 폴백으로 사용하며, SecretRef가 해석되지 않으면 fail-closed 됩니다.

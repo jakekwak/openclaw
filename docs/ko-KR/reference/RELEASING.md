@@ -116,3 +116,9 @@ read_when:
 - @openclaw/zalouser
 
 릴리스 노트는 또한 **기본적으로 활성화되지 않은** 새로운 선택적 번들 플러그인을 언급해야 합니다 (예: `tlon`).
+
+### 최근 업데이트 메모
+
+- 기본 릴리스 런타임 기준은 Node 24이며 Node 22 LTS도 계속 지원합니다.
+- 버전 규칙은 CalVer 안정판 `YYYY.M.D`, 베타 `YYYY.M.D-beta.N`입니다.
+- npm 게시 절차는 수동 `npm publish`보다 trusted publishing + 태그 푸시 워크플로를 기준으로 합니다.

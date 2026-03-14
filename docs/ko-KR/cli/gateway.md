@@ -118,6 +118,23 @@ openclaw gateway probe
 openclaw gateway probe --json
 ```
 
+해석:
+
+- `Reachable: yes`는 최소 하나의 대상이 WebSocket 연결을 수락했다는 뜻입니다.
+- `RPC: ok`는 상세 RPC 호출(`health`/`status`/`system-presence`/`config.get`)도 성공했다는 뜻입니다.
+- `RPC: limited - missing scope: operator.read`는 연결 자체는 성공했지만 상세 RPC가 scope 제한을 받는다는 뜻입니다. 이 경우 완전 실패가 아니라 **degraded** reachability로 보고됩니다.
+- 종료 코드는 프로브한 대상 중 어느 것도 도달 가능하지 않을 때만 0이 아닙니다.
+
+JSON 참고 (`--json`):
+
+- 최상위:
+  - `ok`: 최소 하나의 대상에 도달 가능.
+  - `degraded`: 최소 하나의 대상에서 scope 제한된 상세 RPC 발생.
+- 대상별 (`targets[].connect`):
+  - `ok`: 연결 후 reachability + degraded 분류 결과.
+  - `rpcOk`: 전체 상세 RPC 성공.
+  - `scopeLimited`: 상세 RPC가 operator scope 부족으로 실패.
+
 #### 원격 SSH (Mac 앱 동등성)
 
 macOS 앱 “원격 SSH” 모드는 로컬 포트 포워드를 사용하여 원격 게이트웨이 (루프백에만 바인딩될 수 있음)가 `ws://127.0.0.1:<포트>`에서 도달 가능해지도록 합니다.

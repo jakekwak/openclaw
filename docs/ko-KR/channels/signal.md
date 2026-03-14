@@ -194,6 +194,8 @@ Groups:
 
 - `channels.signal.groupPolicy = open | allowlist | disabled`.
 - `allowlist`가 설정된 경우 `channels.signal.groupAllowFrom`이 그룹 내에서 트리거할 수 있는 대상자를 제어합니다.
+- `channels.signal.groups["<group-id>" | "*"]`는 `requireMention`, `tools`, `toolsBySender`로 그룹 동작을 재정의할 수 있습니다.
+- 다중 계정 설정에서는 계정별 재정의에 `channels.signal.accounts.<id>.groups`를 사용하세요.
 - 런타임 노트: `channels.signal`이 완전히 없는 경우, `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 그룹 확인에 `groupPolicy="allowlist"`로 폴백합니다.
 
 ## How it works (behavior)
@@ -311,6 +313,8 @@ grep -i "signal" "/tmp/openclaw/openclaw-$(date +%Y-%m-%d).log" | tail -20
 - `channels.signal.allowFrom`: DM 허용 목록 (E.164 또는 `uuid:<id>`). `open`은 `"*"` 필요. Signal에는 사용자 이름이 없으므로 전화번호/UUID ids 사용.
 - `channels.signal.groupPolicy`: `open | allowlist | disabled` (기본값: allowlist).
 - `channels.signal.groupAllowFrom`: 그룹 발신자 허용 목록.
+- `channels.signal.groups`: Signal 그룹 ID(또는 `"*"`)로 키된 그룹별 재정의입니다. 지원 필드: `requireMention`, `tools`, `toolsBySender`.
+- `channels.signal.accounts.<id>.groups`: 다중 계정 설정에서 `channels.signal.groups`의 계정별 버전입니다.
 - `channels.signal.historyLimit`: 맥락에 포함할 최대 그룹 메시지 수 (0은 비활성화).
 - `channels.signal.dmHistoryLimit`: 사용자 턴 내 DM 히스토리 제한. 사용자별 오버라이드: `channels.signal.dms["<phone_or_uuid>"].historyLimit`.
 - `channels.signal.textChunkLimit`: 아웃바운드 청크 크기 (문자 기준).

@@ -113,10 +113,10 @@ openclaw plugins install ./extensions/msteams
 **Teams + 채널 허용 목록**
 
 - `channels.msteams.teams`에 팀 및 채널을 나열하여 그룹/채널의 응답 범위를 지정합니다.
-- 키는 팀 ID 또는 이름일 수 있으며, 채널 키는 대화 ID 또는 이름일 수 있습니다.
+- 키에는 안정적인 팀 ID와 채널 대화 ID를 사용해야 합니다.
 - `groupPolicy="allowlist"`이고 팀 허용 목록이 존재할 때, 목록에 있는 팀/채널만 허용됩니다 (언급 필요).
 - 구성 마법사는 `Team/Channel` 항목을 허용하고 이를 저장합니다.
-- OpenClaw는 시작 시 팀/채널과 사용자 허용 목록 이름을 ID로 해석하고 (Graph 권한이 허용될 때) 매핑을 로그합니다. 해석되지 않은 항목은 유형대로 유지됩니다.
+- OpenClaw는 시작 시 팀/채널과 사용자 허용 목록 이름을 ID로 해석하고 (Graph 권한이 허용될 때) 매핑을 로그합니다. 해석되지 않은 팀/채널 이름은 입력한 그대로 유지되지만, `channels.msteams.dangerouslyAllowNameMatching: true`를 활성화하지 않으면 기본적으로 라우팅에 사용되지 않습니다.
 
 예:
 
@@ -455,7 +455,7 @@ Teams 마크다운은 Slack이나 Discord보다 제한적입니다:
 - `channels.msteams.webhook.path` (기본 `/api/messages`)
 - `channels.msteams.dmPolicy`: `pairing | allowlist | open | disabled` (기본값: pairing)
 - `channels.msteams.allowFrom`: DM 허용 목록 (AAD 객체 ID 추천). Graph 액세스가 가능할 때 설정 중에 마법사는 이름을 ID로 해석합니다.
-- `channels.msteams.dangerouslyAllowNameMatching`: 변경 가능한 UPN/표시 이름 매칭을 다시 활성화하는 비상용 토글.
+- `channels.msteams.dangerouslyAllowNameMatching`: 변경 가능한 UPN/표시 이름 매칭과 직접 팀/채널 이름 라우팅을 다시 활성화하는 비상용 토글.
 - `channels.msteams.textChunkLimit`: 발신 텍스트 청크 크기.
 - `channels.msteams.chunkMode`: `length` (기본값) 또는 `newline`으로 빈 줄 (단락 경계)에서 분할 후 길이 청크.
 - `channels.msteams.mediaAllowHosts`: 인바운드 첨부 파일 호스트에 대한 허용 목록 (기본적으로 Microsoft/Teams 도메인).

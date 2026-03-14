@@ -31,7 +31,7 @@ openclaw agents add <name>
 </Note>
 
 <Tip>
-권장 사항: Brave Search API 키를 설정하여 에이전트가 `web_search`를 사용할 수 있도록 하십시오 (`web_fetch`는 키 없이 작동합니다). 가장 쉬운 경로: `openclaw configure --section web`을 사용하여 `tools.web.search.apiKey`를 저장합니다. 문서: [웹 도구](/ko-KR/tools/web).
+권장 사항: 웹 검색 프로바이더 키를 설정하여 에이전트가 `web_search`를 사용할 수 있도록 하십시오 (`web_fetch`는 키 없이 작동합니다). 가장 쉬운 경로: `openclaw configure --section web`. 문서: [웹 도구](/ko-KR/tools/web).
 </Tip>
 
 ## 빠른 시작 대 고급

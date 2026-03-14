@@ -76,15 +76,15 @@ sudo apt install -y git curl build-essential
 sudo timedatectl set-timezone America/Chicago  # 당신의 타임존으로 변경하세요
 ```
 
-## 4) Node.js 22 (ARM64) 설치
+## 4) Node.js 24 (ARM64) 설치
 
 ```bash
 # NodeSource 를 통해 Node.js 설치
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt install -y nodejs
 
 # 확인
-node --version  # v22.x.x 표시되어야 함
+node --version  # v24.x.x 표시되어야 함
 npm --version
 ```
 

@@ -45,7 +45,7 @@ bun run vitest run
 Bun은 명시적으로 신뢰되지 않는 한 종속성 생명주기 스크립트를 차단할 수 있습니다(`bun pm untrusted` / `bun pm trust`).  
 이 저장소에서는 일반적으로 차단된 스크립트가 필요하지 않습니다:
 
-- `@whiskeysockets/baileys` `preinstall`: Node 메이저 >= 20를 체크함 (Node 22+ 사용 중).
+- `@whiskeysockets/baileys` `preinstall`: Node 메이저 >= 20를 체크함 (OpenClaw는 기본적으로 Node 24를 사용하고, 호환성을 위해 Node 22 LTS, 현재 `22.16+`도 지원합니다).
 - `protobufjs` `postinstall`: 호환되지 않는 버전 스키마에 대한 경고를 출력함 (빌드 산출물 없음).
 
 실제로 이러한 스크립트가 필요한 실행 문제를 겪을 경우, 명시적으로 신뢰하세요:

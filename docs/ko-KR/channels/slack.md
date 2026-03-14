@@ -169,15 +169,15 @@ openclaw gateway
     - `allowlist`
     - `disabled`
 
-    채널 허용 목록은 `channels.slack.channels`에 있습니다.
+    채널 허용 목록은 `channels.slack.channels`에 있으며, 안정적인 채널 ID를 사용해야 합니다.
 
     런타임 노트: `channels.slack`이 완전히 없는 경우 (환경 변수 설정만 있는 경우), `channels.defaults.groupPolicy`가 설정되어 있더라도 런타임은 `groupPolicy="allowlist"`로 기본값으로 이동하며 경고를 기록합니다.
 
     이름/ID 해결:
 
     - 채널 허용 목록 항목 및 DM 허용 목록 항목은 토큰 액세스가 허용할 때 시작 시 해결됩니다
-    - 해결되지 않은 항목은 구성된 그대로 유지됩니다
-    - 인바운드 인증 매칭은 기본적으로 ID 우선입니다; 직접 사용자명/슬러그 매칭은 `channels.slack.dangerouslyAllowNameMatching: true`가 필요합니다
+    - 해결되지 않은 채널 이름 항목은 구성된 그대로 유지되지만, 기본적으로 라우팅에는 사용되지 않습니다
+    - 인바운드 인증과 채널 라우팅은 기본적으로 ID 우선입니다. 직접 사용자명/슬러그 매칭은 `channels.slack.dangerouslyAllowNameMatching: true`가 필요합니다
 
   </Tab>
 
@@ -190,7 +190,7 @@ openclaw gateway
     - 멘션 정규 표현식 패턴 (`agents.list[].groupChat.mentionPatterns`, 예비 `messages.groupChat.mentionPatterns`)
     - 암시적 봇 스레드에 대한 응답
 
-    채널별 컨트롤 (`channels.slack.channels.<id|name>`):
+    채널별 컨트롤 (`channels.slack.channels.<id>`; 이름은 시작 시 해석되거나 `dangerouslyAllowNameMatching`을 켠 경우에만 사용):
 
     - `requireMention`
     - `users` (허용 목록)
@@ -217,6 +217,55 @@ openclaw gateway
   - 100개를 초과하는 옵션: 상호작용 옵션 핸들러가 있는 경우 비동기 옵션 필터링과 함께 외부 선택 사용
   - 인코딩된 옵션 값이 Slack 제한을 초과할 경우, 흐름은 버튼으로 되돌아갑니다
 - 긴 옵션 페이로드에 대해, 슬래시 명령어 매개변수 메뉴는 값을 선택하기 전에 확인 대화를 사용합니다.
+
+## 인터랙티브 응답
+
+Slack은 에이전트가 작성한 인터랙티브 응답 컨트롤을 렌더링할 수 있지만, 이 기능은 기본적으로 비활성화되어 있습니다.
+
+전역으로 활성화:
+
+```json5
+{
+  channels: {
+    slack: {
+      capabilities: {
+        interactiveReplies: true,
+      },
+    },
+  },
+}
+```
+
+또는 특정 Slack 계정 하나에만 활성화:
+
+```json5
+{
+  channels: {
+    slack: {
+      accounts: {
+        ops: {
+          capabilities: {
+            interactiveReplies: true,
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+활성화되면 에이전트는 Slack 전용 응답 지시문을 보낼 수 있습니다:
+
+- `[[slack_buttons: Approve:approve, Reject:reject]]`
+- `[[slack_select: Choose a target | Canary:canary, Production:production]]`
+
+이 지시문은 Slack Block Kit으로 컴파일되며, 클릭이나 선택은 기존 Slack 상호작용 이벤트 경로를 통해 다시 전달됩니다.
+
+참고:
+
+- 이것은 Slack 전용 UI입니다. 다른 채널은 Slack Block Kit 지시문을 자체 버튼 시스템으로 변환하지 않습니다.
+- 인터랙티브 콜백 값은 에이전트가 직접 작성한 값이 아니라 OpenClaw가 생성한 불투명 토큰입니다.
+- 생성된 인터랙티브 블록이 Slack Block Kit 제한을 초과하면, OpenClaw는 잘못된 블록 payload를 보내는 대신 원래 텍스트 응답으로 폴백합니다.
 
 기본 슬래시 명령어 설정:
 

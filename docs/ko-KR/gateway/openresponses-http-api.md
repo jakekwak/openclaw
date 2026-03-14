@@ -72,6 +72,11 @@ OpenClaw의 게이트웨이는 OpenResponses와 호환되는 `POST /v1/responses
 }
 ```
 
+### 최근 업데이트 메모
+
+- 인증, 보안, 에이전트 선택, 세션 라우팅 동작은 [OpenAI Chat Completions API](/ko-KR/gateway/openai-http-api)와 동일하게 봅니다.
+- 이 엔드포인트는 게이트웨이 인스턴스에 대한 운영자 권한 표면이며, 활성화/비활성화는 `gateway.http.endpoints.responses.enabled`로 제어합니다.
+
 ## 엔드포인트 비활성화
 
 `gateway.http.endpoints.responses.enabled`를 `false`로 설정합니다:

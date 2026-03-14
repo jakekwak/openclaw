@@ -66,8 +66,8 @@ ssh root@YOUR_DROPLET_IP
 # 시스템 업데이트
 apt update && apt upgrade -y
 
-# Node.js 22 설치
-curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+# Node.js 24 설치
+curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
 apt install -y nodejs
 
 # OpenClaw 설치

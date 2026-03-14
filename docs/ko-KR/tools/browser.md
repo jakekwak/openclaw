@@ -654,3 +654,9 @@ WSL2 Gateway + Windows Chrome split-host 구성은
   - 브라우저 지원 노드가 연결되면, 도구는 `target="host"` 또는 `target="node"`를 고정하지 않으면 자동으로 라우팅될 수 있습니다.
 
 이는 에이전트를 결정론적으로 유지하며 취약한 선택기를 피합니다.
+
+### 최근 업데이트 메모
+
+- 내장 프로파일은 `openclaw`, `user`, `chrome-relay` 세 가지 관점으로 설명합니다.
+- 기본 프로파일은 `openclaw`이며, 로그인된 실제 Chrome 세션이 필요하면 `user`, 툴바 attach 흐름이 필요하면 `chrome-relay`를 사용합니다.
+- `existing-session` 경로는 Chrome DevTools MCP 기반입니다.

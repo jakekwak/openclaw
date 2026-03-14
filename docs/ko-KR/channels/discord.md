@@ -166,6 +166,7 @@ openclaw pairing approve discord <CODE>
 
 <Note>
 토큰 해상도는 계정 인식이 가능합니다. 설정 토큰 값이 환경 변수 대체보다 우선합니다. `DISCORD_BOT_TOKEN`은 기본 계정에만 사용됩니다.
+고급 outbound 호출(message tool/channel actions)에서는 호출에 명시한 per-call `token`이 그 호출에 사용됩니다. 계정 정책/재시도 설정은 여전히 active runtime snapshot의 선택된 계정에서 가져옵니다.
 </Note>
 
 ## 권장: 길드 워크스페이스 설정

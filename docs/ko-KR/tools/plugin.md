@@ -654,3 +654,9 @@ export default function (api) {
 
 - 리포 내 플러그인은 `src/**` 아래 Vitest 테스트를 유지할 수 있습니다 (예: `src/plugins/voice-call.plugin.test.ts`).
 - 별도로 게시된 플러그인은 자체 CI (lint/build/test)를 실행하고 `openclaw.extensions`가 빌드된 엔트리 포인트 (`dist/index.js`)를 가리키는지를 검증해야 합니다.
+
+### 최근 업데이트 메모
+
+- 플러그인 시스템은 manifest-first discovery, enablement, runtime loading, registry consumption의 네 층으로 설명됩니다.
+- 워크스페이스 플러그인은 기본 비활성화이며, `plugins.allow`는 source provenance가 아니라 플러그인 id를 신뢰합니다.
+- provider plugin은 auth, non-interactive setup, wizard integration, discovery, onModelSelected lifecycle을 담당할 수 있습니다.

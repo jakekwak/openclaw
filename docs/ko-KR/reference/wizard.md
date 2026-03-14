@@ -265,3 +265,9 @@ WhatsApp 자격 증명은 `~/.openclaw/credentials/whatsapp/<accountId>/`에 보
 - 설정 참조: [게이트웨이 구성](/ko-KR/gateway/configuration)
 - 프로바이더: [WhatsApp](/ko-KR/channels/whatsapp), [Telegram](/ko-KR/channels/telegram), [Discord](/ko-KR/channels/discord), [Google Chat](/ko-KR/channels/googlechat), [Signal](/ko-KR/channels/signal), [BlueBubbles](/ko-KR/channels/bluebubbles) (iMessage), [iMessage](/ko-KR/channels/imessage) (레거시)
 - 스킬: [스킬](/ko-KR/tools/skills), [스킬 설정](/ko-KR/tools/skills-config)
+
+### 최근 업데이트 메모
+
+- OpenCode는 Zen과 Go 카탈로그를 함께 다룹니다.
+- Ollama는 wizard에서 `Cloud + Local` 또는 `Local` 모드를 선택할 수 있습니다.
+- provider별 비대화형 예제는 [CLI 자동화](/ko-KR/start/wizard-cli-automation#provider-specific-examples)에 모아 둡니다.

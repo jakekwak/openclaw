@@ -38,7 +38,8 @@ OpenClaw 는 `web_fetch` 에 대한 예비 추출기로 **Firecrawl** 을 사용
 
 주의사항:
 
-- API 키가 있을 경우, `firecrawl.enabled` 는 기본값으로 true 입니다.
+- `firecrawl.enabled`는 명시적으로 `false`로 설정하지 않는 한 기본값이 `true`입니다.
+- Firecrawl fallback 시도는 API 키가 있을 때만 실행됩니다 (`tools.web.fetch.firecrawl.apiKey` 또는 `FIRECRAWL_API_KEY`).
 - `maxAgeMs` 는 캐시된 결과물의 최대 유효 시간을 제어합니다 (밀리초). 기본값은 2일입니다.
 
 ## 은폐 / 봇 우회

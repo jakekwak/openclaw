@@ -209,8 +209,45 @@ agents: {
 
 - 경로는 절대적이거나 작업 공간 상대적인 값일 수 있습니다.
 - 디렉터리는 `.md` 파일을 재귀적으로 탐색합니다.
-- Markdown 파일만 인덱스됩니다.
+- 기본적으로 Markdown 파일만 인덱스됩니다.
+- `memorySearch.multimodal.enabled = true`이면 OpenClaw는 `extraPaths` 아래에서만 지원되는 이미지/오디오 파일도 인덱스합니다. 기본 메모리 루트(`MEMORY.md`, `memory.md`, `memory/**/*.md`)는 계속 Markdown 전용입니다.
 - 심볼릭 링크는 무시됩니다 (파일 또는 디렉터리).
+
+### 멀티모달 메모리 파일 (Gemini 이미지 + 오디오)
+
+Gemini embedding 2를 사용할 때 OpenClaw는 `memorySearch.extraPaths`에서 이미지 및 오디오 파일을 인덱스할 수 있습니다:
+
+```json5
+agents: {
+  defaults: {
+    memorySearch: {
+      provider: "gemini",
+      model: "gemini-embedding-2-preview",
+      extraPaths: ["assets/reference", "voice-notes"],
+      multimodal: {
+        enabled: true,
+        modalities: ["image", "audio"], // 또는 ["all"]
+        maxFileBytes: 10000000
+      },
+      remote: {
+        apiKey: "YOUR_GEMINI_API_KEY"
+      }
+    }
+  }
+}
+```
+
+노트:
+
+- 멀티모달 메모리는 현재 `gemini-embedding-2-preview`에서만 지원됩니다.
+- 멀티모달 인덱싱은 `memorySearch.extraPaths`를 통해 발견된 파일에만 적용됩니다.
+- 이 단계에서 지원되는 modality는 이미지와 오디오입니다.
+- 멀티모달 메모리를 활성화하는 동안 `memorySearch.fallback`은 `"none"`으로 유지해야 합니다.
+- 인덱싱 중에 일치하는 이미지/오디오 파일 바이트가 구성된 Gemini 임베딩 엔드포인트로 업로드됩니다.
+- 지원 이미지 확장자: `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`, `.heic`, `.heif`.
+- 지원 오디오 확장자: `.mp3`, `.wav`, `.ogg`, `.opus`, `.m4a`, `.aac`, `.flac`.
+- 검색 쿼리는 계속 텍스트이지만, Gemini는 그 텍스트 쿼리를 인덱스된 이미지/오디오 임베딩과 비교할 수 있습니다.
+- `memory_get`은 여전히 Markdown만 읽습니다. 바이너리 파일은 검색 가능하지만 원시 파일 내용으로 반환되지는 않습니다.
 
 ### Gemini 임베딩 (네이티브)
 
@@ -235,6 +272,29 @@ agents: {
 - `remote.baseUrl`은 선택 사항입니다 (기본적으로 Gemini API 기본 URL로 설정).
 - `remote.headers`를 사용하여 필요한 경우 추가 헤더를 추가할 수 있습니다.
 - 기본 모델: `gemini-embedding-001`.
+- `gemini-embedding-2-preview`도 지원합니다: 8192 토큰 한도와 조정 가능한 차원(768 / 1536 / 3072, 기본값 3072).
+
+#### Gemini Embedding 2 (프리뷰)
+
+```json5
+agents: {
+  defaults: {
+    memorySearch: {
+      provider: "gemini",
+      model: "gemini-embedding-2-preview",
+      outputDimensionality: 3072, // 선택 사항: 768, 1536, 또는 3072(기본값)
+      remote: {
+        apiKey: "YOUR_GEMINI_API_KEY"
+      }
+    }
+  }
+}
+```
+
+> **⚠️ 재인덱싱 필요:** `gemini-embedding-001`(768차원)에서
+> `gemini-embedding-2-preview`(3072차원)로 바꾸면 벡터 크기가 달라집니다.
+> `outputDimensionality`를 768, 1536, 3072 사이에서 바꿀 때도 동일합니다.
+> OpenClaw는 모델이나 차원 변경을 감지하면 자동으로 재인덱싱합니다.
 
 사용자 정의 OpenAI 호환 엔드포인트(OpenRouter, vLLM, 또는 프록시)를 사용하려면, OpenAI 프로바이더와 `remote` 구성을 사용할 수 있습니다:
 

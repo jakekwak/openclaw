@@ -96,13 +96,13 @@ openclaw plugins install ./extensions/nextcloud-talk
 
 ## 기능
 
-| 기능            | 상태         |
-| --------------- | ------------ |
-| 다이렉트 메시지  | 지원됨       |
-| 방              | 지원됨       |
+| 기능            | 상태          |
+| --------------- | ------------- |
+| 다이렉트 메시지 | 지원됨        |
+| 방              | 지원됨        |
 | 스레드          | 지원되지 않음 |
-| 미디어          | URL만 지원   |
-| 반응            | 지원됨       |
+| 미디어          | URL만 지원    |
+| 반응            | 지원됨        |
 | 기본 명령       | 지원되지 않음 |
 
 ## 구성 참조(Nextcloud Talk)
@@ -114,7 +114,7 @@ openclaw plugins install ./extensions/nextcloud-talk
 - `channels.nextcloud-talk.enabled`: 채널 시작 활성화/비활성화.
 - `channels.nextcloud-talk.baseUrl`: Nextcloud 인스턴스 URL.
 - `channels.nextcloud-talk.botSecret`: 봇 공유 비밀.
-- `channels.nextcloud-talk.botSecretFile`: 비밀 파일 경로.
+- `channels.nextcloud-talk.botSecretFile`: 일반 파일 비밀 경로입니다. 심볼릭 링크는 거부됩니다.
 - `channels.nextcloud-talk.apiUser`: 방 조회(API 탐지)용 API 사용자.
 - `channels.nextcloud-talk.apiPassword`: 방 조회용 API/앱 비밀번호.
 - `channels.nextcloud-talk.apiPasswordFile`: API 비밀번호 파일 경로.

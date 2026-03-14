@@ -150,6 +150,7 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
 
     `groupAllowFrom`은 그룹 발신자 필터링에 사용됩니다. 설정되지 않은 경우 Telegram은 `allowFrom`을 기본으로 사용합니다.
     `groupAllowFrom` 항목은 숫자로 된 Telegram 사용자 ID여야 합니다.
+    Telegram 그룹 또는 슈퍼그룹 채팅 ID를 `groupAllowFrom`에 넣지 마세요. 음수 채팅 ID는 `channels.telegram.groups` 아래에 둬야 합니다.
     런타임 참고: `channels.telegram` 이 완전히 없는 경우, 런타임은 그룹 정책 평가에 대해 `groupPolicy="allowlist"` 로 폴백합니다 (`channels.defaults.groupPolicy` 가 설정되어 있어도).
 
     예: 특정 그룹에서 모든 멤버를 허용하려면:
@@ -168,6 +169,31 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
   },
 }
 ```
+
+    예: 한 특정 그룹 안에서 특정 사용자만 허용하려면:
+
+```json5
+{
+  channels: {
+    telegram: {
+      groups: {
+        "-1001234567890": {
+          requireMention: true,
+          allowFrom: ["8734062810", "745123456"],
+        },
+      },
+    },
+  },
+}
+```
+
+    <Warning>
+      흔한 실수: `groupAllowFrom`은 Telegram 그룹 허용 목록이 아닙니다.
+
+      - `-1001234567890` 같은 음수 Telegram 그룹/슈퍼그룹 채팅 ID는 `channels.telegram.groups` 아래에 두세요.
+      - `8734062810` 같은 Telegram 사용자 ID는 허용된 그룹 안에서 누가 봇을 호출할 수 있는지 제한하려는 경우 `groupAllowFrom` 아래에 두세요.
+      - 허용된 그룹의 모든 멤버가 봇과 대화할 수 있게 하려면 `groupAllowFrom: ["*"]`를 사용하세요.
+    </Warning>
 
   </Tab>
 
@@ -309,7 +335,8 @@ curl "https://api.telegram.org/bot<bot_token>/getUpdates"
 
     일반적인 설정 실패:
 
-    - `setMyCommands failed`는 보통 `api.telegram.org`에 대한 DNS/HTTPS 접근성 문제가 있다는 것을 의미합니다.
+    - `setMyCommands failed`와 함께 `BOT_COMMANDS_TOO_MUCH`가 나오면, 항목을 줄였는데도 Telegram 메뉴가 여전히 넘친 것입니다. 플러그인/스킬/사용자 정의 명령어를 줄이거나 `channels.telegram.commands.native`를 비활성화하세요.
+    - `setMyCommands failed`와 함께 네트워크/fetch 오류가 나오면, 보통 `api.telegram.org`에 대한 DNS/HTTPS 접근성이 막혀 있다는 뜻입니다.
 
     ### 디바이스 페어링 명령어 (`device-pair` 플러그인)
 
@@ -728,6 +755,34 @@ openclaw message poll --channel telegram --target -1001234567890:topic:42 \
     - `channels.telegram.actions.poll=false`는 일반 전송은 유지하면서 poll 생성만 막습니다.
 
   </Accordion>
+
+  <Accordion title="Telegram에서 exec 승인">
+    Telegram은 승인자 DM에서 exec 승인을 지원하며, 선택적으로 원래 채팅 또는 주제에도 승인 프롬프트를 게시할 수 있습니다.
+
+    설정 경로:
+
+    - `channels.telegram.execApprovals.enabled`
+    - `channels.telegram.execApprovals.approvers`
+    - `channels.telegram.execApprovals.target` (`dm` | `channel` | `both`, 기본값: `dm`)
+    - `agentFilter`, `sessionFilter`
+
+    승인자는 숫자 Telegram 사용자 ID여야 합니다. `enabled`가 false이거나 `approvers`가 비어 있으면 Telegram은 exec 승인 클라이언트로 동작하지 않습니다. 이 경우 승인 요청은 다른 승인 경로 또는 exec 승인 폴백 정책으로 넘어갑니다.
+
+    전달 규칙:
+
+    - `target: "dm"`은 구성된 승인자 DM으로만 승인 프롬프트를 보냅니다
+    - `target: "channel"`은 프롬프트를 원래 Telegram 채팅/주제로 다시 보냅니다
+    - `target: "both"`는 승인자 DM과 원래 채팅/주제 모두로 보냅니다
+
+    승인 또는 거부는 구성된 승인자만 할 수 있습니다. 비승인자는 `/approve`를 쓸 수 없고 Telegram 승인 버튼도 사용할 수 없습니다.
+
+    채널 전달은 대화 안에 명령 텍스트를 표시하므로, `channel` 또는 `both`는 신뢰된 그룹/주제에서만 켜세요. 프롬프트가 포럼 주제에 도착하면 OpenClaw는 승인 프롬프트와 승인 후 후속 메시지 모두에 그 주제를 유지합니다.
+
+    인라인 승인 버튼은 대상 표면(`dm`, `group`, `all`)을 허용하도록 `channels.telegram.capabilities.inlineButtons`가 설정되어 있어야 합니다.
+
+    관련 문서: [Exec approvals](/ko-KR/tools/exec-approvals)
+
+  </Accordion>
 </AccordionGroup>
 
 ## 문제 해결
@@ -756,7 +811,8 @@ openclaw message poll --channel telegram --target -1001234567890:topic:42 \
 
     - 발신자 ID 권한 부여 (페어링 및/또는 숫자 `allowFrom`)
     - 명령어 권한 부여는 그룹 정책이 `open`일 때도 계속 적용됩니다
-    - `setMyCommands failed`는 보통 `api.telegram.org`에 대한 DNS/HTTPS 도달 가능성 문제를 나타냅니다
+    - `setMyCommands failed`와 함께 `BOT_COMMANDS_TOO_MUCH`가 나오면 네이티브 메뉴 항목이 너무 많다는 뜻입니다. 플러그인/스킬/사용자 정의 명령어를 줄이거나 네이티브 메뉴를 비활성화하세요
+    - `setMyCommands failed`와 함께 네트워크/fetch 오류가 나오면 보통 `api.telegram.org`에 대한 DNS/HTTPS 도달 가능성 문제를 나타냅니다
 
   </Accordion>
 
@@ -805,7 +861,7 @@ dig +short api.telegram.org AAAA
 
 - `channels.telegram.enabled`: 채널 시작을 활성화/비활성화.
 - `channels.telegram.botToken`: 봇 토큰 (BotFather).
-- `channels.telegram.tokenFile`: 파일 경로에서 토큰 읽기.
+- `channels.telegram.tokenFile`: 일반 파일 경로에서 토큰 읽기. 심볼릭 링크는 거부됩니다.
 - `channels.telegram.dmPolicy`: `pairing | allowlist | open | disabled` (기본값: pairing).
 - `channels.telegram.allowFrom`: DM 허용 목록 (숫자 Telegram 사용자 ID). `open`은 `"*"`이 필요합니다. `openclaw doctor --fix`는 레거시 `@username` 항목을 ID로 해결할 수 있습니다.
 - `channels.telegram.groupPolicy`: `open | allowlist | disabled` (기본값: allowlist).
@@ -820,9 +876,16 @@ dig +short api.telegram.org AAAA
   - `channels.telegram.actions.poll`: Telegram poll 생성 허용/비활성화 (기본값: 활성화, 단 `sendMessage`도 필요).
   - `channels.telegram.groups.<id>.topics.<threadId>.*`: 주제별 오버라이드 (그룹 필드 + 주제 전용 `agentId`).
   - `channels.telegram.groups.<id>.topics.<threadId>.agentId`: 이 주제를 특정 에이전트로 라우팅합니다.
-  - `channels.telegram.groups.<id>.topics.<threadId>.groupPolicy`: 주제별 groupPolicy 오버라이드 (`open | allowlist | disabled`).
-  - `channels.telegram.groups.<id>.topics.<threadId>.requireMention`: 주제별 언급 게이팅 오버라이드.
-  - 최상위 `bindings[]`에서 `type: "acp"`와 canonical topic id(`chatId:topic:topicId`)를 `match.peer.id`에 쓰면 영속 ACP 주제 바인딩을 구성할 수 있습니다.
+- `channels.telegram.groups.<id>.topics.<threadId>.groupPolicy`: 주제별 groupPolicy 오버라이드 (`open | allowlist | disabled`).
+- `channels.telegram.groups.<id>.topics.<threadId>.requireMention`: 주제별 언급 게이팅 오버라이드.
+- 최상위 `bindings[]`에서 `type: "acp"`와 canonical topic id(`chatId:topic:topicId`)를 `match.peer.id`에 쓰면 영속 ACP 주제 바인딩을 구성할 수 있습니다.
+- `channels.telegram.direct.<id>.topics.<threadId>.agentId`: DM 주제를 특정 에이전트로 라우팅합니다 (포럼 주제와 같은 동작).
+- `channels.telegram.execApprovals.enabled`: 이 계정에서 Telegram을 채팅 기반 exec 승인 클라이언트로 활성화합니다.
+- `channels.telegram.execApprovals.approvers`: exec 요청을 승인 또는 거부할 수 있는 Telegram 사용자 ID 목록입니다. exec 승인이 활성화된 경우 필수입니다.
+- `channels.telegram.execApprovals.target`: `dm | channel | both` (기본값: `dm`). `channel`과 `both`는 주제가 있을 때 원래 Telegram 주제를 유지합니다.
+- `channels.telegram.execApprovals.agentFilter`: 승인 프롬프트 전달 시 적용할 선택적 agent ID 필터입니다.
+- `channels.telegram.execApprovals.sessionFilter`: 승인 프롬프트 전달 시 적용할 선택적 세션 키 필터(부분 문자열 또는 정규식)입니다.
+- `channels.telegram.accounts.<account>.execApprovals`: Telegram exec 승인 라우팅과 승인자 권한의 계정별 오버라이드입니다.
 - `channels.telegram.capabilities.inlineButtons`: `off | dm | group | all | allowlist` (기본값: allowlist).
 - `channels.telegram.accounts.<account>.capabilities.inlineButtons`: 계정별 오버라이드.
 - `channels.telegram.replyToMode`: `off | first | all` (기본값: `off`).
@@ -850,8 +913,9 @@ dig +short api.telegram.org AAAA
 
 Telegram 전용 특징적 필드:
 
-- 시작/인증: `enabled`, `botToken`, `tokenFile`, `accounts.*`
+- 시작/인증: `enabled`, `botToken`, `tokenFile`, `accounts.*` (`tokenFile`은 일반 파일이어야 하며 심볼릭 링크는 거부됩니다)
 - 액세스 제어: `dmPolicy`, `allowFrom`, `groupPolicy`, `groupAllowFrom`, `groups`, `groups.*.topics.*`, 최상위 `bindings[]` (`type: "acp"`)
+- exec 승인: `execApprovals`, `accounts.*.execApprovals`
 - 명령/메뉴: `commands.native`, `customCommands`
 - 스레딩/응답: `replyToMode`
 - 스트리밍: `streamMode` (미리보기), `draftChunk`, `blockStreaming`

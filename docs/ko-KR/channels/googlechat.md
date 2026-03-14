@@ -145,7 +145,7 @@ your-domain.com {
    - `audienceType: "app-url"` → 수신자는 HTTPS 웹훅 URL입니다.
    - `audienceType: "project-number"` → 수신자는 Cloud 프로젝트 번호입니다.
 3. 메시지는 공간에 따라 라우팅됩니다:
-   - 다이렉트 메시지는 세션 키 `agent:<agentId>:googlechat:dm:<spaceId>`를 사용합니다.
+   - 다이렉트 메시지는 세션 키 `agent:<agentId>:googlechat:direct:<spaceId>`를 사용합니다.
    - 스페이스는 세션 키 `agent:<agentId>:googlechat:group:<spaceId>`를 사용합니다.
 4. 디폴트로 다이렉트 메시지 접근은 페어링입니다. 알 수 없는 발신자는 페어링 코드를 받으며, 이를 승인하려면 다음을 사용하세요:
    - `openclaw pairing approve googlechat <code>`

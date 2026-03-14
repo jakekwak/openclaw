@@ -26,3 +26,4 @@ openclaw agent --agent ops --message "Generate report" --deliver --reply-channel
 ## Notes
 
 - 이 명령이 `models.json` 재생성을 유발하면, SecretRef-managed 프로바이더 자격 증명은 해석된 비밀 평문 대신 비비밀 marker(예: env var 이름 또는 `secretref-managed`)로 저장됩니다.
+- marker 기록은 소스 권위적입니다. OpenClaw는 해석된 런타임 비밀값이 아니라 활성 소스 설정 스냅샷의 marker를 저장합니다.

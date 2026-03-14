@@ -15,7 +15,7 @@ Native Linux 동반 앱이 계획되어 있습니다. 개발에 도움을 주시
 
 ## 초급 빠른 경로 (VPS)
 
-1. Node 22+ 설치
+1. Node 24 설치 권장 (호환성을 위해 Node 22 LTS, 현재 `22.16+`, 도 계속 지원)
 2. `npm i -g openclaw@latest`
 3. `openclaw onboard --install-daemon`
 4. 노트북에서: `ssh -N -L 18789:127.0.0.1:18789 <user>@<host>`

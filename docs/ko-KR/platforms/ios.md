@@ -49,6 +49,53 @@ openclaw nodes status
 openclaw gateway call node.list --params "{}"
 ```
 
+## 공식 빌드용 relay 기반 push
+
+공식 배포 iOS 빌드는 raw APNs 토큰을 gateway에 직접 게시하지 않고 외부 push relay를 사용합니다.
+
+Gateway 측 요구 사항:
+
+```json5
+{
+  gateway: {
+    push: {
+      apns: {
+        relay: {
+          baseUrl: "https://relay.example.com",
+        },
+      },
+    },
+  },
+}
+```
+
+동작 방식:
+
+- iOS 앱은 App Attest와 앱 receipt를 사용해 relay에 등록합니다.
+- relay는 불투명한 relay handle과 등록 범위의 send grant를 반환합니다.
+- iOS 앱은 페어링된 gateway identity를 가져와 relay 등록에 포함하므로, relay 등록이 특정 gateway에 위임됩니다.
+- 앱은 해당 relay 기반 등록을 `push.apns.register`로 페어링된 gateway에 전달합니다.
+- gateway는 저장된 relay handle을 `push.test`, 백그라운드 wake, wake nudge에 사용합니다.
+- gateway relay base URL은 공식/TestFlight iOS 빌드에 bake된 relay URL과 일치해야 합니다.
+- 앱이 나중에 다른 gateway나 다른 relay base URL을 가진 빌드에 연결되면, 기존 바인딩을 재사용하지 않고 relay 등록을 새로 고칩니다.
+
+이 경로에서 gateway에 **필요하지 않은 것**:
+
+- 배포 전체에서 공유하는 relay token 불필요
+- 공식/TestFlight relay 기반 전송용 direct APNs 키 불필요
+
+예상 운영 흐름:
+
+1. 공식/TestFlight iOS 빌드를 설치합니다.
+2. gateway에서 `gateway.push.apns.relay.baseUrl`을 설정합니다.
+3. 앱을 gateway에 페어링하고 연결이 끝날 때까지 기다립니다.
+4. 앱은 APNs 토큰 확보, operator session 연결, relay 등록 성공 후 자동으로 `push.apns.register`를 게시합니다.
+5. 이후 `push.test`, reconnect wake, wake nudge는 저장된 relay 기반 등록을 사용할 수 있습니다.
+
+호환성 참고:
+
+- `OPENCLAW_APNS_RELAY_BASE_URL`은 gateway에서 임시 환경 변수 override로 계속 동작합니다.
+
 ## 디바이스 검색 경로
 
 ### Bonjour (LAN)

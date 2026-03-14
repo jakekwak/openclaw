@@ -193,8 +193,13 @@ openclaw hooks install <npm-spec> --pin
 
 로컬 폴더/아카이브 또는 npm에서 훅 팩을 설치합니다.
 
-npm 사양은 **레지스트리 전용**입니다 (패키지 이름 + 선택적 버전/태그). Git/URL/파일
-사양은 거부됩니다. 의존성 설치는 안전성을 위해 `--ignore-scripts`로 실행됩니다.
+npm 사양은 **레지스트리 전용**입니다 (패키지 이름 + 선택적 **정확한 버전** 또는
+**dist-tag**). Git/URL/파일 사양과 semver 범위는 거부됩니다. 의존성 설치는
+안전성을 위해 `--ignore-scripts`로 실행됩니다.
+
+bare 사양과 `@latest`는 stable 트랙에 머뭅니다. npm이 이들 중 하나를 prerelease로
+해결하면, OpenClaw는 중단하고 `@beta`/`@rc` 같은 prerelease 태그나 정확한
+prerelease 버전으로 명시적으로 opt-in 하라고 요청합니다.
 
 **작동 방식:**
 

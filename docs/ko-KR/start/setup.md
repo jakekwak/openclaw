@@ -126,7 +126,7 @@ openclaw health
 인증 문제 해결 또는 백업 항목 결정 시 사용하세요:
 
 - **WhatsApp**: `~/.openclaw/credentials/whatsapp/<accountId>/creds.json`
-- **Telegram 봇 토큰**: 설정/환경 변수 또는 `channels.telegram.tokenFile`
+- **Telegram 봇 토큰**: 설정/환경 변수 또는 `channels.telegram.tokenFile` (일반 파일만 허용; 심볼릭 링크는 거부)
 - **Discord 봇 토큰**: 설정/환경 변수 또는 SecretRef (env/file/exec provider)
 - **Slack 토큰들**: 설정/환경 변수 (`channels.slack.*`)
 - **페어링 허용 목록**:

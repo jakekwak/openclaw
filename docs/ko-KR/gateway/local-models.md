@@ -11,9 +11,11 @@ title: "로컬 모델"
 
 로컬 실행이 가능하지만 OpenClaw는 큰 컨텍스트와 프롬프트 인젝션에 대한 강한 방어를 기대합니다. 작은 카드들은 컨텍스트를 잘라내어 안전성을 누출시킵니다. 목표는 높게 설정: **최소 2대의 최상급 Mac Studio 또는 이에 상응하는 GPU 장비 (~$30k+)**입니다. 단일 **24 GB** GPU는 더 높은 지연시간을 가진 가벼운 프롬프트에만 작동합니다. 실행 가능한 가장 큰/전체 크기 모델 변형을 사용하십시오; 과도하게 양자화되거나 "작은" 체크포인트는 프롬프트 인젝션 위험을 증가시킵니다 ([보안](/ko-KR/gateway/security) 참조).
 
-## 추천: LM Studio + MiniMax M2.1 (Responses API, 전체 크기)
+가장 마찰이 적은 로컬 설정을 원한다면 먼저 [Ollama](/ko-KR/providers/ollama)와 `openclaw onboard`로 시작하세요. 이 페이지는 고급 로컬 스택과 커스텀 OpenAI-compatible 로컬 서버를 위한 가이드입니다.
 
-현 시점 최고의 로컬 스택. LM Studio에서 MiniMax M2.1을 로드하고, 로컬 서버를 활성화한 후(기본값 `http://127.0.0.1:1234`), Responses API를 사용하여 추론을 최종 텍스트와 분리합니다.
+## 추천: LM Studio + MiniMax M2.5 (Responses API, 전체 크기)
+
+현 시점 최고의 로컬 스택. LM Studio에서 MiniMax M2.5를 로드하고, 로컬 서버를 활성화한 후(기본값 `http://127.0.0.1:1234`), Responses API를 사용하여 추론을 최종 텍스트와 분리합니다.
 
 ```json5
 {

@@ -240,3 +240,7 @@ openclaw browser tabs --browser-profile chrome
 - 먼저 Windows 로컬에서 Chrome 엔드포인트를 확인
 - 그다음 WSL2에서 같은 엔드포인트를 확인
 - 그 후에야 OpenClaw 설정 또는 Control UI 인증을 디버깅
+
+### 최근 업데이트 메모
+
+- 확장 릴레이 프로파일 이름은 `chrome`이 아니라 `chrome-relay`입니다.

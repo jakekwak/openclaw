@@ -70,8 +70,8 @@ macOS/Linux/WSL에서 대부분의 상호작용 설치에 권장됩니다.
   <Step title="운영 체제 감지">
     macOS 및 Linux(WSL 포함)를 지원합니다. macOS가 감지되면, Homebrew가 없는 경우 설치합니다.
   </Step>
-  <Step title="Node.js 22+ 보장">
-    Node 버전을 확인하고 필요시 Node 22를 설치합니다 (macOS에서는 Homebrew, Linux apt/dnf/yum에서는 NodeSource 설치 스크립트 사용).
+  <Step title="기본적으로 Node.js 24 보장">
+    Node 버전을 확인하고 필요시 Node 24를 설치합니다 (macOS에서는 Homebrew, Linux apt/dnf/yum에서는 NodeSource 설치 스크립트 사용). OpenClaw는 호환성을 위해 Node 22 LTS, 현재 `22.16+`, 도 계속 지원합니다.
   </Step>
   <Step title="Git 보장">
     Git이 없는 경우 설치합니다.
@@ -175,7 +175,7 @@ TTY가 없고 설치 방법이 설정되지 않은 경우, 기본값으로 `npm`
 
 <Steps>
   <Step title="로컬 Node 런타임 설치">
-    Node tarball을 `<prefix>/tools/node-v<version>`에 다운로드하고 SHA-256을 확인합니다 (기본값 `22.22.0`).
+    pin된 지원 Node tarball을 `<prefix>/tools/node-v<version>`에 다운로드하고 SHA-256을 확인합니다 (현재 기본값 `22.22.0`).
   </Step>
   <Step title="Git 보장">
     Git이 없는 경우, Linux에서는 apt/dnf/yum을 통해, macOS에서는 Homebrew를 통해 설치를 시도합니다.

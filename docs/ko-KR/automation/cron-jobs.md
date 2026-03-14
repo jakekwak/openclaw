@@ -23,10 +23,13 @@ title: "크론 작업"
 - 작업은 `~/.openclaw/cron/`에 저장되어 재시작 시에도 일정이 사라지지 않습니다.
 - 두 가지 실행 스타일:
   - **메인 세션**: 시스템 이벤트를 대기열에 넣고, 다음 하트비트에 실행됩니다.
-  - **격리형**: `cron:<jobId>`에서 전용 에이전트 턴을 실행하며, 전달 옵션이 있으며 (기본값은 announce, 또는 전달 없음).
+  - **격리형**: `cron:<jobId>` 또는 사용자 지정 세션에서 전용 에이전트 턴을 실행하며, 전달 옵션이 있으며 (기본값은 announce, 또는 전달 없음).
+  - **현재 세션**: 크론 생성 시점의 세션에 바인딩합니다 (`sessionTarget: "current"`).
+  - **사용자 지정 세션**: 지속적인 이름 있는 세션에서 실행합니다 (`sessionTarget: "session:custom-id"`).
 - 웨이크업은 1급 시민입니다: 작업은 "지금 깨우기" 또는 "다음 하트비트"를 요청할 수 있습니다.
 - 웹훅 포스팅은 작업별로 `delivery.mode = "webhook"` + `delivery.to = "<url>"`을 통해 수행됩니다.
 - `notify: true`가 설정된 저장된 작업은 여전히 `cron.webhook`이 설정된 경우 레거시 백업으로 남아 있으며, 웹훅 전달 모드로 마이그레이션이 필요합니다.
+- 업그레이드 시에는 스케줄러가 건드리기 전에 `openclaw doctor --fix`로 레거시 cron 저장 필드를 정규화할 수 있습니다.
 
 ## 빠른 시작 (실행 가능)
 
@@ -81,6 +84,8 @@ openclaw cron add \
 2. **실행 위치를 선택하십시오**
    - `sessionTarget: "main"` → 주 컨텍스트에서 다음 하트비트 중 실행.
    - `sessionTarget: "isolated"` → `cron:<jobId>`에서 전용 에이전트 턴 실행.
+   - `sessionTarget: "current"` → 현재 세션에 바인딩 (`session:<sessionKey>`로 생성 시점에 해석됨).
+   - `sessionTarget: "session:custom-id"` → 실행 간 컨텍스트를 유지하는 지속 named session에서 실행.
 
 3. **페이로드를 선택하십시오**
    - 메인 세션 → `payload.kind = "systemEvent"`

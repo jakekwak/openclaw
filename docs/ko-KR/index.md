@@ -54,7 +54,7 @@ OpenClaw 는 여러분이 즐겨 사용하는 채팅 앱 — WhatsApp, Telegram,
 - **에이전트 네이티브**: 도구 사용, 세션, 메모리, 멀티 에이전트 라우팅을 갖춘 코딩 에이전트를 위해 설계되었습니다
 - **오픈 소스**: MIT 라이선스, 커뮤니티 주도
 
-**무엇이 필요한가요?** Node 22+, API 키(Anthropic 권장), 그리고 5분.
+**무엇이 필요한가요?** Node 24(권장), 또는 호환성을 위한 Node 22 LTS(`22.16+`), 선택한 프로바이더의 API 키, 그리고 5분입니다.
 
 ## 작동 방식
 
@@ -89,7 +89,7 @@ flowchart LR
     채팅, 설정, 세션, 노드를 위한 브라우저 대시보드입니다.
   </Card>
   <Card title="모바일 노드" icon="smartphone">
-    Canvas 지원과 함께 iOS 및 Android 노드를 페어링할 수 있습니다.
+    Canvas, 카메라, 음성 워크플로를 위해 iOS 및 Android 노드를 페어링할 수 있습니다.
   </Card>
 </Columns>
 
@@ -124,7 +124,7 @@ flowchart LR
 - 원격 접근: [웹 서피스](/ko-KR/web) 및 [Tailscale](/ko-KR/gateway/tailscale)
 
 <p align="center">
-  <img src="/ko-KR/whatsapp-openclaw-ai-ko.jpg" alt="OpenClaw" width="420" />
+  <img src="/whatsapp-openclaw.jpg" alt="OpenClaw" width="420" />
 </p>
 
 ## 설정 (선택 사항)
@@ -164,7 +164,7 @@ flowchart LR
     WhatsApp, Telegram, Discord 등의 채널별 설정.
   </Card>
   <Card title="노드" href="/ko-KR/nodes" icon="smartphone">
-    페어링과 Canvas 를 지원하는 iOS 및 Android 노드.
+    페어링, Canvas, 카메라를 지원하는 iOS 및 Android 노드.
   </Card>
   <Card title="도움말" href="/ko-KR/help" icon="life-buoy">
     일반적인 수정 사항 및 문제 해결 안내.

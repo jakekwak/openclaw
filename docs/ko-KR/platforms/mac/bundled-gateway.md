@@ -13,7 +13,7 @@ OpenClaw.app은 더 이상 Node/Bun이나 게이트웨이 런타임을 포함하
 
 ## CLI 설치 (로컬 모드에 필수)
 
-Mac에 Node 22+가 필요하며, 그런 다음 `openclaw`를 전역으로 설치합니다:
+macOS의 기본 런타임은 Node 24입니다. 호환성을 위해 Node 22 LTS, 현재 `22.16+`, 도 계속 지원됩니다. 그런 다음 `openclaw`를 전역으로 설치합니다:
 
 ```bash
 npm install -g openclaw@<version>

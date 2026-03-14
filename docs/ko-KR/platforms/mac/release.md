@@ -82,3 +82,7 @@ SPARKLE_PRIVATE_KEY_FILE=/path/to/ed25519-private-key scripts/make_appcast.sh di
   - 이전 공개 빌드에서 “업데이트 확인…”을 수행하고 Sparkle이 새로운 빌드를 문제없이 설치하는지 확인합니다.
 
 완료 기준: 서명된 앱 + appcast가 게시되고, 업데이트 흐름이 이전 설치된 버전에서 작동하며, 릴리스 자산이 GitHub 릴리스에 첨부되어야 합니다.
+
+### 최근 업데이트 메모
+
+- 예시 버전 문자열은 현재 `2026.3.13` 기준으로 갱신되었습니다. zip, dmg, dSYM, appcast 예시 파일명도 동일하게 맞춥니다.

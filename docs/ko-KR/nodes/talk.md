@@ -65,11 +65,11 @@ Talk 모드는 연속적인 음성 대화 루프입니다:
 기본값:
 
 - `interruptOnSpeech`: true
+- `silenceTimeoutMs`: 설정하지 않으면 Talk는 전사를 전송하기 전 기본 플랫폼별 pause window를 유지합니다 (`macOS`와 `Android`는 `700 ms`, `iOS`는 `900 ms`)
 - `voiceId`: `ELEVENLABS_VOICE_ID` / `SAG_VOICE_ID`로 대체 (또는 API 키가 있는 경우 첫 번째 ElevenLabs 음성)
 - `modelId`: 설정되지 않은 경우 기본값 `eleven_v3`
 - `apiKey`: `ELEVENLABS_API_KEY`로 대체 (또는 사용 가능한 경우 게이트웨이 셸 프로파일)
 - `outputFormat`: macOS/iOS에서는 기본값 `pcm_44100`, Android에서는 기본값 `pcm_24000` (MP3 스트리밍을 강제하려면 `mp3_*` 설정)
-- `silenceTimeoutMs`: 설정하지 않으면 Talk는 전사를 전송하기 전 기본 플랫폼별 pause window를 사용합니다 (`macOS`와 `Android`는 `700 ms`, `iOS`는 `900 ms`)
 
 ## macOS UI
 

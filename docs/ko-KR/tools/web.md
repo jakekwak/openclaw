@@ -2,7 +2,7 @@
 summary: "웹 검색 + fetch 도구 (Brave, Gemini, Grok, Kimi, Perplexity 프로바이더)"
 read_when:
   - `web_search` 또는 `web_fetch`를 활성화하려고 할 때
-  - Brave 또는 Perplexity Search API 키 설정이 필요할 때
+  - 프로바이더 API 키 설정이 필요할 때
   - Gemini의 Google Search grounding을 쓰고 싶을 때
 title: "Web Tools"
 ---
@@ -50,6 +50,12 @@ OpenClaw는 두 가지 경량 웹 도구를 제공합니다.
 
 키가 하나도 없으면 Brave로 폴백하며, 이때 키 설정 안내 오류를 반환합니다.
 
+런타임 SecretRef 동작:
+
+- Web 도구 SecretRef는 gateway startup/reload 시 원자적으로 해석됩니다.
+- auto-detect 모드에서는 OpenClaw가 선택된 provider key만 해석합니다. 선택되지 않은 provider SecretRef는 선택될 때까지 비활성 상태로 남습니다.
+- 선택된 provider SecretRef가 해석되지 않고 provider env fallback도 없으면 startup/reload는 즉시 실패합니다.
+
 ## 웹 검색 설정
 
 `openclaw configure --section web`로 API 키 저장과 프로바이더 선택을 할 수 있습니다.
@@ -71,7 +77,13 @@ OpenClaw는 두 가지 경량 웹 도구를 제공합니다.
 ### 키 저장 위치
 
 - 구성 파일: `openclaw configure --section web`
+  - Brave: `tools.web.search.apiKey`
+  - Gemini: `tools.web.search.gemini.apiKey`
+  - Grok: `tools.web.search.grok.apiKey`
+  - Kimi: `tools.web.search.kimi.apiKey`
+  - Perplexity: `tools.web.search.perplexity.apiKey`
 - 환경 변수: `BRAVE_API_KEY`, `PERPLEXITY_API_KEY`, `OPENROUTER_API_KEY`, `GEMINI_API_KEY`, `XAI_API_KEY`, `KIMI_API_KEY`, `MOONSHOT_API_KEY`
+- 위 provider key 필드는 모두 SecretRef 객체를 지원합니다.
 
 게이트웨이 설치에서는 보통 `~/.openclaw/.env` 또는 서비스 환경을 사용합니다. [환경 변수](/ko-KR/help/faq#how-does-openclaw-load-environment-variables)를 참조하세요.
 

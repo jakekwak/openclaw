@@ -37,7 +37,7 @@ openclaw tui --url ws://<host>:<port> --token <gateway-token>
 - 헤더: 연결 URL, 현재 에이전트, 현재 세션.
 - 채팅 로그: 사용자 메시지, 보조 응답, 시스템 알림, 도구 카드.
 - 상태 라인: 연결/실행 상태 (연결, 실행 중, 스트리밍, 대기, 오류).
-- 푸터: 연결 상태 + 에이전트 + 세션 + 모델 + 생각/상세/추론 + 토큰 수 + 전달.
+- 푸터: 연결 상태 + 에이전트 + 세션 + 모델 + 생각/fast/상세/추론 + 토큰 수 + 전달.
 - 입력: 자동 완성 기능이 있는 텍스트 에디터.
 
 ## 정신 모델: 에이전트 + 세션
@@ -92,6 +92,7 @@ openclaw tui --url ws://<host>:<port> --token <gateway-token>
 세션 제어:
 
 - `/think <off|minimal|low|medium|high>`
+- `/fast <status|on|off>`
 - `/verbose <on|full|off>`
 - `/reasoning <on|off|stream>`
 - `/usage <off|tokens|full>`

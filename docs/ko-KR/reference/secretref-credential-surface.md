@@ -115,3 +115,9 @@ title: "SecretRef 자격 증명 표면"
 근거:
 
 - 이 자격 증명들은 발급형, 회전형, 세션성, 또는 OAuth 지속성 자격 증명에 속하므로 읽기 전용 외부 SecretRef 해석 모델에 맞지 않습니다.
+
+### 최근 업데이트 메모
+
+- `tools.web.fetch.firecrawl.apiKey`, `channels.feishu.encryptKey`, `channels.feishu.accounts.*.encryptKey`가 SecretRef 지원 표면에 포함됩니다.
+- SecretRef-managed provider marker는 해석된 런타임 비밀값이 아니라 source config snapshot을 기준으로 저장됩니다.
+- `tools.web.search.provider`가 unset인 auto 모드에서는 precedence상 처음 성공적으로 해석된 provider key만 활성입니다.

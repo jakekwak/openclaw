@@ -46,7 +46,7 @@ Ansible 플레이북은 다음을 설치하고 구성합니다:
 1. **Tailscale** (안전한 원격 접근을 위한 메쉬 VPN)
 2. **UFW 방화벽** (SSH + Tailscale 포트만 허용)
 3. **Docker CE + Compose V2** (에이전트 샌드박스를 위해)
-4. **Node.js 22.x + pnpm** (실행 환경 의존성)
+4. **Node.js 24 + pnpm** (실행 환경 의존성; 호환성을 위해 Node 22 LTS, 현재 `22.16+`도 계속 지원)
 5. **OpenClaw** (호스트 기반, 컨테이너화되지 않음)
 6. **Systemd 서비스** (강화된 보안과 함께 자동 시작)
 

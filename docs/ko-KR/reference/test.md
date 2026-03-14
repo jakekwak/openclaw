@@ -11,7 +11,7 @@ title: "테스트"
 
 - `pnpm test:force`: 기본 제어 포트를 점유하고 있는 게이트웨이의 모든 종료되지 않은 프로세스를 종료한 후, 격리된 게이트웨이 포트와 함께 전체 Vitest 스위트를 실행하여 서버 테스트가 실행 중인 인스턴스와 충돌하지 않도록 합니다. 이전 게이트웨이 실행이 포트 18789를 점유하고 남아 있을 때 사용합니다.
 - `pnpm test:coverage`: V8 커버리지와 함께 유닛 스위트를 실행합니다 (`vitest.unit.config.ts` 이용). 전역 임계값은 70%의 라인/브랜치/함수/문장입니다. 커버리지는 통합이 많은 진입점을 제외하여 단위 테스트 가능한 로직에 초점을 맞춥니다 (CLI 배선, 게이트웨이/텔레그램 브리지, 웹챗 정적 서버).
-- Node 24+에서 `pnpm test`: OpenClaw는 Vitest `vmForks`를 자동으로 비활성화하고 `ERR_VM_MODULE_LINK_FAILURE` / `모듈이 이미 연결됨`을 피하기 위해 `forks`를 사용합니다. `OPENCLAW_TEST_VM_FORKS=0|1`를 사용하여 동작을 강제로 설정할 수 있습니다.
+- Node 22, 23, 24에서 `pnpm test`: OpenClaw는 기본적으로 더 빠른 시작을 위해 Vitest `vmForks`를 사용합니다. Node 25+는 다시 검증될 때까지 `forks`로 폴백합니다. `OPENCLAW_TEST_VM_FORKS=0|1`를 사용하여 동작을 강제로 설정할 수 있습니다.
 - `pnpm test:e2e`: 게이트웨이 종단 간 스모크 테스트를 실행합니다 (다중 인스턴스 WS/HTTP/노드 페어링). `vitest.e2e.config.ts`에서 기본적으로 `vmForks`와 적응형 워커를 사용하며, `OPENCLAW_E2E_WORKERS=<n>`으로 조정하고, `OPENCLAW_E2E_VERBOSE=1`로 자세한 로그를 설정할 수 있습니다.
 - `pnpm test:live`: 실시간 프로바이더 테스트를 실행합니다 (minimax/zai). API 키와 `LIVE=1` (또는 프로바이더별 `*_LIVE_TEST=1`)이 필요합니다.
 
@@ -57,7 +57,7 @@ scripts/e2e/onboard-docker.sh
 
 ## QR 가져오기 스모크 (Docker)
 
-`qrcode-terminal`이 Docker의 Node 22+에서 로드됨을 보장합니다:
+`qrcode-terminal`이 지원되는 Docker Node 런타임(Node 24 기본, Node 22 호환)에서 로드됨을 보장합니다:
 
 ```bash
 pnpm test:docker:qr

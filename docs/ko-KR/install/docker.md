@@ -223,7 +223,7 @@ sudo chown -R 1000:1000 /path/to/openclaw-config /path/to/openclaw-workspace
 재구축 속도를 높이려면 Dockerfile을 의존성 계층이 캐시되도록 정렬하세요. 이는 lockfiles가 변경되지 않는 한 `pnpm install`을 재실행하지 않습니다:
 
 ```dockerfile
-FROM node:22-bookworm
+FROM node:24-bookworm
 
 # Install Bun (required for build scripts)
 RUN curl -fsSL https://bun.sh/install | bash

@@ -70,7 +70,7 @@ openclaw pairing approve telegram <CODE>
 설정 코드는 다음을 포함하는 base64로 인코딩된 JSON 페이로드입니다:
 
 - `url`: 게이트웨이 WebSocket URL (`ws://...` 또는 `wss://...`)
-- `token`: 단기 페어링 토큰
+- `bootstrapToken`: 초기 페어링 핸드셰이크에 사용하는 단일 디바이스용 단기 bootstrap 토큰
 
 설정 코드를 유효할 동안 비밀번호처럼 취급하세요.
 

@@ -317,3 +317,9 @@ openclaw gateway restart
 - [/gateway/pairing](/ko-KR/gateway/pairing)
 - [/gateway/authentication](/ko-KR/gateway/authentication)
 - [/gateway/background-process](/ko-KR/gateway/background-process)
+
+### 최근 업데이트 메모
+
+- `AUTH_TOKEN_MISMATCH`와 `canRetryWithDeviceToken=true`가 함께 오면 캐시된 디바이스 토큰으로 한 번 재시도할 수 있습니다.
+- 이후에도 `unauthorized`가 반복되면 devices CLI로 토큰 회전/재승인을 진행하세요.
+- 브라우저 릴레이 점검 예시는 `profile="chrome"`이 아니라 `profile="chrome-relay"`를 사용합니다.

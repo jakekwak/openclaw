@@ -1,32 +1,87 @@
 ---
-summary: "OpenClaw를 Ollama (로컬 LLM 런타임)로 실행하기"
+summary: "OpenClaw를 Ollama (클라우드 및 로컬 모델)로 실행하기"
 read_when:
-  - OpenClaw를 Ollama를 통한 로컬 모델로 실행하려는 경우
+  - OpenClaw를 Ollama를 통한 클라우드 또는 로컬 모델로 실행하려는 경우
   - Ollama 설치 및 설정 가이드를 필요로 하는 경우
 title: "Ollama"
 ---
 
 # Ollama
 
-Ollama는 로컬 LLM 런타임으로, 오픈 소스 모델을 손쉽게 머신에서 실행할 수 있도록 해줍니다. OpenClaw는 Ollama의 네이티브 API (`/api/chat`)와 통합되어 스트리밍 및 도구 호출을 지원하며, `OLLAMA_API_KEY` (또는 인증 프로파일)로 선택하고 명시적인 `models.providers.ollama` 항목을 정의하지 않을 경우 **도구 지원 모델을 자동으로 검색할 수** 있습니다.
+Ollama는 로컬 LLM 런타임으로, 오픈 소스 모델을 손쉽게 머신에서 실행할 수 있도록 해줍니다. OpenClaw는 Ollama의 네이티브 API (`/api/chat`)와 통합되어 스트리밍 및 도구 호출을 지원하며, `OLLAMA_API_KEY` (또는 인증 프로파일)로 opt-in하고 명시적인 `models.providers.ollama` 항목을 정의하지 않을 경우 로컬 Ollama 모델을 자동으로 검색할 수 있습니다.
 
 ## 빠른 시작
 
-1. Ollama 설치: [https://ollama.ai](https://ollama.ai)
+### 온보딩 마법사 (권장)
 
-2. 모델 가져오기:
+Ollama를 가장 빠르게 설정하는 방법은 온보딩 마법사를 사용하는 것입니다:
 
 ```bash
+openclaw onboard
+```
+
+프로바이더 목록에서 **Ollama**를 선택하세요. 마법사는 다음을 수행합니다:
+
+1. Ollama 인스턴스가 도달 가능한 base URL을 묻습니다 (기본값 `http://127.0.0.1:11434`).
+2. **Cloud + Local**(클라우드 + 로컬) 또는 **Local**(로컬만) 중에서 선택하게 합니다.
+3. **Cloud + Local**을 선택했고 `ollama.com`에 로그인되어 있지 않다면 브라우저 로그인 흐름을 엽니다.
+4. 사용 가능한 모델을 검색하고 기본값을 제안합니다.
+5. 선택한 모델이 로컬에 없으면 자동으로 pull 합니다.
+
+비대화형 모드도 지원됩니다:
+
+```bash
+openclaw onboard --non-interactive \
+  --auth-choice ollama \
+  --accept-risk
+```
+
+사용자 지정 base URL이나 모델을 지정할 수도 있습니다:
+
+```bash
+openclaw onboard --non-interactive \
+  --auth-choice ollama \
+  --custom-base-url "http://ollama-host:11434" \
+  --custom-model-id "qwen3.5:27b" \
+  --accept-risk
+```
+
+### 수동 설정
+
+1. Ollama 설치: [https://ollama.com/download](https://ollama.com/download)
+
+2. 로컬 추론을 원하면 로컬 모델을 pull 하세요:
+
+```bash
+ollama pull glm-4.7-flash
+# 또는
 ollama pull gpt-oss:20b
 # 또는
 ollama pull llama3.3
-# 또는
-ollama pull qwen2.5-coder:32b
-# 또는
-ollama pull deepseek-r1:32b
 ```
 
-3. OpenClaw에서 Ollama 활성화하기 (아무 값이나 설정 가능합니다; Ollama는 실제 키를 필요로 하지 않습니다):
+3. 클라우드 모델도 쓰고 싶다면 로그인하세요:
+
+```bash
+ollama signin
+```
+
+4. 온보딩을 실행하고 `Ollama`를 선택하세요:
+
+```bash
+openclaw onboard
+```
+
+- `Local`: 로컬 모델만
+- `Cloud + Local`: 로컬 모델 + 클라우드 모델
+- `kimi-k2.5:cloud`, `minimax-m2.5:cloud`, `glm-5:cloud` 같은 클라우드 모델은 로컬 `ollama pull`이 필요하지 않습니다
+
+OpenClaw가 현재 제안하는 기본값:
+
+- 로컬 기본값: `glm-4.7-flash`
+- 클라우드 기본값: `kimi-k2.5:cloud`, `minimax-m2.5:cloud`, `glm-5:cloud`
+
+5. 수동 설정을 선호한다면 OpenClaw에서 Ollama를 직접 활성화할 수 있습니다 (아무 값이나 가능; Ollama는 실제 키를 요구하지 않음):
 
 ```bash
 # 환경 변수 설정
@@ -36,13 +91,20 @@ export OLLAMA_API_KEY="ollama-local"
 openclaw config set models.providers.ollama.apiKey "ollama-local"
 ```
 
-4. Ollama 모델 사용:
+6. 모델을 확인하거나 전환합니다:
+
+```bash
+openclaw models list
+openclaw models set ollama/glm-4.7-flash
+```
+
+7. 또는 config에서 기본값을 설정합니다:
 
 ```json5
 {
   agents: {
     defaults: {
-      model: { primary: "ollama/gpt-oss:20b" },
+      model: { primary: "ollama/glm-4.7-flash" },
     },
   },
 }
@@ -52,14 +114,13 @@ openclaw config set models.providers.ollama.apiKey "ollama-local"
 
 `OLLAMA_API_KEY` (또는 인증 프로파일)를 설정하고 `models.providers.ollama`를 정의하지 않으면 OpenClaw는 로컬 Ollama 인스턴스에서 모델을 검색합니다: `http://127.0.0.1:11434`
 
-- `/api/tags` 및 `/api/show` 쿼리
-- `tools` 기능을 보고하는 모델만 유지
-- 모델이 `thinking`을 보고할 때 `reasoning`으로 표시
-- 사용 가능한 경우 `model_info["<arch>.context_length"]`에서 `contextWindow`를 읽음
-- 컨텍스트 윈도우의 10배로 `maxTokens` 설정
+- `/api/tags` 쿼리
+- 가능할 때 `contextWindow`를 읽기 위해 최선 노력의 `/api/show` 조회 수행
+- 모델 이름 휴리스틱(`r1`, `reasoning`, `think`)으로 `reasoning` 표시
+- OpenClaw가 사용하는 기본 Ollama max-token cap으로 `maxTokens` 설정
 - 모든 비용을 `0`으로 설정
 
-이를 통해 수동 모델 항목 없이도 Ollama의 기능에 맞춘 카탈로그를 유지합니다.
+이를 통해 수동 모델 항목 없이도 로컬 Ollama 인스턴스와 정렬된 카탈로그를 유지할 수 있습니다.
 
 사용 가능한 모델을 보려면 다음 명령어를 사용하세요:
 

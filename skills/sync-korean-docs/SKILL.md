@@ -18,27 +18,32 @@ Use this skill when the task is:
 Do this in order.
 
 1. Confirm the current branch and sync baseline.
-2. Fetch the latest `origin/main`.
-3. Stay on `korean` and merge `origin/main` into it.
-4. Resolve merge conflicts first, then translate docs.
-5. Update `docs/.i18n/sync-state.ko-KR.json` only after translation is complete.
-6. Commit only the translation/sync files.
-7. Push `korean`.
+2. Sync the forked `main` branch from GitHub first (`origin/main`).
+3. Update local `main` to match `origin/main`.
+4. Switch to `korean` and merge local `main` into it.
+5. Resolve merge conflicts first, then translate docs.
+6. Update `docs/.i18n/sync-state.ko-KR.json` only after translation is complete.
+7. Commit only the translation/sync files.
+8. Push `korean`.
 
 Do not skip the merge step. The normal flow is:
 
 ```bash
 git fetch origin main
-git merge origin/main
+git checkout main
+git pull --ff-only origin main
+git checkout korean
+git merge main
 ```
 
-Run those from `korean`, not from `main`.
+Run the fetch/pull on `main`, then merge from `korean`.
 
 ## Read before editing
 
 Always read:
 
 - `docs/.i18n/sync-state.ko-KR.json`
+- the local `main` vs `korean` docs diff after merge
 - changed English docs under `docs/`
 - matching Korean docs under `docs/ko-KR/`
 - the English diff since the last sync SHA
@@ -49,6 +54,7 @@ Useful commands:
 cat docs/.i18n/sync-state.ko-KR.json
 git diff <LAST_SYNC_SHA>..origin/main --name-only -- docs/
 git diff <LAST_SYNC_SHA>..origin/main -- docs/<path>.md
+git diff main -- docs/
 ```
 
 Ignore:
@@ -156,6 +162,7 @@ scripts/committer "Docs: sync Korean docs from main (<SHORT_SHA>)" <files...>
 ## Safety rules
 
 - Work file-by-file. Read English, read diff, read Korean, then edit.
+- For large syncs, batch by small diffs first, then medium/large rewrites.
 - Do not overwrite existing Korean content blindly.
 - Do not mark sync complete before the changed docs are actually translated.
 - If merge conflicts touch Korean docs, resolve the merge first, then re-check the final English side before translating.

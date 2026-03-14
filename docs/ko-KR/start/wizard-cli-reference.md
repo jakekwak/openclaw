@@ -16,7 +16,7 @@ sidebarTitle: "CLI 참고 자료"
 
 로컬 모드 (기본값)는 다음을 안내합니다:
 
-- 모델 및 인증 설정 (OpenAI Code 구독 OAuth, Anthropic API 키 또는 설정 토큰, MiniMax, GLM, Moonshot, AI Gateway 옵션 포함)
+- 모델 및 인증 설정 (OpenAI Code 구독 OAuth, Anthropic API 키 또는 설정 토큰, MiniMax, GLM, Ollama, Moonshot, AI Gateway 옵션 포함)
 - 작업 공간 위치와 부트스트랩 파일
 - 게이트웨이 설정 (포트, 바인드, 인증, Tailscale)
 - 채널 및 프로바이더 (Telegram, WhatsApp, Discord, Google Chat, Mattermost 플러그인, Signal)
@@ -168,6 +168,11 @@ Control UI 자산이 없으면, 마법사는 이를 빌드하려고 시도합니
   <Accordion title="Synthetic (Anthropic-compatible)">
     `SYNTHETIC_API_KEY`를 요청합니다.
     자세한 내용: [Synthetic](/ko-KR/providers/synthetic).
+  </Accordion>
+  <Accordion title="Ollama (클라우드 및 로컬 오픈 모델)">
+    기본 URL(기본 `http://127.0.0.1:11434`)을 묻고, Cloud + Local 또는 Local 모드를 제공합니다.
+    사용 가능한 모델을 검색하고 기본값을 제안합니다.
+    자세한 내용: [Ollama](/ko-KR/providers/ollama).
   </Accordion>
   <Accordion title="Moonshot 및 Kimi Coding">
     Moonshot (Kimi K2) 및 Kimi Coding 구성은 자동으로 작성됩니다.

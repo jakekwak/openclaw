@@ -194,65 +194,14 @@ services:
 
 ---
 
-## 7) Bake required binaries into the image (critical)
+## 7) Shared Docker VM runtime steps
 
-실행 중인 컨테이너에 바이너리를 설치하는 것은 함정입니다.
-구동 중 설치된 것은 재시작 시 모두 사라집니다.
+Use the shared runtime guide for the common Docker host flow:
 
-스킬에 필요한 모든 외부 바이너리는 이미지 빌드 시에 설치되어야 합니다.
-
-아래 예는 세 가지 일반적인 바이너리만 보여줍니다:
-
-- `gog` Gmail 접근용
-- `goplaces` Google Places 용
-- `wacli` WhatsApp 용
-
-이것들은 예제일 뿐이며, 모든 필요한 바이너리를 같은 패턴으로 설치할 수 있습니다.
-
-나중에 추가 바이너리가 필요한 새로운 스킬을 추가하려면:
-
-1. Dockerfile 업데이트
-2. 이미지 재구축
-3. 컨테이너 재시작
-
-**예제 Dockerfile**
-
-```dockerfile
-FROM node:22-bookworm
-
-RUN apt-get update && apt-get install -y socat && rm -rf /var/lib/apt/lists/*
-
-# Example binary 1: Gmail CLI
-RUN curl -L https://github.com/steipete/gog/releases/latest/download/gog_Linux_x86_64.tar.gz \
-  | tar -xz -C /usr/local/bin && chmod +x /usr/local/bin/gog
-
-# Example binary 2: Google Places CLI
-RUN curl -L https://github.com/steipete/goplaces/releases/latest/download/goplaces_Linux_x86_64.tar.gz \
-  | tar -xz -C /usr/local/bin && chmod +x /usr/local/bin/goplaces
-
-# Example binary 3: WhatsApp CLI
-RUN curl -L https://github.com/steipete/wacli/releases/latest/download/wacli_Linux_x86_64.tar.gz \
-  | tar -xz -C /usr/local/bin && chmod +x /usr/local/bin/wacli
-
-# Add more binaries below using the same pattern
-
-WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
-COPY ui/package.json ./ui/package.json
-COPY scripts ./scripts
-
-RUN corepack enable
-RUN pnpm install --frozen-lockfile
-
-COPY . .
-RUN pnpm build
-RUN pnpm ui:install
-RUN pnpm ui:build
-
-ENV NODE_ENV=production
-
-CMD ["node","dist/index.js"]
-```
+- [Bake required binaries into the image](/install/docker-vm-runtime#bake-required-binaries-into-the-image)
+- [Build and launch](/install/docker-vm-runtime#build-and-launch)
+- [What persists where](/install/docker-vm-runtime#what-persists-where)
+- [Updates](/install/docker-vm-runtime#updates)
 
 ---
 

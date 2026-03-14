@@ -28,7 +28,7 @@ openclaw logs --follow
 
 - `openclaw status` → 구성된 채널이 보이고 명확한 인증 오류가 없음.
 - `openclaw status --all` → 전체 보고서가 존재하고 공유 가능함.
-- `openclaw gateway probe` → 예상한 게이트웨이 대상에 도달 가능.
+- `openclaw gateway probe` → 예상한 게이트웨이 대상에 도달 가능 (`Reachable: yes`). `RPC: limited - missing scope: operator.read`는 degraded diagnostics이며 연결 실패는 아닙니다.
 - `openclaw gateway status` → `Runtime: running` 및 `RPC probe: ok`.
 - `openclaw doctor` → 차단되는 설정/서비스 오류 없음.
 - `openclaw channels status --probe` → 채널이 `connected` 또는 `ready` 상태 보고.
@@ -105,7 +105,8 @@ flowchart TD
     일반적인 로그 서명:
 
     - `device identity required` → HTTPS/비보안 컨텍스트에서 장치 인증 완료 불가.
-    - `unauthorized` / reconnect loop → 잘못된 토큰/비밀번호 또는 인증 모드 불일치.
+    - `AUTH_TOKEN_MISMATCH` 와 재시도 힌트(`canRetryWithDeviceToken=true`) → 신뢰된 device token 재시도 1회가 자동으로 발생할 수 있습니다.
+    - 그 재시도 이후에도 반복되는 `unauthorized` → 잘못된 token/password, auth mode 불일치, 또는 오래된 paired device token.
     - `gateway connect failed:` → UI가 잘못된 URL/포트 또는 도달 불가능한 게이트웨이를 대상으로 설정됨.
 
     심층 페이지:

@@ -294,3 +294,9 @@ Exec 라이프사이클은 시스템 메시지로 표시됩니다:
 - [Exec 도구](/tools/exec)
 - [Elevated 모드](/tools/elevated)
 - [스킬](/tools/skills)
+
+### 최근 업데이트 메모
+
+- approval-backed 실행은 exact argv, cwd, env binding과 가능한 경우 직접 로컬 파일 operand까지 함께 묶습니다.
+- interpreter/runtime 명령이 정확히 하나의 로컬 파일을 가리키는지 판단할 수 없으면 approval-backed 실행을 거부합니다.
+- Discord와 Telegram은 채널 설정으로 exec approval client 역할을 할 수 있습니다.

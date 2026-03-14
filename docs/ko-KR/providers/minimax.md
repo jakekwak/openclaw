@@ -79,7 +79,7 @@ CLI를 통해 구성:
           {
             id: "MiniMax-M2.1",
             name: "MiniMax M2.1",
-            reasoning: false,
+            reasoning: true,
             input: ["text"],
             cost: { input: 15, output: 60, cacheRead: 2, cacheWrite: 10 },
             contextWindow: 200000,
@@ -140,7 +140,7 @@ CLI를 통해 구성:
           {
             id: "minimax-m2.1-gs32",
             name: "MiniMax M2.1 GS32",
-            reasoning: false,
+            reasoning: true,
             input: ["text"],
             cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
             contextWindow: 196608,

@@ -60,7 +60,7 @@ openclaw devices approve <requestId>
 - 도구 호출 스트리밍 + 채팅 내 라이브 도구 출력 카드 (에이전트 이벤트)
 - 채널: WhatsApp/Telegram/Discord/Slack + 플러그인 채널 (Mattermost 등) 상태 + QR 로그인 + 채널별 설정 (`channels.status`, `web.login.*`, `config.patch`)
 - 인스턴스: 존재 목록 + 새로 고침 (`system-presence`)
-- 세션: 목록 + 세션별 생각/상세 모드 오버라이드 (`sessions.list`, `sessions.patch`)
+- 세션: 목록 + 세션별 생각/fast/상세/추론 오버라이드 (`sessions.list`, `sessions.patch`)
 - Cron 작업: 목록/추가/편집/실행/활성화/비활성화 + 실행 기록 (`cron.*`)
 - 스킬: 상태, 활성화/비활성화, 설치, API 키 업데이트 (`skills.*`)
 - 노드: 목록 + 기능 (`node.list`)

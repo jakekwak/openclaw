@@ -17,7 +17,7 @@ openclaw qr
 openclaw qr --setup-code-only
 openclaw qr --json
 openclaw qr --remote
-openclaw qr --url wss://gateway.example/ws --token '<token>'
+openclaw qr --url wss://gateway.example/ws
 ```
 
 ## 옵션
@@ -25,8 +25,8 @@ openclaw qr --url wss://gateway.example/ws --token '<token>'
 - `--remote`: config의 `gateway.remote.url`과 remote token/password를 사용
 - `--url <url>`: payload에 사용할 게이트웨이 URL 재정의
 - `--public-url <url>`: payload에 사용할 public URL 재정의
-- `--token <token>`: payload용 게이트웨이 토큰 재정의
-- `--password <password>`: payload용 게이트웨이 비밀번호 재정의
+- `--token <token>`: bootstrap 흐름이 인증에 사용할 gateway token을 재정의
+- `--password <password>`: bootstrap 흐름이 인증에 사용할 gateway password를 재정의
 - `--setup-code-only`: setup code만 출력
 - `--no-ascii`: ASCII QR 렌더링 건너뜀
 - `--json`: JSON 출력 (`setupCode`, `gatewayUrl`, `auth`, `urlSource`)
@@ -34,6 +34,7 @@ openclaw qr --url wss://gateway.example/ws --token '<token>'
 ## 주의
 
 - `--token`과 `--password`는 함께 사용할 수 없습니다.
+- setup code 자체에는 이제 공유 gateway token/password가 아니라 불투명한 단기 `bootstrapToken`이 들어갑니다.
 - `--remote`를 사용할 때, 실제로 활성인 remote 자격 증명이 SecretRef로 구성돼 있고 `--token`이나 `--password`를 넘기지 않으면, 명령은 활성 게이트웨이 스냅샷에서 이를 해석합니다. 게이트웨이를 사용할 수 없으면 즉시 실패합니다.
 - `--remote` 없이 실행할 때는 CLI auth override가 없으면 로컬 게이트웨이 auth SecretRef를 해석합니다:
   - `gateway.auth.token`은 token auth가 승리할 수 있을 때 해석됩니다 (`gateway.auth.mode="token"`이 명시됐거나, 추론된 모드에서 password source가 이기지 않을 때).

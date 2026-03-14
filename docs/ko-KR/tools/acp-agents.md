@@ -255,3 +255,8 @@ ACP 세션은 현재 OpenClaw sandbox 안이 아니라 호스트 런타임에서
 - [플러그인](/ko-KR/tools/plugin)
 - [구성 참조](/ko-KR/gateway/configuration-reference)
 - [Sub-agents](/ko-KR/tools/subagents)
+
+### 최근 업데이트 메모
+
+- `resumeSessionId`로 기존 ACP 세션을 이어받을 수 있으며, 이력은 `session/load`로 재생됩니다.
+- `/acp sessions`는 현재 바인딩되었거나 요청자 세션 기준 session store를 읽습니다.
