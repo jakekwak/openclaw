@@ -1029,6 +1029,7 @@
                   "ko-KR/concepts/session-pruning",
                   "ko-KR/concepts/session-tool",
                   "ko-KR/concepts/memory",
+                  "ko-KR/concepts/context-engine",
                   "ko-KR/concepts/compaction"
                 ]
               },
@@ -1067,6 +1068,8 @@
                   "ko-KR/tools/gemini-search",
                   "ko-KR/tools/grok-search",
                   "ko-KR/tools/kimi-search",
+                  "ko-KR/tools/btw",
+                  "ko-KR/tools/capability-cookbook",
                   "ko-KR/tools/perplexity-search",
                   "ko-KR/tools/tavily",
                   "ko-KR/tools/web-fetch",
@@ -1108,6 +1111,11 @@
                 "group": "Extensions",
                 "pages": [
                   "ko-KR/plugins/community",
+                  "ko-KR/plugins/building-extensions",
+                  "ko-KR/plugins/bundles",
+                  "ko-KR/plugins/sdk-entrypoints",
+                  "ko-KR/plugins/sdk-migration",
+                  "ko-KR/plugins/sdk-overview",
                   "ko-KR/plugins/voice-call",
                   "ko-KR/plugins/zalouser"
                 ]
@@ -1237,6 +1245,7 @@
                       "ko-KR/gateway/configuration-reference",
                       "ko-KR/gateway/configuration-examples",
                       "ko-KR/gateway/authentication",
+                      "ko-KR/gateway/openshell",
                       "ko-KR/gateway/trusted-proxy-auth",
                       "ko-KR/gateway/health",
                       "ko-KR/gateway/heartbeat",
