@@ -1118,10 +1118,16 @@
                   "ko-KR/plugins/community",
                   "ko-KR/plugins/building-extensions",
                   "ko-KR/plugins/building-plugins",
+                  "ko-KR/plugins/sdk-channel-plugins",
+                  "ko-KR/plugins/sdk-provider-plugins",
                   "ko-KR/plugins/bundles",
                   "ko-KR/plugins/sdk-entrypoints",
                   "ko-KR/plugins/sdk-migration",
                   "ko-KR/plugins/sdk-overview",
+                  "ko-KR/plugins/sdk-runtime",
+                  "ko-KR/plugins/sdk-setup",
+                  "ko-KR/plugins/sdk-testing",
+                  "ko-KR/plugins/architecture",
                   "ko-KR/plugins/voice-call",
                   "ko-KR/plugins/zalouser"
                 ]
