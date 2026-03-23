@@ -1035,7 +1035,11 @@
               },
               {
                 "group": "Multi-agent",
-                "pages": ["ko-KR/concepts/multi-agent", "ko-KR/concepts/presence"]
+                "pages": [
+                  "ko-KR/concepts/multi-agent",
+                  "ko-KR/concepts/delegate-architecture",
+                  "ko-KR/concepts/presence"
+                ]
               },
               {
                 "group": "Messages and delivery",
@@ -1072,6 +1076,7 @@
                   "ko-KR/tools/capability-cookbook",
                   "ko-KR/tools/perplexity-search",
                   "ko-KR/tools/tavily",
+                  "ko-KR/tools/tts",
                   "ko-KR/tools/web-fetch",
                   "ko-KR/tools/apply-patch",
                   "ko-KR/tools/elevated",
@@ -1112,6 +1117,7 @@
                 "pages": [
                   "ko-KR/plugins/community",
                   "ko-KR/plugins/building-extensions",
+                  "ko-KR/plugins/building-plugins",
                   "ko-KR/plugins/bundles",
                   "ko-KR/plugins/sdk-entrypoints",
                   "ko-KR/plugins/sdk-migration",
