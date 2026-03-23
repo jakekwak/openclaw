@@ -945,11 +945,13 @@
               {
                 "group": "Hosting and deployment",
                 "pages": [
+                  "ko-KR/install/azure",
                   "ko-KR/install/fly",
                   "ko-KR/install/hetzner",
                   "ko-KR/install/gcp",
                   "ko-KR/install/digitalocean",
                   "ko-KR/install/oracle",
+                  "ko-KR/install/raspberry-pi",
                   "ko-KR/install/macos-vm",
                   "ko-KR/install/exe-dev",
                   "ko-KR/install/railway",
@@ -1059,6 +1061,15 @@
                   "ko-KR/tools/llm-task",
                   "ko-KR/tools/exec",
                   "ko-KR/tools/web",
+                  "ko-KR/tools/brave-search",
+                  "ko-KR/tools/duckduckgo-search",
+                  "ko-KR/tools/exa-search",
+                  "ko-KR/tools/gemini-search",
+                  "ko-KR/tools/grok-search",
+                  "ko-KR/tools/kimi-search",
+                  "ko-KR/tools/perplexity-search",
+                  "ko-KR/tools/tavily",
+                  "ko-KR/tools/web-fetch",
                   "ko-KR/tools/apply-patch",
                   "ko-KR/tools/elevated",
                   "ko-KR/tools/thinking",
@@ -1149,19 +1160,26 @@
                 "group": "Providers",
                 "pages": [
                   "ko-KR/providers/anthropic",
+                  "ko-KR/providers/deepseek",
+                  "ko-KR/providers/google",
+                  "ko-KR/providers/groq",
                   "ko-KR/providers/openai",
                   "ko-KR/providers/openrouter",
                   "ko-KR/providers/litellm",
                   "ko-KR/providers/bedrock",
+                  "ko-KR/providers/modelstudio",
                   "ko-KR/providers/vercel-ai-gateway",
                   "ko-KR/providers/moonshot",
                   "ko-KR/providers/minimax",
                   "ko-KR/providers/opencode-go",
                   "ko-KR/providers/opencode",
+                  "ko-KR/providers/perplexity-provider",
                   "ko-KR/providers/glm",
                   "ko-KR/providers/zai",
                   "ko-KR/providers/synthetic",
-                  "ko-KR/providers/qianfan"
+                  "ko-KR/providers/qianfan",
+                  "ko-KR/providers/volcengine",
+                  "ko-KR/providers/xai"
                 ]
               }
             ]
